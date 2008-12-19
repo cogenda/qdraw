@@ -27,6 +27,9 @@
 #include "qc_applicationwindow.h"
 
 #include <fstream>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include <qaccel.h>
 #include <qaction.h>
@@ -745,6 +748,9 @@ void QC_ApplicationWindow::initActions() {
     action->addTo(subMenu);
     connect(this, SIGNAL(windowsChanged(bool)), action, SLOT(setEnabled(bool)));
     action = actionFactory.createAction(RS2::ActionDrawArcParallel, actionHandler);
+    action->addTo(subMenu);
+    connect(this, SIGNAL(windowsChanged(bool)), action, SLOT(setEnabled(bool)));
+    action = actionFactory.createAction(RS2::ActionDrawArcTangential, actionHandler);
     action->addTo(subMenu);
     connect(this, SIGNAL(windowsChanged(bool)), action, SLOT(setEnabled(bool)));
     menu->insertItem(tr("&Arc"), subMenu);
@@ -2943,22 +2949,55 @@ void QC_ApplicationWindow::slotHelpManual() {
                         RS_SYSTEM->getAppDir().latin1());
         RS_DEBUG->print("QC_ApplicationWindow::slotHelpManual(): appdir: %s",
                         RS_SYSTEM->getAppDir().latin1());
-        assistant = new QAssistantClient(RS_SYSTEM->getAppDir()+"/bin", this);
+        assistant = new QAssistantClient("/usr/bin", this);
 		connect(assistant, SIGNAL(error(const QString&)), 
 			this, SLOT(slotError(const QString&)));
         QStringList args;
         args << "-profile";
-        args << QDir::convertSeparators(RS_SYSTEM->getDocPath() + "/qcaddoc.adp");
+        args << QDir::convertSeparators("/usr/share/qcad/doc/qcaddoc.adp");
 //        args << QString("doc") + QDir::separator() + QString("qcaddoc.adp");
 
 #if QT_VERSION>=0x030200 
         assistant->setArguments(args);
 #endif
+        connect( assistant, SIGNAL(error(const QString&)), this, SLOT(slotAssistantError(const QString&)) );
     }
     assistant->openAssistant();
     //assistant->showPage("index.html");
 }
 
+void QC_ApplicationWindow::slotAssistantError(const QString&) {
+    if ( !assistant->isOpen() ) {
+        pid_t pid;
+	if ( (pid = fork()) < 0 ) {
+	    perror( "fork" );
+	    QMessageBox::critical( this, QC_APPNAME, "Could not fork child process." );
+	    return;
+	}
+	if ( pid==0 ) {  // child
+  	    pid_t gcpid;
+	    if ( (gcpid = fork()) < 0 ) {
+	        perror( "fork" );
+		_exit(1);
+	    }
+	    if ( gcpid==0 ) {  // grandchild
+	        char* argv[] = { "gnome-open",
+				 "/usr/share/qcad/doc/cad/index.html",
+				 0
+		};
+		execvp( argv[0], argv);
+		perror( "execvp" );
+		_exit(1);
+	    }
+	    int status;
+	    waitpid( pid, &status, 0 );
+	    _exit(0);
+	}
+	// parent
+	int status;
+	waitpid( pid, &status, 0 );
+    }
+}
 
 
 /**

@@ -246,9 +246,9 @@ cd ..
 
 if [ -z $notrans ]
 then
-    echo "-------- Building Translations --------"
-    cd scripts
-    sh ./release_translations.sh
+#    echo "-------- Building Translations --------"
+#    cd scripts
+#    sh ./release_translations.sh
 fi
 
 if [ "x$platform" == "xosx" ]

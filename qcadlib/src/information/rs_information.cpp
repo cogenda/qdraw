@@ -27,6 +27,7 @@
 #include "rs_information.h"
 
 #include "rs_constructionline.h"
+#include <cstdlib>
 
 
 /**

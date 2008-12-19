@@ -1,6 +1,6 @@
 # $Id: defs.pro 606 2004-12-25 03:08:40Z andrew $
-QMAKE_CXXFLAGS_DEBUG += -pedantic
-QMAKE_CXXFLAGS += -pedantic
+#QMAKE_CXXFLAGS_DEBUG += -pedantic
+#QMAKE_CXXFLAGS += -pedantic
 
 win32 {
   QMAKE_CFLAGS_THREAD -= -mthreads

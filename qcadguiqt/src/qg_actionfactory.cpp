@@ -45,6 +45,7 @@
 #include "rs_actiondimradial.h"
 #include "rs_actiondrawarc.h"
 #include "rs_actiondrawarc3p.h"
+#include "rs_actiondrawarctangential.h"
 #include "rs_actiondrawcircle.h"
 #include "rs_actiondrawcircle2p.h"
 #include "rs_actiondrawcircle3p.h"
@@ -630,6 +631,12 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
 		action = RS_ActionDrawLineParallel::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawArcParallel()));
+        break;
+
+    case RS2::ActionDrawArcTangential:
+                action = RS_ActionDrawArcTangential::createGUIAction(id, mw);
+        connect(action, SIGNAL(activated()),
+                obj, SLOT(slotDrawArcTangential()));
         break;
 
     case RS2::ActionDrawEllipseAxis:

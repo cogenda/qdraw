@@ -27,6 +27,7 @@
 #include "rs_actionzoompan.h"
 #include "rs_snapper.h"
 #include "rs_point.h"
+#include <cstdlib>
 
 
 RS_ActionZoomPan::RS_ActionZoomPan(RS_EntityContainer& container,

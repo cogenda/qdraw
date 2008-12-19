@@ -225,6 +225,8 @@ public slots:
     /** resizes window to 640x480 for screen shots */
     void slotTestResize1024();
 
+    void slotAssistantError(const QString&);
+
 signals:
     void gridChanged(bool on);
     void draftChanged(bool on);
