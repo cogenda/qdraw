@@ -1,0 +1,1912 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.00"
+	Name="qcadactions"
+	ProjectGUID="{8B0CFD00-CE67-4F9C-85AD-190D036CC53B}">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="."
+			IntermediateDirectory="obj\"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				Optimization="1"
+				AdditionalIncludeDirectories="..\include;..\..\dxflib\include;..\..\qcadlib\include;..\..\qcadcmd\src;..\..\qcadcmd\include;..\..\fparser\src;..\..\fparser\include;&quot;$(QTDIR)\include&quot;;.;moc\;&quot;g:\Qt\3.2.0Evaluation\mkspecs\win32-msvc.net&quot;;..\..\qcadlib\src\engine;..\..\qcadlib\src\actions;..\..\qcadlib\src\creation;..\..\qcadlib\src\debug;..\..\qcadlib\src\export;..\..\qcadlib\src\filters;..\..\qcadlib\src\gui;..\..\qcadlib\src\import;..\..\qcadlib\src\information;..\..\qcadlib\src\math;..\..\qcadlib\src\modification;..\..\qcadlib\src\scripting"
+				PreprocessorDefinitions="QT_NO_DEBUG;NDEBUG;UNICODE;WIN32;_USE_MATH_DEFINES"
+				GeneratePreprocessedFile="0"
+				ExceptionHandling="TRUE"
+				RuntimeLibrary="4"
+				BufferSecurityCheck="FALSE"
+				AssemblerListingLocation="obj\"
+				ObjectFile="obj\"
+				ProgramDataBaseFileName=".\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="..\lib\qcadactions.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"
+				WarningLevel="0"
+				DefaultCharType="0"
+				EnableErrorChecks="1"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			<File
+				RelativePath="rs_actionblocksadd.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionblocksattributes.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionblockscreate.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionblocksedit.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionblocksexplode.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionblocksfreezeall.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionblocksinsert.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionblocksremove.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionblockstoggleview.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondefault.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondimaligned.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondimangular.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondimdiametric.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondimension.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondimleader.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondimlinear.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondimradial.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawarc.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawarc3p.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawcircle.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawcircle2p.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawcircle3p.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawcirclecr.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawellipseaxis.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawhatch.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawimage.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawline.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlineangle.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinebisector.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinefree.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinehorvert.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlineparallel.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlineparallelthrough.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinepolygon.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinepolygon2.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinerectangle.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinerelangle.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinetangent1.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinetangent2.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawpoint.cpp">
+			</File>
+			<File
+				RelativePath="rs_actiondrawtext.cpp">
+			</File>
+			<File
+				RelativePath="rs_actioneditcopy.cpp">
+			</File>
+			<File
+				RelativePath="rs_actioneditpaste.cpp">
+			</File>
+			<File
+				RelativePath="rs_actioneditundo.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionfileopen.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionfilesave.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionfilesaveas.cpp">
+			</File>
+			<File
+				RelativePath="rs_actioninfoangle.cpp">
+			</File>
+			<File
+				RelativePath="rs_actioninfodist.cpp">
+			</File>
+			<File
+				RelativePath="rs_actioninfodist2.cpp">
+			</File>
+			<File
+				RelativePath="rs_actioninfoinside.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionlayersadd.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionlayersedit.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionlayersfreezeall.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionlayersremove.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionlayerstoggleview.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionlibraryinsert.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionlockrelativezero.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifyattributes.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifybevel.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifycut.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifydelete.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifydeletefree.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifydeletequick.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifyentity.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifymirror.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifymove.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifymoverotate.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifyrotate.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifyrotate2.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifyround.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifyscale.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifystretch.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifytrim.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionmodifytrimamount.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionoptionsdrawing.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionprintpreview.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionselect.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionselectall.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionselectbase.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionselectcontour.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionselectintersected.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionselectinvert.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionselectlayer.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionselectsingle.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionselectwindow.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionsetrelativezero.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionsetsnapmode.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionsetsnaprestriction.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionsnapintersectionmanual.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionzoomauto.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionzoomautoy.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionzoomin.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionzoompan.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionzoomredraw.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionzoomscroll.cpp">
+			</File>
+			<File
+				RelativePath="rs_actionzoomwindow.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl">
+			<File
+				RelativePath="rs_actionblocksadd.h">
+			</File>
+			<File
+				RelativePath="rs_actionblocksattributes.h">
+			</File>
+			<File
+				RelativePath="rs_actionblockscreate.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionblockscreate.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionblockscreate.h -o moc\moc_rs_actionblockscreate.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionblockscreate.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionblocksedit.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionblocksedit.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionblocksedit.h -o moc\moc_rs_actionblocksedit.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionblocksedit.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionblocksexplode.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionblocksexplode.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionblocksexplode.h -o moc\moc_rs_actionblocksexplode.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionblocksexplode.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionblocksfreezeall.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionblocksfreezeall.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionblocksfreezeall.h -o moc\moc_rs_actionblocksfreezeall.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionblocksfreezeall.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionblocksinsert.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionblocksinsert.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionblocksinsert.h -o moc\moc_rs_actionblocksinsert.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionblocksinsert.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionblocksremove.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionblocksremove.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionblocksremove.h -o moc\moc_rs_actionblocksremove.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionblocksremove.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionblockstoggleview.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionblockstoggleview.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionblockstoggleview.h -o moc\moc_rs_actionblockstoggleview.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionblockstoggleview.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondefault.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondefault.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondefault.h -o moc\moc_rs_actiondefault.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondefault.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondimaligned.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondimaligned.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondimaligned.h -o moc\moc_rs_actiondimaligned.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondimaligned.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondimangular.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondimangular.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondimangular.h -o moc\moc_rs_actiondimangular.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondimangular.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondimdiametric.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondimdiametric.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondimdiametric.h -o moc\moc_rs_actiondimdiametric.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondimdiametric.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondimension.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondimension.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondimension.h -o moc\moc_rs_actiondimension.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondimension.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondimleader.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondimleader.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondimleader.h -o moc\moc_rs_actiondimleader.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondimleader.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondimlinear.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondimlinear.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondimlinear.h -o moc\moc_rs_actiondimlinear.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondimlinear.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondimradial.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondimradial.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondimradial.h -o moc\moc_rs_actiondimradial.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondimradial.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawarc.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawarc.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawarc.h -o moc\moc_rs_actiondrawarc.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawarc.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawarc3p.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawarc3p.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawarc3p.h -o moc\moc_rs_actiondrawarc3p.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawarc3p.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawcircle.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawcircle.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawcircle.h -o moc\moc_rs_actiondrawcircle.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawcircle.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawcircle2p.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawcircle2p.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawcircle2p.h -o moc\moc_rs_actiondrawcircle2p.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawcircle2p.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawcircle3p.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawcircle3p.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawcircle3p.h -o moc\moc_rs_actiondrawcircle3p.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawcircle3p.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawcirclecr.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawcirclecr.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawcirclecr.h -o moc\moc_rs_actiondrawcirclecr.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawcirclecr.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawellipseaxis.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawellipseaxis.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawellipseaxis.h -o moc\moc_rs_actiondrawellipseaxis.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawellipseaxis.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawhatch.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawhatch.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawhatch.h -o moc\moc_rs_actiondrawhatch.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawhatch.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawimage.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawimage.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawimage.h -o moc\moc_rs_actiondrawimage.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawimage.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawline.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawline.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawline.h -o moc\moc_rs_actiondrawline.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawline.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlineangle.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlineangle.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlineangle.h -o moc\moc_rs_actiondrawlineangle.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlineangle.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinebisector.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlinebisector.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlinebisector.h -o moc\moc_rs_actiondrawlinebisector.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlinebisector.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinefree.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlinefree.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlinefree.h -o moc\moc_rs_actiondrawlinefree.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlinefree.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinehorvert.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlinehorvert.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlinehorvert.h -o moc\moc_rs_actiondrawlinehorvert.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlinehorvert.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlineparallel.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlineparallel.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlineparallel.h -o moc\moc_rs_actiondrawlineparallel.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlineparallel.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlineparallelthrough.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlineparallelthrough.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlineparallelthrough.h -o moc\moc_rs_actiondrawlineparallelthrough.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlineparallelthrough.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinepolygon.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlinepolygon.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlinepolygon.h -o moc\moc_rs_actiondrawlinepolygon.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlinepolygon.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinepolygon2.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlinepolygon2.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlinepolygon2.h -o moc\moc_rs_actiondrawlinepolygon2.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlinepolygon2.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinerectangle.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlinerectangle.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlinerectangle.h -o moc\moc_rs_actiondrawlinerectangle.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlinerectangle.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinerelangle.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlinerelangle.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlinerelangle.h -o moc\moc_rs_actiondrawlinerelangle.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlinerelangle.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinetangent1.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlinetangent1.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlinetangent1.h -o moc\moc_rs_actiondrawlinetangent1.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlinetangent1.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawlinetangent2.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawlinetangent2.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawlinetangent2.h -o moc\moc_rs_actiondrawlinetangent2.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawlinetangent2.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawpoint.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawpoint.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawpoint.h -o moc\moc_rs_actiondrawpoint.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawpoint.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actiondrawtext.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actiondrawtext.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actiondrawtext.h -o moc\moc_rs_actiondrawtext.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actiondrawtext.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actioneditcopy.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actioneditcopy.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actioneditcopy.h -o moc\moc_rs_actioneditcopy.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actioneditcopy.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actioneditpaste.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actioneditpaste.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actioneditpaste.h -o moc\moc_rs_actioneditpaste.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actioneditpaste.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actioneditundo.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actioneditundo.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actioneditundo.h -o moc\moc_rs_actioneditundo.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actioneditundo.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionfileopen.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionfileopen.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionfileopen.h -o moc\moc_rs_actionfileopen.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionfileopen.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionfilesave.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionfilesave.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionfilesave.h -o moc\moc_rs_actionfilesave.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionfilesave.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionfilesaveas.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionfilesaveas.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionfilesaveas.h -o moc\moc_rs_actionfilesaveas.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionfilesaveas.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actioninfoangle.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actioninfoangle.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actioninfoangle.h -o moc\moc_rs_actioninfoangle.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actioninfoangle.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actioninfodist.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actioninfodist.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actioninfodist.h -o moc\moc_rs_actioninfodist.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actioninfodist.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actioninfodist2.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actioninfodist2.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actioninfodist2.h -o moc\moc_rs_actioninfodist2.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actioninfodist2.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actioninfoinside.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actioninfoinside.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actioninfoinside.h -o moc\moc_rs_actioninfoinside.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actioninfoinside.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionlayersadd.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionlayersadd.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionlayersadd.h -o moc\moc_rs_actionlayersadd.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionlayersadd.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionlayersedit.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionlayersedit.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionlayersedit.h -o moc\moc_rs_actionlayersedit.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionlayersedit.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionlayersfreezeall.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionlayersfreezeall.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionlayersfreezeall.h -o moc\moc_rs_actionlayersfreezeall.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionlayersfreezeall.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionlayersremove.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionlayersremove.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionlayersremove.h -o moc\moc_rs_actionlayersremove.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionlayersremove.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionlayerstoggleview.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionlayerstoggleview.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionlayerstoggleview.h -o moc\moc_rs_actionlayerstoggleview.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionlayerstoggleview.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionlibraryinsert.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionlibraryinsert.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionlibraryinsert.h -o moc\moc_rs_actionlibraryinsert.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionlibraryinsert.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionlockrelativezero.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionlockrelativezero.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionlockrelativezero.h -o moc\moc_rs_actionlockrelativezero.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionlockrelativezero.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifyattributes.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifyattributes.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifyattributes.h -o moc\moc_rs_actionmodifyattributes.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifyattributes.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifybevel.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifybevel.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifybevel.h -o moc\moc_rs_actionmodifybevel.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifybevel.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifycut.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifycut.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifycut.h -o moc\moc_rs_actionmodifycut.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifycut.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifydelete.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifydelete.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifydelete.h -o moc\moc_rs_actionmodifydelete.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifydelete.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifydeletefree.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifydeletefree.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifydeletefree.h -o moc\moc_rs_actionmodifydeletefree.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifydeletefree.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifydeletequick.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifydeletequick.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifydeletequick.h -o moc\moc_rs_actionmodifydeletequick.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifydeletequick.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifyentity.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifyentity.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifyentity.h -o moc\moc_rs_actionmodifyentity.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifyentity.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifymirror.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifymirror.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifymirror.h -o moc\moc_rs_actionmodifymirror.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifymirror.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifymove.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifymove.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifymove.h -o moc\moc_rs_actionmodifymove.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifymove.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifymoverotate.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifymoverotate.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifymoverotate.h -o moc\moc_rs_actionmodifymoverotate.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifymoverotate.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifyrotate.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifyrotate.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifyrotate.h -o moc\moc_rs_actionmodifyrotate.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifyrotate.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifyrotate2.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifyrotate2.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifyrotate2.h -o moc\moc_rs_actionmodifyrotate2.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifyrotate2.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifyround.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifyround.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifyround.h -o moc\moc_rs_actionmodifyround.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifyround.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifyscale.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifyscale.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifyscale.h -o moc\moc_rs_actionmodifyscale.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifyscale.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifystretch.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifystretch.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifystretch.h -o moc\moc_rs_actionmodifystretch.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifystretch.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifytrim.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifytrim.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifytrim.h -o moc\moc_rs_actionmodifytrim.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifytrim.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionmodifytrimamount.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionmodifytrimamount.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionmodifytrimamount.h -o moc\moc_rs_actionmodifytrimamount.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionmodifytrimamount.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionoptionsdrawing.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionoptionsdrawing.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionoptionsdrawing.h -o moc\moc_rs_actionoptionsdrawing.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionoptionsdrawing.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionprintpreview.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionprintpreview.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionprintpreview.h -o moc\moc_rs_actionprintpreview.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionprintpreview.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionselect.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionselect.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionselect.h -o moc\moc_rs_actionselect.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionselect.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionselectall.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionselectall.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionselectall.h -o moc\moc_rs_actionselectall.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionselectall.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionselectbase.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionselectbase.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionselectbase.h -o moc\moc_rs_actionselectbase.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionselectbase.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionselectcontour.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionselectcontour.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionselectcontour.h -o moc\moc_rs_actionselectcontour.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionselectcontour.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionselectintersected.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionselectintersected.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionselectintersected.h -o moc\moc_rs_actionselectintersected.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionselectintersected.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionselectinvert.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionselectinvert.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionselectinvert.h -o moc\moc_rs_actionselectinvert.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionselectinvert.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionselectlayer.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionselectlayer.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionselectlayer.h -o moc\moc_rs_actionselectlayer.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionselectlayer.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionselectsingle.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionselectsingle.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionselectsingle.h -o moc\moc_rs_actionselectsingle.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionselectsingle.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionselectwindow.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionselectwindow.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionselectwindow.h -o moc\moc_rs_actionselectwindow.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionselectwindow.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionsetrelativezero.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionsetrelativezero.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionsetrelativezero.h -o moc\moc_rs_actionsetrelativezero.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionsetrelativezero.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionsetsnapmode.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionsetsnapmode.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionsetsnapmode.h -o moc\moc_rs_actionsetsnapmode.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionsetsnapmode.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionsetsnaprestriction.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionsetsnaprestriction.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionsetsnaprestriction.h -o moc\moc_rs_actionsetsnaprestriction.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionsetsnaprestriction.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionsnapintersectionmanual.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionsnapintersectionmanual.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionsnapintersectionmanual.h -o moc\moc_rs_actionsnapintersectionmanual.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionsnapintersectionmanual.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionzoomauto.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionzoomauto.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionzoomauto.h -o moc\moc_rs_actionzoomauto.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionzoomauto.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionzoomautoy.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionzoomautoy.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionzoomautoy.h -o moc\moc_rs_actionzoomautoy.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionzoomautoy.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionzoomin.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionzoomin.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionzoomin.h -o moc\moc_rs_actionzoomin.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionzoomin.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionzoompan.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionzoompan.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionzoompan.h -o moc\moc_rs_actionzoompan.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionzoompan.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionzoomredraw.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionzoomredraw.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionzoomredraw.h -o moc\moc_rs_actionzoomredraw.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionzoomredraw.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionzoomscroll.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionzoomscroll.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionzoomscroll.h -o moc\moc_rs_actionzoomscroll.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionzoomscroll.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="rs_actionzoomwindow.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_actionzoomwindow.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_actionzoomwindow.h -o moc\moc_rs_actionzoomwindow.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_actionzoomwindow.cpp"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated MOC Files"
+			Filter="cpp;c;cxx;moc">
+			<File
+				RelativePath="moc\moc_rs_actionblockscreate.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionblocksedit.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionblocksexplode.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionblocksfreezeall.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionblocksinsert.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionblocksremove.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionblockstoggleview.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondefault.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondimaligned.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondimangular.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondimdiametric.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondimension.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondimleader.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondimlinear.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondimradial.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawarc.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawarc3p.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawcircle.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawcircle2p.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawcircle3p.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawcirclecr.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawellipseaxis.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawhatch.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawimage.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawline.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlineangle.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlinebisector.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlinefree.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlinehorvert.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlineparallel.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlineparallelthrough.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlinepolygon.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlinepolygon2.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlinerectangle.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlinerelangle.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlinetangent1.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawlinetangent2.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawpoint.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actiondrawtext.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actioneditcopy.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actioneditpaste.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actioneditundo.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionfileopen.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionfilesave.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionfilesaveas.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actioninfoangle.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actioninfodist.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actioninfodist2.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actioninfoinside.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionlayersadd.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionlayersedit.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionlayersfreezeall.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionlayersremove.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionlayerstoggleview.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionlibraryinsert.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionlockrelativezero.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifyattributes.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifybevel.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifycut.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifydelete.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifydeletefree.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifydeletequick.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifyentity.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifymirror.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifymove.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifymoverotate.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifyrotate.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifyrotate2.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifyround.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifyscale.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifystretch.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifytrim.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionmodifytrimamount.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionoptionsdrawing.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionprintpreview.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionselect.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionselectall.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionselectbase.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionselectcontour.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionselectintersected.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionselectinvert.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionselectlayer.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionselectsingle.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionselectwindow.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionsetrelativezero.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionsetsnapmode.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionsetsnaprestriction.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionsnapintersectionmanual.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionzoomauto.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionzoomautoy.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionzoomin.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionzoompan.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionzoomredraw.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionzoomscroll.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_rs_actionzoomwindow.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Translations Files"
+			Filter="ts"
+			ParseFiles="FALSE">
+			<File
+				RelativePath="ts/qcadactions_da.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadactions_de.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadactions_en.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadactions_hu.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadactions_no.ts">
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

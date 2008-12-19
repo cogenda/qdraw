@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.00"
+	Name="qcad"
+	ProjectGUID="{F8B6541C-1E77-4720-9AD3-89D69E1ED85A}">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="."
+			IntermediateDirectory="obj\"
+			ConfigurationType="1"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm200 -GX -w34100 -w34189 "
+				Optimization="1"
+				AdditionalIncludeDirectories="..\..\fparser\include;..\..\fparser\src;..\..\qcadcmd\include;..\..\qcadcmd\src;..\..\fparser\include;..\..\fparser\src;..\..\dxflib\include;..\..\dxflib\src;..\..\qcadlib\include;..\..\qcadlib\src;..\..\qcadcmd\include;..\..\qcadcmd\src;..\..\qcadactions\include;..\..\qcadactions\src;..\..\qcadguiqt\include;..\..\qcadguiqt\src;&quot;$(QTDIR)\include&quot;;.;moc\;&quot;g:\Qt\3.2.0Evaluation\mkspecs\win32-msvc.net&quot;;..\..\qcadlib\src\engine;..\..\qcadlib\src\actions;..\..\qcadlib\src\creation;..\..\qcadlib\src\debug;..\..\qcadlib\src\export;..\..\qcadlib\src\filters;..\..\qcadlib\src\gui;..\..\qcadlib\src\import;..\..\qcadlib\src\information;..\..\qcadlib\src\math;..\..\qcadlib\src\modification;..\..\qcadlib\src\scripting;..\..\qcadguiqt\src\ui;..\..\fparser\include,..\..\qcadcmd\include,..\..\fparser\include,..\..\dxflib\include,..\..\qcadlib\include,..\..\qcadcmd\include,..\..\qcadactions\include,..\..\qcadguiqt\include,$(QTDIR)\include,.,moc\,g:\Qt\3.2.0Evaluation\mkspecs\win32-msvc.net"
+				PreprocessorDefinitions="QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_DLL;QT_THREAD_SUPPORT;_USE_MATH_DEFINES"
+				GeneratePreprocessedFile="0"
+				ExceptionHandling="TRUE"
+				RuntimeLibrary="4"
+				BufferSecurityCheck="FALSE"
+				AssemblerListingLocation="obj\"
+				ObjectFile="obj\"
+				ProgramDataBaseFileName=".\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/FORCE:MULTIPLE"
+				AdditionalDependencies="qt-mteval320.lib qtmain.lib ..\..\qcadguiqt\lib\qcadguiqt.lib ..\..\qcadactions\lib\qcadactions.lib ..\..\qcadcmd\lib\qcadcmd.lib ..\..\qcadlib\lib\qcad.lib ..\..\dxflib\lib\dxflib.lib ..\..\fparser\lib\fparser.lib kernel32.lib user32.lib gdi32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib imm32.lib winmm.lib wsock32.lib winspool.lib delayimp.lib"
+				OutputFile="..\qcad.exe"
+				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="$(QTDIR)\lib"
+				IgnoreDefaultLibraryNames="uuid.lib"
+				EmbedManagedResourceFile=""
+				DelayLoadDLLs="comdlg32.dll;oleaut32.dll;winmm.dll;wsock32.dll;winspool.dll"
+				ProgramDatabaseFile=""
+				SubSystem="2"
+				SupportUnloadOfDelayLoadedDLL="FALSE"/>
+			<Tool
+				Name="VCMIDLTool"
+				WarningLevel="0"
+				DefaultCharType="0"
+				EnableErrorChecks="1"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			<File
+				RelativePath="main.cpp">
+			</File>
+			<File
+				RelativePath="qc_applicationwindow.cpp">
+			</File>
+			<File
+				RelativePath="qc_dialogfactory.cpp">
+			</File>
+			<File
+				RelativePath="qc_graphicview.cpp">
+			</File>
+			<File
+				RelativePath="qc_mdiwindow.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl">
+			<File
+				RelativePath="main.h">
+			</File>
+			<File
+				RelativePath="qc_applicationwindow.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qc_applicationwindow.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qc_applicationwindow.h -o moc\moc_qc_applicationwindow.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qc_applicationwindow.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qc_dialogfactory.h">
+			</File>
+			<File
+				RelativePath="qc_graphicview.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qc_graphicview.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qc_graphicview.h -o moc\moc_qc_graphicview.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qc_graphicview.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qc_mdiwindow.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qc_mdiwindow.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qc_mdiwindow.h -o moc\moc_qc_mdiwindow.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qc_mdiwindow.cpp"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated MOC Files"
+			Filter="cpp;c;cxx;moc">
+			<File
+				RelativePath="moc\moc_qc_applicationwindow.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qc_graphicview.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qc_mdiwindow.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Translations Files"
+			Filter="ts"
+			ParseFiles="FALSE">
+			<File
+				RelativePath="ts/qcad_da.ts">
+			</File>
+			<File
+				RelativePath="ts/qcad_de.ts">
+			</File>
+			<File
+				RelativePath="ts/qcad_en.ts">
+			</File>
+			<File
+				RelativePath="ts/qcad_hu.ts">
+			</File>
+			<File
+				RelativePath="ts/qcad_no.ts">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resources"
+			Filter="cpp;ico;png;jpg;jpeg;gif;xpm;bmp;rc;ts"
+			ParseFiles="FALSE">
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

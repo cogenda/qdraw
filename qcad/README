@@ -1,0 +1,102 @@
+QCad 2
+------
+
+
+1 What is QCad?
+
+This is QCad version 2.x. QCad is a simple 2D CAD program which runs
+under Linux, Windows, Mac OS X and several Unix systems.
+
+
+2 License
+
+- The QCad Community edition for Linux, Unix systems and Mac OS X is 
+  released in the form of source code under the GPL 
+  (see http://www.gnu.org/licenses/gpl.txt).
+- QCad Professional and all QCad versions for Windows are proprietary 
+  software.
+
+
+3 Installation
+
+3.1 Installation of Binaries
+
+3.1.1 Linux / Mac OS X
+
+Download the tar.gz file to any directory you prefer (e.g. /opt) and 
+extract it:
+
+tar xfvz qcad-2.0.0.0-1-demo.linux.x86.tar.gz
+
+After extracting the tar.gz archive, there's no need to explicitly 
+install QCad. 
+If you have extracted the file in /opt, you should now have a directory 
+called:
+
+/opt/qcad-2.0.0.0-1-demo.linux.x86
+
+You can run QCad by typing:
+
+cd /opt/qcad-2.0.0.0-1-demo.linux.x86
+./qcad
+
+All files needed by QCad can reside in its own installation 
+directory (recommended).
+
+To un-install QCad, simply remove the directory where you've 
+extracted it:
+
+rm -r /opt/qcad-2.0.0.0-1-demo.linux.x86
+
+Additionally there might be some thumbnail images and configuration 
+files in your home directory:
+
+/home/user/.qcad/
+
+
+3.2 Installation from Sources (Community Edition)
+
+Please note that the source distributions of QCad are intended for
+developers and people who want to run QCad on a platform where no
+binaries exist. If you're not in these two groups of people, please
+consider downloading a binary instead. 
+Please understand that RibbonSoft cannot offer support for compiling 
+and running the QCad community edition.
+
+3.2.1 Requirements
+
+You need to have the following tools and libraries installed to be ready
+to compile QCad from sources:
+
+- Qt 3.3 or later
+  - qmake (part of the Qt package)
+  - uic (part of the Qt package)
+- make
+- gcc 3.x
+
+3.2.2 Preparation
+
+Set QTDIR to the directory where you've installed Qt. 
+e.g.:
+  export QTDIR=/opt/qt
+
+Set QMAKESPEC to the spec that is most suitable for your platform.
+e.g.:
+  export QMAKESPEC=$QTDIR/mkspecs/linux-g++
+
+Make sure that qmake and uic can be found in your path:
+  qmake -v
+  Qmake version: 1.04a (Qt 3.1.1)
+
+If that is not the case, please add the Qt binary path to your PATH
+environment variable:
+  export PATH=$PATH:$QTDIR/bin
+
+3.2.3 Compilation
+
+Change to the 'scripts' directory of your source code package:
+  cd scripts
+
+Run the compilation script:
+  sh ./build_qcad.sh
+

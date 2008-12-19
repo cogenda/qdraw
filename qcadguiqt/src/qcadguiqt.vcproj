@@ -1,0 +1,1947 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.00"
+	Name="qcadguiqt"
+	ProjectGUID="{030D8AAC-FF88-4DC8-BAFF-8D11CF0F3D96}">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="."
+			IntermediateDirectory="obj\"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				Optimization="1"
+				AdditionalIncludeDirectories="..\include;..\..\qcadlib\src;..\..\qcadlib\include;..\..\qcadcmd\src;..\..\qcadcmd\include;..\..\qcadactions\src;..\..\qcadactions\include;..\..\dxflib\src;..\..\dxflib\include;..\..\fparser\src;..\..\fparser\include;&quot;$(QTDIR)\include&quot;;ui;ui\;.;moc\;&quot;g:\Qt\3.2.0Evaluation\mkspecs\win32-msvc.net&quot;;..\..\qcadlib\src\engine;..\..\qcadlib\src\actions;..\..\qcadlib\src\creation;..\..\qcadlib\src\debug;..\..\qcadlib\src\export;..\..\qcadlib\src\filters;..\..\qcadlib\src\gui;..\..\qcadlib\src\import;..\..\qcadlib\src\information;..\..\qcadlib\src\math;..\..\qcadlib\src\modification;..\..\qcadlib\src\scripting"
+				PreprocessorDefinitions="QT_NO_DEBUG;NDEBUG;UNICODE;WIN32;_USE_MATH_DEFINES"
+				GeneratePreprocessedFile="0"
+				ExceptionHandling="TRUE"
+				RuntimeLibrary="4"
+				BufferSecurityCheck="FALSE"
+				AssemblerListingLocation="obj\"
+				ObjectFile="obj\"
+				ProgramDataBaseFileName=".\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="..\lib\qcadguiqt.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"
+				WarningLevel="0"
+				DefaultCharType="0"
+				EnableErrorChecks="1"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			<File
+				RelativePath="qg_actionfactory.cpp">
+			</File>
+			<File
+				RelativePath="qg_actionhandler.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_arcoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_beveloptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_blockdialog.ui.h">
+			</File>
+			<File
+				RelativePath="qg_blockwidget.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbar.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbararcs.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarcircles.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbardim.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarellipses.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarinfo.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarlines.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarmain.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarmodify.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarpoints.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarselect.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarsnap.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_circleoptions.ui.h">
+			</File>
+			<File
+				RelativePath="qg_colorbox.cpp">
+			</File>
+			<File
+				RelativePath="qg_commandedit.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_commandwidget.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_coordinatewidget.ui.h">
+			</File>
+			<File
+				RelativePath="qg_dialogfactory.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dimlinearoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dimoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgarc.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgattributes.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgcircle.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgellipse.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlghatch.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgimageoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlginitial.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlginsert.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgline.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmirror.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmove.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmoverotate.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgoptionsdrawing.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgoptionsgeneral.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgpoint.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgrotate.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgrotate2.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgscale.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgtext.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_exitdialog.ui.h">
+			</File>
+			<File
+				RelativePath="qg_filedialog.cpp">
+			</File>
+			<File
+				RelativePath="qg_fontbox.cpp">
+			</File>
+			<File
+				RelativePath="qg_graphicview.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_imageoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_insertoptions.ui.h">
+			</File>
+			<File
+				RelativePath="qg_layerbox.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_layerdialog.ui.h">
+			</File>
+			<File
+				RelativePath="qg_layerwidget.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_libraryinsertoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_librarywidget.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_lineangleoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_linebisectoroptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_lineoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_lineparalleloptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_lineparallelthroughoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_linepolygon2options.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_linepolygonoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_linerelangleoptions.ui.h">
+			</File>
+			<File
+				RelativePath="qg_linetypebox.cpp">
+			</File>
+			<File
+				RelativePath="qg_listviewitem.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_mousewidget.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_moverotateoptions.ui.h">
+			</File>
+			<File
+				RelativePath="qg_patternbox.cpp">
+			</File>
+			<File
+				RelativePath="qg_pentoolbar.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_printpreviewoptions.ui.h">
+			</File>
+			<File
+				RelativePath="qg_recentfiles.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_roundoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_selectionwidget.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_snapdistoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_textoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_trimamountoptions.ui.h">
+			</File>
+			<File
+				RelativePath="ui\qg_widgetpen.ui.h">
+			</File>
+			<File
+				RelativePath="qg_widthbox.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl">
+			<File
+				RelativePath="qg_actionfactory.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_actionfactory.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_actionfactory.h -o moc\moc_qg_actionfactory.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_actionfactory.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_actionhandler.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_actionhandler.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_actionhandler.h -o moc\moc_qg_actionhandler.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_actionhandler.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_blockwidget.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_blockwidget.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_blockwidget.h -o moc\moc_qg_blockwidget.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_blockwidget.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_colorbox.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_colorbox.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_colorbox.h -o moc\moc_qg_colorbox.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_colorbox.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_commandedit.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_commandedit.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_commandedit.h -o moc\moc_qg_commandedit.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_commandedit.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_dialogfactory.h">
+			</File>
+			<File
+				RelativePath="qg_filedialog.h">
+			</File>
+			<File
+				RelativePath="qg_fontbox.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_fontbox.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_fontbox.h -o moc\moc_qg_fontbox.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_fontbox.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_graphicview.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_graphicview.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_graphicview.h -o moc\moc_qg_graphicview.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_graphicview.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_layerbox.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_layerbox.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_layerbox.h -o moc\moc_qg_layerbox.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_layerbox.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_layerwidget.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_layerwidget.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_layerwidget.h -o moc\moc_qg_layerwidget.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_layerwidget.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_linetypebox.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_linetypebox.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_linetypebox.h -o moc\moc_qg_linetypebox.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_linetypebox.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_listviewitem.h">
+			</File>
+			<File
+				RelativePath="qg_mainwindowinterface.h">
+			</File>
+			<File
+				RelativePath="qg_patternbox.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_patternbox.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_patternbox.h -o moc\moc_qg_patternbox.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_patternbox.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_pentoolbar.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_pentoolbar.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_pentoolbar.h -o moc\moc_qg_pentoolbar.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_pentoolbar.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_qt2rs.h">
+			</File>
+			<File
+				RelativePath="qg_recentfiles.h">
+			</File>
+			<File
+				RelativePath="qg_scrollbar.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_scrollbar.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_scrollbar.h -o moc\moc_qg_scrollbar.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_scrollbar.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qg_widthbox.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing qg_widthbox.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe qg_widthbox.h -o moc\moc_qg_widthbox.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_qg_widthbox.cpp"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated MOC Files"
+			Filter="cpp;c;cxx;moc">
+			<File
+				RelativePath="moc\moc_qg_actionfactory.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_actionhandler.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_arcoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_beveloptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_blockdialog.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_blockwidget.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbar.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbararcs.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbarcircles.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbardim.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbarellipses.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbarinfo.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbarlines.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbarmain.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbarmodify.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbarpoints.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbarselect.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_cadtoolbarsnap.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_circleoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_colorbox.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_commandedit.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_commandwidget.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_coordinatewidget.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dimlinearoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dimoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgarc.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgattributes.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgcircle.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgellipse.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlghatch.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgimageoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlginitial.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlginsert.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgline.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgmirror.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgmove.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgmoverotate.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgoptionsdrawing.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgoptionsgeneral.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgpoint.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgrotate.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgrotate2.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgscale.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_dlgtext.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_exitdialog.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_fontbox.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_graphicview.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_imageoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_insertoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_layerbox.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_layerdialog.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_layerwidget.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_libraryinsertoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_librarywidget.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_lineangleoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_linebisectoroptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_lineoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_lineparalleloptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_lineparallelthroughoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_linepolygon2options.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_linepolygonoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_linerelangleoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_linetypebox.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_mousewidget.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_moverotateoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_patternbox.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_pentoolbar.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_printpreviewoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_roundoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_scrollbar.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_selectionwidget.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_snapdistoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_textoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_trimamountoptions.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_widgetpen.cpp">
+			</File>
+			<File
+				RelativePath="moc\moc_qg_widthbox.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated UI Files"
+			Filter="cpp;c;cxx;h;hpp;hxx;">
+			<File
+				RelativePath="ui\qg_arcoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_arcoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_beveloptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_beveloptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_blockdialog.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_blockdialog.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbar.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbar.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbararcs.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbararcs.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarcircles.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarcircles.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbardim.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbardim.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarellipses.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarellipses.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarinfo.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarinfo.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarlines.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarlines.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarmain.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarmain.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarmodify.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarmodify.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarpoints.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarpoints.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarselect.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarselect.h">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarsnap.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarsnap.h">
+			</File>
+			<File
+				RelativePath="ui\qg_circleoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_circleoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_commandwidget.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_commandwidget.h">
+			</File>
+			<File
+				RelativePath="ui\qg_coordinatewidget.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_coordinatewidget.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dimlinearoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dimlinearoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dimoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dimoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgarc.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgarc.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgattributes.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgattributes.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgcircle.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgcircle.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgellipse.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgellipse.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlghatch.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlghatch.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgimageoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgimageoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlginitial.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlginitial.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlginsert.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlginsert.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgline.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgline.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmirror.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmirror.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmove.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmove.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmoverotate.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmoverotate.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgoptionsdrawing.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgoptionsdrawing.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgoptionsgeneral.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgoptionsgeneral.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgpoint.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgpoint.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgrotate.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgrotate.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgrotate2.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgrotate2.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgscale.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgscale.h">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgtext.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_dlgtext.h">
+			</File>
+			<File
+				RelativePath="ui\qg_exitdialog.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_exitdialog.h">
+			</File>
+			<File
+				RelativePath="ui\qg_imageoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_imageoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_insertoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_insertoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_layerdialog.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_layerdialog.h">
+			</File>
+			<File
+				RelativePath="ui\qg_libraryinsertoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_libraryinsertoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_librarywidget.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_librarywidget.h">
+			</File>
+			<File
+				RelativePath="ui\qg_lineangleoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_lineangleoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_linebisectoroptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_linebisectoroptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_lineoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_lineoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_lineparalleloptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_lineparalleloptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_lineparallelthroughoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_lineparallelthroughoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_linepolygon2options.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_linepolygon2options.h">
+			</File>
+			<File
+				RelativePath="ui\qg_linepolygonoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_linepolygonoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_linerelangleoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_linerelangleoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_mousewidget.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_mousewidget.h">
+			</File>
+			<File
+				RelativePath="ui\qg_moverotateoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_moverotateoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_printpreviewoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_printpreviewoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_roundoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_roundoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_selectionwidget.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_selectionwidget.h">
+			</File>
+			<File
+				RelativePath="ui\qg_snapdistoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_snapdistoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_textoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_textoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_trimamountoptions.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_trimamountoptions.h">
+			</File>
+			<File
+				RelativePath="ui\qg_widgetpen.cpp">
+			</File>
+			<File
+				RelativePath="ui\qg_widgetpen.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Forms"
+			Filter="ui"
+			ParseFiles="FALSE">
+			<File
+				RelativePath="ui\qg_arcoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_arcoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_arcoptions.ui -o ui\qg_arcoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_arcoptions.ui -i qg_arcoptions.h -o ui\qg_arcoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_arcoptions.h -o moc\moc_qg_arcoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_arcoptions.h;ui\qg_arcoptions.cpp;moc\moc_qg_arcoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_beveloptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_beveloptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_beveloptions.ui -o ui\qg_beveloptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_beveloptions.ui -i qg_beveloptions.h -o ui\qg_beveloptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_beveloptions.h -o moc\moc_qg_beveloptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_beveloptions.h;ui\qg_beveloptions.cpp;moc\moc_qg_beveloptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_blockdialog.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_blockdialog.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_blockdialog.ui -o ui\qg_blockdialog.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_blockdialog.ui -i qg_blockdialog.h -o ui\qg_blockdialog.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_blockdialog.h -o moc\moc_qg_blockdialog.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_blockdialog.h;ui\qg_blockdialog.cpp;moc\moc_qg_blockdialog.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbar.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbar.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbar.ui -o ui\qg_cadtoolbar.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbar.ui -i qg_cadtoolbar.h -o ui\qg_cadtoolbar.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbar.h -o moc\moc_qg_cadtoolbar.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbar.h;ui\qg_cadtoolbar.cpp;moc\moc_qg_cadtoolbar.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbararcs.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbararcs.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbararcs.ui -o ui\qg_cadtoolbararcs.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbararcs.ui -i qg_cadtoolbararcs.h -o ui\qg_cadtoolbararcs.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbararcs.h -o moc\moc_qg_cadtoolbararcs.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbararcs.h;ui\qg_cadtoolbararcs.cpp;moc\moc_qg_cadtoolbararcs.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarcircles.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbarcircles.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbarcircles.ui -o ui\qg_cadtoolbarcircles.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbarcircles.ui -i qg_cadtoolbarcircles.h -o ui\qg_cadtoolbarcircles.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbarcircles.h -o moc\moc_qg_cadtoolbarcircles.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbarcircles.h;ui\qg_cadtoolbarcircles.cpp;moc\moc_qg_cadtoolbarcircles.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbardim.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbardim.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbardim.ui -o ui\qg_cadtoolbardim.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbardim.ui -i qg_cadtoolbardim.h -o ui\qg_cadtoolbardim.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbardim.h -o moc\moc_qg_cadtoolbardim.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbardim.h;ui\qg_cadtoolbardim.cpp;moc\moc_qg_cadtoolbardim.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarellipses.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbarellipses.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbarellipses.ui -o ui\qg_cadtoolbarellipses.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbarellipses.ui -i qg_cadtoolbarellipses.h -o ui\qg_cadtoolbarellipses.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbarellipses.h -o moc\moc_qg_cadtoolbarellipses.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbarellipses.h;ui\qg_cadtoolbarellipses.cpp;moc\moc_qg_cadtoolbarellipses.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarinfo.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbarinfo.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbarinfo.ui -o ui\qg_cadtoolbarinfo.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbarinfo.ui -i qg_cadtoolbarinfo.h -o ui\qg_cadtoolbarinfo.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbarinfo.h -o moc\moc_qg_cadtoolbarinfo.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbarinfo.h;ui\qg_cadtoolbarinfo.cpp;moc\moc_qg_cadtoolbarinfo.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarlines.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbarlines.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbarlines.ui -o ui\qg_cadtoolbarlines.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbarlines.ui -i qg_cadtoolbarlines.h -o ui\qg_cadtoolbarlines.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbarlines.h -o moc\moc_qg_cadtoolbarlines.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbarlines.h;ui\qg_cadtoolbarlines.cpp;moc\moc_qg_cadtoolbarlines.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarmain.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbarmain.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbarmain.ui -o ui\qg_cadtoolbarmain.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbarmain.ui -i qg_cadtoolbarmain.h -o ui\qg_cadtoolbarmain.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbarmain.h -o moc\moc_qg_cadtoolbarmain.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbarmain.h;ui\qg_cadtoolbarmain.cpp;moc\moc_qg_cadtoolbarmain.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarmodify.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbarmodify.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbarmodify.ui -o ui\qg_cadtoolbarmodify.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbarmodify.ui -i qg_cadtoolbarmodify.h -o ui\qg_cadtoolbarmodify.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbarmodify.h -o moc\moc_qg_cadtoolbarmodify.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbarmodify.h;ui\qg_cadtoolbarmodify.cpp;moc\moc_qg_cadtoolbarmodify.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarpoints.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbarpoints.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbarpoints.ui -o ui\qg_cadtoolbarpoints.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbarpoints.ui -i qg_cadtoolbarpoints.h -o ui\qg_cadtoolbarpoints.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbarpoints.h -o moc\moc_qg_cadtoolbarpoints.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbarpoints.h;ui\qg_cadtoolbarpoints.cpp;moc\moc_qg_cadtoolbarpoints.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarselect.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbarselect.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbarselect.ui -o ui\qg_cadtoolbarselect.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbarselect.ui -i qg_cadtoolbarselect.h -o ui\qg_cadtoolbarselect.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbarselect.h -o moc\moc_qg_cadtoolbarselect.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbarselect.h;ui\qg_cadtoolbarselect.cpp;moc\moc_qg_cadtoolbarselect.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_cadtoolbarsnap.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_cadtoolbarsnap.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_cadtoolbarsnap.ui -o ui\qg_cadtoolbarsnap.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_cadtoolbarsnap.ui -i qg_cadtoolbarsnap.h -o ui\qg_cadtoolbarsnap.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_cadtoolbarsnap.h -o moc\moc_qg_cadtoolbarsnap.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_cadtoolbarsnap.h;ui\qg_cadtoolbarsnap.cpp;moc\moc_qg_cadtoolbarsnap.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_circleoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_circleoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_circleoptions.ui -o ui\qg_circleoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_circleoptions.ui -i qg_circleoptions.h -o ui\qg_circleoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_circleoptions.h -o moc\moc_qg_circleoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_circleoptions.h;ui\qg_circleoptions.cpp;moc\moc_qg_circleoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_commandwidget.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_commandwidget.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_commandwidget.ui -o ui\qg_commandwidget.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_commandwidget.ui -i qg_commandwidget.h -o ui\qg_commandwidget.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_commandwidget.h -o moc\moc_qg_commandwidget.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_commandwidget.h;ui\qg_commandwidget.cpp;moc\moc_qg_commandwidget.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_coordinatewidget.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_coordinatewidget.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_coordinatewidget.ui -o ui\qg_coordinatewidget.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_coordinatewidget.ui -i qg_coordinatewidget.h -o ui\qg_coordinatewidget.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_coordinatewidget.h -o moc\moc_qg_coordinatewidget.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_coordinatewidget.h;ui\qg_coordinatewidget.cpp;moc\moc_qg_coordinatewidget.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dimlinearoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dimlinearoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dimlinearoptions.ui -o ui\qg_dimlinearoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dimlinearoptions.ui -i qg_dimlinearoptions.h -o ui\qg_dimlinearoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dimlinearoptions.h -o moc\moc_qg_dimlinearoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dimlinearoptions.h;ui\qg_dimlinearoptions.cpp;moc\moc_qg_dimlinearoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dimoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dimoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dimoptions.ui -o ui\qg_dimoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dimoptions.ui -i qg_dimoptions.h -o ui\qg_dimoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dimoptions.h -o moc\moc_qg_dimoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dimoptions.h;ui\qg_dimoptions.cpp;moc\moc_qg_dimoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgarc.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgarc.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgarc.ui -o ui\qg_dlgarc.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgarc.ui -i qg_dlgarc.h -o ui\qg_dlgarc.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgarc.h -o moc\moc_qg_dlgarc.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgarc.h;ui\qg_dlgarc.cpp;moc\moc_qg_dlgarc.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgattributes.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgattributes.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgattributes.ui -o ui\qg_dlgattributes.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgattributes.ui -i qg_dlgattributes.h -o ui\qg_dlgattributes.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgattributes.h -o moc\moc_qg_dlgattributes.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgattributes.h;ui\qg_dlgattributes.cpp;moc\moc_qg_dlgattributes.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgcircle.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgcircle.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgcircle.ui -o ui\qg_dlgcircle.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgcircle.ui -i qg_dlgcircle.h -o ui\qg_dlgcircle.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgcircle.h -o moc\moc_qg_dlgcircle.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgcircle.h;ui\qg_dlgcircle.cpp;moc\moc_qg_dlgcircle.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgellipse.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgellipse.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgellipse.ui -o ui\qg_dlgellipse.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgellipse.ui -i qg_dlgellipse.h -o ui\qg_dlgellipse.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgellipse.h -o moc\moc_qg_dlgellipse.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgellipse.h;ui\qg_dlgellipse.cpp;moc\moc_qg_dlgellipse.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlghatch.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlghatch.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlghatch.ui -o ui\qg_dlghatch.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlghatch.ui -i qg_dlghatch.h -o ui\qg_dlghatch.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlghatch.h -o moc\moc_qg_dlghatch.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlghatch.h;ui\qg_dlghatch.cpp;moc\moc_qg_dlghatch.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgimageoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgimageoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgimageoptions.ui -o ui\qg_dlgimageoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgimageoptions.ui -i qg_dlgimageoptions.h -o ui\qg_dlgimageoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgimageoptions.h -o moc\moc_qg_dlgimageoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgimageoptions.h;ui\qg_dlgimageoptions.cpp;moc\moc_qg_dlgimageoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlginitial.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlginitial.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlginitial.ui -o ui\qg_dlginitial.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlginitial.ui -i qg_dlginitial.h -o ui\qg_dlginitial.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlginitial.h -o moc\moc_qg_dlginitial.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlginitial.h;ui\qg_dlginitial.cpp;moc\moc_qg_dlginitial.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlginsert.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlginsert.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlginsert.ui -o ui\qg_dlginsert.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlginsert.ui -i qg_dlginsert.h -o ui\qg_dlginsert.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlginsert.h -o moc\moc_qg_dlginsert.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlginsert.h;ui\qg_dlginsert.cpp;moc\moc_qg_dlginsert.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgline.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgline.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgline.ui -o ui\qg_dlgline.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgline.ui -i qg_dlgline.h -o ui\qg_dlgline.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgline.h -o moc\moc_qg_dlgline.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgline.h;ui\qg_dlgline.cpp;moc\moc_qg_dlgline.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmirror.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgmirror.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgmirror.ui -o ui\qg_dlgmirror.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgmirror.ui -i qg_dlgmirror.h -o ui\qg_dlgmirror.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgmirror.h -o moc\moc_qg_dlgmirror.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgmirror.h;ui\qg_dlgmirror.cpp;moc\moc_qg_dlgmirror.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmove.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgmove.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgmove.ui -o ui\qg_dlgmove.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgmove.ui -i qg_dlgmove.h -o ui\qg_dlgmove.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgmove.h -o moc\moc_qg_dlgmove.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgmove.h;ui\qg_dlgmove.cpp;moc\moc_qg_dlgmove.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgmoverotate.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgmoverotate.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgmoverotate.ui -o ui\qg_dlgmoverotate.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgmoverotate.ui -i qg_dlgmoverotate.h -o ui\qg_dlgmoverotate.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgmoverotate.h -o moc\moc_qg_dlgmoverotate.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgmoverotate.h;ui\qg_dlgmoverotate.cpp;moc\moc_qg_dlgmoverotate.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgoptionsdrawing.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgoptionsdrawing.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgoptionsdrawing.ui -o ui\qg_dlgoptionsdrawing.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgoptionsdrawing.ui -i qg_dlgoptionsdrawing.h -o ui\qg_dlgoptionsdrawing.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgoptionsdrawing.h -o moc\moc_qg_dlgoptionsdrawing.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgoptionsdrawing.h;ui\qg_dlgoptionsdrawing.cpp;moc\moc_qg_dlgoptionsdrawing.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgoptionsgeneral.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgoptionsgeneral.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgoptionsgeneral.ui -o ui\qg_dlgoptionsgeneral.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgoptionsgeneral.ui -i qg_dlgoptionsgeneral.h -o ui\qg_dlgoptionsgeneral.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgoptionsgeneral.h -o moc\moc_qg_dlgoptionsgeneral.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgoptionsgeneral.h;ui\qg_dlgoptionsgeneral.cpp;moc\moc_qg_dlgoptionsgeneral.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgpoint.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgpoint.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgpoint.ui -o ui\qg_dlgpoint.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgpoint.ui -i qg_dlgpoint.h -o ui\qg_dlgpoint.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgpoint.h -o moc\moc_qg_dlgpoint.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgpoint.h;ui\qg_dlgpoint.cpp;moc\moc_qg_dlgpoint.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgrotate.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgrotate.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgrotate.ui -o ui\qg_dlgrotate.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgrotate.ui -i qg_dlgrotate.h -o ui\qg_dlgrotate.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgrotate.h -o moc\moc_qg_dlgrotate.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgrotate.h;ui\qg_dlgrotate.cpp;moc\moc_qg_dlgrotate.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgrotate2.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgrotate2.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgrotate2.ui -o ui\qg_dlgrotate2.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgrotate2.ui -i qg_dlgrotate2.h -o ui\qg_dlgrotate2.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgrotate2.h -o moc\moc_qg_dlgrotate2.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgrotate2.h;ui\qg_dlgrotate2.cpp;moc\moc_qg_dlgrotate2.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgscale.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgscale.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgscale.ui -o ui\qg_dlgscale.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgscale.ui -i qg_dlgscale.h -o ui\qg_dlgscale.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgscale.h -o moc\moc_qg_dlgscale.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgscale.h;ui\qg_dlgscale.cpp;moc\moc_qg_dlgscale.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_dlgtext.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_dlgtext.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_dlgtext.ui -o ui\qg_dlgtext.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_dlgtext.ui -i qg_dlgtext.h -o ui\qg_dlgtext.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_dlgtext.h -o moc\moc_qg_dlgtext.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_dlgtext.h;ui\qg_dlgtext.cpp;moc\moc_qg_dlgtext.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_exitdialog.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_exitdialog.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_exitdialog.ui -o ui\qg_exitdialog.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_exitdialog.ui -i qg_exitdialog.h -o ui\qg_exitdialog.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_exitdialog.h -o moc\moc_qg_exitdialog.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_exitdialog.h;ui\qg_exitdialog.cpp;moc\moc_qg_exitdialog.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_imageoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_imageoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_imageoptions.ui -o ui\qg_imageoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_imageoptions.ui -i qg_imageoptions.h -o ui\qg_imageoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_imageoptions.h -o moc\moc_qg_imageoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_imageoptions.h;ui\qg_imageoptions.cpp;moc\moc_qg_imageoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_insertoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_insertoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_insertoptions.ui -o ui\qg_insertoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_insertoptions.ui -i qg_insertoptions.h -o ui\qg_insertoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_insertoptions.h -o moc\moc_qg_insertoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_insertoptions.h;ui\qg_insertoptions.cpp;moc\moc_qg_insertoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_layerdialog.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_layerdialog.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_layerdialog.ui -o ui\qg_layerdialog.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_layerdialog.ui -i qg_layerdialog.h -o ui\qg_layerdialog.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_layerdialog.h -o moc\moc_qg_layerdialog.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_layerdialog.h;ui\qg_layerdialog.cpp;moc\moc_qg_layerdialog.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_libraryinsertoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_libraryinsertoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_libraryinsertoptions.ui -o ui\qg_libraryinsertoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_libraryinsertoptions.ui -i qg_libraryinsertoptions.h -o ui\qg_libraryinsertoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_libraryinsertoptions.h -o moc\moc_qg_libraryinsertoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_libraryinsertoptions.h;ui\qg_libraryinsertoptions.cpp;moc\moc_qg_libraryinsertoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_librarywidget.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_librarywidget.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_librarywidget.ui -o ui\qg_librarywidget.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_librarywidget.ui -i qg_librarywidget.h -o ui\qg_librarywidget.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_librarywidget.h -o moc\moc_qg_librarywidget.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_librarywidget.h;ui\qg_librarywidget.cpp;moc\moc_qg_librarywidget.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_lineangleoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_lineangleoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_lineangleoptions.ui -o ui\qg_lineangleoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_lineangleoptions.ui -i qg_lineangleoptions.h -o ui\qg_lineangleoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_lineangleoptions.h -o moc\moc_qg_lineangleoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_lineangleoptions.h;ui\qg_lineangleoptions.cpp;moc\moc_qg_lineangleoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_linebisectoroptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_linebisectoroptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_linebisectoroptions.ui -o ui\qg_linebisectoroptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_linebisectoroptions.ui -i qg_linebisectoroptions.h -o ui\qg_linebisectoroptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_linebisectoroptions.h -o moc\moc_qg_linebisectoroptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_linebisectoroptions.h;ui\qg_linebisectoroptions.cpp;moc\moc_qg_linebisectoroptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_lineoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_lineoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_lineoptions.ui -o ui\qg_lineoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_lineoptions.ui -i qg_lineoptions.h -o ui\qg_lineoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_lineoptions.h -o moc\moc_qg_lineoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_lineoptions.h;ui\qg_lineoptions.cpp;moc\moc_qg_lineoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_lineparalleloptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_lineparalleloptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_lineparalleloptions.ui -o ui\qg_lineparalleloptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_lineparalleloptions.ui -i qg_lineparalleloptions.h -o ui\qg_lineparalleloptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_lineparalleloptions.h -o moc\moc_qg_lineparalleloptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_lineparalleloptions.h;ui\qg_lineparalleloptions.cpp;moc\moc_qg_lineparalleloptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_lineparallelthroughoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_lineparallelthroughoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_lineparallelthroughoptions.ui -o ui\qg_lineparallelthroughoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_lineparallelthroughoptions.ui -i qg_lineparallelthroughoptions.h -o ui\qg_lineparallelthroughoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_lineparallelthroughoptions.h -o moc\moc_qg_lineparallelthroughoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_lineparallelthroughoptions.h;ui\qg_lineparallelthroughoptions.cpp;moc\moc_qg_lineparallelthroughoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_linepolygon2options.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_linepolygon2options.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_linepolygon2options.ui -o ui\qg_linepolygon2options.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_linepolygon2options.ui -i qg_linepolygon2options.h -o ui\qg_linepolygon2options.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_linepolygon2options.h -o moc\moc_qg_linepolygon2options.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_linepolygon2options.h;ui\qg_linepolygon2options.cpp;moc\moc_qg_linepolygon2options.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_linepolygonoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_linepolygonoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_linepolygonoptions.ui -o ui\qg_linepolygonoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_linepolygonoptions.ui -i qg_linepolygonoptions.h -o ui\qg_linepolygonoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_linepolygonoptions.h -o moc\moc_qg_linepolygonoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_linepolygonoptions.h;ui\qg_linepolygonoptions.cpp;moc\moc_qg_linepolygonoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_linerelangleoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_linerelangleoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_linerelangleoptions.ui -o ui\qg_linerelangleoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_linerelangleoptions.ui -i qg_linerelangleoptions.h -o ui\qg_linerelangleoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_linerelangleoptions.h -o moc\moc_qg_linerelangleoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_linerelangleoptions.h;ui\qg_linerelangleoptions.cpp;moc\moc_qg_linerelangleoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_mousewidget.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_mousewidget.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_mousewidget.ui -o ui\qg_mousewidget.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_mousewidget.ui -i qg_mousewidget.h -o ui\qg_mousewidget.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_mousewidget.h -o moc\moc_qg_mousewidget.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_mousewidget.h;ui\qg_mousewidget.cpp;moc\moc_qg_mousewidget.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_moverotateoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_moverotateoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_moverotateoptions.ui -o ui\qg_moverotateoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_moverotateoptions.ui -i qg_moverotateoptions.h -o ui\qg_moverotateoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_moverotateoptions.h -o moc\moc_qg_moverotateoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_moverotateoptions.h;ui\qg_moverotateoptions.cpp;moc\moc_qg_moverotateoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_printpreviewoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_printpreviewoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_printpreviewoptions.ui -o ui\qg_printpreviewoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_printpreviewoptions.ui -i qg_printpreviewoptions.h -o ui\qg_printpreviewoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_printpreviewoptions.h -o moc\moc_qg_printpreviewoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_printpreviewoptions.h;ui\qg_printpreviewoptions.cpp;moc\moc_qg_printpreviewoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_roundoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_roundoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_roundoptions.ui -o ui\qg_roundoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_roundoptions.ui -i qg_roundoptions.h -o ui\qg_roundoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_roundoptions.h -o moc\moc_qg_roundoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_roundoptions.h;ui\qg_roundoptions.cpp;moc\moc_qg_roundoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_selectionwidget.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_selectionwidget.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_selectionwidget.ui -o ui\qg_selectionwidget.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_selectionwidget.ui -i qg_selectionwidget.h -o ui\qg_selectionwidget.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_selectionwidget.h -o moc\moc_qg_selectionwidget.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_selectionwidget.h;ui\qg_selectionwidget.cpp;moc\moc_qg_selectionwidget.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_snapdistoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_snapdistoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_snapdistoptions.ui -o ui\qg_snapdistoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_snapdistoptions.ui -i qg_snapdistoptions.h -o ui\qg_snapdistoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_snapdistoptions.h -o moc\moc_qg_snapdistoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_snapdistoptions.h;ui\qg_snapdistoptions.cpp;moc\moc_qg_snapdistoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_textoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_textoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_textoptions.ui -o ui\qg_textoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_textoptions.ui -i qg_textoptions.h -o ui\qg_textoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_textoptions.h -o moc\moc_qg_textoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_textoptions.h;ui\qg_textoptions.cpp;moc\moc_qg_textoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_trimamountoptions.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_trimamountoptions.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_trimamountoptions.ui -o ui\qg_trimamountoptions.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_trimamountoptions.ui -i qg_trimamountoptions.h -o ui\qg_trimamountoptions.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_trimamountoptions.h -o moc\moc_qg_trimamountoptions.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_trimamountoptions.h;ui\qg_trimamountoptions.cpp;moc\moc_qg_trimamountoptions.cpp"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ui\qg_widgetpen.ui">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Uic&apos;ing ui\qg_widgetpen.ui..."
+						CommandLine="$(QTDIR)\bin\uic.exe ui\qg_widgetpen.ui -o ui\qg_widgetpen.h &amp;&amp; $(QTDIR)\bin\uic.exe ui\qg_widgetpen.ui -i qg_widgetpen.h -o ui\qg_widgetpen.cpp &amp;&amp; $(QTDIR)\bin\moc.exe ui\qg_widgetpen.h -o moc\moc_qg_widgetpen.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe;$(QTDIR)\bin\uic.exe"
+						Outputs="ui\qg_widgetpen.h;ui\qg_widgetpen.cpp;moc\moc_qg_widgetpen.cpp"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Translations Files"
+			Filter="ts"
+			ParseFiles="FALSE">
+			<File
+				RelativePath="ts/qcadguiqt_da.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadguiqt_de.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadguiqt_en.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadguiqt_hu.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadguiqt_no.ts">
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

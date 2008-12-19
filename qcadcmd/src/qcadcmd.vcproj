@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.00"
+	Name="qcadcmd"
+	ProjectGUID="{F3A8D6A2-C06D-4592-9FEA-8974697A4E6A}">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="."
+			IntermediateDirectory="obj\"
+			ConfigurationType="4"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalOptions="-Zm200 -w34100 -w34189"
+				Optimization="1"
+				AdditionalIncludeDirectories="..\include;..\..\qcadlib\include;..\..\fparser\src;..\..\fparser\include;&quot;$(QTDIR)\include&quot;;.;moc\;&quot;g:\Qt\3.2.0Evaluation\mkspecs\win32-msvc.net&quot;;..\..\qcadlib\src\engine;..\..\qcadlib\src\actions;..\..\qcadlib\src\creation;..\..\qcadlib\src\debug;..\..\qcadlib\src\export;..\..\qcadlib\src\filters;..\..\qcadlib\src\gui;..\..\qcadlib\src\import;..\..\qcadlib\src\information;..\..\qcadlib\src\math;..\..\qcadlib\src\modification;..\..\qcadlib\src\scripting"
+				PreprocessorDefinitions="QT_NO_DEBUG;NDEBUG;UNICODE;WIN32;_USE_MATH_DEFINES"
+				GeneratePreprocessedFile="0"
+				ExceptionHandling="TRUE"
+				RuntimeLibrary="4"
+				BufferSecurityCheck="FALSE"
+				AssemblerListingLocation="obj\"
+				ObjectFile="obj\"
+				ProgramDataBaseFileName=".\"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLibrarianTool"
+				OutputFile="..\lib\qcadcmd.lib"
+				SuppressStartupBanner="TRUE"/>
+			<Tool
+				Name="VCMIDLTool"
+				WarningLevel="0"
+				DefaultCharType="0"
+				EnableErrorChecks="1"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			<File
+				RelativePath="rs_commands.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl">
+			<File
+				RelativePath="rs_commands.h">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing rs_commands.h..."
+						CommandLine="$(QTDIR)\bin\moc.exe rs_commands.h -o moc\moc_rs_commands.cpp
+"
+						AdditionalDependencies="$(QTDIR)\bin\moc.exe"
+						Outputs="moc\moc_rs_commands.cpp"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated MOC Files"
+			Filter="cpp;c;cxx;moc">
+			<File
+				RelativePath="moc\moc_rs_commands.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Translations Files"
+			Filter="ts"
+			ParseFiles="FALSE">
+			<File
+				RelativePath="ts/qcadcmd_da.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadcmd_de.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadcmd_en.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadcmd_hu.ts">
+			</File>
+			<File
+				RelativePath="ts/qcadcmd_no.ts">
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

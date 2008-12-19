@@ -1,0 +1,27 @@
+<manstyle>
+  <section>Overview</section>
+
+  <para>
+  The QCad Libraries are a collection of C++ libraries for Qt based 
+  CAD related applications. 
+  </para>
+
+  <para>
+  The collection is divided into four modules: 
+  <ul>
+  <li><b>qcadlib</b> is the core library that contains the whole CAD
+  engine and classes to create, modify and delete entities, layers and
+  blocks (without user interaction).</li>
+  <li><b>qcadactions</b> contains interactive classes for performing 
+  CAD operations.</li>
+  <li><b>qcadcmd</b> is a small library that only contains the definitions
+  of all command line strings. This library was only separated from the rest to 
+  allow the use a different translations for the command line than for the
+  rest of the program.</li>
+  <li><b>qcadguiqt</b> contains everything that has directly to do with
+  the graphical user interface such as CAD specific widgets and dialogs.</li>
+  </ul>
+  </para>
+
+</manstyle>
+

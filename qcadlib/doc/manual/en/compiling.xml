@@ -1,0 +1,187 @@
+<manstyle>
+  <section>Compiling qcadlib</section>
+
+  <!-- Unix -->
+  <subsection>Unix / Linux</subsection>
+
+  <subsubsection>Qt</subsubsection>
+
+  <para>
+  Since the QCad libraries make extensive use of the Qt library,
+  you first need to install Qt. You can download the latest Qt
+  version from:<br/>
+  <a href="http://www.trolltech.com/download/qt/x11.html">
+  http://www.trolltech.com/download/qt/x11.html</a><br/>
+  The Qt package you need to download is about 14MB big.
+  </para>
+  
+  <para>
+  Configuring and compiling Qt is not difficult but the compilation
+  requires a lot of time (hours).
+  </para>
+
+  <para>
+  Of course you can also install and use the Qt that comes with your
+  Linux distribution. However, I recommend to install your own version.
+  This will allow you to use the latest Qt version and to compile it
+  for your needs.<br/>
+  In this documentation I will assume that you install Qt into your home
+  directory. 
+  Your whole Qt installation will reside in the directory you choose. 
+  There's no 
+  need to install or copy any files into /usr or /usr/local. In fact that 
+  would not even be a good idea because you might mess up an existing 
+  installation of Qt that is used by your system.
+  </para>
+
+  <para>
+  <ul>
+  <li>Download and extract the tar.gz file from the location above:<br/>
+  <code>cd<br/>
+  tar xvzf qt-x11-free-3.x.x.tar.gz</code></li>
+  <li>Create a 'qt' link to the folder that was created in the last step:<br/>
+  <code>ln -s qt-x11-free-3.x.x qt</code><br/>
+  This is not absulutely necessary but it will allow you to have multiple
+  installations of Qt and switch between them more easely by just changing 
+  the link.
+  </li>
+  <li>Set the QTDIR environment variable to point to that directory (this 
+  command might be different if you're not using a bash shell):<br/>
+  <code>export QTDIR=/home/tux/qt</code>
+  </li>
+  <li>Change to the Qt directory and configure Qt. Of course you can try
+  different options but I've made the best experiences with those:<br/>
+  <code>cd $QTDIR<br/>
+  ./configure --static -no-sm -no-xinerama -no-exceptions -xrender</code><br/>
+  This will take a couple of minutes. There is already a lot of compilation
+  required in the configuration process of Qt.</li>
+  <li>Compile the Qt library. This can easely take hours depending on your
+  machine. The library itself however, should be ready in less than an
+  hour.<br/>
+  <code>make</code></li>
+  <li>Once the compilation has finished, you should see the library file
+  in the lib directory:<br/>
+  <code>ls $QTDIR/lib<br/>
+  libqt.a</code></li>
+  </ul>
+  </para>
+
+  <subsubsection>The QCad Libraries</subsubsection>
+
+  <para>Under Unix and Linux Systems, compiling qcadlib is as simple as
+  running one script that does it all for you. Please download the latest
+  source distribution from:<br/>
+  <a href="http://www.ribbonsoft.com/qcad_downloads.html">
+  http://www.ribbonsoft.com/qcad_downloads.html</a></para>
+
+  <para>
+  <ul>
+  <li>Extract the file into a directory of your choice:<br/>
+  mkdir ~/qcad<br/>
+  cd ~/qcad<br/>
+  mv  qcad-2.x.x.x-1.src.tar.gz ~/qcad/<br/>
+  tar xvzf qcad-2.x.x.x-1.src.tar.gz
+  </li>
+  <li>Run the build script:<br/>
+  <code>cd scripts<br/>
+  ./build_qcad.sh</code>
+  </li>
+  <li>After the build has completed, you can find the libraries in the
+  'lib' directories and the QCad binary in directory 'qcad'.
+  </li>
+  </ul>
+  </para>
+
+  <!-- Windows -->
+  <subsection>Windows</subsection>
+
+  <para>
+  For this manual I only describe the process of compiling the QCad libraries 
+  using cygwin
+  <a href="appendix_bib.html#cygwin">[CYGWIN]</a> as a console and the free 
+  Borland C++ command line tools <a href="appendix_bib.html#bcc">[BCC]</a>.
+  There are other ways that you might prefer but this is the way that
+  comes the closest to the Unix approach.
+  </para>
+
+  <!-- TODO: compile Qt -->
+
+  <para>
+  <ul>
+  <li>Launch a cygwin console</li>
+  <li>Set the environment variable BCB to point to your installation 
+  directory of the Borland C++ compiler (Windows style). E.g.:<br/>
+  <code>export BCB=c:\\Borland\\BCC55</code></li>
+  <li>Check if bcc32 can be found:<br/>
+  <code>bcc32</code><br/>
+  If that is not the case, please add the path where 
+  the bcc32.exe binary is located to your PATH variable (Unix style):<br/>
+  <code>export PATH=/cygdrive/c/Borland/BCC55/Bin:$PATH</code></li>
+  <li>Set the QTDIR environment variable and the PATH:<br/>
+  <code>set QTDIR=c:\\qt\\3.2.1<br/>
+  set PATH=$QTDIR/bin:$PATH</code></li>
+  </ul>
+  </para>
+
+  <para>
+  <ul>
+  <li>Because Windows doesn't support links, you need to copy the header 
+  files to the include directories:<br/>
+  <code>
+  cd dxflib/src<br/>
+  cp `find . -name "*.h"` ../include/<br/>
+  cd ../..<br/>
+  cd fparser/src<br/>
+  cp `find . -name "*.h"` ../include/<br/>
+  cd ../..<br/>
+  cd qcadlib/src<br/>
+  cp `find . -name "*.h"` ../include/<br/>
+  cd ../..<br/>
+  cd qcadcmd/src<br/>
+  cp `find . -name "*.h"` ../include/<br/>
+  cd ../..<br/>
+  cd qcadactions/src<br/>
+  cp `find . -name "*.h"` ../include/<br/>
+  cd ../..<br/>
+  cd qcadguiqt/src<br/>
+  cp `find . -name "*.h"` ../include/<br/>
+  cd ../..<br/>
+  </code></li>
+  </ul>
+  </para>
+  
+  <para>
+  <ul>
+  <li>Compile the libraries using the makefiles that come with the 
+  package:<br/>
+  <code>cd dxflib<br/>
+  /cygdrive/c/Borland/BCC55/Bin/make.exe -f makefile_win_bcc55<br/>
+  cd ..<br/>
+  cd fparser<br/>
+  /cygdrive/c/Borland/BCC55/Bin/make.exe -f makefile_win_bcc55<br/>
+  cd ..<br/>
+  cd qcadlib/src<br/>
+  qmake -o makefile_win_bcc55 qcadlib.pro<br/>
+  /cygdrive/c/Borland/BCC55/Bin/make.exe -f makefile_win_bcc55<br/>
+  cd ../..<br/>
+  cd qcadcmd/src<br/>
+  qmake -o makefile_win_bcc55 qcadcmd.pro<br/>
+  /cygdrive/c/Borland/BCC55/Bin/make.exe -f makefile_win_bcc55<br/>
+  cd ../..<br/>
+  cd qcadactions/src<br/>
+  qmake -o makefile_win_bcc55 qcadactions.pro<br/>
+  /cygdrive/c/Borland/BCC55/Bin/make.exe -f makefile_win_bcc55<br/>
+  cd ../..<br/>
+  cd qcadguiqt/src<br/>
+  qmake -o makefile_win_bcc55 qcadguiqt.pro<br/>
+  /cygdrive/c/Borland/BCC55/Bin/make.exe -f makefile_win_bcc55<br/>
+  cp `find . -name "*.h"` ../include/<br/>
+  cd ../..<br/>
+  </code>
+  </li>
+  <li>Check if the QCad binary qcad.exe was created in ./qcad:<br/>
+  <code>ls -la ./qcad</code></li>
+  </ul>
+  </para>
+</manstyle>
+

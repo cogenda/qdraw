@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.9">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleIconFile</key>
+	<string>application.icns</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>dxf</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>dxf.icns</string>
+			<key>CFBundleTypeName</key>
+			<string>AutoDesk (R) DXF file</string>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>****</string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+                        <key>LSIsAppleDefaultForType</key>
+			<true/>
+		</dict>
+	</array>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+        <key>CFBundleGetInfoString</key>
+	<string>2.0.2.2 RibbonSoft qcad, Copyright © 2004 RibbonSoft.</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2004 RibbonSoft.</string>
+	<key>CFBundleName</key>
+	<string>qcad</string>
+	<key>CFBundleVersion</key>
+	<string>2.0.2.2</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.0.2.2</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.ribbonsoft.qcad</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleExecutable</key>
+	<string>qcad</string>
+	<key>NSAppleScriptEnabled</key>
+	<false/>
+</dict>
+</plist>

@@ -1,0 +1,76 @@
+[Description]
+{HPGL Export}
+
+[Standards]
+Extension            = plt
+ContourStartInHeader = 0
+LayerStartInHeader   = 0
+Optimization         = 0
+ContourCenter        = 0
+Sorting              = n
+Direction            = n
+StartNumber          = 10
+NumberStep           = 10
+MaxArcAngle          = $a
+MaxArcLength         = $l
+Tolerance            = 0.001
+Factor               = 40
+Digits               = 4
+
+[Pointing]
+Pointing             = 0
+PointingAngle        = 60.0
+PointingDepth        = 0.2
+PointingLimit        = 5.0
+PointingMaxLength    = 20.0
+
+[Parameter]
+Parameter free $l Max_Arc_Length 0 0.5 1 2 4 5
+Parameter free $a Max_Arc_Angle 0 1 2 4 5 10 15 30 45
+Parameter fixed $c Arcs on off
+
+[LayerParameter]
+
+[Code]
+OrderLine
+  {PA<X2Abs>,<Y2Abs>;}
+
+OrderLineOffsetLeft
+  {PA<X2Abs>,<Y2Abs>;}
+
+OrderLineOffsetRight
+  {PA<X2Abs>,<Y2Abs>;}
+
+OrderLineOffsetOff
+  {PA<X2Abs>,<Y2Abs>;}
+
+OrderArcCW
+  {<if:$c=on>AA<IAbs>,<JAbs>,<A>;</if><if:$c=off>PA<X2Abs>,<Y2Abs>;</if>}
+
+OrderArcCCW
+  {<if:$c=on>AA<IAbs>,<JAbs>,<A>;</if><if:$c=off>PA<X2Abs>,<Y2Abs>;</if>}
+
+OrderContourStart
+  {<OrderRapidMove>PD;}
+
+OrderContourEnd
+  {PU;}
+
+OrderLayerStart
+  {}
+
+OrderLayerEnd
+  {}
+
+ProgramStart
+  { .( .@:IN;LT;PU;VS;VS38;SP1;PA<X1Abs>,<Y1Abs>;}
+
+ProgramEnd
+  {PU;SP0;VS; .@:}
+
+OrderRapidMove
+  {PA<X1Abs>,<Y1Abs>;}
+
+
+
+//EOF

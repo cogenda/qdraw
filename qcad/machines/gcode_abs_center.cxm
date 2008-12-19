@@ -1,0 +1,91 @@
+[Description]
+{DIN NC Format}
+
+[Standards]
+Extension            = $e
+ContourStartInHeader = 0
+LayerStartInHeader   = 0
+Optimization         = 0
+ContourCenter        = 0
+Sorting              = n
+Direction            = n
+StartNumber          = 10
+NumberStep           = 5
+MaxArcAngle          = 0
+MaxArcLength         = 0
+Tolerance            = 0.001
+Factor               = $c
+Digits               = 3
+
+[Pointing]
+Pointing             = 0
+PointingAngle        = 60.0
+PointingDepth        = 0.2
+PointingLimit        = 5.0
+PointingMaxLength    = 20.0
+
+[Parameter]
+Parameter free $e Extension nc cnc d
+Parameter free $f Feedrate 200 300 400 500 1000
+Parameter free $u Clearance 2.0 1.0 3.0 4.0 5.0
+Parameter fixed $l Support_Layers No Yes
+Parameter free $c Factor 1 1/2 2
+
+[LayerParameter]
+LayerParameter free $d Cuttingdepth -0.2 -0.1 -0.25 -0.3 -0.4 -0.5
+LayerParameter fixed $p Include_Points Yes No
+
+[Code]
+OrderRapidMove
+  {<if:poschanged1><NewLine>N<Number><mod:1> G00</mod:1><mod:2> X<X1Abs></mod:2><mod:3> Y<Y1Abs></mod:3></if>}
+
+OrderPoint
+  {<if:$p=Yes><OrderContourStart><OrderContourEnd></if>}
+
+OrderLine
+  {<NewLine>N<Number><mod:1> G01</mod:1><mod:2> X<X2Abs></mod:2><mod:3> Y<Y2Abs></mod:3>}
+
+OrderLineOffsetLeft
+  {<NewLine>N<Number> G41<mod:1> G01</mod:1><mod:2> X<X2Abs></mod:2><mod:3> Y<Y2Abs></mod:3>}
+
+OrderLineOffsetRight
+  {<NewLine>N<Number> G42<mod:1> G01</mod:1><mod:2> X<X2Abs></mod:2><mod:3> Y<Y2Abs></mod:3>}
+
+OrderLineOffsetOff
+  {<NewLine>N<Number> G40<mod:1> G01</mod:1><mod:2> X<X2Abs></mod:2><mod:3> Y<Y2Abs></mod:3>}
+
+OrderArcCW
+  {<NewLine>N<Number> G02<delmod:1> X<X2Abs><delmod:2> Y<Y2Abs><delmod:3> I<IAbs> J<JAbs>}
+
+OrderArcCCW
+  {<NewLine>N<Number> G03<delmod:1> X<X2Abs><delmod:2> Y<Y2Abs><delmod:3> I<IAbs> J<JAbs>}
+
+OrderToolUp
+  {<NewLine>N<Number><mod:1> G00</mod:1><mod:4> Z$u</mod:4>}
+
+OrderToolDown
+  {<NewLine>N<Number><mod:1> G01</mod:1><mod:4> Z$d</mod:4>}
+
+OrderContourStart
+  {<OrderRapidMove> <OrderToolDown>}
+
+OrderContourEnd
+  {<OrderToolUp>}
+
+OrderLayerStart
+  {<if:$l=Yes></if>}
+
+OrderLayerEnd
+  {<if:$l=Yes></if>}
+
+ProgramStart
+  {N<Number> G00 Z100.000
+   <OrderRapidMove>
+   <OrderToolUp> F$f}
+
+ProgramEnd
+  {<NewLine>N<Number> M30}
+
+
+
+//EOF

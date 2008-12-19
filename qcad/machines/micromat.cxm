@@ -1,0 +1,85 @@
+[Description]
+{Micromat MM300 routing/drilling machine}
+
+[Standards]
+Extension            = MMM
+ContourStartInHeader = 1
+LayerStartInHeader   = 0
+Optimization         = 0
+ContourCenter        = 0
+Sorting              = n
+Direction            = n
+StartNumber          = 0
+NumberStep           = 0
+MaxArcAngle          = 0
+MaxArcLength         = 0
+Tolerance            = 0.001
+Factor               = 100
+Digits               = 0
+
+[Parameter]
+Parameter free $m Diameter 254
+Parameter free $t Rout 254
+Parameter free $f Feedrate 254 200 300 400 500 1000
+Parameter free $r RPM 254
+Parameter free $c Clear 254
+Parameter free $d Depth 254
+
+[LayerParameter]
+
+[Code]
+OrderRapidMove
+  {}
+
+OrderPoint
+  {<NewLine>X<X1Abs>Y<Y1AbsInv>T1C12}
+
+OrderLine
+  {}
+
+OrderLineOffsetLeft
+  {}
+
+OrderLineOffsetRight
+  {}
+
+OrderLineOffsetOff
+  {}
+
+OrderArcCW
+  {}
+
+OrderArcCCW
+  {}
+
+OrderToolUp
+  {}
+
+OrderToolDown
+  {}
+
+OrderContourStart
+  {}
+
+OrderContourEnd
+  {}
+
+OrderLayerStart
+  {}
+
+OrderLayerEnd
+  {}
+
+ProgramStart
+  {MAS
+<NewLine>X$mY$tT1C3
+<NewLine>X$rY$fT1C5
+<NewLine>X$cY$dT1C13
+<NewLine>X254Y254T1C14}
+
+ProgramEnd
+  {<NewLine>X0Y0T0C15}
+
+
+
+//EOF
