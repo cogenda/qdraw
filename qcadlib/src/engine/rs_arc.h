@@ -234,6 +234,15 @@ public:
   {
     return endpoint;
   }
+
+  /** get arc division number */
+  unsigned int getDivision()
+  { return division; }
+
+  /** set arc division number */
+  void setDivision(unsigned int d)
+  { division = d; }
+
   virtual void moveStartpoint(const RS_Vector& pos);
   virtual void moveEndpoint(const RS_Vector& pos);
 
@@ -304,6 +313,11 @@ protected:
    * reasons.
    */
   RS_Vector endpoint;
+
+  /**
+   * the arc can be divided into sub edges, default division = angle/30 + 1
+   */
+  unsigned int division;
 };
 
 #endif

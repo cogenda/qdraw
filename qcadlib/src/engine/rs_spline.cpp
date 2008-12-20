@@ -41,6 +41,7 @@ RS_Spline::RS_Spline(RS_EntityContainer* parent,
         :RS_EntityContainer(parent), data(d) {
     calculateBorders();
     initLabel();
+    division = data.degree;
 }
 
 

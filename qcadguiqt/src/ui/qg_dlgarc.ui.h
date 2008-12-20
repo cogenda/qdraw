@@ -31,6 +31,13 @@ void QG_DlgArc::setArc(RS_Arc& a) {
     s.setNum(RS_Math::rad2deg(arc->getAngle2()));
     leAngle2->setText(s);
     cbReversed->setChecked(arc->isReversed());
+
+    // get arc division
+    s.setNum(arc->getDivision());
+    ArcDivisionEdit->setText(s);
+
+    // get arc label
+    ArcLableEdit->setText(arc->getLabel());
 }
 
 void QG_DlgArc::updateArc() {
@@ -44,5 +51,7 @@ void QG_DlgArc::updateArc() {
     arc->setLayer(cbLayer->currentText());
     arc->calculateEndpoints();
     arc->calculateBorders();
+    arc->setDivision(RS_Math::eval(ArcDivisionEdit->text()));
+    arc->setLabel(ArcLableEdit->text());
 }
 

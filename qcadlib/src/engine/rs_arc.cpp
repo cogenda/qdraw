@@ -43,6 +43,7 @@ RS_Arc::RS_Arc(RS_EntityContainer* parent, const RS_ArcData& d)
   calculateEndpoints();
   calculateBorders();
   initLabel();
+  division = int(fabs(data.angle1 - data.angle2)/(M_PI/6)) + 1;
 }
 
 

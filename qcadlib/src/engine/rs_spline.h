@@ -149,6 +149,14 @@ public:
     update();
   }
 
+  /** get Spline division number */
+  unsigned int getDivision()
+  { return division; }
+
+  /** set Spline division number */
+  void setDivision(unsigned int d)
+  { division = d; }
+
   virtual RS_VectorSolutions getRefPoints();
   virtual RS_Vector getNearestRef(const RS_Vector& coord,
                                   double* dist = NULL);
@@ -254,6 +262,11 @@ public:
 
 protected:
   RS_SplineData data;
+
+  /**
+   * the Spline can be divided into sub edges, default division = data.degree
+   */
+  unsigned int division;
 }
 ;
 

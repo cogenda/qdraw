@@ -142,6 +142,14 @@ public:
     return p;
   }
 
+  /** get ellipse division number */
+  unsigned int getDivision()
+  { return division; }
+
+  /** set ellipse division number */
+  void setDivision(unsigned int d)
+  { division = d; }
+
   virtual void moveStartpoint(const RS_Vector& pos);
   virtual void moveEndpoint(const RS_Vector& pos);
 
@@ -294,6 +302,12 @@ public:
 
 protected:
   RS_EllipseData data;
+
+  /**
+   * the ellips can be divided into sub edges, default division = 12
+   */
+  unsigned int division;
+
 };
 
 #endif

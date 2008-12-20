@@ -128,6 +128,15 @@ public:
   {
     return data.center + RS_Vector(data.radius, 0.0);
   }
+
+  /** get circle division number */
+  unsigned int getDivision()
+  { return division; }
+
+  /** set circle division number */
+  void setDivision(unsigned int d)
+  { division = d; }
+
   /**
    * @return Direction 1. The angle at which the arc starts at
    * the startpoint.
@@ -205,6 +214,11 @@ public:
 
 protected:
   RS_CircleData data;
+
+  /**
+   * the circle can be divided into sub edges, default division = 12
+   */
+  unsigned int division;
 };
 
 #endif

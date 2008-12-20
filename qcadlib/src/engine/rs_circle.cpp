@@ -40,7 +40,7 @@
  * Default constructor.
  */
 RS_Circle::RS_Circle(RS_EntityContainer* parent,  const RS_CircleData& d)
-    :RS_AtomicEntity(parent), data(d)
+    :RS_AtomicEntity(parent), data(d), division(12)
 {
   calculateBorders();
   initLabel();

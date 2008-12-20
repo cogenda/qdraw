@@ -24,8 +24,8 @@ src/Makefile: src/qcad.pro
 
 clean:
 	cd src && $(MAKE) clean
-	- rm qcad
-	- rm camexpert
+	-@rm -f qcad
+	-@rm -f camexpert
 	-$(FIND) . -name "*~" -exec rm -f {} \;
   
 docu:

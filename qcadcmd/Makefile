@@ -46,8 +46,7 @@ install: ./lib/libqcadcmd.a
 
 clean:
 	cd src && $(MAKE) clean
-	cd test && $(MAKE) clean
-	-rm -f ./lib/lib*
+	-@rm -f ./lib/lib*
 	-$(FIND) . -name "*~" -exec rm -f {} \;
   
 testing: ./lib/libqcadcmd.a

@@ -37,7 +37,7 @@
  */
 RS_Ellipse::RS_Ellipse(RS_EntityContainer* parent,
                        const RS_EllipseData& d)
-    :RS_AtomicEntity(parent), data(d)
+    :RS_AtomicEntity(parent), data(d), division(12)
 {
 
   //calculateEndpoints();

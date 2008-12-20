@@ -26,6 +26,13 @@ void QG_DlgCircle::setCircle(RS_Circle& c) {
     leCenterY->setText(s);
     s.setNum(circle->getRadius());
     leRadius->setText(s);
+
+    // get line division
+    s.setNum(circle->getDivision());
+    CircleDivisionEdit->setText(s);
+
+    // get line label
+    CircleLabelEdit->setText(circle->getLabel());
 }
 
 void QG_DlgCircle::updateCircle() {
@@ -35,5 +42,7 @@ void QG_DlgCircle::updateCircle() {
     circle->setPen(wPen->getPen());
     circle->setLayer(cbLayer->currentText());
     circle->calculateBorders();
+    circle->setDivision(RS_Math::eval(CircleDivisionEdit->text()));
+    circle->setLabel(CircleLabelEdit->text());
 }
 
