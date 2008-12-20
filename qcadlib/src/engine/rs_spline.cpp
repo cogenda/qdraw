@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -40,6 +40,7 @@ RS_Spline::RS_Spline(RS_EntityContainer* parent,
                      const RS_SplineData& d)
         :RS_EntityContainer(parent), data(d) {
     calculateBorders();
+    initLabel();
 }
 
 
@@ -67,7 +68,7 @@ void RS_Spline::calculateBorders() {
     maxV = RS_Vector::maximum(data.startpoint, data.endpoint);
 
     RS_ValueList<RS_Vector>::iterator it;
-    for (it = data.controlPoints.begin(); 
+    for (it = data.controlPoints.begin();
     it!=data.controlPoints.end(); ++it) {
 
     minV = RS_Vector::minimum(*it, minV);
@@ -109,7 +110,7 @@ RS_Vector RS_Spline::getNearestSelectedRef(const RS_Vector& coord,
 
 
 /**
- * Updates the internal polygon of this spline. Called when the 
+ * Updates the internal polygon of this spline. Called when the
  * spline or it's data, position, .. changes.
  */
 void RS_Spline::update() {
@@ -372,7 +373,7 @@ void RS_Spline::draw(RS_Painter* painter, RS_GraphicView* view) {
    if (painter==NULL || view==NULL) {
        return;
    }
- 
+
    / *
       if (data.controlPoints.count()>0) {
           RS_Vector prev(false);
@@ -386,41 +387,41 @@ void RS_Spline::draw(RS_Painter* painter, RS_GraphicView* view) {
           }
       }
    * /
- 
+
    int i;
    int npts = data.controlPoints.count();
    // order:
    int k = 4;
    // resolution:
    int p1 = 100;
- 
+
    double* b = new double[npts*3+1];
    double* h = new double[npts+1];
    double* p = new double[p1*3+1];
- 
+
    RS_ValueList<RS_Vector>::iterator it;
    i = 1;
    for (it = data.controlPoints.begin(); it!=data.controlPoints.end(); ++it) {
        b[i] = (*it).x;
        b[i+1] = (*it).y;
        b[i+2] = 0.0;
- 
+
 	RS_DEBUG->print("RS_Spline::draw: b[%d]: %f/%f", i, b[i], b[i+1]);
 	i+=3;
    }
- 
+
    // set all homogeneous weighting factors to 1.0
    for (i=1; i <= npts; i++) {
        h[i] = 1.0;
    }
- 
+
    //
    for (i = 1; i <= 3*p1; i++) {
        p[i] = 0.0;
    }
- 
+
    rbspline(npts,k,p1,b,h,p);
- 
+
    RS_Vector prev(false);
    for (i = 1; i <= 3*p1; i=i+3) {
        if (prev.valid) {
@@ -461,7 +462,7 @@ void RS_Spline::removeLastControlPoint() {
 
 
 /**
- * Generates B-Spline open knot vector with multiplicity 
+ * Generates B-Spline open knot vector with multiplicity
  * equal to the order at the ends.
  */
 void RS_Spline::knot(int num, int order, int knotVector[]) {
@@ -666,7 +667,7 @@ void RS_Spline::rbsplinu(int npts, int k, int p1,
     		printf(" %d ", x[i]);
     	}
     	printf("\n");
-     
+
     	printf("The usable parameter range is ");
     	for (i = k; i <= npts+1; i++){
     		printf(" %d ", x[i]);

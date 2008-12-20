@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -33,41 +33,44 @@
 /**
  * Holds the data that defines an aligned dimension entity.
  */
-class RS_DimAlignedData {
+class RS_DimAlignedData
+{
 public:
-    /**
-     * Default constructor. Leaves the data object uninitialized.
-     */
-    RS_DimAlignedData() {}
+  /**
+   * Default constructor. Leaves the data object uninitialized.
+   */
+  RS_DimAlignedData() {}
 
-    /**
-     * Constructor with initialisation.
-     *
-        * @para extensionPoint1 Definition point. Startpoint of the 
-     *         first extension line.
-        * @para extensionPoint2 Definition point. Startpoint of the 
-     *         second extension line.
-     */
-    RS_DimAlignedData(const RS_Vector& extensionPoint1,
-                      const RS_Vector& extensionPoint2) {
-        this->extensionPoint1 = extensionPoint1;
-        this->extensionPoint2 = extensionPoint2;
-    }
+  /**
+   * Constructor with initialisation.
+   *
+      * @para extensionPoint1 Definition point. Startpoint of the
+   *         first extension line.
+      * @para extensionPoint2 Definition point. Startpoint of the
+   *         second extension line.
+   */
+  RS_DimAlignedData(const RS_Vector& extensionPoint1,
+                    const RS_Vector& extensionPoint2)
+  {
+    this->extensionPoint1 = extensionPoint1;
+    this->extensionPoint2 = extensionPoint2;
+  }
 
-    friend class RS_DimAligned;
-    friend class RS_ActionDimAligned;
+  friend class RS_DimAligned;
+  friend class RS_ActionDimAligned;
 
-    friend std::ostream& operator << (std::ostream& os,
-                                      const RS_DimAlignedData& dd) {
-        os << "(" << dd.extensionPoint1 << "/" << dd.extensionPoint1 << ")";
-        return os;
-    }
+  friend std::ostream& operator << (std::ostream& os,
+                                    const RS_DimAlignedData& dd)
+  {
+    os << "(" << dd.extensionPoint1 << "/" << dd.extensionPoint1 << ")";
+    return os;
+  }
 
 private:
-    /** Definition point. Startpoint of the first extension line. */
-    RS_Vector extensionPoint1;
-    /** Definition point. Startpoint of the second extension line. */
-    RS_Vector extensionPoint2;
+  /** Definition point. Startpoint of the first extension line. */
+  RS_Vector extensionPoint1;
+  /** Definition point. Startpoint of the second extension line. */
+  RS_Vector extensionPoint2;
 };
 
 
@@ -77,65 +80,77 @@ private:
  *
  * @author Andrew Mustun
  */
-class RS_DimAligned : public RS_Dimension {
+class RS_DimAligned : public RS_Dimension
+{
 public:
-    RS_DimAligned(RS_EntityContainer* parent,
-                  const RS_DimensionData& d,
-                  const RS_DimAlignedData& ed);
-    virtual ~RS_DimAligned() {}
+  RS_DimAligned(RS_EntityContainer* parent,
+                const RS_DimensionData& d,
+                const RS_DimAlignedData& ed);
+  virtual ~RS_DimAligned() {}
 
-    virtual RS_Entity* clone() {
-        RS_DimAligned* d = new RS_DimAligned(*this);
-		d->entities.setAutoDelete(entities.autoDelete());
-        d->initId();
-        d->detach();
-        return d;
-    }
+  virtual RS_Entity* clone()
+  {
+    RS_DimAligned* d = new RS_DimAligned(*this);
+    d->entities.setAutoDelete(entities.autoDelete());
+    d->initId();
+    d->detach();
+    return d;
+  }
 
-    /**	@return RS2::EntityDimAligned */
-    virtual RS2::EntityType rtti() const {
-        return RS2::EntityDimAligned;
-    }
+  virtual void initLabel()
+  {
+    static unsigned long int idCounter=0;
+    label = "DimAligned" + RS_String::number(idCounter++);
+  }
 
-    /**
-     * @return Copy of data that defines the aligned dimension. 
-     * @see getData()
-     */
-    RS_DimAlignedData getEData() const {
-        return edata;
-    }
+  /**	@return RS2::EntityDimAligned */
+  virtual RS2::EntityType rtti() const
+  {
+    return RS2::EntityDimAligned;
+  }
 
-    virtual RS_VectorSolutions getRefPoints();
+  /**
+   * @return Copy of data that defines the aligned dimension.
+   * @see getData()
+   */
+  RS_DimAlignedData getEData() const
+  {
+    return edata;
+  }
 
-    virtual RS_String getMeasuredLabel();
+  virtual RS_VectorSolutions getRefPoints();
 
-    virtual void update(bool autoText=false);
+  virtual RS_String getMeasuredLabel();
 
-    RS_Vector getExtensionPoint1() {
-        return edata.extensionPoint1;
-    }
+  virtual void update(bool autoText=false);
 
-    RS_Vector getExtensionPoint2() {
-        return edata.extensionPoint2;
-    }
-	
-	virtual bool hasEndpointsWithinWindow(RS_Vector v1, RS_Vector v2);
+  RS_Vector getExtensionPoint1()
+  {
+    return edata.extensionPoint1;
+  }
 
-    virtual void move(RS_Vector offset);
-    virtual void rotate(RS_Vector center, double angle);
-    virtual void scale(RS_Vector center, RS_Vector factor);
-    virtual void mirror(RS_Vector axisPoint1, RS_Vector axisPoint2);
-    virtual void stretch(RS_Vector firstCorner,
-                         RS_Vector secondCorner,
-                         RS_Vector offset);
-	virtual void moveRef(const RS_Vector& ref, const RS_Vector& offset);
+  RS_Vector getExtensionPoint2()
+  {
+    return edata.extensionPoint2;
+  }
 
-    friend std::ostream& operator << (std::ostream& os,
-                                      const RS_DimAligned& d);
+  virtual bool hasEndpointsWithinWindow(RS_Vector v1, RS_Vector v2);
+
+  virtual void move(RS_Vector offset);
+  virtual void rotate(RS_Vector center, double angle);
+  virtual void scale(RS_Vector center, RS_Vector factor);
+  virtual void mirror(RS_Vector axisPoint1, RS_Vector axisPoint2);
+  virtual void stretch(RS_Vector firstCorner,
+                       RS_Vector secondCorner,
+                       RS_Vector offset);
+  virtual void moveRef(const RS_Vector& ref, const RS_Vector& offset);
+
+  friend std::ostream& operator << (std::ostream& os,
+                                    const RS_DimAligned& d);
 
 protected:
-    /** Extended data. */
-    RS_DimAlignedData edata;
+  /** Extended data. */
+  RS_DimAlignedData edata;
 };
 
 #endif

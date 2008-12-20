@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -44,6 +44,7 @@ RS_Insert::RS_Insert(RS_EntityContainer* parent,
         update();
         //calculateBorders();
     }
+    initLabel();
 }
 
 
@@ -61,7 +62,7 @@ void RS_Insert::update() {
 
 	RS_DEBUG->print("RS_Insert::update");
 	RS_DEBUG->print("RS_Insert::update: name: %s", data.name.latin1());
-	RS_DEBUG->print("RS_Insert::update: insertionPoint: %f/%f", 
+	RS_DEBUG->print("RS_Insert::update: insertionPoint: %f/%f",
 		data.insertionPoint.x, data.insertionPoint.y);
 
 	if (updateEnabled==false) {
@@ -86,7 +87,7 @@ void RS_Insert::update() {
 		RS_DEBUG->print("RS_Insert::update: scale factor is 0");
 		return;
 	}
-	
+
     RS_Pen tmpPen;
 
 	/*RS_PtrListIterator<RS_Entity> it = createIterator();
@@ -94,24 +95,24 @@ void RS_Insert::update() {
     while ( (e = it.current()) != NULL ) {
         ++it;*/
 
-	RS_DEBUG->print("RS_Insert::update: cols: %d, rows: %d", 
+	RS_DEBUG->print("RS_Insert::update: cols: %d, rows: %d",
 		data.cols, data.rows);
-	RS_DEBUG->print("RS_Insert::update: block has %d entities", 
+	RS_DEBUG->print("RS_Insert::update: block has %d entities",
 		blk->count());
-	
+
     for (RS_Entity* e=blk->firstEntity(); e!=NULL; e=blk->nextEntity()) {
         for (int c=0; c<data.cols; ++c) {
             RS_DEBUG->print("RS_Insert::update: col %d", c);
             for (int r=0; r<data.rows; ++r) {
                 RS_DEBUG->print("RS_Insert::update: row %d", r);
 
-                if (e->rtti()==RS2::EntityInsert && 
+                if (e->rtti()==RS2::EntityInsert &&
                     data.updateMode!=RS2::PreviewUpdate) {
 
 					RS_DEBUG->print("RS_Insert::update: updating sub-insert");
                     ((RS_Insert*)e)->update();
                 }
-				
+
 				RS_DEBUG->print("RS_Insert::update: cloning entity");
 
                 RS_Entity* ne = e->clone();
@@ -119,12 +120,12 @@ void RS_Insert::update() {
 				ne->setUpdateEnabled(false);
                 ne->setParent(this);
                 ne->setVisible(getFlag(RS2::FlagVisible));
-				
+
 				RS_DEBUG->print("RS_Insert::update: transforming entity");
 
                 // Move:
 				RS_DEBUG->print("RS_Insert::update: move 1");
-				if (fabs(data.scaleFactor.x)>1.0e-6 && 
+				if (fabs(data.scaleFactor.x)>1.0e-6 &&
 				    fabs(data.scaleFactor.y)>1.0e-6) {
 	                ne->move(data.insertionPoint +
     	                     RS_Vector(data.spacing.x/data.scaleFactor.x*c,
@@ -168,9 +169,9 @@ void RS_Insert::update() {
                 //tmpPen.setColor(tmpPen.getColor().stripFlags());
 
                 ne->setPen(tmpPen);
-				
+
 				ne->setUpdateEnabled(true);
-				
+
 				if (data.updateMode!=RS2::PreviewUpdate) {
 					RS_DEBUG->print("RS_Insert::update: updating new entity");
 					ne->update();
@@ -191,7 +192,7 @@ void RS_Insert::update() {
 /**
  * @return Pointer to the block associated with this Insert or
  *   NULL if the block couldn't be found. Blocks are requested
- *   from the blockSource if one was supplied and otherwise from 
+ *   from the blockSource if one was supplied and otherwise from
  *   the closest parent graphic.
  */
 RS_Block* RS_Insert::getBlockForInsert() {
@@ -228,11 +229,11 @@ RS_Block* RS_Insert::getBlockForInsert() {
 /**
  * Is this insert visible? (re-implementation from RS_Entity)
  *
- * @return true Only if the entity and the block and the layer it is on 
+ * @return true Only if the entity and the block and the layer it is on
  * are visible.
- * The Layer might also be NULL. In that case the layer visiblity 
+ * The Layer might also be NULL. In that case the layer visiblity
  * is ignored.
- * The Block might also be NULL. In that case the block visiblity 
+ * The Block might also be NULL. In that case the block visiblity
  * is ignored.
  */
 bool RS_Insert::isVisible() {
@@ -251,7 +252,7 @@ RS_VectorSolutions RS_Insert::getRefPoints() {
 	RS_VectorSolutions ret(data.insertionPoint);
 	return ret;
 }
-    
+
 
 
 RS_Vector RS_Insert::getNearestRef(const RS_Vector& coord,
@@ -263,12 +264,12 @@ RS_Vector RS_Insert::getNearestRef(const RS_Vector& coord,
 
 
 void RS_Insert::move(RS_Vector offset) {
-	RS_DEBUG->print("RS_Insert::move: offset: %f/%f", 
+	RS_DEBUG->print("RS_Insert::move: offset: %f/%f",
 		offset.x, offset.y);
-	RS_DEBUG->print("RS_Insert::move1: insertionPoint: %f/%f", 
+	RS_DEBUG->print("RS_Insert::move1: insertionPoint: %f/%f",
 		data.insertionPoint.x, data.insertionPoint.y);
     data.insertionPoint.move(offset);
-	RS_DEBUG->print("RS_Insert::move2: insertionPoint: %f/%f", 
+	RS_DEBUG->print("RS_Insert::move2: insertionPoint: %f/%f",
 		data.insertionPoint.x, data.insertionPoint.y);
     update();
 }
@@ -277,12 +278,12 @@ void RS_Insert::move(RS_Vector offset) {
 
 void RS_Insert::rotate(RS_Vector center, double angle) {
 	RS_DEBUG->print("RS_Insert::rotate1: insertionPoint: %f/%f "
-	    "/ center: %f/%f", 
+	    "/ center: %f/%f",
 		data.insertionPoint.x, data.insertionPoint.y,
 		center.x, center.y);
     data.insertionPoint.rotate(center, angle);
     data.angle = RS_Math::correctAngle(data.angle+angle);
-	RS_DEBUG->print("RS_Insert::rotate2: insertionPoint: %f/%f", 
+	RS_DEBUG->print("RS_Insert::rotate2: insertionPoint: %f/%f",
 		data.insertionPoint.x, data.insertionPoint.y);
     update();
 }
@@ -290,12 +291,12 @@ void RS_Insert::rotate(RS_Vector center, double angle) {
 
 
 void RS_Insert::scale(RS_Vector center, RS_Vector factor) {
-	RS_DEBUG->print("RS_Insert::scale1: insertionPoint: %f/%f", 
+	RS_DEBUG->print("RS_Insert::scale1: insertionPoint: %f/%f",
 		data.insertionPoint.x, data.insertionPoint.y);
     data.insertionPoint.scale(center, factor);
     data.scaleFactor.scale(RS_Vector(0.0, 0.0), factor);
     data.spacing.scale(RS_Vector(0.0, 0.0), factor);
-	RS_DEBUG->print("RS_Insert::scale2: insertionPoint: %f/%f", 
+	RS_DEBUG->print("RS_Insert::scale2: insertionPoint: %f/%f",
 		data.insertionPoint.x, data.insertionPoint.y);
     update();
 }
@@ -304,7 +305,7 @@ void RS_Insert::scale(RS_Vector center, RS_Vector factor) {
 
 void RS_Insert::mirror(RS_Vector axisPoint1, RS_Vector axisPoint2) {
     data.insertionPoint.mirror(axisPoint1, axisPoint2);
-	
+
 	RS_Vector vec;
 	vec.setPolar(1.0, data.angle);
 	vec.mirror(RS_Vector(0.0,0.0), axisPoint2-axisPoint1);

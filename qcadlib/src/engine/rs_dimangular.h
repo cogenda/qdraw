@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -33,45 +33,48 @@
 /**
  * Holds the data that defines a angular dimension entity.
  */
-class RS_DimAngularData {
+class RS_DimAngularData
+{
 public:
-    /**
-     * Default constructor. Leaves the data object uninitialized.
-     */
-    RS_DimAngularData() {}
+  /**
+   * Default constructor. Leaves the data object uninitialized.
+   */
+  RS_DimAngularData() {}
 
-    /**
-     * Constructor with initialisation.
-     *
-     * @param definitionPoint Definition point of the angular dimension. 
-     * @param leader Leader length.
-     */
-    RS_DimAngularData(const RS_Vector& definitionPoint1,
-                      const RS_Vector& definitionPoint2,
-					  const RS_Vector& definitionPoint3,
-					  const RS_Vector& definitionPoint4) {
-        this->definitionPoint1 = definitionPoint1;
-        this->definitionPoint2 = definitionPoint2;
-        this->definitionPoint3 = definitionPoint3;
-        this->definitionPoint4 = definitionPoint4;
-    }
+  /**
+   * Constructor with initialisation.
+   *
+   * @param definitionPoint Definition point of the angular dimension.
+   * @param leader Leader length.
+   */
+  RS_DimAngularData(const RS_Vector& definitionPoint1,
+                    const RS_Vector& definitionPoint2,
+                    const RS_Vector& definitionPoint3,
+                    const RS_Vector& definitionPoint4)
+  {
+    this->definitionPoint1 = definitionPoint1;
+    this->definitionPoint2 = definitionPoint2;
+    this->definitionPoint3 = definitionPoint3;
+    this->definitionPoint4 = definitionPoint4;
+  }
 
-    friend std::ostream& operator << (std::ostream& os,
-                                      const RS_DimAngularData& dd) {
-        os << "(" << dd.definitionPoint1 << "/" << dd.definitionPoint2 << "/"
-		          << dd.definitionPoint3 << "/" << dd.definitionPoint3 << ")";
-        return os;
-    }
+  friend std::ostream& operator << (std::ostream& os,
+                                    const RS_DimAngularData& dd)
+  {
+    os << "(" << dd.definitionPoint1 << "/" << dd.definitionPoint2 << "/"
+    << dd.definitionPoint3 << "/" << dd.definitionPoint3 << ")";
+    return os;
+  }
 
 public:
-    /** Definition point 1. */
-    RS_Vector definitionPoint1;
-    /** Definition point 2. */
-    RS_Vector definitionPoint2;
-    /** Definition point 3. */
-    RS_Vector definitionPoint3;
-    /** Definition point 4. */
-    RS_Vector definitionPoint4;
+  /** Definition point 1. */
+  RS_Vector definitionPoint1;
+  /** Definition point 2. */
+  RS_Vector definitionPoint2;
+  /** Definition point 3. */
+  RS_Vector definitionPoint3;
+  /** Definition point 4. */
+  RS_Vector definitionPoint4;
 };
 
 
@@ -81,66 +84,80 @@ public:
  *
  * @author Andrew Mustun
  */
-class RS_DimAngular : public RS_Dimension {
+class RS_DimAngular : public RS_Dimension
+{
 public:
-    RS_DimAngular(RS_EntityContainer* parent,
-                 const RS_DimensionData& d,
-                 const RS_DimAngularData& ed);
-    virtual ~RS_DimAngular() {}
+  RS_DimAngular(RS_EntityContainer* parent,
+                const RS_DimensionData& d,
+                const RS_DimAngularData& ed);
+  virtual ~RS_DimAngular() {}
 
-    virtual RS_Entity* clone() {
-        RS_DimAngular* d = new RS_DimAngular(*this);
-		d->entities.setAutoDelete(entities.autoDelete());
-        d->initId();
-        d->detach();
-        return d;
-    }
+  virtual RS_Entity* clone()
+  {
+    RS_DimAngular* d = new RS_DimAngular(*this);
+    d->entities.setAutoDelete(entities.autoDelete());
+    d->initId();
+    d->detach();
+    return d;
+  }
 
-    /**	@return RS2::EntityDimAngular */
-    virtual RS2::EntityType rtti() const {
-        return RS2::EntityDimAngular;
-    }
+  virtual void initLabel()
+  {
+    static unsigned long int idCounter=0;
+    label = "DimAngular" + RS_String::number(idCounter++);
+  }
 
-    /**
-     * @return Copy of data that defines the angular dimension. 
-     * @see getData()
-     */
-    RS_DimAngularData getEData() const {
-        return edata;
-    }
+  /**	@return RS2::EntityDimAngular */
+  virtual RS2::EntityType rtti() const
+  {
+    return RS2::EntityDimAngular;
+  }
 
-    virtual RS_String getMeasuredLabel();
-    double getAngle();
-    RS_Vector getCenter();
-	bool getAngles(double& ang1, double& ang2, bool& reversed,
-		RS_Vector& p1, RS_Vector& p2);
+  /**
+   * @return Copy of data that defines the angular dimension.
+   * @see getData()
+   */
+  RS_DimAngularData getEData() const
+  {
+    return edata;
+  }
 
-    virtual void update(bool autoText=false);
+  virtual RS_String getMeasuredLabel();
+  double getAngle();
+  RS_Vector getCenter();
+  bool getAngles(double& ang1, double& ang2, bool& reversed,
+                 RS_Vector& p1, RS_Vector& p2);
 
-    RS_Vector getDefinitionPoint1() {
-        return edata.definitionPoint1;
-    }
-    RS_Vector getDefinitionPoint2() {
-        return edata.definitionPoint2;
-    }
-    RS_Vector getDefinitionPoint3() {
-        return edata.definitionPoint3;
-    }
-    RS_Vector getDefinitionPoint4() {
-        return edata.definitionPoint4;
-    }
+  virtual void update(bool autoText=false);
 
-    virtual void move(RS_Vector offset);
-    virtual void rotate(RS_Vector center, double angle);
-    virtual void scale(RS_Vector center, RS_Vector factor);
-    virtual void mirror(RS_Vector axisPoint1, RS_Vector axisPoint2);
+  RS_Vector getDefinitionPoint1()
+  {
+    return edata.definitionPoint1;
+  }
+  RS_Vector getDefinitionPoint2()
+  {
+    return edata.definitionPoint2;
+  }
+  RS_Vector getDefinitionPoint3()
+  {
+    return edata.definitionPoint3;
+  }
+  RS_Vector getDefinitionPoint4()
+  {
+    return edata.definitionPoint4;
+  }
 
-    friend std::ostream& operator << (std::ostream& os,
-                                      const RS_DimAngular& d);
+  virtual void move(RS_Vector offset);
+  virtual void rotate(RS_Vector center, double angle);
+  virtual void scale(RS_Vector center, RS_Vector factor);
+  virtual void mirror(RS_Vector axisPoint1, RS_Vector axisPoint2);
+
+  friend std::ostream& operator << (std::ostream& os,
+                                    const RS_DimAngular& d);
 
 protected:
-    /** Extended data. */
-    RS_DimAngularData edata;
+  /** Extended data. */
+  RS_DimAngularData edata;
 };
 
 #endif

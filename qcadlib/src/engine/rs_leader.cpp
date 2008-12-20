@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -39,6 +39,7 @@ RS_Leader::RS_Leader(RS_EntityContainer* parent)
         :RS_EntityContainer(parent) {
 
     empty = true;
+    initLabel();
 }
 
 
@@ -55,7 +56,7 @@ RS_Leader::RS_Leader(RS_EntityContainer* parent,
 
 
 /**
- * Destructor 
+ * Destructor
  */
 RS_Leader::~RS_Leader() {}
 
@@ -73,7 +74,7 @@ void RS_Leader::update() {
             break;
         }
     }
-	
+
 	if (isUndone()) {
 		setVisible(false);
 		return;
@@ -100,11 +101,11 @@ void RS_Leader::update() {
 
 
 /**
- * Adds a vertex from the endpoint of the last element or 
+ * Adds a vertex from the endpoint of the last element or
  * sets the startpoint to the point 'v'.
  *
  * The very first vertex added is the starting point.
- * 
+ *
  * @param v vertex coordinate
  *
  * @return Pointer to the entity that was addded or NULL if this

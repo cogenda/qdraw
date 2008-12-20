@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -35,18 +35,21 @@
 /**
  * Holds the data that defines a point.
  */
-class RS_PointData {
+class RS_PointData
+{
 public:
-    RS_PointData(const RS_Vector& pos) {
-        this->pos = pos;
-    }
+  RS_PointData(const RS_Vector& pos)
+  {
+    this->pos = pos;
+  }
 
-    friend std::ostream& operator << (std::ostream& os, const RS_PointData& pd) {
-        os << "(" << pd.pos << ")";
-        return os;
-    }
+  friend std::ostream& operator << (std::ostream& os, const RS_PointData& pd)
+  {
+    os << "(" << pd.pos << ")";
+    return os;
+  }
 
-    RS_Vector pos;
+  RS_Vector pos;
 };
 
 
@@ -56,85 +59,99 @@ public:
  *
  * @author Andrew Mustun
  */
-class RS_Point : public RS_AtomicEntity {
+class RS_Point : public RS_AtomicEntity
+{
 public:
-    RS_Point(RS_EntityContainer* parent,
-             const RS_PointData& d);
+  RS_Point(RS_EntityContainer* parent,
+           const RS_PointData& d);
 
-    virtual RS_Entity* clone() {
-        RS_Point* p = new RS_Point(*this);
-        p->initId();
-        return p;
-    }
+  virtual RS_Entity* clone()
+  {
+    RS_Point* p = new RS_Point(*this);
+    p->initId();
+    return p;
+  }
 
-    /**	@return RS_ENTITY_POINT */
-    virtual RS2::EntityType rtti() const {
-        return RS2::EntityPoint;
-    }
-	
-    /** 
-	 * @return Start point of the entity. 
-	 */
-    virtual RS_Vector getStartpoint() const {
-        return data.pos;
-    }
-    /** 
-	 * @return End point of the entity. 
-	 */
-    virtual RS_Vector getEndpoint() const {
-        return data.pos;
-    }
+  virtual void initLabel()
+  {
+    static unsigned long int idCounter=0;
+    label = "Point" + RS_String::number(idCounter++);
+  }
 
-	virtual void moveStartpoint(const RS_Vector& pos);
+  /**	@return RS_ENTITY_POINT */
+  virtual RS2::EntityType rtti() const
+  {
+    return RS2::EntityPoint;
+  }
 
-    /** @return Copy of data that defines the point. */
-    RS_PointData getData() const {
-        return data;
-    }
+  /**
+  * @return Start point of the entity.
+  */
+  virtual RS_Vector getStartpoint() const
+  {
+    return data.pos;
+  }
+  /**
+  * @return End point of the entity.
+  */
+  virtual RS_Vector getEndpoint() const
+  {
+    return data.pos;
+  }
 
-    virtual RS_VectorSolutions getRefPoints();
+  virtual void moveStartpoint(const RS_Vector& pos);
 
-    /** @return Position of the point */
-    RS_Vector getPos() {
-        return data.pos;
-    }
+  /** @return Copy of data that defines the point. */
+  RS_PointData getData() const
+  {
+    return data;
+  }
 
-    /** Sets a new position for this point. */
-    void setPos(const RS_Vector& pos) {
-        data.pos = pos;
-    }
+  virtual RS_VectorSolutions getRefPoints();
 
-    virtual RS_Vector getNearestEndpoint(const RS_Vector& coord,
-                                         double* dist = NULL);
-    virtual RS_Vector getNearestPointOnEntity(const RS_Vector& coord,
-            bool onEntity = true, double* dist = NULL, RS_Entity** entity = NULL);
-    virtual RS_Vector getNearestCenter(const RS_Vector& coord,
+  /** @return Position of the point */
+  RS_Vector getPos()
+  {
+    return data.pos;
+  }
+
+  /** Sets a new position for this point. */
+  void setPos(const RS_Vector& pos)
+  {
+    data.pos = pos;
+  }
+
+  virtual RS_Vector getNearestEndpoint(const RS_Vector& coord,
                                        double* dist = NULL);
-    virtual RS_Vector getNearestMiddle(const RS_Vector& coord,
-                                       double* dist = NULL);
-    virtual RS_Vector getNearestDist(double distance,
-                                     const RS_Vector& coord,
+  virtual RS_Vector getNearestPointOnEntity(const RS_Vector& coord,
+      bool onEntity = true, double* dist = NULL, RS_Entity** entity = NULL);
+  virtual RS_Vector getNearestCenter(const RS_Vector& coord,
                                      double* dist = NULL);
-    virtual double getDistanceToPoint(const RS_Vector& coord,
-                                      RS_Entity** entity=NULL,
-                                      RS2::ResolveLevel level=RS2::ResolveNone,
-									  double solidDist = RS_MAXDOUBLE);
+  virtual RS_Vector getNearestMiddle(const RS_Vector& coord,
+                                     double* dist = NULL);
+  virtual RS_Vector getNearestDist(double distance,
+                                   const RS_Vector& coord,
+                                   double* dist = NULL);
+  virtual double getDistanceToPoint(const RS_Vector& coord,
+                                    RS_Entity** entity=NULL,
+                                    RS2::ResolveLevel level=RS2::ResolveNone,
+                                    double solidDist = RS_MAXDOUBLE);
 
-    virtual void move(RS_Vector offset);
-    virtual void rotate(RS_Vector center, double angle);
-    virtual void scale(RS_Vector center, RS_Vector factor);
-    virtual void mirror(RS_Vector axisPoint1, RS_Vector axisPoint2);
+  virtual void move(RS_Vector offset);
+  virtual void rotate(RS_Vector center, double angle);
+  virtual void scale(RS_Vector center, RS_Vector factor);
+  virtual void mirror(RS_Vector axisPoint1, RS_Vector axisPoint2);
 
-    virtual void draw(RS_Painter* painter, RS_GraphicView* view, double patternOffset=0.0);
+  virtual void draw(RS_Painter* painter, RS_GraphicView* view, double patternOffset=0.0);
 
-    friend std::ostream& operator << (std::ostream& os, const RS_Point& p);
+  friend std::ostream& operator << (std::ostream& os, const RS_Point& p);
 
-    /** Recalculates the borders of this entity. */
-    virtual void calculateBorders ();
+  /** Recalculates the borders of this entity. */
+  virtual void calculateBorders ();
 
 protected:
-    RS_PointData data;
-    //RS_Vector point;
+  RS_PointData data;
+  //RS_Vector point;
 }
 ;
 

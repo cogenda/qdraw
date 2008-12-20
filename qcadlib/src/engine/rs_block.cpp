@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -39,6 +39,7 @@ RS_Block::RS_Block(RS_EntityContainer* parent,
         : RS_Document(parent), data(d) {
 
     pen = RS_Pen(RS_Color(128,128,128), RS2::Width01, RS2::SolidLine);
+    initLabel();
 }
 
 

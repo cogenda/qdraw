@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -36,23 +36,29 @@
  */
 RS_Solid::RS_Solid(RS_EntityContainer* parent,
                    const RS_SolidData& d)
-        :RS_AtomicEntity(parent), data(d) {
-    calculateBorders();
+    :RS_AtomicEntity(parent), data(d)
+{
+  calculateBorders();
+  initLabel();
 }
 
 
 
 /**
- * @return Corner number 'num'. 
+ * @return Corner number 'num'.
  */
-RS_Vector RS_Solid::getCorner(int num) {
-    if (num>=0 && num<4) {
-        return data.corner[num];
-    } else {
-        RS_DEBUG->print("Illegal corner requested from Solid",
-                        RS_Debug::D_WARNING);
-        return RS_Vector(false);
-    }
+RS_Vector RS_Solid::getCorner(int num)
+{
+  if (num>=0 && num<4)
+  {
+    return data.corner[num];
+  }
+  else
+  {
+    RS_DEBUG->print("Illegal corner requested from Solid",
+                    RS_Debug::D_WARNING);
+    return RS_Vector(false);
+  }
 }
 
 
@@ -66,60 +72,69 @@ RS_Vector RS_Solid::getCorner(int num) {
  */
 void RS_Solid::shapeArrow(const RS_Vector& point,
                           double angle,
-                          double arrowSize) {
+                          double arrowSize)
+{
 
-    double cosv1, sinv1, cosv2, sinv2;
-    double arrowSide = arrowSize/cos(0.165);
+  double cosv1, sinv1, cosv2, sinv2;
+  double arrowSide = arrowSize/cos(0.165);
 
-    cosv1 = cos(angle+0.165)*arrowSide;
-    sinv1 = sin(angle+0.165)*arrowSide;
-    cosv2 = cos(angle-0.165)*arrowSide;
-    sinv2 = sin(angle-0.165)*arrowSide;
+  cosv1 = cos(angle+0.165)*arrowSide;
+  sinv1 = sin(angle+0.165)*arrowSide;
+  cosv2 = cos(angle-0.165)*arrowSide;
+  sinv2 = sin(angle-0.165)*arrowSide;
 
-    data.corner[0] = point;
-    data.corner[1] = RS_Vector(point.x - cosv1, point.y - sinv1);
-    data.corner[2] = RS_Vector(point.x - cosv2, point.y - sinv2);
-    data.corner[3] = RS_Vector(false);
+  data.corner[0] = point;
+  data.corner[1] = RS_Vector(point.x - cosv1, point.y - sinv1);
+  data.corner[2] = RS_Vector(point.x - cosv2, point.y - sinv2);
+  data.corner[3] = RS_Vector(false);
 
-    calculateBorders();
+  calculateBorders();
 }
 
 
 
-void RS_Solid::calculateBorders() {
-    resetBorders();
+void RS_Solid::calculateBorders()
+{
+  resetBorders();
 
-    for (int i=0; i<4; ++i) {
-        if (data.corner[i].valid) {
-            minV = RS_Vector::minimum(minV, data.corner[i]);
-            maxV = RS_Vector::maximum(maxV, data.corner[i]);
-        }
+  for (int i=0; i<4; ++i)
+  {
+    if (data.corner[i].valid)
+    {
+      minV = RS_Vector::minimum(minV, data.corner[i]);
+      maxV = RS_Vector::maximum(maxV, data.corner[i]);
     }
+  }
 }
 
 
 
-RS_Vector RS_Solid::getNearestEndpoint(const RS_Vector& coord, double* dist) {
+RS_Vector RS_Solid::getNearestEndpoint(const RS_Vector& coord, double* dist)
+{
 
-    double minDist = RS_MAXDOUBLE;
-    double curDist;
-    RS_Vector ret;
+  double minDist = RS_MAXDOUBLE;
+  double curDist;
+  RS_Vector ret;
 
-    for (int i=0; i<4; ++i) {
-        if (data.corner[i].valid) {
-            curDist = data.corner[i].distanceTo(coord);
-            if (curDist<minDist) {
-                ret = data.corner[i];
-                minDist = curDist;
-            }
-        }
+  for (int i=0; i<4; ++i)
+  {
+    if (data.corner[i].valid)
+    {
+      curDist = data.corner[i].distanceTo(coord);
+      if (curDist<minDist)
+      {
+        ret = data.corner[i];
+        minDist = curDist;
+      }
     }
+  }
 
-    if (dist!=NULL) {
-        *dist = minDist;
-    }
+  if (dist!=NULL)
+  {
+    *dist = minDist;
+  }
 
-    return ret;
+  return ret;
 }
 
 
@@ -128,43 +143,50 @@ RS_Vector RS_Solid::getNearestEndpoint(const RS_Vector& coord, double* dist) {
  * @todo Implement this.
  */
 RS_Vector RS_Solid::getNearestPointOnEntity(const RS_Vector& /*coord*/,
-        bool /*onEntity*/, double* /*dist*/, RS_Entity** /*entity*/) {
+    bool /*onEntity*/, double* /*dist*/, RS_Entity** /*entity*/)
+{
 
-    RS_Vector ret(false);
-    return ret;
+  RS_Vector ret(false);
+  return ret;
 }
 
 
 
 RS_Vector RS_Solid::getNearestCenter(const RS_Vector& /*coord*/,
-                                     double* dist) {
+                                     double* dist)
+{
 
-    if (dist!=NULL) {
-        *dist = RS_MAXDOUBLE;
-    }
+  if (dist!=NULL)
+  {
+    *dist = RS_MAXDOUBLE;
+  }
 
-    return RS_Vector(false);
+  return RS_Vector(false);
 }
 
 
 
 RS_Vector RS_Solid::getNearestMiddle(const RS_Vector& /*coord*/,
-                                     double* dist) {
-    if (dist!=NULL) {
-        *dist = RS_MAXDOUBLE;
-    }
-    return RS_Vector(false);
+                                     double* dist)
+{
+  if (dist!=NULL)
+  {
+    *dist = RS_MAXDOUBLE;
+  }
+  return RS_Vector(false);
 }
 
 
 
 RS_Vector RS_Solid::getNearestDist(double /*distance*/,
                                    const RS_Vector& /*coord*/,
-                                   double* dist) {
-    if (dist!=NULL) {
-        *dist = RS_MAXDOUBLE;
-    }
-    return RS_Vector(false);
+                                   double* dist)
+{
+  if (dist!=NULL)
+  {
+    *dist = RS_MAXDOUBLE;
+  }
+  return RS_Vector(false);
 }
 
 
@@ -177,60 +199,72 @@ RS_Vector RS_Solid::getNearestDist(double /*distance*/,
 double RS_Solid::getDistanceToPoint(const RS_Vector& /*coord*/,
                                     RS_Entity** /*entity*/,
                                     RS2::ResolveLevel /*level*/,
-								    double /*solidDist*/) {
-    return RS_MAXDOUBLE;
+                                    double /*solidDist*/)
+{
+  return RS_MAXDOUBLE;
 }
 
 
 
-void RS_Solid::move(RS_Vector offset) {
-    for (int i=0; i<4; ++i) {
-        data.corner[i].move(offset);
-    }
-    calculateBorders();
+void RS_Solid::move(RS_Vector offset)
+{
+  for (int i=0; i<4; ++i)
+  {
+    data.corner[i].move(offset);
+  }
+  calculateBorders();
 }
 
 
 
-void RS_Solid::rotate(RS_Vector center, double angle) {
-    for (int i=0; i<4; ++i) {
-        data.corner[i].rotate(center, angle);
-    }
-    calculateBorders();
+void RS_Solid::rotate(RS_Vector center, double angle)
+{
+  for (int i=0; i<4; ++i)
+  {
+    data.corner[i].rotate(center, angle);
+  }
+  calculateBorders();
 }
 
 
 
-void RS_Solid::scale(RS_Vector center, RS_Vector factor) {
-    for (int i=0; i<4; ++i) {
-        data.corner[i].scale(center, factor);
-    }
-    calculateBorders();
+void RS_Solid::scale(RS_Vector center, RS_Vector factor)
+{
+  for (int i=0; i<4; ++i)
+  {
+    data.corner[i].scale(center, factor);
+  }
+  calculateBorders();
 }
 
 
 
-void RS_Solid::mirror(RS_Vector axisPoint1, RS_Vector axisPoint2) {
-    for (int i=0; i<4; ++i) {
-        data.corner[i].mirror(axisPoint1, axisPoint2);
-    }
-    calculateBorders();
+void RS_Solid::mirror(RS_Vector axisPoint1, RS_Vector axisPoint2)
+{
+  for (int i=0; i<4; ++i)
+  {
+    data.corner[i].mirror(axisPoint1, axisPoint2);
+  }
+  calculateBorders();
 }
 
 
-void RS_Solid::draw(RS_Painter* painter, RS_GraphicView* view, 
-	double /*patternOffset*/) {
+void RS_Solid::draw(RS_Painter* painter, RS_GraphicView* view,
+                    double /*patternOffset*/)
+{
 
-    if (painter==NULL || view==NULL) {
-        return;
-    }
+  if (painter==NULL || view==NULL)
+  {
+    return;
+  }
 
-    RS_SolidData d = getData();
-    if (isTriangle()) {
-        painter->fillTriangle(view->toGui(getCorner(0)),
-                              view->toGui(getCorner(1)),
-                              view->toGui(getCorner(2)));
-    }
+  RS_SolidData d = getData();
+  if (isTriangle())
+  {
+    painter->fillTriangle(view->toGui(getCorner(0)),
+                          view->toGui(getCorner(1)),
+                          view->toGui(getCorner(2)));
+  }
 
 }
 
@@ -238,8 +272,9 @@ void RS_Solid::draw(RS_Painter* painter, RS_GraphicView* view,
 /**
  * Dumps the point's data to stdout.
  */
-std::ostream& operator << (std::ostream& os, const RS_Solid& p) {
-    os << " Solid: " << p.getData() << "\n";
-    return os;
+std::ostream& operator << (std::ostream& os, const RS_Solid& p)
+{
+  os << " Solid: " << p.getData() << "\n";
+  return os;
 }
 

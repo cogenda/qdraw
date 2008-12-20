@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -40,137 +40,153 @@
  * @para ed Extended geometrical data for diametric dimension.
  */
 RS_DimDiametric::RS_DimDiametric(RS_EntityContainer* parent,
-                           const RS_DimensionData& d,
-                           const RS_DimDiametricData& ed)
-        : RS_Dimension(parent, d), edata(ed) {
+                                 const RS_DimensionData& d,
+                                 const RS_DimDiametricData& ed)
+    : RS_Dimension(parent, d), edata(ed)
+{
 
-    calculateBorders();
+  calculateBorders();
+  initLabel();
 }
 
 
 
 /**
- * @return Automatically created label for the default 
+ * @return Automatically created label for the default
  * measurement of this dimension.
  */
-RS_String RS_DimDiametric::getMeasuredLabel() {
+RS_String RS_DimDiametric::getMeasuredLabel()
+{
 
-    // Definitive dimension line:
-    double dist = data.definitionPoint.distanceTo(edata.definitionPoint);
+  // Definitive dimension line:
+  double dist = data.definitionPoint.distanceTo(edata.definitionPoint);
 
-	RS_Graphic* graphic = getGraphic();
+  RS_Graphic* graphic = getGraphic();
 
-    RS_String ret;
-	if (graphic!=NULL) {
-		ret = RS_Units::formatLinear(dist, graphic->getUnit(), 
-			graphic->getLinearFormat(), graphic->getLinearPrecision());
-	}
-	else {
-    	ret = RS_String("%1").arg(dist);
-	}
+  RS_String ret;
+  if (graphic!=NULL)
+  {
+    ret = RS_Units::formatLinear(dist, graphic->getUnit(),
+                                 graphic->getLinearFormat(), graphic->getLinearPrecision());
+  }
+  else
+  {
+    ret = RS_String("%1").arg(dist);
+  }
 
-    return ret;
+  return ret;
 }
 
 
 
-RS_VectorSolutions RS_DimDiametric::getRefPoints() {
-	RS_VectorSolutions ret(edata.definitionPoint,
-						data.definitionPoint, data.middleOfText);
-	return ret;
+RS_VectorSolutions RS_DimDiametric::getRefPoints()
+{
+  RS_VectorSolutions ret(edata.definitionPoint,
+                         data.definitionPoint, data.middleOfText);
+  return ret;
 }
 
 
 /**
- * Updates the sub entities of this dimension. Called when the 
+ * Updates the sub entities of this dimension. Called when the
  * dimension or the position, alignment, .. changes.
  *
  * @param autoText Automatically reposition the text label
  */
-void RS_DimDiametric::update(bool autoText) {
+void RS_DimDiametric::update(bool autoText)
+{
 
-    RS_DEBUG->print("RS_DimDiametric::update");
+  RS_DEBUG->print("RS_DimDiametric::update");
 
-    clear();
+  clear();
 
-	if (isUndone()) {
-		return;
-	}
+  if (isUndone())
+  {
+    return;
+  }
 
-    // dimension line:
-    updateCreateDimensionLine(data.definitionPoint, edata.definitionPoint,
-	true, true, autoText);
+  // dimension line:
+  updateCreateDimensionLine(data.definitionPoint, edata.definitionPoint,
+                            true, true, autoText);
 
-    calculateBorders();
+  calculateBorders();
 }
 
 
 
-void RS_DimDiametric::move(RS_Vector offset) {
-    RS_Dimension::move(offset);
+void RS_DimDiametric::move(RS_Vector offset)
+{
+  RS_Dimension::move(offset);
 
-    edata.definitionPoint.move(offset);
-    update();
+  edata.definitionPoint.move(offset);
+  update();
 }
 
 
 
-void RS_DimDiametric::rotate(RS_Vector center, double angle) {
-    RS_Dimension::rotate(center, angle);
+void RS_DimDiametric::rotate(RS_Vector center, double angle)
+{
+  RS_Dimension::rotate(center, angle);
 
-    edata.definitionPoint.rotate(center, angle);
-    update();
+  edata.definitionPoint.rotate(center, angle);
+  update();
 }
 
 
 
-void RS_DimDiametric::scale(RS_Vector center, RS_Vector factor) {
-    RS_Dimension::scale(center, factor);
+void RS_DimDiametric::scale(RS_Vector center, RS_Vector factor)
+{
+  RS_Dimension::scale(center, factor);
 
-    edata.definitionPoint.scale(center, factor);
-	edata.leader*=factor.x;
-    update();
+  edata.definitionPoint.scale(center, factor);
+  edata.leader*=factor.x;
+  update();
 }
 
 
 
-void RS_DimDiametric::mirror(RS_Vector axisPoint1, RS_Vector axisPoint2) {
-    RS_Dimension::mirror(axisPoint1, axisPoint2);
+void RS_DimDiametric::mirror(RS_Vector axisPoint1, RS_Vector axisPoint2)
+{
+  RS_Dimension::mirror(axisPoint1, axisPoint2);
 
-    edata.definitionPoint.mirror(axisPoint1, axisPoint2);
-    update();
+  edata.definitionPoint.mirror(axisPoint1, axisPoint2);
+  update();
 }
 
 
 
-void RS_DimDiametric::moveRef(const RS_Vector& ref, const RS_Vector& offset) {
+void RS_DimDiametric::moveRef(const RS_Vector& ref, const RS_Vector& offset)
+{
 
-    if (ref.distanceTo(edata.definitionPoint)<1.0e-4) {
-		RS_Vector c = (edata.definitionPoint + data.definitionPoint)/2.0;
-		double d = c.distanceTo(edata.definitionPoint);
-		double a = c.angleTo(edata.definitionPoint + offset);
-		
-		RS_Vector v;
-		v.setPolar(d, a);
-        edata.definitionPoint = c + v;
-		data.definitionPoint = c - v;
-		update(true);
-    }
-    else if (ref.distanceTo(data.definitionPoint)<1.0e-4) {
-		RS_Vector c = (edata.definitionPoint + data.definitionPoint)/2.0;
-		double d = c.distanceTo(data.definitionPoint);
-		double a = c.angleTo(data.definitionPoint + offset);
-		
-		RS_Vector v;
-		v.setPolar(d, a);
-        data.definitionPoint = c + v;
-		edata.definitionPoint = c - v;
-		update(true);
-    }
-	else if (ref.distanceTo(data.middleOfText)<1.0e-4) {
-        data.middleOfText.move(offset);
-		update(false);
-    }
+  if (ref.distanceTo(edata.definitionPoint)<1.0e-4)
+  {
+    RS_Vector c = (edata.definitionPoint + data.definitionPoint)/2.0;
+    double d = c.distanceTo(edata.definitionPoint);
+    double a = c.angleTo(edata.definitionPoint + offset);
+
+    RS_Vector v;
+    v.setPolar(d, a);
+    edata.definitionPoint = c + v;
+    data.definitionPoint = c - v;
+    update(true);
+  }
+  else if (ref.distanceTo(data.definitionPoint)<1.0e-4)
+  {
+    RS_Vector c = (edata.definitionPoint + data.definitionPoint)/2.0;
+    double d = c.distanceTo(data.definitionPoint);
+    double a = c.angleTo(data.definitionPoint + offset);
+
+    RS_Vector v;
+    v.setPolar(d, a);
+    data.definitionPoint = c + v;
+    edata.definitionPoint = c - v;
+    update(true);
+  }
+  else if (ref.distanceTo(data.middleOfText)<1.0e-4)
+  {
+    data.middleOfText.move(offset);
+    update(false);
+  }
 }
 
 
@@ -178,8 +194,9 @@ void RS_DimDiametric::moveRef(const RS_Vector& ref, const RS_Vector& offset) {
 /**
  * Dumps the point's data to stdout.
  */
-std::ostream& operator << (std::ostream& os, const RS_DimDiametric& d) {
-    os << " DimDiametric: " << d.getData() << "\n" << d.getEData() << "\n";
-    return os;
+std::ostream& operator << (std::ostream& os, const RS_DimDiametric& d)
+{
+  os << " DimDiametric: " << d.getData() << "\n" << d.getEData() << "\n";
+  return os;
 }
 

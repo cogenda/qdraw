@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -34,40 +34,43 @@
 /**
  * Holds the data that defines a hatch entity.
  */
-class RS_HatchData {
+class RS_HatchData
+{
 public:
-    /**
-     * Default constructor. Leaves the data object uninitialized.
-     */
-    RS_HatchData() {}
+  /**
+   * Default constructor. Leaves the data object uninitialized.
+   */
+  RS_HatchData() {}
 
-	/**
-	 * @param solid true: solid fill, false: pattern.
-	 * @param scale Pattern scale or spacing.
-	 * @param pattern Pattern name.
-	 */
-    RS_HatchData(bool solid,
-	             double scale,
-				 double angle,
-	             const RS_String& pattern) {
-		this->solid = solid;
-		this->scale = scale;
-		this->angle = angle;
-		this->pattern = pattern;
+  /**
+   * @param solid true: solid fill, false: pattern.
+   * @param scale Pattern scale or spacing.
+   * @param pattern Pattern name.
+   */
+  RS_HatchData(bool solid,
+               double scale,
+               double angle,
+               const RS_String& pattern)
+  {
+    this->solid = solid;
+    this->scale = scale;
+    this->angle = angle;
+    this->pattern = pattern;
 
-		//std::cout << "RS_HatchData: " << pattern.latin1() << "\n";
-	}
+    //std::cout << "RS_HatchData: " << pattern.latin1() << "\n";
+  }
 
-    friend std::ostream& operator << (std::ostream& os, const RS_HatchData& td) {
-        os << "(" << td.pattern.latin1() << ")";
-        return os;
-    }
+  friend std::ostream& operator << (std::ostream& os, const RS_HatchData& td)
+  {
+    os << "(" << td.pattern.latin1() << ")";
+    return os;
+  }
 
 public:
-	bool solid;
-	double scale;
-	double angle;
-	RS_String pattern;
+  bool solid;
+  double scale;
+  double angle;
+  RS_String pattern;
 };
 
 
@@ -77,101 +80,125 @@ public:
  *
  * @author Andrew Mustun
  */
-class RS_Hatch : public RS_EntityContainer {
+class RS_Hatch : public RS_EntityContainer
+{
 public:
-    RS_Hatch(RS_EntityContainer* parent,
-            const RS_HatchData& d);
-    virtual ~RS_Hatch() {}
+  RS_Hatch(RS_EntityContainer* parent,
+           const RS_HatchData& d);
+  virtual ~RS_Hatch() {}
 
-    virtual RS_Entity* clone();
+  virtual RS_Entity* clone();
 
-    /**	@return RS2::EntityHatch */
-    virtual RS2::EntityType rtti() const {
-        return RS2::EntityHatch;
+  virtual void initLabel()
+  {
+    static unsigned long int idCounter=0;
+    if(isSolid())
+      label = "Region" + RS_String::number(idCounter++);
+    else
+      label = "Hatch" + RS_String::number(idCounter++);
+  }
+
+  /**	@return RS2::EntityHatch */
+  virtual RS2::EntityType rtti() const
+  {
+    return RS2::EntityHatch;
+  }
+
+  /**
+   * @return true: if this is a hatch with lines (hatch pattern),
+   *         false: if this is filled with a solid color.
+   */
+  virtual bool isContainer() const
+  {
+    if (isSolid())
+    {
+      return false;
     }
-	
-    /**
-     * @return true: if this is a hatch with lines (hatch pattern),
-     *         false: if this is filled with a solid color.
-     */
-    virtual bool isContainer() const {
-		if (isSolid()) {
-			return false;
-		}
-		else {
-        	return true;
-		}
+    else
+    {
+      return true;
     }
+  }
 
-    /** @return Copy of data that defines the hatch. */
-    RS_HatchData getData() const {
-        return data;
-    }
+  /** @return Copy of data that defines the hatch. */
+  RS_HatchData getData() const
+  {
+    return data;
+  }
 
-	bool validate();
-	
-	int countLoops();
+  bool validate();
 
-	/** @return true if this is a solid fill. false if it is a pattern hatch. */
-	bool isSolid() const {
-		return data.solid;
-	}
-	void setSolid(bool solid) {
-		data.solid = solid;
-	}
+  int countLoops();
 
-	RS_String getPattern() {
-		return data.pattern;
-	}
-	void setPattern(const RS_String& pattern) {
-		data.pattern = pattern;
-	}
-	
-	double getScale() {
-		return data.scale;
-	}
-	void setScale(double scale) {
-		data.scale = scale;
-	}
-	
-	double getAngle() {
-		return data.angle;
-	}
-	void setAngle(double angle) {
-		data.angle = angle;
-	}
+  /** @return true if this is a solid fill. false if it is a pattern hatch. */
+  bool isSolid() const
+  {
+    return data.solid;
+  }
+  void setSolid(bool solid)
+  {
+    data.solid = solid;
+  }
 
-    virtual void calculateBorders();
-    void update();
-	void activateContour(bool on);
-	
-    virtual void draw(RS_Painter* painter, RS_GraphicView* view, 
-		double patternOffset=0.0);
+  RS_String getPattern()
+  {
+    return data.pattern;
+  }
+  void setPattern(const RS_String& pattern)
+  {
+    data.pattern = pattern;
+  }
 
-	virtual double getLength() {
-		return -1.0;
-	}
-	
-    virtual double getDistanceToPoint(const RS_Vector& coord,
-                                      RS_Entity** entity = NULL,
-                                      RS2::ResolveLevel level = RS2::ResolveNone,
-									  double solidDist = RS_MAXDOUBLE);
+  double getScale()
+  {
+    return data.scale;
+  }
+  void setScale(double scale)
+  {
+    data.scale = scale;
+  }
 
-    virtual void move(RS_Vector offset);
-    virtual void rotate(RS_Vector center, double angle);
-    virtual void scale(RS_Vector center, RS_Vector factor);
-    virtual void mirror(RS_Vector axisPoint1, RS_Vector axisPoint2);
-    virtual void stretch(RS_Vector firstCorner,
-                         RS_Vector secondCorner,
-                         RS_Vector offset);
+  double getAngle()
+  {
+    return data.angle;
+  }
+  void setAngle(double angle)
+  {
+    data.angle = angle;
+  }
 
-    friend std::ostream& operator << (std::ostream& os, const RS_Hatch& p);
+  virtual void calculateBorders();
+  void update();
+  void activateContour(bool on);
+
+  virtual void draw(RS_Painter* painter, RS_GraphicView* view,
+                    double patternOffset=0.0);
+
+  virtual double getLength()
+  {
+    return -1.0;
+  }
+
+  virtual double getDistanceToPoint(const RS_Vector& coord,
+                                    RS_Entity** entity = NULL,
+                                    RS2::ResolveLevel level = RS2::ResolveNone,
+                                    double solidDist = RS_MAXDOUBLE);
+
+  virtual void move(RS_Vector offset);
+  virtual void rotate(RS_Vector center, double angle);
+  virtual void scale(RS_Vector center, RS_Vector factor);
+  virtual void mirror(RS_Vector axisPoint1, RS_Vector axisPoint2);
+  virtual void stretch(RS_Vector firstCorner,
+                       RS_Vector secondCorner,
+                       RS_Vector offset);
+
+  friend std::ostream& operator << (std::ostream& os, const RS_Hatch& p);
 
 protected:
-    RS_HatchData data;
-	RS_EntityContainer* hatch;
-	bool updateRunning;
-	bool needOptimization;
+  RS_HatchData data;
+  RS_EntityContainer* hatch;
+  bool updateRunning;
+  bool needOptimization;
 };
 
 #endif

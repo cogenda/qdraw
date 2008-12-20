@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -38,39 +38,43 @@
  * Default constructor.
  */
 RS_Graphic::RS_Graphic(RS_EntityContainer* parent)
-        : RS_Document(parent),
-        layerList(),
-blockList(true)
+    : RS_Document(parent),
+    layerList(),
+    blockList(true)
 #ifdef RS_CAM
-, camData()
+    , camData()
 #endif
 {
 
-    RS_SETTINGS->beginGroup("/Defaults");
-    setUnit(RS_Units::stringToUnit(RS_SETTINGS->readEntry("/Unit", "None")));
-    RS_SETTINGS->endGroup();
+  RS_SETTINGS->beginGroup("/Defaults");
+  setUnit(RS_Units::stringToUnit(RS_SETTINGS->readEntry("/Unit", "None")));
+  RS_SETTINGS->endGroup();
 
-    RS2::Unit unit = getUnit();
+  RS2::Unit unit = getUnit();
 
-    if (unit==RS2::Inch) {
-        addVariable("$DIMASZ", 0.1, 40);
-        addVariable("$DIMEXE", 0.05, 40);
-        addVariable("$DIMEXO", 0.025, 40);
-        addVariable("$DIMGAP", 0.025, 40);
-        addVariable("$DIMTXT", 0.1, 40);
-    } else {
-        addVariable("$DIMASZ",
-                    RS_Units::convert(2.5, RS2::Millimeter, unit), 40);
-        addVariable("$DIMEXE",
-                    RS_Units::convert(1.25, RS2::Millimeter, unit), 40);
-        addVariable("$DIMEXO",
-                    RS_Units::convert(0.625, RS2::Millimeter, unit), 40);
-        addVariable("$DIMGAP",
-                    RS_Units::convert(0.625, RS2::Millimeter, unit), 40);
-        addVariable("$DIMTXT",
-                    RS_Units::convert(2.5, RS2::Millimeter, unit), 40);
-    }
-	setModified(false);
+  if (unit==RS2::Inch)
+  {
+    addVariable("$DIMASZ", 0.1, 40);
+    addVariable("$DIMEXE", 0.05, 40);
+    addVariable("$DIMEXO", 0.025, 40);
+    addVariable("$DIMGAP", 0.025, 40);
+    addVariable("$DIMTXT", 0.1, 40);
+  }
+  else
+  {
+    addVariable("$DIMASZ",
+                RS_Units::convert(2.5, RS2::Millimeter, unit), 40);
+    addVariable("$DIMEXE",
+                RS_Units::convert(1.25, RS2::Millimeter, unit), 40);
+    addVariable("$DIMEXO",
+                RS_Units::convert(0.625, RS2::Millimeter, unit), 40);
+    addVariable("$DIMGAP",
+                RS_Units::convert(0.625, RS2::Millimeter, unit), 40);
+    addVariable("$DIMTXT",
+                RS_Units::convert(2.5, RS2::Millimeter, unit), 40);
+  }
+  setModified(false);
+  initLabel();
 }
 
 
@@ -85,23 +89,27 @@ RS_Graphic::~RS_Graphic() {}
 /**
  * Counts the entities on the given layer.
  */
-unsigned long int RS_Graphic::countLayerEntities(RS_Layer* layer) {
+unsigned long int RS_Graphic::countLayerEntities(RS_Layer* layer)
+{
 
-    int c=0;
+  int c=0;
 
-    if (layer!=NULL) {
-        for (RS_Entity* t=firstEntity(RS2::ResolveNone);
-                t!=NULL;
-                t=nextEntity(RS2::ResolveNone)) {
+  if (layer!=NULL)
+  {
+    for (RS_Entity* t=firstEntity(RS2::ResolveNone);
+         t!=NULL;
+         t=nextEntity(RS2::ResolveNone))
+    {
 
-            if (t->getLayer()!=NULL &&
-                    t->getLayer()->getName()==layer->getName()) {
-                c+=t->countDeep();
-            }
-        }
+      if (t->getLayer()!=NULL &&
+          t->getLayer()->getName()==layer->getName())
+      {
+        c+=t->countDeep();
+      }
     }
+  }
 
-    return c;
+  return c;
 }
 
 
@@ -109,48 +117,56 @@ unsigned long int RS_Graphic::countLayerEntities(RS_Layer* layer) {
 /**
  * Removes the given layer and undoes all entities on it.
  */
-void RS_Graphic::removeLayer(RS_Layer* layer) {
+void RS_Graphic::removeLayer(RS_Layer* layer)
+{
 
-    if (layer!=NULL && layer->getName()!="0") {
+  if (layer!=NULL && layer->getName()!="0")
+  {
 
-        // remove all entities on that layer:
-        startUndoCycle();
-        for (RS_Entity* e=firstEntity(RS2::ResolveNone);
-                e!=NULL;
-                e=nextEntity(RS2::ResolveNone)) {
+    // remove all entities on that layer:
+    startUndoCycle();
+    for (RS_Entity* e=firstEntity(RS2::ResolveNone);
+         e!=NULL;
+         e=nextEntity(RS2::ResolveNone))
+    {
 
-            if (e->getLayer()!=NULL &&
-                    e->getLayer()->getName()==layer->getName()) {
+      if (e->getLayer()!=NULL &&
+          e->getLayer()->getName()==layer->getName())
+      {
 
-                e->setUndoState(true);
-                e->setLayer("0");
-                addUndoable(e);
-            }
-        }
-        endUndoCycle();
-
-        // remove all entities in blocks that are on that layer:
-        for (uint bi=0; bi<blockList.count(); bi++) {
-            RS_Block* blk = blockList.at(bi);
-
-            if (blk!=NULL) {
-                for (RS_Entity* e=blk->firstEntity(RS2::ResolveNone);
-                        e!=NULL;
-                        e=blk->nextEntity(RS2::ResolveNone)) {
-
-                    if (e->getLayer()!=NULL &&
-                            e->getLayer()->getName()==layer->getName()) {
-
-                        e->setUndoState(true);
-                        e->setLayer("0");
-                        //addUndoable(e);
-                    }
-                }
-            }
-        }
-
-        layerList.remove(layer);
+        e->setUndoState(true);
+        e->setLayer("0");
+        addUndoable(e);
+      }
     }
+    endUndoCycle();
+
+    // remove all entities in blocks that are on that layer:
+    for (uint bi=0; bi<blockList.count(); bi++)
+    {
+      RS_Block* blk = blockList.at(bi);
+
+      if (blk!=NULL)
+      {
+        for (RS_Entity* e=blk->firstEntity(RS2::ResolveNone);
+             e!=NULL;
+             e=blk->nextEntity(RS2::ResolveNone))
+        {
+
+          if (e->getLayer()!=NULL &&
+              e->getLayer()->getName()==layer->getName())
+          {
+
+            e->setUndoState(true);
+            e->setLayer("0");
+            //addUndoable(e);
+          }
+        }
+      }
+    }
+
+    layerList.remove(layer);
+  }
 }
 
 
@@ -158,19 +174,20 @@ void RS_Graphic::removeLayer(RS_Layer* layer) {
  * Clears all layers, blocks and entities of this graphic.
  * A default layer (0) is created.
  */
-void RS_Graphic::newDoc() {
+void RS_Graphic::newDoc()
+{
 
-    RS_DEBUG->print("RS_Graphic::newDoc");
+  RS_DEBUG->print("RS_Graphic::newDoc");
 
-    clear();
+  clear();
 
-    clearLayers();
-    clearBlocks();
+  clearLayers();
+  clearBlocks();
 
-    addLayer(new RS_Layer("0"));
-    //addLayer(new RS_Layer("ByBlock"));
+  addLayer(new RS_Layer("0"));
+  //addLayer(new RS_Layer("ByBlock"));
 
-	setModified(false);
+  setModified(false);
 }
 
 
@@ -178,26 +195,28 @@ void RS_Graphic::newDoc() {
 /**
  * Saves this graphic with the current filename and settings.
  */
-bool RS_Graphic::save() {
+bool RS_Graphic::save()
+{
 
-	bool ret = false;
-	
-    RS_DEBUG->print("RS_Graphic::save");
-    RS_DEBUG->print("  file: %s", filename.latin1());
-    RS_DEBUG->print("  format: %d", (int)formatType);
+  bool ret = false;
 
-    RS_DEBUG->print("  export...");
-    ret = RS_FILEIO->fileExport(*this, filename, formatType);
+  RS_DEBUG->print("RS_Graphic::save");
+  RS_DEBUG->print("  file: %s", filename.latin1());
+  RS_DEBUG->print("  format: %d", (int)formatType);
 
-	if (ret) {
-		setModified(false);
-		layerList.setModified(false);
-		blockList.setModified(false);
-	}
+  RS_DEBUG->print("  export...");
+  ret = RS_FILEIO->fileExport(*this, filename, formatType);
 
-    RS_DEBUG->print("RS_Graphic::save ok");
+  if (ret)
+  {
+    setModified(false);
+    layerList.setModified(false);
+    blockList.setModified(false);
+  }
 
-    return ret;
+  RS_DEBUG->print("RS_Graphic::save ok");
+
+  return ret;
 }
 
 
@@ -205,14 +224,15 @@ bool RS_Graphic::save() {
 /**
  * Saves this graphic with the given filename and current settings.
  */
-bool RS_Graphic::saveAs(const RS_String &filename, RS2::FormatType type) {
+bool RS_Graphic::saveAs(const RS_String &filename, RS2::FormatType type)
+{
 
-    RS_DEBUG->print("RS_Graphic::saveAs");
+  RS_DEBUG->print("RS_Graphic::saveAs");
 
-    this->filename = filename;
-	this->formatType = type;
+  this->filename = filename;
+  this->formatType = type;
 
-    return save();
+  return save();
 }
 
 
@@ -220,29 +240,30 @@ bool RS_Graphic::saveAs(const RS_String &filename, RS2::FormatType type) {
 /**
  * Loads the given fils into this graphic.
  */
-bool RS_Graphic::open(const RS_String &filename, RS2::FormatType type) {
-    RS_DEBUG->print("RS_Graphic::open(%s)", filename.latin1());
+bool RS_Graphic::open(const RS_String &filename, RS2::FormatType type)
+{
+  RS_DEBUG->print("RS_Graphic::open(%s)", filename.latin1());
 
-	bool ret = false;
+  bool ret = false;
 
-    this->filename = filename;
+  this->filename = filename;
 
-    // clean all:
-    newDoc();
+  // clean all:
+  newDoc();
 
-    // import file:
-    ret = RS_FILEIO->fileImport(*this, filename, type);
-		
-	setModified(false);
-	layerList.setModified(false);
-	blockList.setModified(false);
+  // import file:
+  ret = RS_FILEIO->fileImport(*this, filename, type);
 
-    //cout << *((RS_Graphic*)graphic);
-    //calculateBorders();
-	
-    RS_DEBUG->print("RS_Graphic::open(%s): OK", filename.latin1());
+  setModified(false);
+  layerList.setModified(false);
+  blockList.setModified(false);
 
-    return ret;
+  //cout << *((RS_Graphic*)graphic);
+  //calculateBorders();
+
+  RS_DEBUG->print("RS_Graphic::open(%s): OK", filename.latin1());
+
+  return ret;
 }
 
 
@@ -250,9 +271,10 @@ bool RS_Graphic::open(const RS_String &filename, RS2::FormatType type) {
 /**
  * @return true if the grid is switched on (visible).
  */
-bool RS_Graphic::isGridOn() {
-	int on = getVariableInt("$GRIDMODE", 1);
-	return on!=0;
+bool RS_Graphic::isGridOn()
+{
+  int on = getVariableInt("$GRIDMODE", 1);
+  return on!=0;
 }
 
 
@@ -260,8 +282,9 @@ bool RS_Graphic::isGridOn() {
 /**
  * Enables / disables the grid.
  */
-void RS_Graphic::setGridOn(bool on) {
-	addVariable("$GRIDMODE", (int)on, 70);
+void RS_Graphic::setGridOn(bool on)
+{
+  addVariable("$GRIDMODE", (int)on, 70);
 }
 
 
@@ -269,23 +292,25 @@ void RS_Graphic::setGridOn(bool on) {
 /**
  * Sets the unit of this graphic to 'u'
  */
-void RS_Graphic::setUnit(RS2::Unit u) {
+void RS_Graphic::setUnit(RS2::Unit u)
+{
 
-    setPaperSize(RS_Units::convert(getPaperSize(), getUnit(), u));
+  setPaperSize(RS_Units::convert(getPaperSize(), getUnit(), u));
 
-    addVariable("$INSUNITS", (int)u, 70);
+  addVariable("$INSUNITS", (int)u, 70);
 
-    //unit = u;
+  //unit = u;
 }
 
 
 
 /**
- * Gets the unit of this graphic 
+ * Gets the unit of this graphic
  */
-RS2::Unit RS_Graphic::getUnit() {
-    return (RS2::Unit)getVariableInt("$INSUNITS", 0);
-    //return unit;
+RS2::Unit RS_Graphic::getUnit()
+{
+  return (RS2::Unit)getVariableInt("$INSUNITS", 0);
+  //return unit;
 }
 
 
@@ -294,33 +319,35 @@ RS2::Unit RS_Graphic::getUnit() {
  * @return The linear format type for this document.
  * This is determined by the variable "$LUNITS".
  */
-RS2::LinearFormat RS_Graphic::getLinearFormat() {
-    int lunits = getVariableInt("$LUNITS", 2);
+RS2::LinearFormat RS_Graphic::getLinearFormat()
+{
+  int lunits = getVariableInt("$LUNITS", 2);
 
-    switch (lunits) {
-    default:
-    case 2:
-        return RS2::Decimal;
-        break;
-
-    case 1:
-        return RS2::Scientific;
-        break;
-
-    case 3:
-        return RS2::Engineering;
-        break;
-
-    case 4:
-        return RS2::Architectural;
-        break;
-
-    case 5:
-        return RS2::Fractional;
-        break;
-    }
-
+  switch (lunits)
+  {
+  default:
+  case 2:
     return RS2::Decimal;
+    break;
+
+  case 1:
+    return RS2::Scientific;
+    break;
+
+  case 3:
+    return RS2::Engineering;
+    break;
+
+  case 4:
+    return RS2::Architectural;
+    break;
+
+  case 5:
+    return RS2::Fractional;
+    break;
+  }
+
+  return RS2::Decimal;
 }
 
 
@@ -329,8 +356,9 @@ RS2::LinearFormat RS_Graphic::getLinearFormat() {
  * @return The linear precision for this document.
  * This is determined by the variable "$LUPREC".
  */
-int RS_Graphic::getLinearPrecision() {
-    return getVariableInt("$LUPREC", 4);
+int RS_Graphic::getLinearPrecision()
+{
+  return getVariableInt("$LUPREC", 4);
 }
 
 
@@ -339,33 +367,35 @@ int RS_Graphic::getLinearPrecision() {
  * @return The angle format type for this document.
  * This is determined by the variable "$AUNITS".
  */
-RS2::AngleFormat RS_Graphic::getAngleFormat() {
-    int aunits = getVariableInt("$AUNITS", 0);
+RS2::AngleFormat RS_Graphic::getAngleFormat()
+{
+  int aunits = getVariableInt("$AUNITS", 0);
 
-    switch (aunits) {
-    default:
-    case 0:
-        return RS2::DegreesDecimal;
-        break;
-
-    case 1:
-        return RS2::DegreesMinutesSeconds;
-        break;
-
-    case 2:
-        return RS2::Gradians;
-        break;
-
-    case 3:
-        return RS2::Radians;
-        break;
-
-    case 4:
-        return RS2::Surveyors;
-        break;
-    }
-
+  switch (aunits)
+  {
+  default:
+  case 0:
     return RS2::DegreesDecimal;
+    break;
+
+  case 1:
+    return RS2::DegreesMinutesSeconds;
+    break;
+
+  case 2:
+    return RS2::Gradians;
+    break;
+
+  case 3:
+    return RS2::Radians;
+    break;
+
+  case 4:
+    return RS2::Surveyors;
+    break;
+  }
+
+  return RS2::DegreesDecimal;
 }
 
 
@@ -374,8 +404,9 @@ RS2::AngleFormat RS_Graphic::getAngleFormat() {
  * @return The linear precision for this document.
  * This is determined by the variable "$LUPREC".
  */
-int RS_Graphic::getAnglePrecision() {
-    return getVariableInt("$AUPREC", 4);
+int RS_Graphic::getAnglePrecision()
+{
+  return getVariableInt("$AUPREC", 4);
 }
 
 
@@ -385,39 +416,43 @@ int RS_Graphic::getAnglePrecision() {
  * This is the distance from the lower left paper edge to the zero
  * point of the drawing. DXF: $PINSBASE.
  */
-RS_Vector RS_Graphic::getPaperInsertionBase() {
-    return getVariableVector("$PINSBASE", RS_Vector(0.0,0.0));
+RS_Vector RS_Graphic::getPaperInsertionBase()
+{
+  return getVariableVector("$PINSBASE", RS_Vector(0.0,0.0));
 }
 
 
 /**
  * Sets the PINSBASE variable.
  */
-void RS_Graphic::setPaperInsertionBase(const RS_Vector& p) {
-    addVariable("$PINSBASE", p, 10);
+void RS_Graphic::setPaperInsertionBase(const RS_Vector& p)
+{
+  addVariable("$PINSBASE", p, 10);
 }
 
 
 /**
  * @return Paper size in graphic units.
  */
-RS_Vector RS_Graphic::getPaperSize() {
-    RS_Vector def = RS_Units::convert(RS_Vector(210.0,297.0),
-                                      RS2::Millimeter, getUnit());
+RS_Vector RS_Graphic::getPaperSize()
+{
+  RS_Vector def = RS_Units::convert(RS_Vector(210.0,297.0),
+                                    RS2::Millimeter, getUnit());
 
-    RS_Vector v1 = getVariableVector("$PLIMMIN", RS_Vector(0.0,0.0));
-    RS_Vector v2 = getVariableVector("$PLIMMAX", def);
+  RS_Vector v1 = getVariableVector("$PLIMMIN", RS_Vector(0.0,0.0));
+  RS_Vector v2 = getVariableVector("$PLIMMAX", def);
 
-    return v2-v1;
+  return v2-v1;
 }
 
 
 /**
  * Sets a new paper size.
  */
-void RS_Graphic::setPaperSize(const RS_Vector& s) {
-    addVariable("$PLIMMIN", RS_Vector(0.0,0.0), 10);
-    addVariable("$PLIMMAX", s, 10);
+void RS_Graphic::setPaperSize(const RS_Vector& s)
+{
+  addVariable("$PLIMMIN", RS_Vector(0.0,0.0), 10);
+  addVariable("$PLIMMAX", s, 10);
 }
 
 
@@ -428,15 +463,17 @@ void RS_Graphic::setPaperSize(const RS_Vector& s) {
  *
  * @param landscape will be set to true for landscape and false for portrait if not NULL.
  */
-RS2::PaperFormat RS_Graphic::getPaperFormat(bool* landscape) {
-    RS_Vector size = RS_Units::convert(getPaperSize(),
-                                       getUnit(), RS2::Millimeter);
+RS2::PaperFormat RS_Graphic::getPaperFormat(bool* landscape)
+{
+  RS_Vector size = RS_Units::convert(getPaperSize(),
+                                     getUnit(), RS2::Millimeter);
 
-    if (landscape!=NULL) {
-        *landscape = (size.x>size.y);
-    }
+  if (landscape!=NULL)
+  {
+    *landscape = (size.x>size.y);
+  }
 
-    return RS_Units::paperSizeToFormat(size);
+  return RS_Units::paperSizeToFormat(size);
 }
 
 
@@ -444,18 +481,21 @@ RS2::PaperFormat RS_Graphic::getPaperFormat(bool* landscape) {
 /**
  * Sets the paper format to the given format.
  */
-void RS_Graphic::setPaperFormat(RS2::PaperFormat f, bool landscape) {
-    RS_Vector size = RS_Units::paperFormatToSize(f);
+void RS_Graphic::setPaperFormat(RS2::PaperFormat f, bool landscape)
+{
+  RS_Vector size = RS_Units::paperFormatToSize(f);
 
-    if (landscape) {
-        double tmp = size.x;
-        size.x = size.y;
-        size.y = tmp;
-    }
+  if (landscape)
+  {
+    double tmp = size.x;
+    size.x = size.y;
+    size.y = tmp;
+  }
 
-	if (f!=RS2::Custom) {
-    	setPaperSize(RS_Units::convert(size, RS2::Millimeter, getUnit()));
-	}
+  if (f!=RS2::Custom)
+  {
+    setPaperSize(RS_Units::convert(size, RS2::Millimeter, getUnit()));
+  }
 }
 
 
@@ -463,15 +503,17 @@ void RS_Graphic::setPaperFormat(RS2::PaperFormat f, bool landscape) {
 /**
  * @return Paper space scaling (DXF: $PSVPSCALE).
  */
-double RS_Graphic::getPaperScale() {
-    double ret;
+double RS_Graphic::getPaperScale()
+{
+  double ret;
 
-    ret = getVariableDouble("$PSVPSCALE", 1.0);
-    if (ret<1.0e-6) {
-        ret = 1.0;
-    }
+  ret = getVariableDouble("$PSVPSCALE", 1.0);
+  if (ret<1.0e-6)
+  {
+    ret = 1.0;
+  }
 
-    return ret;
+  return ret;
 }
 
 
@@ -479,8 +521,9 @@ double RS_Graphic::getPaperScale() {
 /**
  * Sets a new scale factor for the paper space.
  */
-void RS_Graphic::setPaperScale(double s) {
-    addVariable("$PSVPSCALE", s, 40);
+void RS_Graphic::setPaperScale(double s)
+{
+  addVariable("$PSVPSCALE", s, 40);
 }
 
 
@@ -488,14 +531,15 @@ void RS_Graphic::setPaperScale(double s) {
 /**
  * Centers drawing on page. Affects DXF variable $PINSBASE.
  */
-void RS_Graphic::centerToPage() {
-    RS_Vector size = getPaperSize();
+void RS_Graphic::centerToPage()
+{
+  RS_Vector size = getPaperSize();
 
-    double scale = getPaperScale();
+  double scale = getPaperScale();
 
-    RS_Vector pinsbase = (size-getSize()*scale)/2.0 - getMin()*scale;
+  RS_Vector pinsbase = (size-getSize()*scale)/2.0 - getMin()*scale;
 
-    setPaperInsertionBase(pinsbase);
+  setPaperInsertionBase(pinsbase);
 }
 
 
@@ -503,25 +547,28 @@ void RS_Graphic::centerToPage() {
 /**
  * Fits drawing on page. Affects DXF variable $PINSBASE.
  */
-void RS_Graphic::fitToPage() {
-	double border = RS_Units::convert(25.0, RS2::Millimeter, getUnit());
-	RS_Vector ps = getPaperSize() - RS_Vector(border, border);
-	RS_Vector s = getSize();
-	double fx = RS_MAXDOUBLE;
-	double fy = RS_MAXDOUBLE;
-	//double factor = 1.0;
+void RS_Graphic::fitToPage()
+{
+  double border = RS_Units::convert(25.0, RS2::Millimeter, getUnit());
+  RS_Vector ps = getPaperSize() - RS_Vector(border, border);
+  RS_Vector s = getSize();
+  double fx = RS_MAXDOUBLE;
+  double fy = RS_MAXDOUBLE;
+  //double factor = 1.0;
 
-	//ps = RS_Units::convert(ps, getUnit(), RS2::Millimeter);
+  //ps = RS_Units::convert(ps, getUnit(), RS2::Millimeter);
 
-	if (fabs(s.x)>1.0e-6) {
-		fx = ps.x / s.x;
-	}
-	if (fabs(s.y)>1.0e-6) {
-		fy = ps.y / s.y;
-	}
+  if (fabs(s.x)>1.0e-6)
+  {
+    fx = ps.x / s.x;
+  }
+  if (fabs(s.y)>1.0e-6)
+  {
+    fy = ps.y / s.y;
+  }
 
-	setPaperScale(std::min(fx, fy));
-	centerToPage();
+  setPaperScale(std::min(fx, fy));
+  centerToPage();
 }
 
 
@@ -529,13 +576,14 @@ void RS_Graphic::fitToPage() {
 /**
  * Dumps the entities to stdout.
  */
-std::ostream& operator << (std::ostream& os, RS_Graphic& g) {
-    os << "--- Graphic: \n";
-    os << "---" << *g.getLayerList() << "\n";
-    os << "---" << *g.getBlockList() << "\n";
-    os << "---" << (RS_Undo&)g << "\n";
-    os << "---" << (RS_EntityContainer&)g << "\n";
+std::ostream& operator << (std::ostream& os, RS_Graphic& g)
+{
+  os << "--- Graphic: \n";
+  os << "---" << *g.getLayerList() << "\n";
+  os << "---" << *g.getBlockList() << "\n";
+  os << "---" << (RS_Undo&)g << "\n";
+  os << "---" << (RS_EntityContainer&)g << "\n";
 
-    return os;
+  return os;
 }
 

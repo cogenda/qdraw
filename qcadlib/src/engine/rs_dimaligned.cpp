@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -42,15 +42,17 @@
 RS_DimAligned::RS_DimAligned(RS_EntityContainer* parent,
                              const RS_DimensionData& d,
                              const RS_DimAlignedData& ed)
-        : RS_Dimension(parent, d), edata(ed) {
+        : RS_Dimension(parent, d), edata(ed)
+{
 
     calculateBorders();
+    initLabel();
 }
 
 
 
 /**
- * Sets a new text. The entities representing the 
+ * Sets a new text. The entities representing the
  * text are updated.
  */
 //void RS_DimAligned::setText(const RS_String& t) {
@@ -68,7 +70,7 @@ RS_VectorSolutions RS_DimAligned::getRefPoints() {
 
 
 /**
- * @return Automatically creted label for the default 
+ * @return Automatically creted label for the default
  * measurement of this dimension.
  */
 RS_String RS_DimAligned::getMeasuredLabel() {
@@ -78,7 +80,7 @@ RS_String RS_DimAligned::getMeasuredLabel() {
 
     RS_String ret;
 	if (graphic!=NULL) {
-		ret = RS_Units::formatLinear(dist, graphic->getUnit(), 
+		ret = RS_Units::formatLinear(dist, graphic->getUnit(),
 			graphic->getLinearFormat(), graphic->getLinearPrecision());
 	}
 	else {
@@ -90,7 +92,7 @@ RS_String RS_DimAligned::getMeasuredLabel() {
 
 
 /**
- * Updates the sub entities of this dimension. Called when the 
+ * Updates the sub entities of this dimension. Called when the
  * text or the position, alignment, .. changes.
  *
  * @param autoText Automatically reposition the text label
@@ -204,29 +206,29 @@ void RS_DimAligned::mirror(RS_Vector axisPoint1, RS_Vector axisPoint2) {
 void RS_DimAligned::stretch(RS_Vector firstCorner,
                         RS_Vector secondCorner,
                         RS_Vector offset) {
-						
+
     //e->calculateBorders();
     if (getMin().isInWindow(firstCorner, secondCorner) &&
             getMax().isInWindow(firstCorner, secondCorner)) {
 
         move(offset);
     }
-	else {	
+	else {
 		//RS_Vector v = data.definitionPoint - edata.extensionPoint2;
 		double len = edata.extensionPoint2.distanceTo(data.definitionPoint);
-		double ang1 = edata.extensionPoint1.angleTo(edata.extensionPoint2) 
+		double ang1 = edata.extensionPoint1.angleTo(edata.extensionPoint2)
 		             + M_PI/2;
-	
+
     	if (edata.extensionPoint1.isInWindow(firstCorner,
                                       secondCorner)) {
         	edata.extensionPoint1.move(offset);
-    	} 
+    	}
     	if (edata.extensionPoint2.isInWindow(firstCorner,
                                       secondCorner)) {
         	edata.extensionPoint2.move(offset);
-    	} 
-		
-		double ang2 = edata.extensionPoint1.angleTo(edata.extensionPoint2) 
+    	}
+
+		double ang2 = edata.extensionPoint1.angleTo(edata.extensionPoint2)
 		             + M_PI/2;
 
 		double diff = RS_Math::getAngleDifference(ang1, ang2);
@@ -250,18 +252,18 @@ void RS_DimAligned::stretch(RS_Vector firstCorner,
 void RS_DimAligned::moveRef(const RS_Vector& ref, const RS_Vector& offset) {
 
     if (ref.distanceTo(data.definitionPoint)<1.0e-4) {
-		RS_ConstructionLine l(NULL, 
+		RS_ConstructionLine l(NULL,
 			RS_ConstructionLineData(edata.extensionPoint1,
 				edata.extensionPoint2));
 		double d = l.getDistanceToPoint(data.definitionPoint+offset);
 		double a = edata.extensionPoint2.angleTo(data.definitionPoint);
-		double ad = RS_Math::getAngleDifference(a, 
+		double ad = RS_Math::getAngleDifference(a,
 			edata.extensionPoint2.angleTo(data.definitionPoint+offset));
 
 		if (fabs(ad)>M_PI/2.0 && fabs(ad)<3.0/2.0*M_PI) {
 			a = RS_Math::correctAngle(a+M_PI);
 		}
-		
+
 		RS_Vector v;
 		v.setPolar(d, a);
         data.definitionPoint = edata.extensionPoint2 + v;
