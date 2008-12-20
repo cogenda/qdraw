@@ -28,6 +28,14 @@ void QG_DlgLine::setLine(RS_Line& l) {
     leEndX->setText(s);
     s.setNum(line->getEndpoint().y);
     leEndY->setText(s);
+
+    // get line division
+    s.setNum(line->getDivision());
+    lineDivisionEdit->setText(s);
+
+    // get line label
+    lineLabelEdit->setText(line->getLabel());
+
 }
 
 void QG_DlgLine::updateLine() {
@@ -37,5 +45,8 @@ void QG_DlgLine::updateLine() {
                                 RS_Math::eval(leEndY->text())));
     line->setPen(wPen->getPen());
     line->setLayer(cbLayer->currentText());
+
+    line->setDivision(RS_Math::eval(lineDivisionEdit->text()));
+    line->setLabel(lineLabelEdit->text());
 }
 

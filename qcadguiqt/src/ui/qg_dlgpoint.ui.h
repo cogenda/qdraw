@@ -27,7 +27,7 @@ void QG_DlgPoint::setPoint(RS_Point& p) {
     s.setNum(point->getPos().y);
     lePosY->setText(s);
     // get point label
-    PointLabel->setText(point->getLabel());
+    PointLabelEdit->setText(point->getLabel());
 }
 
 void QG_DlgPoint::updatePoint() {
@@ -35,6 +35,6 @@ void QG_DlgPoint::updatePoint() {
                             RS_Math::eval(lePosY->text())));
     point->setPen(wPen->getPen());
     point->setLayer(cbLayer->currentText());
-    point->setLabel(PointLabel->text());
+    point->setLabel(PointLabelEdit->text());
 }
 

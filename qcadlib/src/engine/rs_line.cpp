@@ -38,7 +38,7 @@
  */
 RS_Line::RS_Line(RS_EntityContainer* parent,
                  const RS_LineData& d)
-    :RS_AtomicEntity(parent), data(d)
+    :RS_AtomicEntity(parent), data(d), division(1)
 {
   calculateBorders();
   initLabel();

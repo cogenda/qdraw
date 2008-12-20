@@ -19,7 +19,7 @@ void QG_DlgSpline::setSpline(RS_Spline& e) {
     if (lay!=NULL) {
         cbLayer->setLayer(*lay);
     }
-	
+
     QString s;
     s.setNum(spline->getDegree());
 	cbDegree->setCurrentText(s);

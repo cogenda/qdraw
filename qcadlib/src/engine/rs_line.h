@@ -39,12 +39,11 @@ public:
   /**
    * Default constructor. Leaves the data object uninitialized.
    */
-  RS_LineData() {}
+  RS_LineData(){}
 
   RS_LineData(const RS_Vector& startpoint,
               const RS_Vector& endpoint)
   {
-
     this->startpoint = startpoint;
     this->endpoint = endpoint;
   }
@@ -61,8 +60,11 @@ public:
   }
 
 public:
+
   RS_Vector startpoint;
+
   RS_Vector endpoint;
+
 };
 
 
@@ -113,23 +115,35 @@ public:
   {
     return data.startpoint;
   }
+
   /** @return End point of the entity */
   virtual RS_Vector getEndpoint() const
   {
     return data.endpoint;
   }
+
   /** Sets the startpoint */
   void setStartpoint(RS_Vector s)
   {
     data.startpoint = s;
     calculateBorders();
   }
+
   /** Sets the endpoint */
   void setEndpoint(RS_Vector e)
   {
     data.endpoint = e;
     calculateBorders();
   }
+
+  /** get line division number */
+  unsigned int getDivision()
+  { return division; }
+
+  /** set line division number */
+  void setDivision(unsigned int d)
+  { division = d; }
+
   /**
    * @return Direction 1. The angle at which the line starts at
    * the startpoint.
@@ -138,6 +152,7 @@ public:
   {
     return getAngle1();
   }
+
   /**
    * @return Direction 2. The angle at which the line starts at
    * the endpoint.
@@ -231,8 +246,11 @@ public:
 
 protected:
   RS_LineData data;
-  //RS_Vector startpoint;
-  //RS_Vector endpoint;
+
+  /**
+   * the line can be divided into sub edges
+   */
+  unsigned int division;
 }
 ;
 
