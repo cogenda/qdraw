@@ -27,11 +27,11 @@ void QG_DlgCircle::setCircle(RS_Circle& c) {
     s.setNum(circle->getRadius());
     leRadius->setText(s);
 
-    // get line division
+    // get circle division
     s.setNum(circle->getDivision());
     CircleDivisionEdit->setText(s);
 
-    // get line label
+    // get circle label
     CircleLabelEdit->setText(circle->getLabel());
 }
 

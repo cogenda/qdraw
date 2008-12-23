@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -58,12 +58,12 @@ QG_LineTypeBox::QG_LineTypeBox(QWidget* parent, const char* name)
 }
 
 /**
- * Constructor that calls init and provides a fully functional 
+ * Constructor that calls init and provides a fully functional
  * combobox for choosing linetypes.
  *
  * @param showByLayer true: Show attribute ByLayer, ByBlock.
  */
-QG_LineTypeBox::QG_LineTypeBox(bool showByLayer, bool showUnchanged, 
+QG_LineTypeBox::QG_LineTypeBox(bool showByLayer, bool showUnchanged,
 		QWidget* parent, const char* name)
         : QComboBox(parent, name) {
 	unchanged = false;
@@ -151,7 +151,7 @@ void QG_LineTypeBox::setLineType(RS2::LineType t) {
 				"Combobox doesn't support linetype BYBLOCK");
         }
         break;
-		
+
 	case RS2::SolidLine:
 		setCurrentItem(1 + offset);
 		break;
@@ -175,7 +175,7 @@ void QG_LineTypeBox::setLineType(RS2::LineType t) {
 	case RS2::DashLineX2:
 		setCurrentItem(7 + offset);
 		break;
-	
+
 	case RS2::DashDotLine:
 		setCurrentItem(8 + offset);
 		break;
@@ -185,7 +185,7 @@ void QG_LineTypeBox::setLineType(RS2::LineType t) {
 	case RS2::DashDotLineX2:
 		setCurrentItem(10 + offset);
 		break;
-	
+
 	case RS2::DivideLine:
 		setCurrentItem(11 + offset);
 		break;
@@ -195,7 +195,7 @@ void QG_LineTypeBox::setLineType(RS2::LineType t) {
 	case RS2::DivideLineX2:
 		setCurrentItem(13 + offset);
 		break;
-	
+
 	case RS2::CenterLine:
 		setCurrentItem(14 + offset);
 		break;
@@ -205,7 +205,7 @@ void QG_LineTypeBox::setLineType(RS2::LineType t) {
 	case RS2::CenterLineX2:
 		setCurrentItem(16 + offset);
 		break;
-	
+
 	case RS2::BorderLine:
 		setCurrentItem(17 + offset);
 		break;
@@ -215,7 +215,7 @@ void QG_LineTypeBox::setLineType(RS2::LineType t) {
 	case RS2::BorderLineX2:
 		setCurrentItem(19 + offset);
 		break;
-	
+
     default:
         break;
     }
@@ -261,7 +261,7 @@ void QG_LineTypeBox::setLayerLineType(RS2::LineType t) {
 }
 
 /**
- * Called when the linetype has changed. This method 
+ * Called when the linetype has changed. This method
  * sets the current linetype to the value chosen or even
  * offers a dialog to the user that allows him/ her to
  * choose an individual linetype.
@@ -269,7 +269,7 @@ void QG_LineTypeBox::setLayerLineType(RS2::LineType t) {
 void QG_LineTypeBox::slotLineTypeChanged(int index) {
 
     RS_DEBUG->print("QG_LineTypeBox::slotLineTypeChanged %d\n", index);
-	
+
 	unchanged = false;
 
     if (showByLayer) {
@@ -291,19 +291,19 @@ void QG_LineTypeBox::slotLineTypeChanged(int index) {
             	currentLineType = RS2::LineByBlock;
 			}
             break;
-			
+
         default:
             currentLineType = (RS2::LineType)(index-2-(int)showUnchanged);
             break;
         }
     } else {
-        currentLineType = 
+        currentLineType =
 			(RS2::LineType)(index-(int)showByLayer*2-(int)showUnchanged);
     }
 
     RS_DEBUG->print("Current linetype is (%d): %d\n",
                     index, currentLineType);
-
+    emit lineTypeChanged();
     emit lineTypeChanged(currentLineType);
 }
 

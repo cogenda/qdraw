@@ -115,7 +115,7 @@
                                 </spacer>
                                 <widget class="QLineEdit">
                                     <property name="name">
-                                        <cstring>ArcLableEdit</cstring>
+                                        <cstring>ArcLabelEdit</cstring>
                                     </property>
                                 </widget>
                             </hbox>

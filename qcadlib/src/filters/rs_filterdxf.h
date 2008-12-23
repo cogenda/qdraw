@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -61,7 +61,7 @@ class RS_FilterDXF : public RS_FilterInterface, DL_CreationInterface {
 public:
     RS_FilterDXF();
     ~RS_FilterDXF();
-	
+
 	/**
 	 * @return RS2::FormatDXF.
 	 */
@@ -73,7 +73,7 @@ public:
     virtual bool canImport(RS2::FormatType t) {
 		return (t==RS2::FormatDXF);
 	}
-	
+
     virtual bool canExport(RS2::FormatType t) {
 		return (t==RS2::FormatDXF || t==RS2::FormatDXF12);
 	}*/
@@ -97,6 +97,7 @@ public:
     virtual void addControlPoint(const DL_ControlPointData& data);
     virtual void addInsert(const DL_InsertData& data);
     virtual void addTrace(const DL_TraceData& ) {}
+    virtual void add3dFace(const DL_3dFaceData& data) {}
     virtual void addSolid(const DL_SolidData& ) {}
     virtual void addMTextChunk(const char* text);
     virtual void addMText(const DL_MTextData& data);
@@ -111,6 +112,8 @@ public:
                               const DL_DimRadialData& edata);
     virtual void addDimDiametric(const DL_DimensionData& data,
                                  const DL_DimDiametricData& edata);
+    virtual void addDimOrdinate(const DL_DimensionData& data,
+                             const DL_DimOrdinateData& edata) {}
     virtual void addDimAngular(const DL_DimensionData& data,
                                const DL_DimAngularData& edata);
     virtual void addDimAngular3P(const DL_DimensionData& data,
@@ -124,7 +127,7 @@ public:
     virtual void linkImage(const DL_ImageDefData& data);
     virtual void endEntity();
     virtual void endSequence() {}
-
+    virtual void addComment(const char* comment) {}
     virtual void setVariableVector(const char* key,
                                    double v1, double v2, double v3, int code);
     virtual void setVariableString(const char* key, const char* value, int code);
@@ -143,26 +146,26 @@ public:
     void writeEntity(DL_WriterA& dw, RS_Entity* e, const DL_Attributes& attrib);
 	void writePoint(DL_WriterA& dw, RS_Point* p, const DL_Attributes& attrib);
 	void writeLine(DL_WriterA& dw, RS_Line* l, const DL_Attributes& attrib);
-	void writePolyline(DL_WriterA& dw, 
+	void writePolyline(DL_WriterA& dw,
 		RS_Polyline* l, const DL_Attributes& attrib);
-	void writeSpline(DL_WriterA& dw, 
+	void writeSpline(DL_WriterA& dw,
 		RS_Spline* s, const DL_Attributes& attrib);
 	void writeCircle(DL_WriterA& dw, RS_Circle* c, const DL_Attributes& attrib);
 	void writeArc(DL_WriterA& dw, RS_Arc* a, const DL_Attributes& attrib);
 	void writeEllipse(DL_WriterA& dw, RS_Ellipse* s, const DL_Attributes& attrib);
 	void writeInsert(DL_WriterA& dw, RS_Insert* i, const DL_Attributes& attrib);
 	void writeText(DL_WriterA& dw, RS_Text* t, const DL_Attributes& attrib);
-	void writeDimension(DL_WriterA& dw, RS_Dimension* d, 
+	void writeDimension(DL_WriterA& dw, RS_Dimension* d,
 		const DL_Attributes& attrib);
 	void writeLeader(DL_WriterA& dw, RS_Leader* l, const DL_Attributes& attrib);
 	void writeHatch(DL_WriterA& dw, RS_Hatch* h, const DL_Attributes& attrib);
 	void writeSolid(DL_WriterA& dw, RS_Solid* s, const DL_Attributes& attrib);
 	void writeImage(DL_WriterA& dw, RS_Image* i, const DL_Attributes& attrib);
-	void writeEntityContainer(DL_WriterA& dw, RS_EntityContainer* con, 
+	void writeEntityContainer(DL_WriterA& dw, RS_EntityContainer* con,
 		const DL_Attributes& attrib);
-	void writeAtomicEntities(DL_WriterA& dw, RS_EntityContainer* c, 
+	void writeAtomicEntities(DL_WriterA& dw, RS_EntityContainer* c,
 		const DL_Attributes& attrib, RS2::ResolveLevel level);
-	
+
     void writeImageDef(DL_WriterA& dw, RS_Image* i);
 
     void setEntityAttributes(RS_Entity* entity, const DL_Attributes& attrib);
@@ -189,7 +192,7 @@ public:
 
 	static RS2::Unit numberToUnit(int num);
 	static int unitToNumber(RS2::Unit unit);
-	
+
 	static bool isVariableTwoDimensional(const RS_String& var);
 
 private:

@@ -40,7 +40,7 @@ public:
   /**
    * Default constructor. Leaves the data object uninitialized.
    */
-  RS_HatchData() {}
+  RS_HatchData():material(""), area_control(-1) {}
 
   /**
    * @param solid true: solid fill, false: pattern.
@@ -50,14 +50,39 @@ public:
   RS_HatchData(bool solid,
                double scale,
                double angle,
-               const RS_String& pattern)
+               const RS_String& pattern
+	       )
+  :material(""), area_control(-1)
   {
     this->solid = solid;
     this->scale = scale;
     this->angle = angle;
     this->pattern = pattern;
+  }
 
-    //std::cout << "RS_HatchData: " << pattern.latin1() << "\n";
+  /**
+   * @param solid true: solid fill, false: pattern.
+   * @param scale Pattern scale or spacing.
+   * @param pattern Pattern name.
+   * @param material hatch material
+   * @param area_control region mesh size
+   */
+  RS_HatchData(bool solid,
+               double scale,
+               double angle,
+               const RS_String& pattern,
+	       const RS_String& label,
+               const RS_String& material,
+	       double area_control
+	       )
+  {
+    this->solid = solid;
+    this->scale = scale;
+    this->angle = angle;
+    this->pattern  = pattern;
+    this->label    = label;
+    this->material = material;
+    this->area_control = area_control;
   }
 
   friend std::ostream& operator << (std::ostream& os, const RS_HatchData& td)
@@ -71,6 +96,10 @@ public:
   double scale;
   double angle;
   RS_String pattern;
+  // the same as label in RS_Hatch
+  RS_String label;
+  RS_String material;
+  double area_control;
 };
 
 
@@ -92,10 +121,7 @@ public:
   virtual void initLabel()
   {
     static unsigned long int idCounter=0;
-    if(isSolid())
-      label = "Region" + RS_String::number(idCounter++);
-    else
-      label = "Hatch" + RS_String::number(idCounter++);
+    label = "Hatch" + RS_String::number(idCounter++);
   }
 
   /**	@return RS2::EntityHatch */
@@ -122,6 +148,12 @@ public:
 
   /** @return Copy of data that defines the hatch. */
   RS_HatchData getData() const
+  {
+    return data;
+  }
+
+  /** @return writable reference of data that defines the hatch. */
+  RS_HatchData & getData()
   {
     return data;
   }

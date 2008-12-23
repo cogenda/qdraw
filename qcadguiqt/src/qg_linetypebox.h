@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -39,7 +39,7 @@ class QG_LineTypeBox: public QComboBox {
 
 public:
     QG_LineTypeBox(QWidget* parent=0, const char* name=0);
-    QG_LineTypeBox(bool showByLayer, bool showUnchanged, 
+    QG_LineTypeBox(bool showByLayer, bool showUnchanged,
 		QWidget* parent=0, const char* name=0);
     virtual ~QG_LineTypeBox();
 
@@ -50,7 +50,7 @@ public:
     void setLayerLineType(RS2::LineType w);
 
     void init(bool showByLayer, bool showUnchanged);
-	
+
 	bool isUnchanged() {
 		return unchanged;
 	}
@@ -59,6 +59,7 @@ private slots:
     void slotLineTypeChanged(int index);
 
 signals:
+    void lineTypeChanged();
     void lineTypeChanged(RS2::LineType);
 
 private:

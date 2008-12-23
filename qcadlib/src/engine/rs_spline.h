@@ -92,10 +92,10 @@ public:
   {
     return RS2::EntitySpline;
   }
-  /** @return false */
+  /** @return true */
   virtual bool isEdge() const
   {
-    return false;
+    return true;
   }
 
   /** @return Copy of data that defines the spline. */

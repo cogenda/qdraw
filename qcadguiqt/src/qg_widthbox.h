@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -59,6 +59,7 @@ private slots:
     void slotWidthChanged(int index);
 
 signals:
+    void widthChanged();
     void widthChanged(RS2::LineWidth);
 
 private:

@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -58,7 +58,7 @@ QG_WidthBox::QG_WidthBox(QWidget* parent, const char* name)
 }
 
 /**
- * Constructor that calls init and provides a fully functional 
+ * Constructor that calls init and provides a fully functional
  * combobox for choosing widths.
  *
  * @param showByLayer true: Show attributes ByLayer, ByBlock
@@ -305,7 +305,7 @@ void QG_WidthBox::setLayerWidth(RS2::LineWidth w) {
 }
 
 /**
- * Called when the width has changed. This method 
+ * Called when the width has changed. This method
  * sets the current width to the value chosen or even
  * offers a dialog to the user that allows him/ her to
  * choose an individual width.
@@ -420,7 +420,7 @@ void QG_WidthBox::slotWidthChanged(int index) {
 
     RS_DEBUG->print("Current width is (%d): %d\n",
                     index, ((int)currentWidth));
-
+    emit widthChanged();
     emit widthChanged(currentWidth);
 }
 

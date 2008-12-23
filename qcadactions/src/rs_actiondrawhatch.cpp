@@ -37,7 +37,6 @@ RS_ActionDrawHatch::RS_ActionDrawHatch(RS_EntityContainer& container,
     :RS_PreviewActionInterface("Draw Hatch",
                                container, graphicView)
 {
-
   hatch = NULL;
 }
 
@@ -63,6 +62,7 @@ void RS_ActionDrawHatch::init(int status)
   if (RS_DIALOGFACTORY->requestHatchDialog(&tmp))
   {
     data = tmp.getData();
+    pen  = tmp.getPen();
     trigger();
     finish();
     graphicView->redraw();
@@ -130,9 +130,12 @@ void RS_ActionDrawHatch::trigger()
   }
 
   hatch = new RS_Hatch(container, data);
+  hatch->setLabel(data.label);
+  hatch->setPen(pen);
   hatch->setLayerToActive();
-  hatch->setPenToActive();
+  //hatch->setPenToActive();
   RS_EntityContainer* loop = new RS_EntityContainer(hatch);
+  //loop->setPen(pen);
   loop->setPen(RS_Pen(RS2::FlagInvalid));
 
   // add selected contour:
@@ -150,6 +153,7 @@ void RS_ActionDrawHatch::trigger()
         e->getParent()->setSelected(false);
       }
       RS_Entity* cp = e->clone();
+      //cp->setPen(pen);
       cp->setPen(RS_Pen(RS2::FlagInvalid));
       cp->reparent(loop);
       loop->addEntity(cp);

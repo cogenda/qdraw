@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -29,7 +29,7 @@
 
 #include "rs_previewactioninterface.h"
 #include "rs_hatch.h"
-
+#include "rs_pen.h"
 
 /**
  * This action class can handle user events to draw hatches.
@@ -50,7 +50,7 @@ public:
     RS_ActionDrawHatch(RS_EntityContainer& container,
                       RS_GraphicView& graphicView);
     ~RS_ActionDrawHatch() {}
-	
+
 	static QAction* createGUIAction(RS2::ActionType /*type*/, QObject* /*parent*/);
 
     virtual void init(int status=0);
@@ -63,7 +63,8 @@ public:
 
 private:
     RS_HatchData data;
-	RS_Hatch* hatch;
+    RS_Pen       pen;
+    RS_Hatch* hatch;
 };
 
 #endif

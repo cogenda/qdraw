@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -39,7 +39,7 @@ class QG_ColorBox: public QComboBox {
 
 public:
     QG_ColorBox(QWidget* parent=0, const char* name=0);
-    QG_ColorBox(bool showByLayer, bool showUnchanged, 
+    QG_ColorBox(bool showByLayer, bool showUnchanged,
 		QWidget* parent=0, const char* name=0);
     virtual ~QG_ColorBox();
 
@@ -60,6 +60,7 @@ private slots:
     void slotColorChanged(int index);
 
 signals:
+    void colorChanged();
     void colorChanged(const RS_Color& color);
 
 private:

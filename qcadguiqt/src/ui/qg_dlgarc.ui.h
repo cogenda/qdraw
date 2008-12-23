@@ -37,7 +37,7 @@ void QG_DlgArc::setArc(RS_Arc& a) {
     ArcDivisionEdit->setText(s);
 
     // get arc label
-    ArcLableEdit->setText(arc->getLabel());
+    ArcLabelEdit->setText(arc->getLabel());
 }
 
 void QG_DlgArc::updateArc() {
@@ -52,6 +52,6 @@ void QG_DlgArc::updateArc() {
     arc->calculateEndpoints();
     arc->calculateBorders();
     arc->setDivision(RS_Math::eval(ArcDivisionEdit->text()));
-    arc->setLabel(ArcLableEdit->text());
+    arc->setLabel(ArcLabelEdit->text());
 }
 

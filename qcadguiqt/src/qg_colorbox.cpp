@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -58,15 +58,15 @@ QG_ColorBox::QG_ColorBox(QWidget* parent, const char* name)
 }
 
 /**
- * Constructor that calls init and provides a fully functional 
+ * Constructor that calls init and provides a fully functional
  * combobox for choosing colors.
  *
  * @param showByLayer true: Show attribute ByLayer, ByBlock.
  */
-QG_ColorBox::QG_ColorBox(bool showByLayer, bool showUnchanged, 
+QG_ColorBox::QG_ColorBox(bool showByLayer, bool showUnchanged,
 	QWidget* parent, const char* name)
         : QComboBox(parent, name) {
-	
+
 	unchanged = false;
     init(showByLayer, showUnchanged);
 }
@@ -128,7 +128,7 @@ void QG_ColorBox::init(bool showByLayer, bool showUnchanged) {
  */
 void QG_ColorBox::setColor(const RS_Color& color) {
     currentColor = color;
-	
+
     if (color.isByLayer() && showByLayer) {
         setCurrentItem(0);
     } else if (color.isByBlock() && showByLayer) {
@@ -192,14 +192,14 @@ void QG_ColorBox::setLayerColor(const RS_Color& color) {
 
 
 /**
- * Called when the color has changed. This method 
+ * Called when the color has changed. This method
  * sets the current color to the value chosen or even
  * offers a dialog to the user that allows him/ her to
  * choose an individual color.
  */
 void QG_ColorBox::slotColorChanged(int index) {
     currentColor.resetFlags();
-	
+
     if (showUnchanged) {
 		if (index==0) {
 			unchanged = true;
@@ -261,7 +261,7 @@ void QG_ColorBox::slotColorChanged(int index) {
 
     //printf("Current color is (%d): %s\n",
     //       index, currentColor.name().latin1());
-
+    emit colorChanged();
     emit colorChanged(currentColor);
 }
 
