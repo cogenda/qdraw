@@ -145,10 +145,9 @@ void RS_ActionDrawHatch::trigger()
     if (e->isSelected())
     {
       e->setSelected(false);
-      // entity is part of a complex entity (spline, polyline, ..):
+      // entity is part of a complex entity (polyline, ..):
       if (e->getParent()!=NULL &&
-          (e->getParent()->rtti()==RS2::EntitySpline ||
-           e->getParent()->rtti()==RS2::EntityPolyline))
+         (e->getParent()->rtti()==RS2::EntityPolyline))
       {
         e->getParent()->setSelected(false);
       }
