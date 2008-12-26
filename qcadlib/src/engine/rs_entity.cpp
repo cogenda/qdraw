@@ -42,6 +42,7 @@
 #include "rs_painter.h"
 #include "rs_point.h"
 #include "rs_polyline.h"
+#include "rs_hatch.h"
 #include "rs_text.h"
 #include "rs_stringlist.h"
 
@@ -996,6 +997,7 @@ std::ostream& operator << (std::ostream& os, RS_Entity& e)
   //return os;
 
   os << " {Entity id: " << e.id;
+  os << " | label: " << e.label;
   if (e.parent!=NULL)
   {
     os << " | parent id: " << e.parent->getId() << "\n";
@@ -1062,6 +1064,10 @@ std::ostream& operator << (std::ostream& os, RS_Entity& e)
 
   case RS2::EntityText:
     os << (RS_Text&)e;
+    break;
+
+  case RS2::EntityHatch:
+    os << (RS_Hatch&)e;
     break;
 
   default:

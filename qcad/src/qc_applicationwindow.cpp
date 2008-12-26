@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid QCad Professional Edition licenses may use 
+** Licensees holding valid QCad Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -121,7 +121,7 @@ QC_ApplicationWindow::QC_ApplicationWindow()
     appWindow = this;
     assistant = NULL;
     workspace = NULL;
-    
+
 	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: setting icon");
     setIcon(QPixmap::fromMimeSource(QC_APP_ICON));
 
@@ -168,7 +168,7 @@ QC_ApplicationWindow::QC_ApplicationWindow()
     // Disable menu and toolbar items
     emit windowsChanged(FALSE);
 
-	
+
     statusBar()->message(QC_APPNAME " Ready", 2000);
     //setFocusPolicy(WheelFocus);
 }
@@ -239,7 +239,7 @@ void QC_ApplicationWindow::slotRunScript() {
     const QObject* s = sender();
     if (s!=NULL) {
         QString script = ((QAction*)s)->text();
-        RS_DEBUG->print("QC_ApplicationWindow::slotRunScript: %s", 
+        RS_DEBUG->print("QC_ApplicationWindow::slotRunScript: %s",
 			script.latin1());
 		slotRunScript(script);
     }
@@ -255,7 +255,7 @@ void QC_ApplicationWindow::slotRunScript(const QString& name) {
 	RS_DEBUG->print("QC_ApplicationWindow::slotRunScript");
 
 	if (scripter==NULL) {
-		RS_DEBUG->print(RS_Debug::D_WARNING, 
+		RS_DEBUG->print(RS_Debug::D_WARNING,
 			"QC_ApplicationWindow::slotRunScript: "
 			"scripter not initialized");
 		return;
@@ -265,13 +265,13 @@ void QC_ApplicationWindow::slotRunScript(const QString& name) {
 
 	QStringList scriptList = RS_SYSTEM->getScriptList();
 	scriptList.append(RS_SYSTEM->getHomeDir() + "/.qcad/" + name);
-	
+
 	for (QStringList::Iterator it = scriptList.begin(); it!=scriptList.end(); ++it) {
 		RS_DEBUG->print("QC_ApplicationWindow::slotRunScript: "
 			"checking script '%s'", (*it).latin1());
 		QFileInfo fi(*it);
 		if (fi.exists() && fi.fileName()==name) {
-			RS_DEBUG->print("QC_ApplicationWindow::slotRunScript: running '%s'", 
+			RS_DEBUG->print("QC_ApplicationWindow::slotRunScript: running '%s'",
 				(*it).latin1());
 			scripter->runScript(*it, "main");
 		}
@@ -282,14 +282,14 @@ void QC_ApplicationWindow::slotRunScript(const QString& name) {
 
 
 /**
- * Called from toolbar buttons that were added by scripts to 
+ * Called from toolbar buttons that were added by scripts to
  * insert blocks.
  */
 void QC_ApplicationWindow::slotInsertBlock() {
     const QObject* s = sender();
     if (s!=NULL) {
         QString block = ((QAction*)s)->text();
-        RS_DEBUG->print("QC_ApplicationWindow::slotInsertBlock: %s", 
+        RS_DEBUG->print("QC_ApplicationWindow::slotInsertBlock: %s",
 			block.latin1());
 		slotInsertBlock(block);
     }
@@ -308,7 +308,7 @@ void QC_ApplicationWindow::slotInsertBlock(const QString& name) {
 	RS_GraphicView* graphicView = getGraphicView();
 	RS_Document* document = getDocument();
 	if (graphicView!=NULL && document!=NULL) {
-		RS_ActionLibraryInsert* action = 
+		RS_ActionLibraryInsert* action =
 			new RS_ActionLibraryInsert(*document, *graphicView);
 		action->setFile(name);
 		graphicView->setCurrentAction(action);
@@ -772,7 +772,8 @@ void QC_ApplicationWindow::initActions() {
     action->addTo(subMenu);
     connect(this, SIGNAL(windowsChanged(bool)), action, SLOT(setEnabled(bool)));
     menu->insertItem(tr("&Circle"), subMenu);
-	
+
+
     // Ellipses:
     subMenu=new QPopupMenu(this);
     action = actionFactory.createAction(RS2::ActionDrawEllipseAxis,
@@ -785,13 +786,14 @@ void QC_ApplicationWindow::initActions() {
     connect(this, SIGNAL(windowsChanged(bool)), action, SLOT(setEnabled(bool)));
     menu->insertItem(tr("&Ellipse"), subMenu);
 
+
     // Splines:
     subMenu=new QPopupMenu(this);
     action = actionFactory.createAction(RS2::ActionDrawSpline, actionHandler);
     action->addTo(subMenu);
     connect(this, SIGNAL(windowsChanged(bool)), action, SLOT(setEnabled(bool)));
     menu->insertItem(tr("&Spline"), subMenu);
-    
+
 #ifdef RS_PROF
 	// Polylines:
     subMenu=new QPopupMenu(this);
@@ -817,7 +819,7 @@ void QC_ApplicationWindow::initActions() {
     connect(this, SIGNAL(windowsChanged(bool)), action, SLOT(setEnabled(bool)));
     menu->insertItem(tr("&Polyline"), subMenu);
 #endif
-	
+
     // Text:
     action = actionFactory.createAction(RS2::ActionDrawText,
                                         actionHandler);
@@ -1141,8 +1143,8 @@ void QC_ApplicationWindow::initActions() {
 
     // Help menu:
     //
-    helpAboutApp = new QAction(tr("About"), 
-        QPixmap::fromMimeSource(QC_APP_ICON16), 
+    helpAboutApp = new QAction(tr("About"),
+        QPixmap::fromMimeSource(QC_APP_ICON16),
       tr("&About %1").arg(QC_APPNAME), 0, this);
     helpAboutApp->setStatusTip(tr("About the application"));
     //helpAboutApp->setWhatsThis(tr("About\n\nAbout the application"));
@@ -1158,7 +1160,7 @@ void QC_ApplicationWindow::initActions() {
                                    "Dump &Entities", 0, this);
     connect(testDumpEntities, SIGNAL(activated()),
             this, SLOT(slotTestDumpEntities()));
-    
+
 	testDumpUndo = new QAction("Dump Undo Info",
                                  "Undo Info", 0, this);
     connect(testDumpUndo, SIGNAL(activated()),
@@ -1267,7 +1269,7 @@ void QC_ApplicationWindow::initMenuBar() {
     // menuBar configuration
 #ifdef RS_SCRIPTING
     menuBar()->insertItem(tr("&Scripts"), scriptMenu);
-#endif    
+#endif
     menuBar()->insertItem(tr("&Window"), windowsMenu);
     menuBar()->insertSeparator();
     menuBar()->insertItem(tr("&Help"), helpMenu);
@@ -1337,7 +1339,7 @@ void QC_ApplicationWindow::initStatusBar() {
 
 
 /**
- * Initializes the global application settings from the 
+ * Initializes the global application settings from the
  * config file (unix, mac) or registry (windows).
  */
 void QC_ApplicationWindow::initSettings() {
@@ -1550,10 +1552,10 @@ void QC_ApplicationWindow::initView() {
     RS_DEBUG->print("  done");
 }
 
-	
+
 
 /**
- * Creates a new toolbar. 
+ * Creates a new toolbar.
  * Implementation from QG_MainWindowInterface.
  * Can be called from scripts to add individual GUI elements.
  */
@@ -1570,7 +1572,7 @@ void QC_ApplicationWindow::initView() {
  */
 /*void QC_ApplicationWindow::addToolBarButton(QToolBar* tb) {
 	if (tb!=NULL) {
-    	QAction* action = new QAction("Blah", 
+    	QAction* action = new QAction("Blah",
 			QPixmap::fromMimeSource("zoomwindow.png"),
             "&Blah", QKeySequence(), NULL);
     	action->setStatusTip("Blah blah");
@@ -1648,7 +1650,7 @@ void QC_ApplicationWindow::slotFocusCommandLine() {
         commandWidget->setFocus();
     }
 }
-	
+
 
 /**
  * Shows the given error on the command line.
@@ -1725,7 +1727,7 @@ void QC_ApplicationWindow::slotWindowActivated(QWidget*) {
             emit(gridChanged(m->getGraphic()->isGridOn()));
             emit(printPreviewChanged(m->getGraphicView()->isPrintPreview()));
         }
-    } 
+    }
 
     // Disable/Enable menu and toolbar items
     emit windowsChanged(m!=NULL && m->getDocument()!=NULL);
@@ -1845,7 +1847,7 @@ void QC_ApplicationWindow::slotTileVertical() {
 
            //window->parentWidget()->setGeometry(0, y,
            //                                    workspace->width(), actHeight);
-           //window->parentWidget()->resize(window->parentWidget()->width(), 
+           //window->parentWidget()->resize(window->parentWidget()->width(),
         //        window->parentWidget()->height());
            //window->resize(window->width(), window->height());
            //y+=actHeight;
@@ -1862,11 +1864,11 @@ void QC_ApplicationWindow::slotTileVertical() {
 #ifdef RS_CAM
 void QC_ApplicationWindow::slotCamExportAuto() {
     printf("CAM export..\n");
-    
+
     RS_Document* d = getDocument();
     if (d!=NULL) {
         RS_Graphic* graphic = (RS_Graphic*)d;
- 
+
         RS_CamDialog dlg(graphic, this);
         dlg.exec();
     }
@@ -1877,7 +1879,7 @@ void QC_ApplicationWindow::slotCamExportAuto() {
 
 
 /**
- * Called when something changed in the pen tool bar 
+ * Called when something changed in the pen tool bar
  * (e.g. color, width, style).
  */
 void QC_ApplicationWindow::slotPenChanged(RS_Pen pen) {
@@ -1960,7 +1962,7 @@ QC_MDIWindow* QC_ApplicationWindow::slotFileNew(RS_Document* doc) {
 
     RS_DEBUG->print("QC_ApplicationWindow::slotFileNew() OK");
     setFocus();
-	
+
     return w;
 }
 
@@ -2030,7 +2032,7 @@ void QC_ApplicationWindow::slotFileOpen(const QString& fileName,
 #endif
 
         RS_DEBUG->print("QC_ApplicationWindow::slotFileOpen: open file");
-        
+
         RS_APP->processEvents(1000);
 
         // open the file in the new view:
@@ -2359,7 +2361,7 @@ void QC_ApplicationWindow::slotFileClose() {
     if (m!=NULL) {
         m->close(true);
     }
-   
+
    	/*
 	m = getMDIWindow();
     if (m!=NULL) {
@@ -2372,7 +2374,7 @@ void QC_ApplicationWindow::slotFileClose() {
 
 
 /**
- * Called when a MDI window is actually about to close. Used to 
+ * Called when a MDI window is actually about to close. Used to
  * detach widgets from the document.
  */
 void QC_ApplicationWindow::slotFileClosing() {
@@ -2716,7 +2718,7 @@ void QC_ApplicationWindow::slotViewStatusBar(bool toggle) {
  */
 /*void QC_ApplicationWindow::slotViewLayerList(bool toggle) {
     RS_DEBUG->print("QC_ApplicationWindow::slotViewLayerList()");
- 
+
     if (toggle==false) {
         layerDockWindow->hide();
     } else {
@@ -2734,7 +2736,7 @@ void QC_ApplicationWindow::slotViewStatusBar(bool toggle) {
 /*
 void QC_ApplicationWindow::slotViewBlockList(bool toggle) {
     RS_DEBUG->print("QC_ApplicationWindow::slotViewBlockList()");
- 
+
     if (toggle==false) {
         blockDockWindow->hide();
     } else {
@@ -2753,7 +2755,7 @@ void QC_ApplicationWindow::slotViewBlockList(bool toggle) {
 /*
 void QC_ApplicationWindow::slotViewCommandLine(bool toggle) {
     RS_DEBUG->print("QC_ApplicationWindow::slotViewCommandLine()");
- 
+
     if (toggle==false) {
         commandDockWindow->hide();
         //QG_GraphicView* graphicView = getGraphicView();
@@ -2777,7 +2779,7 @@ void QC_ApplicationWindow::slotViewCommandLine(bool toggle) {
 /*
 void QC_ApplicationWindow::slotViewOptionToolbar(bool toggle) {
     RS_DEBUG->print("QC_ApplicationWindow::slotViewOptionToolbar()");
- 
+
     if (toggle==false) {
         optionWidget->hide();
     } else {
@@ -2793,7 +2795,7 @@ void QC_ApplicationWindow::slotViewOptionToolbar(bool toggle) {
 /*
 void QC_ApplicationWindow::slotBlocksEdit() {
     RS_DEBUG->print("QC_ApplicationWindow::slotBlocksEdit()");
- 
+
     QC_MDIWindow* parent = getMDIWindow();
     if (parent!=NULL) {
         RS_BlockList* blist = blockWidget->getBlockList();
@@ -2912,14 +2914,14 @@ void QC_ApplicationWindow::slotHelpAbout() {
     box.setCaption(tr("About..."));
     box.setText(       QString("<qt>") +  // no center for main stream QCad
 #ifdef QC_ABOUT_HEADER
-                       QString("<center>") + 
+                       QString("<center>") +
                        QString(QC_ABOUT_HEADER) +
 #else
                        "<h2>"+ QC_APPNAME+ "</h2>" +
 #endif
                        tr("Version: %1 %2").arg(QC_VERSION).arg(edition) + "<br>" +
                        tr("Date: %1").arg(__DATE__) + "<br>" +
-                       QString("(c) 2001-2005 by RibbonSoft,<br> Andrew Mustun") + 
+                       QString("(c) 2001-2005 by RibbonSoft,<br> Andrew Mustun") +
                        "<br>" +
                        tr("Modules: %1").arg(modulesString) + "<br>" +
                        QString("http://www.ribbonsoft.com")
@@ -2950,14 +2952,14 @@ void QC_ApplicationWindow::slotHelpManual() {
         RS_DEBUG->print("QC_ApplicationWindow::slotHelpManual(): appdir: %s",
                         RS_SYSTEM->getAppDir().latin1());
         assistant = new QAssistantClient("/usr/bin", this);
-		connect(assistant, SIGNAL(error(const QString&)), 
+		connect(assistant, SIGNAL(error(const QString&)),
 			this, SLOT(slotError(const QString&)));
         QStringList args;
         args << "-profile";
         args << QDir::convertSeparators("/usr/share/qcad/doc/qcaddoc.adp");
 //        args << QString("doc") + QDir::separator() + QString("qcaddoc.adp");
 
-#if QT_VERSION>=0x030200 
+#if QT_VERSION>=0x030200
         assistant->setArguments(args);
 #endif
         connect( assistant, SIGNAL(error(const QString&)), this, SLOT(slotAssistantError(const QString&)) );
@@ -3326,8 +3328,8 @@ void QC_ApplicationWindow::slotTestDrawFreehand() {
            int posy = (random()%400);
 
            //RS_MouseEvent rsm1(posx, posy, LEFT);
-        RS_MouseEvent rsm1(QEvent::MouseButtonPress, 
-                           QPoint(posx,posy), 
+        RS_MouseEvent rsm1(QEvent::MouseButtonPress,
+                           QPoint(posx,posy),
                            RS2::LeftButton,
                            RS2::LeftButton);
            action->mousePressEvent(&rsm1);
@@ -3346,9 +3348,9 @@ void QC_ApplicationWindow::slotTestDrawFreehand() {
                posy+=speedy;
 
                //RS_MouseEvent rsm2(posx, posy, LEFT);
-            
-            RS_MouseEvent rsm2(QEvent::MouseMove, 
-                           QPoint(posx,posy), 
+
+            RS_MouseEvent rsm2(QEvent::MouseMove,
+                           QPoint(posx,posy),
                            RS2::LeftButton,
                            RS2::LeftButton);
                action->mouseMoveEvent(&rsm2);
@@ -3595,7 +3597,7 @@ void QC_ApplicationWindow::slotTestInsertEllipse() {
 
                       ellipse = new RS_Ellipse(graphic,
                                                v,
-                                               RS_Vector((x/5+50.0)/2.0, 0.0), 
+                                               RS_Vector((x/5+50.0)/2.0, 0.0),
                                          fabs(x/y),
                                                0.0, 2*M_PI,
                                                false);

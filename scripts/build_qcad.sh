@@ -19,12 +19,16 @@ echo
 echo "QTDIR is: $QTDIR"
 echo "QMAKESPEC is: $QMAKESPEC"
 
+# lib file extersion 
+libext=a
+
 # detect system:
 if [ "x$OS" == "xWindows_NT" ]
 then
-    export MAKE=MinGW32-make
+    export MAKE=make
     echo "Platform is Windows"
     platform=win32
+    libext=lib
 elif [ `uname` == "SunOS" ]
 then
     export MAKE=gmake
@@ -161,9 +165,9 @@ fi
 eval $MAKE
 cd ..
 
-if [ ! -f fparser/lib/libfparser.a ]
+if [ ! -f fparser/lib/libfparser.$libext ]
 then
-    echo "Building libfparser.a failed"
+    echo "Building libfparser failed"
     exit;
 fi
 
@@ -176,9 +180,9 @@ fi
 eval $MAKE
 cd ..
 
-if [ ! -f dxflib/lib/libdxf.a ]
+if [ ! -f dxflib/lib/libdxf.$libext ]
 then
-    echo "Building libdxf.a failed"
+    echo "Building libdxf failed"
     exit;
 fi
 

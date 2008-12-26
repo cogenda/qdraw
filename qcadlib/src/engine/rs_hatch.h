@@ -87,7 +87,7 @@ public:
 
   friend std::ostream& operator << (std::ostream& os, const RS_HatchData& td)
   {
-    os << "(" << td.pattern.latin1() << ")";
+    //os << "(material:" << td.material << ")";
     return os;
   }
 

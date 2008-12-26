@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -48,18 +48,18 @@ public:
         		                     first part of a selection window) */
         SetCorner2,     /**< Setting the 2nd corner of a selection window. */
         Moving,         /**< Moving entities (drag'n'drop) */
-        MovingRef       /**< Moving a reference point of one or more selected
-        		                     entities */
+        MovingRef       /**< Moving a reference point of one or more selected entities */
     };
 
 public:
     RS_ActionDefault(RS_EntityContainer& container,
                      RS_GraphicView& graphicView);
     virtual ~RS_ActionDefault();
-	
-	static QAction* createGUIAction(RS2::ActionType /*type*/, QObject* /*parent*/);
 
-    virtual RS2::ActionType rtti() {
+    static QAction* createGUIAction(RS2::ActionType /*type*/, QObject* /*parent*/);
+
+    virtual RS2::ActionType rtti()
+    {
         return RS2::ActionDefault;
     }
 
@@ -84,7 +84,7 @@ public:
 protected:
     RS_Vector v1;
     RS_Vector v2;
-	RS2::SnapRestriction restrBak;
+    RS2::SnapRestriction restrBak;
 
 };
 
