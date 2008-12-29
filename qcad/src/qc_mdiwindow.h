@@ -44,6 +44,7 @@
 
 #include "rs_document.h"
 
+#include "cg_profile_manager.h"
 
 /**
  * MDI document window. Contains a document and a view (window).
@@ -92,6 +93,12 @@ public:
   RS_Graphic* getGraphic()
   {
     return document->getGraphic();
+  }
+
+  /** @return Pointer to profile manager */
+  ProfileManager* getProfileManager()
+  {
+    return profile_manager;
   }
 
   /** @return Pointer to current event handler */
@@ -146,18 +153,27 @@ protected:
 private:
   /** window ID */
   int id;
+
   /** ID counter */
   static int idCounter;
+
   /** Graphic view */
   QC_GraphicView* graphicView;
+
   /** Document */
   RS_Document* document;
+
   /** Does the window own the document? */
   bool owner;
+
+  /** auxiliary profile for mesh */
+  ProfileManager * profile_manager;
+
   /**
    * List of known child windows that show blocks of the same drawing.
    */
   QPtrList<QC_MDIWindow> childWindows;
+
   /**
    * Pointer to parent window which needs to know if this window
    * is closed or NULL.

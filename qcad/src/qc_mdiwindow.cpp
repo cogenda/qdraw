@@ -59,6 +59,7 @@ QC_MDIWindow::QC_MDIWindow(RS_Document* doc,
   id = idCounter++;
   childWindows.setAutoDelete(false);
   parentWindow = NULL;
+  profile_manager = new ProfileManager;
 
   if (document!=NULL)
   {
@@ -99,6 +100,12 @@ QC_MDIWindow::~QC_MDIWindow()
     delete document;
   }
   document = NULL;
+
+  if(profile_manager!=NULL)
+  {
+    delete profile_manager;
+    profile_manager = NULL;
+  }
 }
 
 

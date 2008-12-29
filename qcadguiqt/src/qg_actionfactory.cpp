@@ -1159,6 +1159,14 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
                 obj, SLOT(slotOptionsDrawing()));
         break;
 
+
+        //Profile actions:
+    case RS2::ActionSetProfile:
+        action = new QAction(tr("Setup Profile"), tr("Setup &Profile"), 0, mw);
+        action->setStatusTip(tr("Setup profile on the mesh grid"));
+        connect(action, SIGNAL(activated()), obj, SLOT(slotSetProfile()));
+        break;
+
         // Scripting actions:
         //
     case RS2::ActionScriptOpenIDE:

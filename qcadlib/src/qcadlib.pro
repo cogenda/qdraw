@@ -102,15 +102,15 @@ HEADERS     = \
               modification/rs_modification.h \
               modification/rs_selection.h \
               math/rs_math.h \
-	      profile/cg_profile.h\
-	      profile/cg_profile_manager.h\
-	      profile/cg_parameters.h\
+          profile/cg_profile.h\
+          profile/cg_profile_manager.h\
+          profile/cg_parameters.h\
               scripting/rs_python.h \
               scripting/rs_simplepython.h \
               scripting/rs_python_wrappers.h \
               scripting/rs_script.h \
               scripting/rs_scriptlist.h
-SOURCES     = \ 
+SOURCES     = \
               actions/rs_actioninterface.cpp \
               actions/rs_preview.cpp \
               actions/rs_previewactioninterface.cpp \
@@ -176,12 +176,17 @@ SOURCES     = \
               math/rs_math.cpp \
               modification/rs_modification.cpp \
               modification/rs_selection.cpp \
-	      profile/cg_profile_manager.cpp\
+              profile/cg_profile_manager.cpp\
               scripting/rs_python.cpp \
               scripting/rs_simplepython.cpp \
               scripting/rs_python_wrappers.cpp \
               scripting/rs_script.cpp \
               scripting/rs_scriptlist.cpp
+
+FORMS       = \
+               profile/cg_profile_editor.ui\
+
+
 TRANSLATIONS = ts/qcadlib_cs.ts \
                ts/qcadlib_et.ts \
                ts/qcadlib_en.ts \

@@ -112,6 +112,7 @@ HEADERS     = rs_actionblocksadd.h \
               rs_actionzoomredraw.h \
               rs_actionzoomscroll.h \
               rs_actionzoomwindow.h
+
 SOURCES     = rs_actionblocksadd.cpp \
               rs_actionblocksattributes.cpp \
               rs_actionblockscreate.cpp \
@@ -219,6 +220,7 @@ SOURCES     = rs_actionblocksadd.cpp \
               rs_actionzoomredraw.cpp \
               rs_actionzoomscroll.cpp \
               rs_actionzoomwindow.cpp
+
 TRANSLATIONS = ts/qcadactions_cs.ts \
                ts/qcadactions_en.ts \
                ts/qcadactions_et.ts \

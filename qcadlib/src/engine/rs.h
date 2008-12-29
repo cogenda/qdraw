@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -83,8 +83,8 @@ public:
         FlagSelected1   = 1<<12,
         /** Endpoint selected */
         FlagSelected2   = 1<<13,
-		/** Entity is highlighted temporarily (as a user action feedback) */
-		FlagHighlighted = 1<<14
+        /** Entity is highlighted temporarily (as a user action feedback) */
+        FlagHighlighted = 1<<14
     };
 
     /**
@@ -108,7 +108,7 @@ public:
         FormatDXF,           /**< DXF format. 2000. */
         FormatDXF12,         /**< DXF format. R12. */
         FormatCXF,           /**< CAM Expert Font format. */
-		FormatCAM            /**< CAM Expert CAM format (NC, CNC, D, ..) */
+        FormatCAM            /**< CAM Expert CAM format (NC, CNC, D, ..) */
     };
 
     /**
@@ -147,7 +147,7 @@ public:
      */
     enum ActionType {
         ActionNone,        /**< Invalid action id. */
-		
+
         ActionDefault,
 
         ActionFileNew,
@@ -159,7 +159,7 @@ public:
         ActionFilePrint,
         ActionFilePrintPreview,
         ActionFileQuit,
-		
+
         ActionPrintPreview,
 
         ActionEditUndo,
@@ -232,12 +232,12 @@ public:
         ActionDrawSpline,
         ActionDrawPolyline,
         ActionDrawText,
-        
-		ActionPolylineAdd,
-		ActionPolylineAppend,
-		ActionPolylineDel,
-		ActionPolylineDelBetween,
-		ActionPolylineTrim,
+
+        ActionPolylineAdd,
+        ActionPolylineAppend,
+        ActionPolylineDel,
+        ActionPolylineDelBetween,
+        ActionPolylineTrim,
 
         ActionDimAligned,
         ActionDimLinear,
@@ -322,27 +322,33 @@ public:
         ActionBlocksCreateNoSelect,
         ActionBlocksExplode,
         ActionBlocksExplodeNoSelect,
-		
+
         ActionModifyExplodeText,
         ActionModifyExplodeTextNoSelect,
-		
+
         ActionLibraryInsert,
 
         ActionOptionsGeneral,
         ActionOptionsDrawing,
 
-		ActionToolRegenerateDimensions,
+        ActionSetProfile,
 
-		ActionScriptOpenIDE,
-		ActionScriptRun,
+        ActionMesh,
+        ActionMeshRefinement,
+        ActionMeshExport,
+
+        ActionToolRegenerateDimensions,
+
+        ActionScriptOpenIDE,
+        ActionScriptRun,
 
 #ifndef RS_NO_COMPLEX_ENTITIES
-		ActionPARISDebugCreateContainer,
+        ActionPARISDebugCreateContainer,
 #endif
 
 #ifdef RS_CAM
-		ActionCamExportAuto,
-		ActionCamReorder,
+        ActionCamExportAuto,
+        ActionCamReorder,
 #endif
 
         /** Needed to loop through all actions */
@@ -359,13 +365,13 @@ public:
     };
 
     /**
-     * Update mode for non-atomic entities that need to be updated when 
+     * Update mode for non-atomic entities that need to be updated when
      * they change. e.g. texts, inserts, ...
      */
     enum UpdateMode {
         NoUpdate,       /**< No automatic updates. */
         Update,         /**< Always update automatically when modified. */
-		PreviewUpdate   /**< Update automatically but only for previews (quick update) */
+        PreviewUpdate   /**< Update automatically but only for previews (quick update) */
     };
 
     /**
@@ -376,7 +382,7 @@ public:
         ModeAuto,       /**< Draw details when reasonable */
         ModePreview,    /**< Draw only in black/white without styles */
         ModeXOR,        /**< XOR mode for moving previews */
-		ModeBW          /**< Black/white. Can be used for printing. */
+        ModeBW          /**< Black/white. Can be used for printing. */
     };
 
     /**
@@ -433,7 +439,7 @@ public:
         Astro = 18,             /**< Astro: 149.6 x 10^9m */
         Lightyear = 19,         /**< Lightyear: 9460731798 x 10^6m */
         Parsec = 20,            /**< Parsec: 30857 x 10^12 */
-		
+
         LastUnit = 21           /**< Used to iterate through units */
     };
 
@@ -467,9 +473,9 @@ public:
      * Display formats for angles.
      */
     enum AngleFormat {
-        /** Degrees with decimal point (e.g. 24.5°) */
+        /** Degrees with decimal point (e.g. 24.5„1¤7 */
         DegreesDecimal,
-        /** Degrees, Minutes and Seconds (e.g. 24°30'5'') */
+        /** Degrees, Minutes and Seconds (e.g. 24„1¤7'5'') */
         DegreesMinutesSeconds,
         /** Gradians with decimal point (e.g. 390.5)*/
         Gradians,
@@ -485,13 +491,13 @@ public:
     enum ResolveLevel {
         /** Groups are not resolved */
         ResolveNone,
-		/**
-		 * Resolve all but not Inserts.
-		 */
-		ResolveAllButInserts,
         /**
-         * all Entity Containers are resolved 
-         * (including Texts, Polylines, ...) 
+         * Resolve all but not Inserts.
+         */
+        ResolveAllButInserts,
+        /**
+         * all Entity Containers are resolved
+         * (including Texts, Polylines, ...)
          */
         ResolveAll
     };
@@ -846,61 +852,61 @@ public:
      * Wrapper for Qt
      */
     static LineWidth intToLineWidth(int w) {
-		if (w==-3) {
-			return WidthDefault;
-		} else if (w==-2) {
-			return WidthByBlock;
-		} else if (w==-1) {
-			return WidthByLayer;
-		} else if (w<3) {
-			return Width00;
-		} else if (w<8) {
-			return Width01;
-		} else if (w<12) {
-			return Width02;
-		} else if (w<14) {
-			return Width03;
-		} else if (w<17) {
-			return Width04;
-		} else if (w<19) {
-			return Width05;
-		} else if (w<23) {
-			return Width06;
-		} else if (w<28) {
-			return Width07;
-		} else if (w<33) {
-			return Width08;
-		} else if (w<38) {
-			return Width09;
-		} else if (w<46) {
-			return Width10;
-		} else if (w<52) {
-			return Width11;
-		} else if (w<57) {
-			return Width12;
-		} else if (w<66) {
-			return Width13;
-		} else if (w<76) {
-			return Width14;
-		} else if (w<86) {
-			return Width15;
-		} else if (w<96) {
-			return Width16;
-		} else if (w<104) {
-			return Width17;
-		} else if (w<114) {
-			return Width18;
-		} else if (w<131) {
-			return Width19;
-		} else if (w<150) {
-			return Width20;
-		} else if (w<180) {
-			return Width21;
-		} else if (w<206) {
-			return Width22;
-		} else {
-			return Width23;
-		}
+        if (w==-3) {
+            return WidthDefault;
+        } else if (w==-2) {
+            return WidthByBlock;
+        } else if (w==-1) {
+            return WidthByLayer;
+        } else if (w<3) {
+            return Width00;
+        } else if (w<8) {
+            return Width01;
+        } else if (w<12) {
+            return Width02;
+        } else if (w<14) {
+            return Width03;
+        } else if (w<17) {
+            return Width04;
+        } else if (w<19) {
+            return Width05;
+        } else if (w<23) {
+            return Width06;
+        } else if (w<28) {
+            return Width07;
+        } else if (w<33) {
+            return Width08;
+        } else if (w<38) {
+            return Width09;
+        } else if (w<46) {
+            return Width10;
+        } else if (w<52) {
+            return Width11;
+        } else if (w<57) {
+            return Width12;
+        } else if (w<66) {
+            return Width13;
+        } else if (w<76) {
+            return Width14;
+        } else if (w<86) {
+            return Width15;
+        } else if (w<96) {
+            return Width16;
+        } else if (w<104) {
+            return Width17;
+        } else if (w<114) {
+            return Width18;
+        } else if (w<131) {
+            return Width19;
+        } else if (w<150) {
+            return Width20;
+        } else if (w<180) {
+            return Width21;
+        } else if (w<206) {
+            return Width22;
+        } else {
+            return Width23;
+        }
     }
 
     /**
@@ -996,149 +1002,149 @@ public:
      * Paper formats.
      */
     enum PaperFormat {
-        Custom, 
-		Letter, 
-		Legal, 
-		Executive,
-        A0, 
-		A1,
-		A2, 
-		A3, 
-		A4, 
-		A5, 
-		A6, 
-		A7, 
-		A8, 
-		A9, 
-        B0, 
-		B1, 
-		B2, 
-		B3, 
-		B4, 
-		B5, 
-		B6, 
-		B7, 
-		B8, 
-		B9, 
-		B10,
-        C5E, 
-		Comm10E,
-        DLE, 
-		Folio, 
-		//Ledger, 
-		Tabloid, 
-		NPageSize 
-	};
-	
+        Custom,
+        Letter,
+        Legal,
+        Executive,
+        A0,
+        A1,
+        A2,
+        A3,
+        A4,
+        A5,
+        A6,
+        A7,
+        A8,
+        A9,
+        B0,
+        B1,
+        B2,
+        B3,
+        B4,
+        B5,
+        B6,
+        B7,
+        B8,
+        B9,
+        B10,
+        C5E,
+        Comm10E,
+        DLE,
+        Folio,
+        //Ledger,
+        Tabloid,
+        NPageSize
+    };
+
     /**
      * Wrapper for Qt.
      */
 #if QT_VERSION>=0x030000
     static QPrinter::PageSize rsToQtPaperFormat(RS2::PaperFormat f) {
-		QPrinter::PageSize ret;
-	
-		switch (f) {
-        case Custom:
-			ret = QPrinter::Custom;
-			break;
-		case Letter:
-			ret = QPrinter::Letter;
-			break;
-		case Legal:
-			ret = QPrinter::Legal;
-			break;
-		case Executive:
-			ret = QPrinter::Executive;
-			break;
-        case A0:
-			ret = QPrinter::A0;
-			break;
-		case A1:
-			ret = QPrinter::A1;
-			break;
-		case A2:
-			ret = QPrinter::A2;
-			break;
-		case A3:
-			ret = QPrinter::A3;
-			break;
-		default:
-		case A4:
-			ret = QPrinter::A4;
-			break;
-		case A5:
-			ret = QPrinter::A5;
-			break;
-		case A6:
-			ret = QPrinter::A6;
-			break;
-		case A7:
-			ret = QPrinter::A7;
-			break;
-		case A8:
-			ret = QPrinter::A8;
-			break;
-		case A9:
-			ret = QPrinter::A9;
-			break;
-		case B0:
-			ret = QPrinter::B0;
-			break;
-		case B1:
-			ret = QPrinter::B1;
-			break;
-		case B2:
-			ret = QPrinter::B2;
-			break;
-		case B3:
-			ret = QPrinter::B3;
-			break;
-		case B4:
-			ret = QPrinter::B4;
-			break;
-		case B5:
-			ret = QPrinter::B5;
-			break;
-		case B6:
-			ret = QPrinter::B6;
-			break;
-		case B7:
-			ret = QPrinter::B7;
-			break;
-		case B8:
-			ret = QPrinter::B8;
-			break;
-		case B9:
-			ret = QPrinter::B9;
-			break;
-		case B10:
-			ret = QPrinter::B10;
-			break;
-		case C5E:
-			ret = QPrinter::C5E;
-			break;
-		case Comm10E:
-			ret = QPrinter::Comm10E;
-			break;
-        case DLE:
-			ret = QPrinter::DLE;
-			break;
-		case Folio:
-			ret = QPrinter::Folio;
-			break;
-		//case Ledger:
-		//	ret = QPrinter::Ledger;
-		//	break;
-		case Tabloid:
-			ret = QPrinter::Tabloid;
-			break;
-		case NPageSize:
-			ret = QPrinter::NPageSize;
-			break;
-		}
+        QPrinter::PageSize ret;
 
-		return ret;
-	}
+        switch (f) {
+        case Custom:
+            ret = QPrinter::Custom;
+            break;
+        case Letter:
+            ret = QPrinter::Letter;
+            break;
+        case Legal:
+            ret = QPrinter::Legal;
+            break;
+        case Executive:
+            ret = QPrinter::Executive;
+            break;
+        case A0:
+            ret = QPrinter::A0;
+            break;
+        case A1:
+            ret = QPrinter::A1;
+            break;
+        case A2:
+            ret = QPrinter::A2;
+            break;
+        case A3:
+            ret = QPrinter::A3;
+            break;
+        default:
+        case A4:
+            ret = QPrinter::A4;
+            break;
+        case A5:
+            ret = QPrinter::A5;
+            break;
+        case A6:
+            ret = QPrinter::A6;
+            break;
+        case A7:
+            ret = QPrinter::A7;
+            break;
+        case A8:
+            ret = QPrinter::A8;
+            break;
+        case A9:
+            ret = QPrinter::A9;
+            break;
+        case B0:
+            ret = QPrinter::B0;
+            break;
+        case B1:
+            ret = QPrinter::B1;
+            break;
+        case B2:
+            ret = QPrinter::B2;
+            break;
+        case B3:
+            ret = QPrinter::B3;
+            break;
+        case B4:
+            ret = QPrinter::B4;
+            break;
+        case B5:
+            ret = QPrinter::B5;
+            break;
+        case B6:
+            ret = QPrinter::B6;
+            break;
+        case B7:
+            ret = QPrinter::B7;
+            break;
+        case B8:
+            ret = QPrinter::B8;
+            break;
+        case B9:
+            ret = QPrinter::B9;
+            break;
+        case B10:
+            ret = QPrinter::B10;
+            break;
+        case C5E:
+            ret = QPrinter::C5E;
+            break;
+        case Comm10E:
+            ret = QPrinter::Comm10E;
+            break;
+        case DLE:
+            ret = QPrinter::DLE;
+            break;
+        case Folio:
+            ret = QPrinter::Folio;
+            break;
+        //case Ledger:
+        //  ret = QPrinter::Ledger;
+        //  break;
+        case Tabloid:
+            ret = QPrinter::Tabloid;
+            break;
+        case NPageSize:
+            ret = QPrinter::NPageSize;
+            break;
+        }
+
+        return ret;
+    }
 #endif
 
 };
