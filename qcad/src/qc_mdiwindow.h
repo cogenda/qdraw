@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid QCad Professional Edition licenses may use 
+** Licensees holding valid QCad Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -50,114 +50,124 @@
  *
  * @author Andrew Mustun
  */
-class QC_MDIWindow: public QMainWindow {
-    Q_OBJECT
+class QC_MDIWindow: public QMainWindow
+{
+  Q_OBJECT
 
 public:
-    QC_MDIWindow(RS_Document* doc,
-                 QWidget* parent,
-                 const char* name=NULL,
-                 int wflags=WDestructiveClose);
-    ~QC_MDIWindow();
+  QC_MDIWindow(RS_Document* doc,
+               QWidget* parent,
+               const char* name=NULL,
+               int wflags=WDestructiveClose);
+  ~QC_MDIWindow();
 
-    void initDoc(RS_Document* doc=NULL);
-    void initView();
+  void initDoc(RS_Document* doc=NULL);
+  void initView();
 
 public slots:
 
-    void slotPenChanged(RS_Pen p);
+  void slotPenChanged(RS_Pen p);
 
-    void slotFileNew();
-    bool slotFileOpen(const QString& fileName, RS2::FormatType type);
-    bool slotFileSave(bool &cancelled);
-    bool slotFileSaveAs(bool &cancelled);
-    bool slotFileClose(bool force);
-    void slotFilePrint();
+  void slotFileNew();
+  bool slotFileOpen(const QString& fileName, RS2::FormatType type);
+  bool slotFileSave(bool &cancelled);
+  bool slotFileSaveAs(bool &cancelled);
+  bool slotFileClose(bool force);
+  void slotFilePrint();
 
 public:
-    /** @return Pointer to graphic view */
-    QC_GraphicView* getGraphicView() {
-        return graphicView;
+  /** @return Pointer to graphic view */
+  QC_GraphicView* getGraphicView()
+  {
+    return graphicView;
+  }
+
+  /** @return Pointer to document */
+  RS_Document* getDocument()
+  {
+    return document;
+  }
+
+  /** @return Pointer to graphic or NULL */
+  RS_Graphic* getGraphic()
+  {
+    return document->getGraphic();
+  }
+
+  /** @return Pointer to current event handler */
+  RS_EventHandler* getEventHandler()
+  {
+    if (graphicView!=NULL)
+    {
+      return graphicView->getEventHandler();
     }
-
-    /** @return Pointer to document */
-    RS_Document* getDocument() {
-        return document;
+    else
+    {
+      return NULL;
     }
-	
-    /** @return Pointer to graphic or NULL */
-    RS_Graphic* getGraphic() {
-        return document->getGraphic();
-    }
+  }
 
-	/** @return Pointer to current event handler */
-	RS_EventHandler* getEventHandler() {
-		if (graphicView!=NULL) {
-			return graphicView->getEventHandler();
-		}
-		else {
-			return NULL;
-		}
-	}
+  void addChildWindow(QC_MDIWindow* w);
+  void removeChildWindow(QC_MDIWindow* w);
+  QC_MDIWindow* getPrintPreview();
 
-    void addChildWindow(QC_MDIWindow* w);
-    void removeChildWindow(QC_MDIWindow* w);
-    QC_MDIWindow* getPrintPreview();
+  /**
+   * Sets the parent window that will be notified if this
+   */
+  void setParentWindow(QC_MDIWindow* p)
+  {
+    RS_DEBUG->print("setParentWindow");
+    parentWindow = p;
+  }
 
-    /**
-     * Sets the parent window that will be notified if this 
-     */
-    void setParentWindow(QC_MDIWindow* p) {
-        RS_DEBUG->print("setParentWindow");
-        parentWindow = p;
-    }
+  /**
+   * @return The MDI window id.
+   */
+  int getId()
+  {
+    return id;
+  }
 
-    /**
-     * @return The MDI window id.
-     */
-    int getId() {
-        return id;
-    }
+  bool closeMDI(bool force, bool ask=true);
 
-	bool closeMDI(bool force, bool ask=true);
+  void setForceClosing(bool on)
+  {
+    forceClosing = on;
+  }
 
-	void setForceClosing(bool on) {
-		forceClosing = on;
-	}
-
-    friend std::ostream& operator << (std::ostream& os, QC_MDIWindow& w);
+  friend std::ostream& operator << (std::ostream& os, QC_MDIWindow& w);
 
 signals:
-    void signalClosing();
+  void signalClosing();
 
 protected:
-    void closeEvent(QCloseEvent*);
+  void closeEvent(QCloseEvent*);
 
 private:
-    /** window ID */
-    int id;
-    /** ID counter */
-    static int idCounter;
-    /** Graphic view */
-    QC_GraphicView* graphicView;
-    /** Document */
-    RS_Document* document;
-    /** Does the window own the document? */
-    bool owner;
-    /**
-     * List of known child windows that show blocks of the same drawing.
-     */
-    QPtrList<QC_MDIWindow> childWindows;
-    /**
-     * Pointer to parent window which needs to know if this window 
-     * is closed or NULL.
-     */
-    QC_MDIWindow* parentWindow;
+  /** window ID */
+  int id;
+  /** ID counter */
+  static int idCounter;
+  /** Graphic view */
+  QC_GraphicView* graphicView;
+  /** Document */
+  RS_Document* document;
+  /** Does the window own the document? */
+  bool owner;
+  /**
+   * List of known child windows that show blocks of the same drawing.
+   */
+  QPtrList<QC_MDIWindow> childWindows;
+  /**
+   * Pointer to parent window which needs to know if this window
+   * is closed or NULL.
+   */
+  QC_MDIWindow* parentWindow;
 
-	/**
-	 * If flag is set, the user will not be asked about closing this file.
-	 */
-	bool forceClosing;
+  /**
+   * If flag is set, the user will not be asked about closing this file.
+   */
+  bool forceClosing;
 };
 
 

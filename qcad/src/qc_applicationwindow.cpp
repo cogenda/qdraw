@@ -116,53 +116,53 @@ QC_ApplicationWindow::QC_ApplicationWindow()
         : QMainWindow(0, "", WDestructiveClose),
         QG_MainWindowInterface()
 {
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow");
 
     appWindow = this;
     assistant = NULL;
     workspace = NULL;
 
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: setting icon");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: setting icon");
     setIcon(QPixmap::fromMimeSource(QC_APP_ICON));
 
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating action handler");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating action handler");
     actionHandler = new QG_ActionHandler(this);
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating action handler: OK");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating action handler: OK");
 
 #ifdef RS_SCRIPTING
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating scripter");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating scripter");
     scripter = new QS_Scripter(this, this);
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating scripter: OK");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating scripter: OK");
 #endif
 
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init view");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init view");
     initView();
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init toolbar");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init toolbar");
     initToolBar();
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init actions");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init actions");
     initActions();
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init menu bar");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init menu bar");
     initMenuBar();
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init status bar");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init status bar");
     initStatusBar();
 
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating dialogFactory");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating dialogFactory");
     dialogFactory = new QC_DialogFactory(this, optionWidget);
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating dialogFactory: OK");
-	RS_DEBUG->print("setting dialog factory object");
-	if (RS_DialogFactory::instance()==NULL) {
-		RS_DEBUG->print("no RS_DialogFactory instance");
-	}
-	else {
-		RS_DEBUG->print("got RS_DialogFactory instance");
-	}
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: creating dialogFactory: OK");
+    RS_DEBUG->print("setting dialog factory object");
+    if (RS_DialogFactory::instance()==NULL) {
+        RS_DEBUG->print("no RS_DialogFactory instance");
+    }
+    else {
+        RS_DEBUG->print("got RS_DialogFactory instance");
+    }
     RS_DialogFactory::instance()->setFactoryObject(dialogFactory);
-	RS_DEBUG->print("setting dialog factory object: OK");
+    RS_DEBUG->print("setting dialog factory object: OK");
 
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init settings");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init settings");
     initSettings();
 
-	RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init MDI");
+    RS_DEBUG->print("QC_ApplicationWindow::QC_ApplicationWindow: init MDI");
     initMDI();
 
     // Disable menu and toolbar items
@@ -223,8 +223,8 @@ QC_ApplicationWindow::~QC_ApplicationWindow() {
  * Runs the start script if scripting is available.
  */
 void QC_ApplicationWindow::slotRunStartScript() {
-	slotRunScript("autostart.qs");
-	restoreDocks();
+    slotRunScript("autostart.qs");
+    restoreDocks();
 }
 
 
@@ -240,8 +240,8 @@ void QC_ApplicationWindow::slotRunScript() {
     if (s!=NULL) {
         QString script = ((QAction*)s)->text();
         RS_DEBUG->print("QC_ApplicationWindow::slotRunScript: %s",
-			script.latin1());
-		slotRunScript(script);
+            script.latin1());
+        slotRunScript(script);
     }
 }
 
@@ -252,30 +252,30 @@ void QC_ApplicationWindow::slotRunScript() {
  */
 void QC_ApplicationWindow::slotRunScript(const QString& name) {
 #ifdef RS_SCRIPTING
-	RS_DEBUG->print("QC_ApplicationWindow::slotRunScript");
+    RS_DEBUG->print("QC_ApplicationWindow::slotRunScript");
 
-	if (scripter==NULL) {
-		RS_DEBUG->print(RS_Debug::D_WARNING,
-			"QC_ApplicationWindow::slotRunScript: "
-			"scripter not initialized");
-		return;
-	}
+    if (scripter==NULL) {
+        RS_DEBUG->print(RS_Debug::D_WARNING,
+            "QC_ApplicationWindow::slotRunScript: "
+            "scripter not initialized");
+        return;
+    }
 
     statusBar()->message(tr("Running script '%1'").arg(name), 2000);
 
-	QStringList scriptList = RS_SYSTEM->getScriptList();
-	scriptList.append(RS_SYSTEM->getHomeDir() + "/.qcad/" + name);
+    QStringList scriptList = RS_SYSTEM->getScriptList();
+    scriptList.append(RS_SYSTEM->getHomeDir() + "/.qcad/" + name);
 
-	for (QStringList::Iterator it = scriptList.begin(); it!=scriptList.end(); ++it) {
-		RS_DEBUG->print("QC_ApplicationWindow::slotRunScript: "
-			"checking script '%s'", (*it).latin1());
-		QFileInfo fi(*it);
-		if (fi.exists() && fi.fileName()==name) {
-			RS_DEBUG->print("QC_ApplicationWindow::slotRunScript: running '%s'",
-				(*it).latin1());
-			scripter->runScript(*it, "main");
-		}
-	}
+    for (QStringList::Iterator it = scriptList.begin(); it!=scriptList.end(); ++it) {
+        RS_DEBUG->print("QC_ApplicationWindow::slotRunScript: "
+            "checking script '%s'", (*it).latin1());
+        QFileInfo fi(*it);
+        if (fi.exists() && fi.fileName()==name) {
+            RS_DEBUG->print("QC_ApplicationWindow::slotRunScript: running '%s'",
+                (*it).latin1());
+            scripter->runScript(*it, "main");
+        }
+    }
 #endif
 }
 
@@ -290,8 +290,8 @@ void QC_ApplicationWindow::slotInsertBlock() {
     if (s!=NULL) {
         QString block = ((QAction*)s)->text();
         RS_DEBUG->print("QC_ApplicationWindow::slotInsertBlock: %s",
-			block.latin1());
-		slotInsertBlock(block);
+            block.latin1());
+        slotInsertBlock(block);
     }
 }
 
@@ -301,18 +301,18 @@ void QC_ApplicationWindow::slotInsertBlock() {
  * Called to insert blocks.
  */
 void QC_ApplicationWindow::slotInsertBlock(const QString& name) {
-	RS_DEBUG->print("QC_ApplicationWindow::slotInsertBlock: '%s'", name.latin1());
+    RS_DEBUG->print("QC_ApplicationWindow::slotInsertBlock: '%s'", name.latin1());
 
     statusBar()->message(tr("Inserting block '%1'").arg(name), 2000);
 
-	RS_GraphicView* graphicView = getGraphicView();
-	RS_Document* document = getDocument();
-	if (graphicView!=NULL && document!=NULL) {
-		RS_ActionLibraryInsert* action =
-			new RS_ActionLibraryInsert(*document, *graphicView);
-		action->setFile(name);
-		graphicView->setCurrentAction(action);
-	}
+    RS_GraphicView* graphicView = getGraphicView();
+    RS_Document* document = getDocument();
+    if (graphicView!=NULL && document!=NULL) {
+        RS_ActionLibraryInsert* action =
+            new RS_ActionLibraryInsert(*document, *graphicView);
+        action->setFile(name);
+        graphicView->setCurrentAction(action);
+    }
 }
 
 
@@ -324,7 +324,7 @@ void QC_ApplicationWindow::show() {
 #ifdef QSPLASHSCREEN_H
     if (splash) {
         splash->raise();
-	}
+    }
 #endif
 
     QMainWindow::show();
@@ -795,7 +795,7 @@ void QC_ApplicationWindow::initActions() {
     menu->insertItem(tr("&Spline"), subMenu);
 
 #ifdef RS_PROF
-	// Polylines:
+    // Polylines:
     subMenu=new QPopupMenu(this);
     action = actionFactory.createAction(RS2::ActionDrawPolyline,
                                         actionHandler);
@@ -1141,6 +1141,14 @@ void QC_ApplicationWindow::initActions() {
     menuBar()->insertItem(tr("&CAM"), menu);
 #endif
 
+
+
+    // Grid Menu:
+    //
+    menu=new QPopupMenu(this);
+    menuBar()->insertItem(tr("&Grid"), menu);
+
+
     // Help menu:
     //
     helpAboutApp = new QAction(tr("About"),
@@ -1161,7 +1169,7 @@ void QC_ApplicationWindow::initActions() {
     connect(testDumpEntities, SIGNAL(activated()),
             this, SLOT(slotTestDumpEntities()));
 
-	testDumpUndo = new QAction("Dump Undo Info",
+    testDumpUndo = new QAction("Dump Undo Info",
                                  "Undo Info", 0, this);
     connect(testDumpUndo, SIGNAL(activated()),
             this, SLOT(slotTestDumpUndo()));
@@ -1376,7 +1384,7 @@ void QC_ApplicationWindow::initSettings() {
     resize(windowWidth, windowHeight);
     move(windowX, windowY);
 
-	restoreDocks();
+    restoreDocks();
 }
 
 
@@ -1561,8 +1569,8 @@ void QC_ApplicationWindow::initView() {
  */
 /*QToolBar* QC_ApplicationWindow::createToolBar(const RS_String& name) {
     QToolBar* tb = new QToolBar(this, name);
-	tb->setLabel(name);
-	return tb;
+    tb->setLabel(name);
+    return tb;
 }*/
 
 
@@ -1571,13 +1579,13 @@ void QC_ApplicationWindow::initView() {
  * Creates a new button in the given tool bar for running a script.
  */
 /*void QC_ApplicationWindow::addToolBarButton(QToolBar* tb) {
-	if (tb!=NULL) {
-    	QAction* action = new QAction("Blah",
-			QPixmap::fromMimeSource("zoomwindow.png"),
+    if (tb!=NULL) {
+        QAction* action = new QAction("Blah",
+            QPixmap::fromMimeSource("zoomwindow.png"),
             "&Blah", QKeySequence(), NULL);
-    	action->setStatusTip("Blah blah");
-		action->addTo(tb);
-	}
+        action->setStatusTip("Blah blah");
+        action->addTo(tb);
+    }
 }*/
 
 
@@ -1656,7 +1664,7 @@ void QC_ApplicationWindow::slotFocusCommandLine() {
  * Shows the given error on the command line.
  */
 void QC_ApplicationWindow::slotError(const QString& msg) {
-	commandWidget->appendHistory(msg);
+    commandWidget->appendHistory(msg);
 }
 
 
@@ -1687,10 +1695,10 @@ void QC_ApplicationWindow::slotWindowActivated(QWidget*) {
     QC_MDIWindow* m = getMDIWindow();
 
     if (m!=NULL && m->getDocument()!=NULL) {
-		//m->setWindowState(WindowMaximized);
+        //m->setWindowState(WindowMaximized);
 
         RS_DEBUG->print("QC_ApplicationWindow::slotWindowActivated: "
-			"document: %d", m->getDocument()->getId());
+            "document: %d", m->getDocument()->getId());
 
         bool showByBlock = m->getDocument()->rtti()==RS2::EntityBlock;
 
@@ -1913,7 +1921,7 @@ QC_MDIWindow* QC_ApplicationWindow::slotFileNew(RS_Document* doc) {
     RS_DEBUG->print("  creating MDI window");
     QC_MDIWindow* w = new QC_MDIWindow(doc, workspace,
                                        0, WDestructiveClose);
-	//w->setWindowState(WindowMaximized);
+    //w->setWindowState(WindowMaximized);
     connect(w, SIGNAL(signalClosing()),
             this, SLOT(slotFileClosing()));
 
@@ -2138,10 +2146,10 @@ void QC_ApplicationWindow::slotFileSaveAs() {
         bool cancelled;
         if (w->slotFileSaveAs(cancelled)) {
             if (!cancelled) {
-            	name = w->getDocument()->getFilename();
-            	recentFiles->add(name);
-            	w->setCaption(name);
-	    }
+                name = w->getDocument()->getFilename();
+                recentFiles->add(name);
+                w->setCaption(name);
+        }
         } else {
             // error
             QMessageBox::information(this, QMessageBox::tr("Warning"),
@@ -2280,16 +2288,16 @@ bool QC_ApplicationWindow::slotFileExport(const QString& name,
     QC_MDIWindow* w = getMDIWindow();
     if (w==NULL) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
-        	"QC_ApplicationWindow::slotFileExport: "
-        	"no window opened");
+            "QC_ApplicationWindow::slotFileExport: "
+            "no window opened");
         return false;
     }
 
     RS_Graphic* graphic = w->getDocument()->getGraphic();
     if (graphic==NULL) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
-        	"QC_ApplicationWindow::slotFileExport: "
-        	"no graphic");
+            "QC_ApplicationWindow::slotFileExport: "
+            "no graphic");
         return false;
     }
 
@@ -2362,13 +2370,13 @@ void QC_ApplicationWindow::slotFileClose() {
         m->close(true);
     }
 
-   	/*
-	m = getMDIWindow();
+    /*
+    m = getMDIWindow();
     if (m!=NULL) {
-		//m->showMaximized();
-		m->setWindowState(WindowMaximized);
-	}
-	*/
+        //m->showMaximized();
+        m->setWindowState(WindowMaximized);
+    }
+    */
 }
 
 
@@ -2401,16 +2409,16 @@ void QC_ApplicationWindow::slotFilePrint() {
     QC_MDIWindow* w = getMDIWindow();
     if (w==NULL) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
-        	"QC_ApplicationWindow::slotFilePrint: "
-        	"no window opened");
+            "QC_ApplicationWindow::slotFilePrint: "
+            "no window opened");
         return;
     }
 
     RS_Graphic* graphic = w->getDocument()->getGraphic();
     if (graphic==NULL) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
-        	"QC_ApplicationWindow::slotFilePrint: "
-        	"no graphic");
+            "QC_ApplicationWindow::slotFilePrint: "
+            "no graphic");
         return;
     }
 
@@ -2493,8 +2501,8 @@ void QC_ApplicationWindow::slotFilePrintPreview(bool on) {
     QC_MDIWindow* parent = getMDIWindow();
     if (parent==NULL) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
-        	"QC_ApplicationWindow::slotFilePrintPreview: "
-        	"no window opened");
+            "QC_ApplicationWindow::slotFilePrintPreview: "
+            "no window opened");
         return;
     }
 
@@ -2880,7 +2888,7 @@ void QC_ApplicationWindow::slotScriptRun() {
 void QC_ApplicationWindow::slotHelpAbout() {
     RS_DEBUG->print("QC_ApplicationWindow::slotHelpAbout()");
 
-	QString edition;
+    QString edition;
 
 #ifdef RS_DEMO
     //demo; // = " [Demo]";
@@ -2952,8 +2960,8 @@ void QC_ApplicationWindow::slotHelpManual() {
         RS_DEBUG->print("QC_ApplicationWindow::slotHelpManual(): appdir: %s",
                         RS_SYSTEM->getAppDir().latin1());
         assistant = new QAssistantClient("/usr/bin", this);
-		connect(assistant, SIGNAL(error(const QString&)),
-			this, SLOT(slotError(const QString&)));
+        connect(assistant, SIGNAL(error(const QString&)),
+            this, SLOT(slotError(const QString&)));
         QStringList args;
         args << "-profile";
         args << QDir::convertSeparators("/usr/share/qcad/doc/qcaddoc.adp");
@@ -2971,33 +2979,33 @@ void QC_ApplicationWindow::slotHelpManual() {
 void QC_ApplicationWindow::slotAssistantError(const QString&) {
     if ( !assistant->isOpen() ) {
         pid_t pid;
-	if ( (pid = fork()) < 0 ) {
-	    perror( "fork" );
-	    QMessageBox::critical( this, QC_APPNAME, "Could not fork child process." );
-	    return;
-	}
-	if ( pid==0 ) {  // child
-  	    pid_t gcpid;
-	    if ( (gcpid = fork()) < 0 ) {
-	        perror( "fork" );
-		_exit(1);
-	    }
-	    if ( gcpid==0 ) {  // grandchild
-	        char* argv[] = { "gnome-open",
-				 "/usr/share/qcad/doc/cad/index.html",
-				 0
-		};
-		execvp( argv[0], argv);
-		perror( "execvp" );
-		_exit(1);
-	    }
-	    int status;
-	    waitpid( pid, &status, 0 );
-	    _exit(0);
-	}
-	// parent
-	int status;
-	waitpid( pid, &status, 0 );
+    if ( (pid = fork()) < 0 ) {
+        perror( "fork" );
+        QMessageBox::critical( this, QC_APPNAME, "Could not fork child process." );
+        return;
+    }
+    if ( pid==0 ) {  // child
+        pid_t gcpid;
+        if ( (gcpid = fork()) < 0 ) {
+            perror( "fork" );
+        _exit(1);
+        }
+        if ( gcpid==0 ) {  // grandchild
+            char* argv[] = { "gnome-open",
+                 "/usr/share/qcad/doc/cad/index.html",
+                 0
+        };
+        execvp( argv[0], argv);
+        perror( "execvp" );
+        _exit(1);
+        }
+        int status;
+        waitpid( pid, &status, 0 );
+        _exit(0);
+    }
+    // parent
+    int status;
+    waitpid( pid, &status, 0 );
     }
 }
 
@@ -3286,10 +3294,10 @@ void QC_ApplicationWindow::slotTestDumpUndo() {
     RS_DEBUG->print("QC_ApplicationWindow::slotTestDumpUndo()");
 
     RS_Document* d = getDocument();
-	if (d!=NULL) {
-		std::cout << *(RS_Undo*)d;
-		std::cout << std::endl;
-	}
+    if (d!=NULL) {
+        std::cout << *(RS_Undo*)d;
+        std::cout << std::endl;
+    }
 }
 
 

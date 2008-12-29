@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -37,25 +37,25 @@ class RS_MouseEvent;
 
 /**
  * This class supports previewing. The RS_Snapper class uses
- * an instance of RS_Preview to preview entities, ranges, 
+ * an instance of RS_Preview to preview entities, ranges,
  * lines, arcs, ... on the fly.
  *
  * @author Andrew Mustun
  */
-class RS_Preview : public RS_EntityContainer {
+class RS_Preview : public RS_EntityContainer
+{
 public:
-    RS_Preview(RS_EntityContainer* parent=NULL);
-    ~RS_Preview();
-	
-    virtual void addEntity(RS_Entity* entity);
-	void addCloneOf(RS_Entity* entity);
-    virtual void addSelectionFrom(RS_EntityContainer& container);
-    virtual void addAllFrom(RS_EntityContainer& container);
-    virtual void addStretchablesFrom(RS_EntityContainer& container,
-	       const RS_Vector& v1, const RS_Vector& v2);
+  RS_Preview(RS_EntityContainer* parent=NULL);
+  ~RS_Preview();
+
+  virtual void addEntity(RS_Entity* entity);
+  void addCloneOf(RS_Entity* entity);
+  virtual void addSelectionFrom(RS_EntityContainer& container);
+  virtual void addAllFrom(RS_EntityContainer& container);
+  virtual void addStretchablesFrom(RS_EntityContainer& container, const RS_Vector& v1, const RS_Vector& v2);
 
 private:
-	int maxEntities;
+  int maxEntities;
 };
 
 #endif

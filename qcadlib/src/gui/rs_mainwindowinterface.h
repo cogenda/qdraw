@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -34,18 +34,18 @@
 /**
  * Interface for main application windows.
  */
-class RS_MainWindowInterface {
+class RS_MainWindowInterface
+{
 
 public:
-    RS_MainWindowInterface() {}
-    virtual ~RS_MainWindowInterface() {}
+  RS_MainWindowInterface() {}
+  virtual ~RS_MainWindowInterface() {}
 
-    virtual RS_GraphicView* getGraphicView() = 0;
-    virtual RS_Document* getDocument() = 0;
+  virtual RS_GraphicView* getGraphicView() = 0;
+  virtual RS_Document* getDocument() = 0;
 
-	virtual void createNewDocument(
-		const RS_String& fileName = RS_String::null, RS_Document* doc=NULL) = 0;
-	virtual void showSimulationControls() = 0;
+  virtual void createNewDocument(const RS_String& fileName = RS_String::null, RS_Document* doc=NULL) = 0;
+  virtual void showSimulationControls() = 0;
 
 };
 

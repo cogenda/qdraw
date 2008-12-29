@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -40,18 +40,19 @@
 /**
  * Interface for main application windows.
  */
-class QG_MainWindowInterface : public RS_MainWindowInterface {
+class QG_MainWindowInterface : public RS_MainWindowInterface
+{
 
 public:
-    QG_MainWindowInterface() {}
-    virtual ~QG_MainWindowInterface() {}
+  QG_MainWindowInterface() {}
+  virtual ~QG_MainWindowInterface() {}
 
-    virtual QMainWindow* getMainWindow() = 0;
-    virtual QG_ActionHandler* getActionHandler() = 0;
-	virtual void setFocus2() = 0;
+  virtual QMainWindow* getMainWindow() = 0;
+  virtual QG_ActionHandler* getActionHandler() = 0;
+  virtual void setFocus2() = 0;
 
-	//virtual QToolBar* createToolBar(const RS_String& name) = 0;
-	//virtual void addToolBarButton(QToolBar* tb) = 0;
+  //virtual QToolBar* createToolBar(const RS_String& name) = 0;
+  //virtual void addToolBarButton(QToolBar* tb) = 0;
 };
 
 #endif

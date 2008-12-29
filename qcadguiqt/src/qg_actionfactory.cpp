@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -171,8 +171,8 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
     // assert that action handler is not invalid:
     if (actionHandler==NULL) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
-        	"QG_ActionFactory::createAction: "
-			"No valid action handler available to create action. id: %d", id);
+            "QG_ActionFactory::createAction: "
+            "No valid action handler available to create action. id: %d", id);
         return NULL;
     }
 
@@ -182,8 +182,8 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
 
     if (mw==NULL) {
         RS_DEBUG->print(RS_Debug::D_WARNING,
-        	"QG_ActionFactory::createAction: "
-			"No valid main window available to create action. id: %d ", id);
+            "QG_ActionFactory::createAction: "
+            "No valid main window available to create action. id: %d ", id);
         return NULL;
     }
 
@@ -193,25 +193,25 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         // File actions:
         //
     case RS2::ActionFileNew:
-		action = RS_ActionFileNew::createGUIAction(id, mw);
+        action = RS_ActionFileNew::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotFileNew()));
         break;
 
     case RS2::ActionFileOpen:
-		action = RS_ActionFileOpen::createGUIAction(id, mw);
+        action = RS_ActionFileOpen::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotFileOpen()));
         break;
 
     case RS2::ActionFileSave:
-		action = RS_ActionFileSave::createGUIAction(id, mw);
+        action = RS_ActionFileSave::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotFileSave()));
         break;
 
     case RS2::ActionFileSaveAs:
-		action = RS_ActionFileSaveAs::createGUIAction(id, mw);
+        action = RS_ActionFileSaveAs::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotFileSaveAs()));
         break;
@@ -242,15 +242,15 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         break;
 
     case RS2::ActionFilePrintPreview:
-		action = RS_ActionPrintPreview::createGUIAction(id, mw);
-		action->setToggleAction(true);
+        action = RS_ActionPrintPreview::createGUIAction(id, mw);
+        action->setToggleAction(true);
         connect(action, SIGNAL(toggled(bool)),
                 obj, SLOT(slotFilePrintPreview(bool)));
         break;
 
     case RS2::ActionFileQuit:
-        action = new QAction(tr("Quit"), QPixmap::fromMimeSource("exit.png"), 
-							tr("&Quit"),
+        action = new QAction(tr("Quit"), QPixmap::fromMimeSource("exit.png"),
+                            tr("&Quit"),
                              CTRL+Key_Q, mw);
         action->setStatusTip(tr("Quits the application"));
         connect(action, SIGNAL(activated()),
@@ -290,7 +290,7 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
                        connect(action, SIGNAL(toggled(bool)),
                                obj, SLOT(slotViewLayerList(bool)));
                        break;
-         
+
                    case RS2::ActionViewBlockList:
                        action = new QAction(tr("Block List"), tr("&Block List"),
                                             0, mw, 0, true);
@@ -298,7 +298,7 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
                        connect(action, SIGNAL(toggled(bool)),
                                obj, SLOT(slotViewBlockList(bool)));
                        break;
-         
+
                    case RS2::ActionViewCommandLine:
                        action = new QAction(tr("Command Widget"), tr("&Command Widget"),
                                             0, mw, 0, true);
@@ -306,7 +306,7 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
                        connect(action, SIGNAL(toggled(bool)),
                                obj, SLOT(slotViewCommandLine(bool)));
                        break;
-         
+
                    case RS2::ActionViewOptionToolbar:
                        action = new QAction(tr("Option Toolbar"), tr("&Option Toolbar"),
                                             0, mw, 0, true);
@@ -314,12 +314,12 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
                        connect(action, SIGNAL(toggled(bool)),
                                obj, SLOT(slotViewOptionToolbar(bool)));
                        break;
-                	*/
+                    */
 
         // Tools:
         //
     case RS2::ActionToolRegenerateDimensions:
-		action = RS_ActionToolRegenerateDimensions::createGUIAction(id, mw);
+        action = RS_ActionToolRegenerateDimensions::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotToolRegenerateDimensions()));
         break;
@@ -327,43 +327,43 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         // Zooming actions:
         //
     case RS2::ActionZoomIn:
-		action = RS_ActionZoomIn::createGUIAction(id, mw);
+        action = RS_ActionZoomIn::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotZoomIn()));
         break;
 
     case RS2::ActionZoomOut:
-		action = RS_ActionZoomIn::createGUIAction(id, mw);
+        action = RS_ActionZoomIn::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotZoomOut()));
         break;
 
     case RS2::ActionZoomAuto:
-		action = RS_ActionZoomAuto::createGUIAction(id, mw);
+        action = RS_ActionZoomAuto::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotZoomAuto()));
         break;
 
     case RS2::ActionZoomWindow:
-		action = RS_ActionZoomWindow::createGUIAction(id, mw);
+        action = RS_ActionZoomWindow::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotZoomWindow()));
         break;
 
     case RS2::ActionZoomPan:
-		action = RS_ActionZoomPan::createGUIAction(id, mw);
+        action = RS_ActionZoomPan::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotZoomPan()));
         break;
-    
-	case RS2::ActionZoomPrevious:
-		action = RS_ActionZoomPrevious::createGUIAction(id, mw);
+
+    case RS2::ActionZoomPrevious:
+        action = RS_ActionZoomPrevious::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotZoomPrevious()));
         break;
 
     case RS2::ActionZoomRedraw:
-		action = RS_ActionZoomRedraw::createGUIAction(id, mw);
+        action = RS_ActionZoomRedraw::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotZoomRedraw()));
         break;
@@ -371,31 +371,31 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         // Editing actions:
         //
     case RS2::ActionEditUndo:
-		action = RS_ActionEditUndo::createGUIAction(id, mw);
+        action = RS_ActionEditUndo::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotEditUndo()));
         break;
 
     case RS2::ActionEditRedo:
-		action = RS_ActionEditUndo::createGUIAction(id, mw);
+        action = RS_ActionEditUndo::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotEditRedo()));
         break;
 
     case RS2::ActionEditCut:
-		action = RS_ActionEditCopy::createGUIAction(id, mw);
+        action = RS_ActionEditCopy::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotEditCut()));
         break;
 
     case RS2::ActionEditCopy:
-		action = RS_ActionEditCopy::createGUIAction(id, mw);
+        action = RS_ActionEditCopy::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotEditCopy()));
         break;
 
     case RS2::ActionEditPaste:
-		action = RS_ActionEditPaste::createGUIAction(id, mw);
+        action = RS_ActionEditPaste::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotEditPaste()));
         break;
@@ -403,61 +403,61 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         // Selecting actions:
         //
     case RS2::ActionSelectSingle:
-		action = RS_ActionSelectSingle::createGUIAction(id, mw);
+        action = RS_ActionSelectSingle::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotSelectSingle()));
         break;
 
     case RS2::ActionSelectWindow:
-		action = RS_ActionSelectWindow::createGUIAction(id, mw);
+        action = RS_ActionSelectWindow::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotSelectWindow()));
         break;
 
     case RS2::ActionDeselectWindow:
-		action = RS_ActionSelectWindow::createGUIAction(id, mw);
+        action = RS_ActionSelectWindow::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDeselectWindow()));
         break;
 
     case RS2::ActionSelectContour:
-		action = RS_ActionSelectContour::createGUIAction(id, mw);
+        action = RS_ActionSelectContour::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotSelectContour()));
         break;
 
     case RS2::ActionSelectAll:
-		action = RS_ActionSelectAll::createGUIAction(id, mw);
+        action = RS_ActionSelectAll::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotSelectAll()));
         break;
 
     case RS2::ActionDeselectAll:
-		action = RS_ActionSelectAll::createGUIAction(id, mw);
+        action = RS_ActionSelectAll::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDeselectAll()));
         break;
 
     case RS2::ActionSelectInvert:
-		action = RS_ActionSelectInvert::createGUIAction(id, mw);
+        action = RS_ActionSelectInvert::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotSelectInvert()));
         break;
 
     case RS2::ActionSelectIntersected:
-		action = RS_ActionSelectIntersected::createGUIAction(id, mw);
+        action = RS_ActionSelectIntersected::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotSelectIntersected()));
         break;
 
     case RS2::ActionDeselectIntersected:
-		action = RS_ActionSelectIntersected::createGUIAction(id, mw);
+        action = RS_ActionSelectIntersected::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDeselectIntersected()));
         break;
 
     case RS2::ActionSelectLayer:
-		action = RS_ActionSelectLayer::createGUIAction(id, mw);
+        action = RS_ActionSelectLayer::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotSelectLayer()));
         break;
@@ -465,170 +465,170 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         // Drawing actions:
         //
     case RS2::ActionDrawPoint:
-		action = RS_ActionDrawPoint::createGUIAction(id, mw);
+        action = RS_ActionDrawPoint::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawPoint()));
         break;
 
     case RS2::ActionDrawLine:
-		action = RS_ActionDrawLine::createGUIAction(id, mw);
+        action = RS_ActionDrawLine::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLine()));
         break;
 
     case RS2::ActionDrawLineAngle:
-		action = RS_ActionDrawLineAngle::createGUIAction(id, mw);
+        action = RS_ActionDrawLineAngle::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineAngle()));
         break;
 
     case RS2::ActionDrawLineHorizontal:
-		action = RS_ActionDrawLineAngle::createGUIAction(id, mw);
+        action = RS_ActionDrawLineAngle::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineHorizontal()));
         break;
 
     case RS2::ActionDrawLineHorVert:
-		action = RS_ActionDrawLineHorVert::createGUIAction(id, mw);
+        action = RS_ActionDrawLineHorVert::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineHorVert()));
         break;
 
     case RS2::ActionDrawLineVertical:
-		action = RS_ActionDrawLineAngle::createGUIAction(id, mw);
+        action = RS_ActionDrawLineAngle::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineVertical()));
         break;
 
     case RS2::ActionDrawLineFree:
-		action = RS_ActionDrawLineFree::createGUIAction(id, mw);
+        action = RS_ActionDrawLineFree::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineFree()));
         break;
 
     case RS2::ActionDrawLineParallel:
-		action = RS_ActionDrawLineParallel::createGUIAction(id, mw);
+        action = RS_ActionDrawLineParallel::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineParallel()));
         break;
 
     case RS2::ActionDrawLineParallelThrough:
-		action = RS_ActionDrawLineParallelThrough::createGUIAction(id, mw);
+        action = RS_ActionDrawLineParallelThrough::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineParallelThrough()));
         break;
 
     case RS2::ActionDrawLineRectangle:
-		action = RS_ActionDrawLineRectangle::createGUIAction(id, mw);
+        action = RS_ActionDrawLineRectangle::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineRectangle()));
         break;
 
     case RS2::ActionDrawLineBisector:
-		action = RS_ActionDrawLineBisector::createGUIAction(id, mw);
+        action = RS_ActionDrawLineBisector::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineBisector()));
         break;
 
     case RS2::ActionDrawLineTangent1:
-		action = RS_ActionDrawLineTangent1::createGUIAction(id, mw);
+        action = RS_ActionDrawLineTangent1::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineTangent1()));
         break;
 
     case RS2::ActionDrawLineTangent2:
-		action = RS_ActionDrawLineTangent2::createGUIAction(id, mw);
+        action = RS_ActionDrawLineTangent2::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineTangent2()));
         break;
 
     case RS2::ActionDrawLineOrthogonal:
-		action = RS_ActionDrawLineRelAngle::createGUIAction(id, mw);
+        action = RS_ActionDrawLineRelAngle::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineOrthogonal()));
         break;
 
     case RS2::ActionDrawLineRelAngle:
-		action = RS_ActionDrawLineRelAngle::createGUIAction(id, mw);
-		/*
+        action = RS_ActionDrawLineRelAngle::createGUIAction(id, mw);
+        /*
         action = new QAction(tr("Relative angle"), tr("R&elative angle"),
                              0, mw);
         action->setStatusTip(tr("Draw line with relative angle"));
-		*/
+        */
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLineRelAngle()));
         break;
 
 #ifdef RS_PROF
     case RS2::ActionDrawPolyline:
-		action = RS_ActionDrawPolyline::createGUIAction(id, mw);
+        action = RS_ActionDrawPolyline::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawPolyline()));
         break;
 #endif
-		
+
     case RS2::ActionDrawLinePolygon:
-		action = RS_ActionDrawLinePolygon::createGUIAction(id, mw);
+        action = RS_ActionDrawLinePolygon::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLinePolygon()));
         break;
 
     case RS2::ActionDrawLinePolygon2:
-		action = RS_ActionDrawLinePolygon::createGUIAction(id, mw);
+        action = RS_ActionDrawLinePolygon::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawLinePolygon2()));
         break;
 
     case RS2::ActionDrawCircle:
-		action = RS_ActionDrawCircle::createGUIAction(id, mw);
+        action = RS_ActionDrawCircle::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawCircle()));
         break;
 
     case RS2::ActionDrawCircleCR:
-		action = RS_ActionDrawCircleCR::createGUIAction(id, mw);
-		/*
+        action = RS_ActionDrawCircleCR::createGUIAction(id, mw);
+        /*
         action = new QAction(tr("Circle: Center, Radius"),
                              tr("Center, &Radius"),
                              0, mw);
         action->setStatusTip(tr("Draw circles with center and radius"));
-		*/
+        */
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawCircleCR()));
         break;
 
     case RS2::ActionDrawCircle2P:
-		action = RS_ActionDrawCircle2P::createGUIAction(id, mw);
+        action = RS_ActionDrawCircle2P::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawCircle2P()));
         break;
 
     case RS2::ActionDrawCircle3P:
-		action = RS_ActionDrawCircle3P::createGUIAction(id, mw);
+        action = RS_ActionDrawCircle3P::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawCircle3P()));
         break;
 
     case RS2::ActionDrawCircleParallel:
-		action = RS_ActionDrawLineParallel::createGUIAction(id, mw);
+        action = RS_ActionDrawLineParallel::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawCircleParallel()));
         break;
 
     case RS2::ActionDrawArc:
-		action = RS_ActionDrawArc::createGUIAction(id, mw);
+        action = RS_ActionDrawArc::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawArc()));
         break;
 
     case RS2::ActionDrawArc3P:
-		action = RS_ActionDrawArc3P::createGUIAction(id, mw);
+        action = RS_ActionDrawArc3P::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawArc3P()));
         break;
 
     case RS2::ActionDrawArcParallel:
-		action = RS_ActionDrawLineParallel::createGUIAction(id, mw);
+        action = RS_ActionDrawLineParallel::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawArcParallel()));
         break;
@@ -640,63 +640,63 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         break;
 
     case RS2::ActionDrawEllipseAxis:
-		action = RS_ActionDrawEllipseAxis::createGUIAction(id, mw);
+        action = RS_ActionDrawEllipseAxis::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawEllipseAxis()));
         break;
 
     case RS2::ActionDrawEllipseArcAxis:
-		action = RS_ActionDrawEllipseAxis::createGUIAction(id, mw);
+        action = RS_ActionDrawEllipseAxis::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawEllipseArcAxis()));
         break;
-		
+
     case RS2::ActionDrawSpline:
-		action = RS_ActionDrawSpline::createGUIAction(id, mw);
+        action = RS_ActionDrawSpline::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawSpline()));
         break;
-    
+
 #ifdef RS_PROF
-	case RS2::ActionPolylineAdd:
-		action = RS_ActionPolylineAdd::createGUIAction(id, mw);
+    case RS2::ActionPolylineAdd:
+        action = RS_ActionPolylineAdd::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotPolylineAdd()));
         break;
-	
-	case RS2::ActionPolylineDel:
-		action = RS_ActionPolylineDel::createGUIAction(id, mw);
+
+    case RS2::ActionPolylineDel:
+        action = RS_ActionPolylineDel::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotPolylineDel()));
         break;
-	
-	case RS2::ActionPolylineDelBetween:
-		action = RS_ActionPolylineDelBetween::createGUIAction(id, mw);
+
+    case RS2::ActionPolylineDelBetween:
+        action = RS_ActionPolylineDelBetween::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotPolylineDelBetween()));
         break;
-	
-	case RS2::ActionPolylineTrim:
-		action = RS_ActionPolylineTrim::createGUIAction(id, mw);
+
+    case RS2::ActionPolylineTrim:
+        action = RS_ActionPolylineTrim::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotPolylineTrim()));
         break;
 #endif
 
     case RS2::ActionDrawText:
-		action = RS_ActionDrawText::createGUIAction(id, mw);
+        action = RS_ActionDrawText::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawText()));
         break;
 
     case RS2::ActionDrawHatch:
-		action = RS_ActionDrawHatch::createGUIAction(id, mw);
+        action = RS_ActionDrawHatch::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawHatch()));
         break;
 
     case RS2::ActionDrawImage:
-		action = RS_ActionDrawImage::createGUIAction(id, mw);
+        action = RS_ActionDrawImage::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDrawImage()));
         break;
@@ -704,50 +704,50 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         // Dimensioning actions:
         //
     case RS2::ActionDimAligned:
-		action = RS_ActionDimAligned::createGUIAction(id, mw);
+        action = RS_ActionDimAligned::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDimAligned()));
         break;
 
     case RS2::ActionDimLinear:
-		action = RS_ActionDimLinear::createGUIAction(id, mw);
+        action = RS_ActionDimLinear::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDimLinear()));
         break;
 
     case RS2::ActionDimLinearHor:
-		action = RS_ActionDimLinear::createGUIAction(id, mw);
+        action = RS_ActionDimLinear::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDimLinearHor()));
         break;
 
     case RS2::ActionDimLinearVer:
-		action = RS_ActionDimLinear::createGUIAction(id, mw);
-		
+        action = RS_ActionDimLinear::createGUIAction(id, mw);
+
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDimLinearVer()));
         break;
 
     case RS2::ActionDimRadial:
-		action = RS_ActionDimRadial::createGUIAction(id, mw);
+        action = RS_ActionDimRadial::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDimRadial()));
         break;
 
     case RS2::ActionDimDiametric:
-		action = RS_ActionDimDiametric::createGUIAction(id, mw);
+        action = RS_ActionDimDiametric::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDimDiametric()));
         break;
 
     case RS2::ActionDimAngular:
-		action = RS_ActionDimAngular::createGUIAction(id, mw);
+        action = RS_ActionDimAngular::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDimAngular()));
         break;
 
     case RS2::ActionDimLeader:
-		action = RS_ActionDimLeader::createGUIAction(id, mw);
+        action = RS_ActionDimLeader::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotDimLeader()));
         break;
@@ -755,119 +755,119 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         // Modifying actions:
         //
     case RS2::ActionModifyAttributes:
-		action = RS_ActionModifyAttributes::createGUIAction(id, mw);
+        action = RS_ActionModifyAttributes::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyAttributes()));
         break;
     case RS2::ActionModifyDelete:
-		action = RS_ActionModifyDelete::createGUIAction(id, mw);
+        action = RS_ActionModifyDelete::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyDelete()));
         break;
 
     case RS2::ActionModifyDeleteQuick:
-		action = RS_ActionModifyDeleteQuick::createGUIAction(id, mw);
+        action = RS_ActionModifyDeleteQuick::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyDeleteQuick()));
         break;
 
     case RS2::ActionModifyDeleteFree:
-		action = RS_ActionModifyDeleteFree::createGUIAction(id, mw);
+        action = RS_ActionModifyDeleteFree::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyDeleteFree()));
         break;
 
     case RS2::ActionModifyMove:
-		action = RS_ActionModifyMove::createGUIAction(id, mw);
-		/*
+        action = RS_ActionModifyMove::createGUIAction(id, mw);
+        /*
         action = new QAction(tr("Move"), tr("&Move"),
                              0, mw);
         action->setStatusTip(tr("Move Entities"));
-		*/
+        */
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyMove()));
         break;
 
     case RS2::ActionModifyRotate:
-		action = RS_ActionModifyRotate::createGUIAction(id, mw);
+        action = RS_ActionModifyRotate::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyRotate()));
         break;
 
     case RS2::ActionModifyScale:
-		action = RS_ActionModifyScale::createGUIAction(id, mw);
+        action = RS_ActionModifyScale::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyScale()));
         break;
 
     case RS2::ActionModifyMirror:
-		action = RS_ActionModifyMirror::createGUIAction(id, mw);
+        action = RS_ActionModifyMirror::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyMirror()));
         break;
 
     case RS2::ActionModifyMoveRotate:
-		action = RS_ActionModifyMoveRotate::createGUIAction(id, mw);
+        action = RS_ActionModifyMoveRotate::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyMoveRotate()));
         break;
 
     case RS2::ActionModifyRotate2:
-		action = RS_ActionModifyRotate::createGUIAction(id, mw);
+        action = RS_ActionModifyRotate::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyRotate2()));
         break;
 
     case RS2::ActionModifyEntity:
-		action = RS_ActionModifyEntity::createGUIAction(id, mw);
+        action = RS_ActionModifyEntity::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyEntity()));
         break;
 
     case RS2::ActionModifyTrim:
-		action = RS_ActionModifyTrim::createGUIAction(id, mw);
+        action = RS_ActionModifyTrim::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyTrim()));
         break;
 
     case RS2::ActionModifyTrim2:
-		action = RS_ActionModifyTrim::createGUIAction(id, mw);
+        action = RS_ActionModifyTrim::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyTrim2()));
         break;
 
     case RS2::ActionModifyTrimAmount:
-		action = RS_ActionModifyTrimAmount::createGUIAction(id, mw);
+        action = RS_ActionModifyTrimAmount::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyTrimAmount()));
         break;
 
     case RS2::ActionModifyCut:
-		action = RS_ActionModifyCut::createGUIAction(id, mw);
+        action = RS_ActionModifyCut::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyCut()));
         break;
 
     case RS2::ActionModifyStretch:
-		action = RS_ActionModifyStretch::createGUIAction(id, mw);
+        action = RS_ActionModifyStretch::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyStretch()));
         break;
 
     case RS2::ActionModifyBevel:
-		action = RS_ActionModifyBevel::createGUIAction(id, mw);
+        action = RS_ActionModifyBevel::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyBevel()));
         break;
 
     case RS2::ActionModifyRound:
-		action = RS_ActionModifyRound::createGUIAction(id, mw);
+        action = RS_ActionModifyRound::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyRound()));
         break;
 
     case RS2::ActionModifyExplodeText:
-		action = RS_ActionModifyExplodeText::createGUIAction(id, mw);
+        action = RS_ActionModifyExplodeText::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotModifyExplodeText()));
         break;
@@ -949,7 +949,7 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         break;
 
     case RS2::ActionSnapIntersectionManual:
-		action = RS_ActionSnapIntersectionManual::createGUIAction(id, mw);
+        action = RS_ActionSnapIntersectionManual::createGUIAction(id, mw);
         actionHandler->setActionSnapIntersectionManual(action);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotSnapIntersectionManual()));
@@ -999,12 +999,12 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         // Relative zero point
         //
     case RS2::ActionSetRelativeZero:
-		action = RS_ActionSetRelativeZero::createGUIAction(id, mw);
+        action = RS_ActionSetRelativeZero::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotSetRelativeZero()));
         break;
     case RS2::ActionLockRelativeZero:
-		action = RS_ActionLockRelativeZero::createGUIAction(id, mw);
+        action = RS_ActionLockRelativeZero::createGUIAction(id, mw);
         actionHandler->setActionLockRelativeZero(action);
         connect(action, SIGNAL(toggled(bool)),
                 obj, SLOT(slotLockRelativeZero(bool)));
@@ -1013,31 +1013,31 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         // Info actions:
         //
     case RS2::ActionInfoInside:
-		action = RS_ActionInfoInside::createGUIAction(id, mw);
+        action = RS_ActionInfoInside::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotInfoInside()));
         break;
 
     case RS2::ActionInfoDist:
-		action = RS_ActionInfoDist::createGUIAction(id, mw);
+        action = RS_ActionInfoDist::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotInfoDist()));
         break;
 
     case RS2::ActionInfoDist2:
-		action = RS_ActionInfoDist2::createGUIAction(id, mw);
+        action = RS_ActionInfoDist2::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotInfoDist2()));
         break;
 
     case RS2::ActionInfoAngle:
-		action = RS_ActionInfoAngle::createGUIAction(id, mw);
+        action = RS_ActionInfoAngle::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotInfoAngle()));
         break;
-		
+
     case RS2::ActionInfoTotalLength:
-		action = RS_ActionInfoTotalLength::createGUIAction(id, mw);
+        action = RS_ActionInfoTotalLength::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotInfoTotalLength()));
         break;
@@ -1045,41 +1045,41 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         // Layer actions:
         //
     case RS2::ActionLayersDefreezeAll:
-		action = RS_ActionLayersFreezeAll::createGUIAction(id, mw);
+        action = RS_ActionLayersFreezeAll::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotLayersDefreezeAll()));
         break;
     case RS2::ActionLayersFreezeAll:
-		action = RS_ActionLayersFreezeAll::createGUIAction(id, mw);
+        action = RS_ActionLayersFreezeAll::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotLayersFreezeAll()));
         break;
     case RS2::ActionLayersAdd:
-		action = RS_ActionLayersAdd::createGUIAction(id, mw);
+        action = RS_ActionLayersAdd::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotLayersAdd()));
         break;
 
     case RS2::ActionLayersRemove:
-		action = RS_ActionLayersRemove::createGUIAction(id, mw);
+        action = RS_ActionLayersRemove::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotLayersRemove()));
         break;
 
     case RS2::ActionLayersEdit:
-		action = RS_ActionLayersEdit::createGUIAction(id, mw);
+        action = RS_ActionLayersEdit::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotLayersEdit()));
         break;
-		
+
     case RS2::ActionLayersToggleLock:
-		action = RS_ActionLayersToggleLock::createGUIAction(id, mw);
+        action = RS_ActionLayersToggleLock::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotLayersToggleView()));
         break;
 
     case RS2::ActionLayersToggleView:
-		action = RS_ActionLayersToggleView::createGUIAction(id, mw);
+        action = RS_ActionLayersToggleView::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotLayersToggleView()));
         break;
@@ -1087,63 +1087,63 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         // Block actions:
         //
     case RS2::ActionBlocksDefreezeAll:
-		action = RS_ActionBlocksFreezeAll::createGUIAction(id, mw);
+        action = RS_ActionBlocksFreezeAll::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotBlocksDefreezeAll()));
         break;
     case RS2::ActionBlocksFreezeAll:
-		action = RS_ActionBlocksFreezeAll::createGUIAction(id, mw);
+        action = RS_ActionBlocksFreezeAll::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotBlocksFreezeAll()));
         break;
     case RS2::ActionBlocksAdd:
-		action = RS_ActionBlocksAdd::createGUIAction(id, mw);
+        action = RS_ActionBlocksAdd::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotBlocksAdd()));
         break;
     case RS2::ActionBlocksRemove:
-		action = RS_ActionBlocksRemove::createGUIAction(id, mw);
+        action = RS_ActionBlocksRemove::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotBlocksRemove()));
         break;
     case RS2::ActionBlocksAttributes:
-		action = RS_ActionBlocksAttributes::createGUIAction(id, mw);
+        action = RS_ActionBlocksAttributes::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotBlocksAttributes()));
         break;
     case RS2::ActionBlocksEdit:
-		action = RS_ActionBlocksEdit::createGUIAction(id, mw);
+        action = RS_ActionBlocksEdit::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotBlocksEdit()));
         break;
     case RS2::ActionBlocksInsert:
-		action = RS_ActionBlocksInsert::createGUIAction(id, mw);
+        action = RS_ActionBlocksInsert::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotBlocksInsert()));
         break;
     case RS2::ActionBlocksToggleView:
-		action = RS_ActionBlocksToggleView::createGUIAction(id, mw);
+        action = RS_ActionBlocksToggleView::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotBlocksToggleView()));
         break;
     case RS2::ActionBlocksCreate:
-		action = RS_ActionBlocksCreate::createGUIAction(id, mw);
+        action = RS_ActionBlocksCreate::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotBlocksCreate()));
         break;
     case RS2::ActionBlocksExplode:
-		action = RS_ActionBlocksExplode::createGUIAction(id, mw);
+        action = RS_ActionBlocksExplode::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotBlocksExplode()));
         break;
-		
+
 
         // Options actions:
         //
     case RS2::ActionOptionsGeneral:
         action = new QAction(tr("Application"), QPixmap::fromMimeSource("configure.png"),
 #ifdef __APPLE__
-							 tr("&Preferences"),
+                             tr("&Preferences"),
 #else
                              tr("&Application Preferences")+"...",
 #endif
@@ -1154,43 +1154,43 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         break;
 
     case RS2::ActionOptionsDrawing:
-		action = RS_ActionOptionsDrawing::createGUIAction(id, mw);
+        action = RS_ActionOptionsDrawing::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotOptionsDrawing()));
         break;
-		
+
         // Scripting actions:
         //
-	case RS2::ActionScriptOpenIDE:
+    case RS2::ActionScriptOpenIDE:
         action = new QAction(tr("Open IDE"),
                              tr("&Open IDE"),
                              0, mw);
         action->setStatusTip(tr("Opens the integrated development "
-		   "environment for scripting"));
+           "environment for scripting"));
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotScriptOpenIDE()));
-		break;
-		
-	case RS2::ActionScriptRun:
+        break;
+
+    case RS2::ActionScriptRun:
         action = new QAction(tr("Run Script.."),
                              tr("&Run Script.."),
                              0, mw);
         action->setStatusTip(tr("Runs a script"));
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotScriptRun()));
-		break;
+        break;
 
-		// CAM actions:
-		//
+        // CAM actions:
+        //
 #ifdef RS_CAM
     case RS2::ActionCamExportAuto:
-		action = RS_ActionCamExportAuto::createGUIAction(id, mw);
+        action = RS_ActionCamExportAuto::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotCamExportAuto()));
         break;
-		
+
     case RS2::ActionCamReorder:
-		action = RS_ActionCamReorder::createGUIAction(id, mw);
+        action = RS_ActionCamReorder::createGUIAction(id, mw);
         connect(action, SIGNAL(activated()),
                 obj, SLOT(slotCamReorder()));
         break;
@@ -1198,8 +1198,8 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
 
     default:
         RS_DEBUG->print(RS_Debug::D_WARNING,
-        	"No action %d defined", id);
-		assert(true);
+            "No action %d defined", id);
+        assert(true);
         break;
     }
 
