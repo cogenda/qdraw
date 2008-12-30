@@ -23,6 +23,7 @@
 #define __parameters_h__
 
 // C++ includes
+#include <cassert>
 #include <iostream>
 #include <typeinfo>
 #include <string>
