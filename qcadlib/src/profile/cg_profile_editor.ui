@@ -8,7 +8,7 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>269</width>
+            <width>280</width>
             <height>285</height>
         </rect>
     </property>
@@ -74,11 +74,6 @@
                     <cstring>unnamed</cstring>
                 </property>
                 <widget class="QListBox" row="0" column="0" rowspan="9" colspan="1">
-                    <item>
-                        <property name="text">
-                            <string>New Item</string>
-                        </property>
-                    </item>
                     <property name="name">
                         <cstring>ProfileList</cstring>
                     </property>
@@ -226,6 +221,21 @@
                     </property>
                 </widget>
                 <widget class="QComboBox" row="0" column="2">
+                    <item>
+                        <property name="text">
+                            <string>Add Uniform</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Add Guass</string>
+                        </property>
+                    </item>
+                    <item>
+                        <property name="text">
+                            <string>Add Erf</string>
+                        </property>
+                    </item>
                     <property name="name">
                         <cstring>BNew</cstring>
                     </property>
@@ -259,12 +269,43 @@
         <receiver>ProfileEditor</receiver>
         <slot>SlotSave()</slot>
     </connection>
+    <connection>
+        <sender>BOK</sender>
+        <signal>clicked()</signal>
+        <receiver>ProfileEditor</receiver>
+        <slot>accept()</slot>
+    </connection>
+    <connection>
+        <sender>BCancel</sender>
+        <signal>clicked()</signal>
+        <receiver>ProfileEditor</receiver>
+        <slot>close()</slot>
+    </connection>
+    <connection>
+        <sender>BNew</sender>
+        <signal>activated(const QString&amp;)</signal>
+        <receiver>ProfileEditor</receiver>
+        <slot>SlotAdd(const QString&amp;)</slot>
+    </connection>
 </connections>
+<includes>
+    <include location="local" impldecl="in declaration">cg_profile.h</include>
+    <include location="local" impldecl="in declaration">cg_profile_manager.h</include>
+    <include location="local" impldecl="in implementation">cg_profile_editor.ui.h</include>
+</includes>
+<variables>
+    <variable access="private">ProfileManager * _pm;</variable>
+</variables>
 <slots>
+    <slot>SlotAdd( const QString &amp; type )</slot>
     <slot>SlotEdit()</slot>
     <slot>SlotDelete()</slot>
     <slot>SlotLoad()</slot>
     <slot>SlotSave()</slot>
 </slots>
+<functions>
+    <function access="private" specifier="non virtual">init()</function>
+    <function specifier="non virtual">set_profile_maneger( ProfileManager * pm )</function>
+</functions>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>
