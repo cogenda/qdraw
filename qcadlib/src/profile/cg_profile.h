@@ -59,6 +59,38 @@ public:
   const std::string & property() const
   { return _property; }
 
+  /**
+   * @return xmin of the bound box
+   */
+  double xmin() const
+  { return  _xmin; }
+
+  /**
+   * @return xmax of the bound box
+   */
+  double xmax() const
+  { return  _xmax; }
+
+  /**
+   * @return ymin of the bound box
+   */
+  double ymin() const
+  { return  _ymin; }
+
+  /**
+   * @return ymax of the bound box
+   */
+  double ymax() const
+  { return  _ymax; }
+
+  virtual double peak()  const { return 0; }
+
+  virtual double xchar() const { return 0; }
+
+  virtual double ychar() const { return 0; }
+
+  virtual std::string type() const=0;
+
 protected:
 
   /**
@@ -120,6 +152,10 @@ public:
       return 0.0;
   }
 
+  virtual double peak() const  { return _PEAK; }
+
+  virtual std::string type() const { return "Uniform"; }
+
 private:
   /**
    * the peak value of profile
@@ -160,6 +196,14 @@ public:
 
     return _PEAK*dx*dy;
   }
+
+  virtual double peak()  const { return _PEAK; }
+
+  virtual double xchar() const { return _XCHAR; }
+
+  virtual double ychar() const { return _YCHAR; }
+
+  virtual std::string type() const { return "Gauss"; }
 
 private:
 
@@ -204,6 +248,14 @@ public:
       dy = exp(-(y-_ymax)*(y-_ymax)/(_YCHAR*_YCHAR));
     return _PEAK*dx*dy;
   }
+
+  virtual double peak()  const { return _PEAK; }
+
+  virtual double xchar() const { return _XCHAR; }
+
+  virtual double ychar() const { return _YCHAR; }
+
+  virtual std::string type() const { return "Erf"; }
 
 private:
 
