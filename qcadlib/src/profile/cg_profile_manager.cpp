@@ -33,7 +33,7 @@ ProfileManager::~ProfileManager()
 int ProfileManager::add_profile(const Parameters & p, std::string &error_msg)
 {
   std::string type = p.get<std::string>("type");
-  if(type == "Unoform")
+  if(type == "Uniform")
     return add_profile_uniform(p, error_msg);
   else if(type == "Gauss")
     return add_profile_gauss(p, error_msg);
@@ -57,6 +57,8 @@ int ProfileManager::add_profile_uniform(const Parameters & p, std::string &error
 {
 
   std::string label    = p.get<std::string>("label");
+  if( get_profile(label) ) {error_msg = "Profile with label " + label + "already exist"; return 1;}
+
   std::string property = p.get<std::string>("property");
 
   double xmax = p.get<double>("x.max");
@@ -65,11 +67,13 @@ int ProfileManager::add_profile_uniform(const Parameters & p, std::string &error
   double ymin = p.get<double>("y.min");
   double peak = p.get<double>("n.peak");
 
+
   if(xmin-xmax>1e-8) {error_msg = "Xmin is larger than Xmax"; return 1;}
   if(ymin-ymax>1e-8) {error_msg = "Ymin is larger than Ymax"; return 1;}
 
-  Profile * f = new UniformProfile(label, property, xmin, xmax, ymax, ymin, peak);
+  Profile * f = new UniformProfile(label, property, xmin, xmax, ymin, ymax, peak);
   _profiles.push_back(f);
+  _profile_map[label] = f;
 
   error_msg = "";
   return 0;
@@ -79,6 +83,8 @@ int ProfileManager::add_profile_uniform(const Parameters & p, std::string &error
 int ProfileManager::add_profile_gauss(const Parameters & p, std::string &error_msg)
 {
   std::string label    = p.get<std::string>("label");
+  if( get_profile(label) ) {error_msg = "Profile with label " + label + "already exist"; return 1;}
+
   std::string property = p.get<std::string>("property");
 
   double ion  = property_to_real(property);
@@ -91,9 +97,12 @@ int ProfileManager::add_profile_gauss(const Parameters & p, std::string &error_m
   if(ymin-ymax>1e-8) {error_msg = "Ymin is larger than Ymax"; return 1;}
   double slice = 0.5*(xmax+xmin);
 
-  double peak = p.get<double>("n.peak");
+  double peak=0;
 
-  double YCHAR=0,XCHAR,YJUNC,dop=0;
+  if(p.have_parameter<double>("n.peak"))
+    peak = p.get<double>("n.peak");
+
+  double YCHAR=0,XCHAR=0,YJUNC,dop=0;
   if(p.have_parameter<double>("y.char"))
     YCHAR = p.get<double>("y.char");
   else if(p.have_parameter<double>("y.junction"))
@@ -109,7 +118,10 @@ int ProfileManager::add_profile_gauss(const Parameters & p, std::string &error_m
     if(peak<=0.0) {error_msg = "Negtive peak value is not allowed"; return 1;}
 
     //Now convert junction depth into char. length
-    YCHAR = (ymin-YJUNC)/sqrt(log(fabs(peak/dop)));
+    if(YJUNC<ymin)
+      YCHAR = (ymin-YJUNC)/sqrt(log(fabs(peak/dop)));
+    else if(YJUNC>ymax)
+      YCHAR = (YJUNC-ymax)/sqrt(log(fabs(peak/dop)));
   }
 
   if(p.have_parameter<double>("x.char"))
@@ -129,8 +141,18 @@ int ProfileManager::add_profile_gauss(const Parameters & p, std::string &error_m
   }
   if(peak<=0.0) {error_msg = "Negtive peak value is not allowed"; return 1;}
 
-  Profile * f = new GaussProfile(label, property, xmin, xmax, ymax, ymin, peak, XCHAR, YCHAR);
+  Profile * f = new GaussProfile(label, property, xmin, xmax, ymin, ymax, peak, XCHAR, YCHAR);
   _profiles.push_back(f);
+  _profile_map[label] = f;
+
+  if(p.have_parameter<double>("xy.ratio"))
+    f->set_xy_ratio(p.get<double>("xy.ratio"));
+
+  if(p.have_parameter<double>("dose"))
+    f->set_dose(p.get<double>("dose"));
+
+  if(p.have_parameter<double>("y.junction"))
+    f->set_y_junction(p.get<double>("y.junction"));
 
   error_msg = "";
   return 0;
@@ -141,6 +163,8 @@ int ProfileManager::add_profile_gauss(const Parameters & p, std::string &error_m
 int ProfileManager::add_profile_erf(const Parameters & p, std::string &error_msg)
 {
   std::string label    = p.get<std::string>("label");
+  if( get_profile(label) ) {error_msg = "Profile with label " + label + "already exist"; return 1;}
+
   std::string property = p.get<std::string>("property");
 
   double ion  = property_to_real(property);
@@ -153,7 +177,10 @@ int ProfileManager::add_profile_erf(const Parameters & p, std::string &error_msg
   if(ymin-ymax>1e-8) {error_msg = "Ymin is larger than Ymax"; return 1;}
   double slice = 0.5*(xmax+xmin);
 
-  double peak = p.get<double>("n.peak");
+  double peak=0;
+
+  if(p.have_parameter<double>("n.peak"))
+    peak = p.get<double>("n.peak");
 
   double YCHAR=0,XCHAR,YJUNC,dop=0;
   if(p.have_parameter<double>("y.char"))
@@ -171,7 +198,10 @@ int ProfileManager::add_profile_erf(const Parameters & p, std::string &error_msg
     if(peak<=0.0) {error_msg = "Negtive peak value is not allowed"; return 1;}
 
     //Now convert junction depth into char. length
-    YCHAR = (ymin-YJUNC)/sqrt(log(fabs(peak/dop)));
+    if(YJUNC<ymin)
+      YCHAR = (ymin-YJUNC)/sqrt(log(fabs(peak/dop)));
+    else if(YJUNC>ymax)
+      YCHAR = (YJUNC-ymax)/sqrt(log(fabs(peak/dop)));
   }
 
   if(p.have_parameter<double>("x.char"))
@@ -192,13 +222,31 @@ int ProfileManager::add_profile_erf(const Parameters & p, std::string &error_msg
   if(peak<=0.0) {error_msg = "Negtive peak value is not allowed"; return 1;}
 
 
-  Profile * f = new ErfProfile(label, property, xmin, xmax, ymax, ymin, peak, XCHAR, YCHAR);
+  Profile * f = new ErfProfile(label, property, xmin, xmax, ymin, ymax, peak, XCHAR, YCHAR);
   _profiles.push_back(f);
+  _profile_map[label] = f;
+
+  if(p.have_parameter<double>("xy.ratio"))
+    f->set_xy_ratio(p.get<double>("xy.ratio"));
+
+  if(p.have_parameter<double>("dose"))
+    f->set_dose(p.get<double>("dose"));
+
+  if(p.have_parameter<double>("y.junction"))
+    f->set_y_junction(p.get<double>("y.junction"));
 
   error_msg = "";
   return 0;
 
 }
+
+
+void ProfileManager::insert_profile(const Profile * profile)
+{
+  _profiles.push_back(profile);
+  _profile_map[profile->label()] = profile;
+}
+
 
 void ProfileManager::delete_profile(const std::string &label)
 {
@@ -208,8 +256,32 @@ void ProfileManager::delete_profile(const std::string &label)
     {
       delete (*it);
       _profiles.erase(it);
-      return;
+      break;
     }
+
+  if(  _profile_map.find(label) != _profile_map.end() )
+    _profile_map.erase(label);
+
+}
+
+
+const Profile * ProfileManager::remove_profile(const std::string &label)
+{
+  const Profile * profile = NULL;
+
+  std::vector<const Profile * >::iterator it = _profiles.begin();
+  for(; it != _profiles.end(); ++it)
+    if ((*it)->label() == label)
+    {
+      profile = (*it);
+      _profiles.erase(it);
+      break;
+    }
+
+  if(  _profile_map.find(label) != _profile_map.end() )
+    _profile_map.erase(label);
+
+  return profile;
 }
 
 
@@ -220,7 +292,7 @@ double ProfileManager::profile(const std::string & property, double x, double y)
   for(; it != _profiles.end(); ++it)
   {
     if( (*it)->property() == property )
-    q += property_to_real((*it)->property()) * (*it)->profile(x, y);
+      q += property_to_real((*it)->property()) * (*it)->profile(x, y);
   }
 
   return q;
@@ -233,11 +305,8 @@ const Profile * ProfileManager::get_profile(unsigned int n) const
 
 const Profile * ProfileManager::get_profile(const std::string &label) const
 {
-  std::vector<const Profile * >::const_iterator it = _profiles.begin();
-  for(; it != _profiles.end(); ++it)
-  {
-    if( (*it)->label() == label )
-      return (*it);
-  }
+  if(  _profile_map.find(label) != _profile_map.end() )
+    return (*_profile_map.find(label)).second;
+
   return NULL;
 }

@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>280</width>
-            <height>285</height>
+            <width>286</width>
+            <height>292</height>
         </rect>
     </property>
     <property name="caption">
@@ -49,7 +49,7 @@
                         <cstring>BOK</cstring>
                     </property>
                     <property name="text">
-                        <string>OK</string>
+                        <string>O&amp;K</string>
                     </property>
                 </widget>
                 <widget class="QPushButton">
@@ -57,7 +57,7 @@
                         <cstring>BCancel</cstring>
                     </property>
                     <property name="text">
-                        <string>Cancel</string>
+                        <string>C&amp;ancel</string>
                     </property>
                 </widget>
             </hbox>
@@ -228,7 +228,7 @@
                     </item>
                     <item>
                         <property name="text">
-                            <string>Add Guass</string>
+                            <string>Add Gauss</string>
                         </property>
                     </item>
                     <item>

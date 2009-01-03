@@ -1,19 +1,19 @@
 <!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>ProfileEditorUniform</class>
+<class>ProfileEditorGauss</class>
 <widget class="QDialog">
     <property name="name">
-        <cstring>ProfileEditorUniform</cstring>
+        <cstring>ProfileEditorGauss</cstring>
     </property>
     <property name="geometry">
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>428</width>
-            <height>245</height>
+            <width>392</width>
+            <height>365</height>
         </rect>
     </property>
     <property name="caption">
-        <string>Set Uniform Profile</string>
+        <string>Set Gauss Profile</string>
     </property>
     <grid>
         <property name="name">
@@ -21,7 +21,7 @@
         </property>
         <widget class="QLayoutWidget" row="0" column="0">
             <property name="name">
-                <cstring>layout6</cstring>
+                <cstring>layout7</cstring>
             </property>
             <vbox>
                 <property name="name">
@@ -82,53 +82,10 @@
                 </widget>
                 <widget class="QGroupBox">
                     <property name="name">
-                        <cstring>groupBox1</cstring>
-                    </property>
-                    <property name="title">
-                        <string>Profile Concentration</string>
-                    </property>
-                    <hbox>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>concentration_label</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Concentration:</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit">
-                            <property name="name">
-                                <cstring>concentration_edit</cstring>
-                            </property>
-                        </widget>
-                        <spacer>
-                            <property name="name">
-                                <cstring>spacer2</cstring>
-                            </property>
-                            <property name="orientation">
-                                <enum>Horizontal</enum>
-                            </property>
-                            <property name="sizeType">
-                                <enum>Expanding</enum>
-                            </property>
-                            <property name="sizeHint">
-                                <size>
-                                    <width>40</width>
-                                    <height>20</height>
-                                </size>
-                            </property>
-                        </spacer>
-                    </hbox>
-                </widget>
-                <widget class="QGroupBox">
-                    <property name="name">
                         <cstring>groupBox2</cstring>
                     </property>
                     <property name="title">
-                        <string>Profile Bound Box</string>
+                        <string>Profile Baseline</string>
                     </property>
                     <grid>
                         <property name="name">
@@ -199,10 +156,10 @@
                         </widget>
                         <widget class="QLabel" row="0" column="2">
                             <property name="name">
-                                <cstring>textLabel6</cstring>
+                                <cstring>x1_label</cstring>
                             </property>
                             <property name="text">
-                                <string>X1:</string>
+                                <string>&amp;X1:</string>
                             </property>
                             <property name="buddy" stdset="0">
                                 <cstring>x1_edit</cstring>
@@ -210,7 +167,7 @@
                         </widget>
                         <widget class="QLabel" row="1" column="2">
                             <property name="name">
-                                <cstring>textLabel7</cstring>
+                                <cstring>y1_label</cstring>
                             </property>
                             <property name="text">
                                 <string>Y1:</string>
@@ -231,6 +188,152 @@
                         </widget>
                     </grid>
                 </widget>
+                <widget class="QGroupBox">
+                    <property name="name">
+                        <cstring>groupBox1</cstring>
+                    </property>
+                    <property name="title">
+                        <string>Profile Concentration</string>
+                    </property>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <spacer row="0" column="3">
+                            <property name="name">
+                                <cstring>spacer9</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>70</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QLineEdit" row="0" column="1" rowspan="1" colspan="2">
+                            <property name="name">
+                                <cstring>concentration_edit</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QComboBox" row="0" column="0">
+                            <property name="name">
+                                <cstring>concentration_type</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit" row="2" column="2">
+                            <property name="name">
+                                <cstring>LateralDiffusionEdit</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QLabel" row="2" column="0" rowspan="1" colspan="2">
+                            <property name="name">
+                                <cstring>LateralDiffusionLabel</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Lateral Diffusion Factor:</string>
+                            </property>
+                        </widget>
+                        <spacer row="2" column="3">
+                            <property name="name">
+                                <cstring>spacer12</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>80</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QButtonGroup" row="1" column="0" rowspan="1" colspan="4">
+                            <property name="name">
+                                <cstring>buttonGroup1</cstring>
+                            </property>
+                            <property name="title">
+                                <string></string>
+                            </property>
+                            <grid>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QRadioButton" row="1" column="0" rowspan="3" colspan="3">
+                                    <property name="name">
+                                        <cstring>YjuncRadioButton</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>&amp;Junction Position:</string>
+                                    </property>
+                                    <property name="accel">
+                                        <string>Alt+J</string>
+                                    </property>
+                                </widget>
+                                <widget class="QRadioButton" row="0" column="0">
+                                    <property name="name">
+                                        <cstring>YcharRadioButton</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Character Length:</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLineEdit" row="0" column="1">
+                                    <property name="name">
+                                        <cstring>YcharEdit</cstring>
+                                    </property>
+                                </widget>
+                                <widget class="QLineEdit" row="2" column="1" rowspan="2" colspan="1">
+                                    <property name="name">
+                                        <cstring>YjuncEdit</cstring>
+                                    </property>
+                                </widget>
+                                <spacer row="0" column="2">
+                                    <property name="name">
+                                        <cstring>spacer9_2</cstring>
+                                    </property>
+                                    <property name="orientation">
+                                        <enum>Horizontal</enum>
+                                    </property>
+                                    <property name="sizeType">
+                                        <enum>Expanding</enum>
+                                    </property>
+                                    <property name="sizeHint">
+                                        <size>
+                                            <width>40</width>
+                                            <height>20</height>
+                                        </size>
+                                    </property>
+                                </spacer>
+                                <spacer row="3" column="2">
+                                    <property name="name">
+                                        <cstring>spacer10</cstring>
+                                    </property>
+                                    <property name="orientation">
+                                        <enum>Horizontal</enum>
+                                    </property>
+                                    <property name="sizeType">
+                                        <enum>Expanding</enum>
+                                    </property>
+                                    <property name="sizeHint">
+                                        <size>
+                                            <width>40</width>
+                                            <height>20</height>
+                                        </size>
+                                    </property>
+                                </spacer>
+                            </grid>
+                        </widget>
+                    </grid>
+                </widget>
                 <widget class="QLayoutWidget">
                     <property name="name">
                         <cstring>layout1</cstring>
@@ -244,7 +347,7 @@
                                 <cstring>BOK</cstring>
                             </property>
                             <property name="text">
-                                <string>OK</string>
+                                <string>O&amp;K</string>
                             </property>
                         </widget>
                         <spacer>
@@ -269,7 +372,7 @@
                                 <cstring>BCancel</cstring>
                             </property>
                             <property name="text">
-                                <string>Cancel</string>
+                                <string>Ca&amp;ncel</string>
                             </property>
                         </widget>
                     </hbox>
@@ -282,28 +385,28 @@
     <connection>
         <sender>BOK</sender>
         <signal>clicked()</signal>
-        <receiver>ProfileEditorUniform</receiver>
+        <receiver>ProfileEditorGauss</receiver>
         <slot>add_profile_to_profilemanager()</slot>
     </connection>
     <connection>
         <sender>BCancel</sender>
         <signal>clicked()</signal>
-        <receiver>ProfileEditorUniform</receiver>
+        <receiver>ProfileEditorGauss</receiver>
         <slot>reject()</slot>
     </connection>
 </connections>
 <includes>
     <include location="local" impldecl="in implementation">cg_profile.h</include>
     <include location="local" impldecl="in implementation">cg_profile_manager.h</include>
-    <include location="local" impldecl="in implementation">cg_profile_editor_uniform.ui.h</include>
+    <include location="local" impldecl="in implementation">cg_profile_editor_gauss.ui.h</include>
 </includes>
 <forwards>
     <forward>class Profile;</forward>
     <forward>class ProfileManager;</forward>
 </forwards>
 <variables>
-    <variable access="private">const Profile * _profile;</variable>
     <variable access="private">ProfileManager * _pm;</variable>
+    <variable access="private">const Profile * _profile;</variable>
 </variables>
 <slots>
     <slot specifier="non virtual">add_profile_to_profilemanager()</slot>

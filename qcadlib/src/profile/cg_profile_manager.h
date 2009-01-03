@@ -22,6 +22,7 @@
 #define __cg_profile_manager_h__
 
 #include <vector>
+#include <map>
 
 class Profile;
 class Parameters;
@@ -46,9 +47,19 @@ public:
   int add_profile(const Parameters &, std::string &error_msg);
 
   /**
-   * remove existing profile by its label
+   * insert profile into Profile Manager
+   */
+  void insert_profile(const Profile * profile);
+
+  /**
+   * delete existing profile by its label
    */
   void delete_profile(const std::string &label);
+
+  /**
+   * remove existing profile, but not delete it
+   */
+  const Profile * remove_profile(const std::string &label);
 
   /**
    * @return how many profiles exist
@@ -96,6 +107,11 @@ private:
   * the pointer vector to Profile
   */
  std::vector<const Profile * >  _profiles;
+
+ /**
+  * we can find profile more efficiently with a map;
+  */
+ std::map<std::string, const Profile *> _profile_map;
 
 };
 

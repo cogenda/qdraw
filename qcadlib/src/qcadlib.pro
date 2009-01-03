@@ -185,7 +185,9 @@ SOURCES     = \
 
 FORMS       = \
                profile/cg_profile_editor.ui\
-	       profile/cg_profile_editor_uniform.ui
+               profile/cg_profile_editor_uniform.ui\
+               profile/cg_profile_editor_gauss.ui\
+               profile/cg_profile_editor_erf.ui
 
 
 TRANSLATIONS = ts/qcadlib_cs.ts \

@@ -9,13 +9,14 @@
 ** These will automatically be called by the form's constructor and
 ** destructor.
 *****************************************************************************/
+
 #include <qmessagebox.h>
 #include <string>
 
 #include "cg_parameters.h"
 #include "rs_math.h"
 
-void ProfileEditorUniform::init()
+void ProfileEditorGauss::init()
 {
   _pm = NULL;
   _profile = NULL;
@@ -23,10 +24,12 @@ void ProfileEditorUniform::init()
   profile_property_combobox->insertItem("Na");
   profile_property_combobox->insertItem("Nd");
 
+  concentration_type->insertItem("Peak Concentration");
+  concentration_type->insertItem("Dose");
 }
 
 
-void ProfileEditorUniform::set_profile(ProfileManager * pm,  const Profile * profile)
+void ProfileEditorGauss::set_profile( ProfileManager * pm, const Profile * profile )
 {
   _pm = pm;
   _profile = profile;
@@ -51,23 +54,74 @@ void ProfileEditorUniform::set_profile(ProfileManager * pm,  const Profile * pro
     x1_edit->setText(s);
     s.setNum(_profile->ymax());
     y1_edit->setText(s);
-    s.setNum(_profile->peak());
-    concentration_edit->setText(s);
+
+    if(profile->have_peak())
+    {
+      s.setNum(_profile->peak());
+      concentration_edit->setText(s);
+      concentration_type->setCurrentItem(0); // "Peak Concentration"
+    }
+
+    if(profile->have_dose())
+    {
+      s.setNum(_profile->dose());
+      concentration_edit->setText(s);
+      concentration_type->setCurrentItem(1);//"Dose"
+    }
+
+    s.setNum(_profile->xy_ratio());
+    LateralDiffusionEdit->setText(s);
+
+    if(profile->have_y_junction())
+    {
+      s.setNum(_profile->y_junction());
+      YjuncEdit->setText(s);
+      YjuncRadioButton->setChecked(true);
+      YcharRadioButton->setChecked(false);
+    }
+
+    if(profile->have_ychar())
+    {
+      s.setNum(_profile->ychar());
+      YcharEdit->setText(s);
+      YcharRadioButton->setChecked(true);
+      YjuncRadioButton->setChecked(false);
+    }
+
   }
+
 }
 
 
-void ProfileEditorUniform::add_profile_to_profilemanager()
+
+const Profile * ProfileEditorGauss::get_profile()
+{
+  return _profile;
+}
+
+
+void ProfileEditorGauss::add_profile_to_profilemanager()
 {
   Parameters p;
-  p.set<std::string>( "type" ) = "Uniform";
+  p.set<std::string>( "type" ) = "Gauss";
 
   p.set<double>( "x.min" )  = RS_Math::eval(x0_edit->text()) ;
   p.set<double>( "y.min" )  = RS_Math::eval(y0_edit->text()) ;
   p.set<double>( "x.max" )  = RS_Math::eval(x1_edit->text()) ;
   p.set<double>( "y.max" )  = RS_Math::eval(y1_edit->text()) ;
 
-  p.set<double>( "n.peak" ) = RS_Math::eval(concentration_edit->text()) ;
+  if(concentration_type->currentText() == "Peak Concentration")
+    p.set<double>( "n.peak" ) = RS_Math::eval(concentration_edit->text()) ;
+  if(concentration_type->currentText() == "Dose")
+    p.set<double>( "dose" ) = RS_Math::eval(concentration_edit->text()) ;
+
+  if(YcharRadioButton->isChecked())
+    p.set<double>( "y.char" ) = RS_Math::eval(YcharEdit->text()) ;
+
+  if(YjuncRadioButton->isChecked())
+    p.set<double>( "y.junction" ) = RS_Math::eval(YjuncEdit->text()) ;
+
+  p.set<double>( "xy.ratio" ) = RS_Math::eval(LateralDiffusionEdit->text()) ;
 
   p.set<std::string>( "label" )    = profile_label_edit->text().ascii() ;
   p.set<std::string>( "property" ) = profile_property_combobox->currentText().ascii() ;
@@ -80,7 +134,7 @@ void ProfileEditorUniform::add_profile_to_profilemanager()
   if( _pm->add_profile(p, error_msg) )
   {
     // create new profile failed
-    QMessageBox::critical( 0, "Set Uniform Profile", error_msg.c_str());
+    QMessageBox::critical( 0, "Set Gauss Profile", error_msg.c_str());
     if(_profile) _pm->insert_profile(_profile);
   }
   else
@@ -90,11 +144,4 @@ void ProfileEditorUniform::add_profile_to_profilemanager()
     assert(_profile);
     this->accept();
   }
-}
-
-
-
-const Profile * ProfileEditorUniform::get_profile()
-{
-  return _profile;
 }
