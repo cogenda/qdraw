@@ -455,6 +455,27 @@ RS_Graphic* RS_Entity::getGraphic()
 }
 
 
+/**
+ * @return The parent graphic in which this entity is stored
+ * or the parent's parent graphic or NULL if none of the parents
+ * are stored in a graphic.
+ */
+const RS_Graphic* RS_Entity::getGraphic() const
+{
+	if (rtti()==RS2::EntityGraphic)
+	{
+		return (RS_Graphic*)this;
+	}
+	else if (parent==NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		return parent->getGraphic();
+	}
+}
+
 
 /**
  * @return The parent block in which this entity is stored
@@ -770,6 +791,11 @@ void RS_Entity::setLayerToActive()
 }
 
 
+bool RS_Entity::isOnActiveLayer() const
+{
+  const RS_Graphic* graphic = getGraphic();
+  return layer == graphic->getActiveLayer();
+}
 
 /**
  * Gets the pen needed to draw this entity.

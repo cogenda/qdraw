@@ -85,9 +85,9 @@ public:
     this->area_control = area_control;
   }
 
-  friend std::ostream& operator << (std::ostream& os, const RS_HatchData& td)
+  friend std::ostream& operator << (std::ostream& os, const RS_HatchData& hatch_data)
   {
-    //os << "(material:" << td.material << ")";
+    os << "(material:" << hatch_data.material << ")" << std::endl;
     return os;
   }
 

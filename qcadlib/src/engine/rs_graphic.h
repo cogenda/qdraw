@@ -108,6 +108,10 @@ public:
   {
     return layerList.getActive();
   }
+  const RS_Layer* getActiveLayer() const
+  {
+	  return layerList.getActive();
+  }
   virtual void addLayer(RS_Layer* layer)
   {
     layerList.add(layer);

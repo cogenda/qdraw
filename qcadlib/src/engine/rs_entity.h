@@ -179,6 +179,7 @@ public:
   }
 
   RS_Graphic* getGraphic();
+  const RS_Graphic* getGraphic() const;
   RS_Block* getBlock();
   RS_Insert* getInsert();
   RS_Entity* getBlockOrInsert();
@@ -188,6 +189,7 @@ public:
   void setLayer(RS_Layer* l);
   void setLayerToActive();
   RS_Layer* getLayer(bool resolve = true) const;
+  bool isOnActiveLayer() const;
 
   /**
    * Sets the explicit pen for this entity or a pen with special

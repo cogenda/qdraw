@@ -4261,6 +4261,7 @@ void QC_ApplicationWindow::slotSetProfile()
 /// set profile, which will be assigned to each mesh point
 void QC_ApplicationWindow::slotDoMesh()
 {
+	std::cout<<*((RS_EntityContainer*)(this->getMDIWindow()->getDocument()))<<std::endl;
 
 }
 

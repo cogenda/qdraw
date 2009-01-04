@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -41,83 +41,94 @@
  *
  * @author Andrew Mustun
  */
-class RS_LayerList {
+class RS_LayerList
+{
 public:
-    RS_LayerList();
-    virtual ~RS_LayerList() {}
+  RS_LayerList();
+  virtual ~RS_LayerList() {}
 
-    void clear();
+  void clear();
 
-    /**
-     * @return Number of layers in the list.
-     */
-    uint count() const {
-        return layers.count();
-    }
+  /**
+   * @return Number of layers in the list.
+   */
+  uint count() const
+  {
+    return layers.count();
+  }
 
-    /**
-     * @return Layer at given position or NULL if i is out of range.
-     */
-    RS_Layer* at(uint i) {
-        return layers.at(i);
-    }
+  /**
+   * @return Layer at given position or NULL if i is out of range.
+   */
+  RS_Layer* at(uint i)
+  {
+    return layers.at(i);
+  }
 
-    void activate(const RS_String& name, bool notify = false);
-    void activate(RS_Layer* layer, bool notify = false);
-    //! @return The active layer of NULL if no layer is activated.
-    RS_Layer* getActive() {
-        return activeLayer;
-    }
-    virtual void add(RS_Layer* layer);
-    virtual void remove(RS_Layer* layer);
-    virtual void edit(RS_Layer* layer, const RS_Layer& source);
-    RS_Layer* find(const RS_String& name);
-    int getIndex(const RS_String& name);
-    int getIndex(RS_Layer* layer);
-    void toggle(const RS_String& name);
-    void toggle(RS_Layer* layer);
-    void toggleLock(RS_Layer* layer);
-    void freezeAll(bool freeze);
-    //! @return First layer of the list.
-    //RS_Layer* firstLayer() {
-    //    return layers.first();
-    //}
-    /** @return Next layer from the list after
-     * calling firstLayer() or nextLayer().
-     */
-    //RS_Layer* nextLayer() {
-    //    return layers.next();
-    //}
+  void activate(const RS_String& name, bool notify = false);
+  void activate(RS_Layer* layer, bool notify = false);
+  //! @return The active layer of NULL if no layer is activated.
+  RS_Layer* getActive()
+  {
+    return activeLayer;
+  }
+  //! @return The active layer of NULL if no layer is activated.
+  const RS_Layer* getActive() const
+  {
+	  return activeLayer;
+  }
+  virtual void add(RS_Layer* layer);
+  virtual void remove(RS_Layer* layer);
+  virtual void edit(RS_Layer* layer, const RS_Layer& source);
+  RS_Layer* find(const RS_String& name);
+  int getIndex(const RS_String& name);
+  int getIndex(RS_Layer* layer);
+  void toggle(const RS_String& name);
+  void toggle(RS_Layer* layer);
+  void toggleLock(RS_Layer* layer);
+  void freezeAll(bool freeze);
+  //! @return First layer of the list.
+  //RS_Layer* firstLayer() {
+  //    return layers.first();
+  //}
+  /** @return Next layer from the list after
+   * calling firstLayer() or nextLayer().
+   */
+  //RS_Layer* nextLayer() {
+  //    return layers.next();
+  //}
 
-    void addListener(RS_LayerListListener* listener);
-    void removeListener(RS_LayerListListener* listener);
-	
-	/**
-	 * Sets the layer lists modified status to 'm'.
-	 */
-	void setModified(bool m) {
-		modified = m;
-	}
-	
-	/**
-	 * @retval true The layer list has been modified.
-	 * @retval false The layer list has not been modified.
-	 */
-    virtual bool isModified() const {
-        return modified;
-    }
+  void addListener(RS_LayerListListener* listener);
+  void removeListener(RS_LayerListListener* listener);
 
-    friend std::ostream& operator << (std::ostream& os, RS_LayerList& l);
+  /**
+   * Sets the layer lists modified status to 'm'.
+   */
+  void setModified(bool m)
+  {
+    modified = m;
+  }
+
+  /**
+   * @retval true The layer list has been modified.
+   * @retval false The layer list has not been modified.
+   */
+  virtual bool isModified() const
+  {
+    return modified;
+  }
+
+  friend std::ostream& operator << (std::ostream& os, RS_LayerList& l);
 
 private:
-    //! layers in the graphic
-    RS_PtrList<RS_Layer> layers;
-    //! List of registered LayerListListeners
-    RS_PtrList<RS_LayerListListener> layerListListeners;
-    //! Currently active layer
-    RS_Layer* activeLayer;
-    /** Flag set if the layer list was modified and not yet saved. */
-    bool modified;
+  //! layers in the graphic
+  RS_PtrList<RS_Layer> layers;
+  //! List of registered LayerListListeners
+  RS_PtrList<RS_LayerListListener> layerListListeners;
+  //! Currently active layer
+  RS_Layer* activeLayer;
+  /** Flag set if the layer list was modified and not yet saved. */
+  bool modified;
 };
 
 #endif
