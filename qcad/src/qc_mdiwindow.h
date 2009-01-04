@@ -167,7 +167,7 @@ private:
   bool owner;
 
   /** auxiliary profile for mesh */
-  ProfileManager * profile_manager;
+  ProfileManager* profile_manager;
 
   /**
    * List of known child windows that show blocks of the same drawing.

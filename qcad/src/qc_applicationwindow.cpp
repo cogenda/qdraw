@@ -1176,6 +1176,9 @@ void QC_ApplicationWindow::initActions()
   menu=new QPopupMenu(this);
   action = actionFactory.createAction(RS2::ActionSetProfile, this);
   action->addTo(menu);
+  menu->insertSeparator();
+  action = actionFactory.createAction(RS2::ActionMesh, this);
+  action->addTo(menu);
   menuBar()->insertItem(tr("&Grid"), menu);
 
   // Help menu:
@@ -4253,6 +4256,15 @@ void QC_ApplicationWindow::slotSetProfile()
   profile_editor.set_profile_maneger(this->getMDIWindow()->getProfileManager());
   profile_editor.exec();
 }
+
+
+/// set profile, which will be assigned to each mesh point
+void QC_ApplicationWindow::slotDoMesh()
+{
+
+}
+
+
 
 /**
  * overloaded for Message box on last window exit.

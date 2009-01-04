@@ -87,11 +87,12 @@ public:
     label = "Spline" + RS_String::number(idCounter++);
   }
 
-  /**	@return RS2::EntitySpline */
+  /**   @return RS2::EntitySpline */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntitySpline;
   }
+
   /** @return true */
   virtual bool isEdge() const
   {
@@ -232,7 +233,7 @@ public:
   /*virtual double getDistanceToPoint(const RS_Vector& coord,
                                     RS_Entity** entity=NULL,
                                     RS2::ResolveLevel level=RS2::ResolveNone,
-  					  double solidDist = RS_MAXDOUBLE);*/
+                      double solidDist = RS_MAXDOUBLE);*/
 
   virtual void addControlPoint(const RS_Vector& v);
   virtual void removeLastControlPoint();

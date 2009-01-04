@@ -41,7 +41,7 @@ RS_Spline::RS_Spline(RS_EntityContainer* parent,
         :RS_EntityContainer(parent), data(d) {
     calculateBorders();
     initLabel();
-    division = data.degree;
+    division = getGraphicVariableInt("$SPLINESEGS", 8);
 }
 
 
@@ -56,7 +56,7 @@ RS_Spline::~RS_Spline() {}
 
 RS_Entity* RS_Spline::clone() {
     RS_Spline* l = new RS_Spline(*this);
-	l->entities.setAutoDelete(entities.autoDelete());
+    l->entities.setAutoDelete(entities.autoDelete());
     l->initId();
     l->detach();
     return l;
@@ -149,7 +149,7 @@ void RS_Spline::update() {
     // order:
     int k = data.degree+1;
     // resolution:
-    int p1 = getGraphicVariableInt("$SPLINESEGS", 8) * npts;
+    int p1 = division * npts;
 
     double* b = new double[npts*3+1];
     double* h = new double[npts+1];
@@ -220,7 +220,7 @@ RS_Vector RS_Spline::getNearestEndpoint(const RS_Vector& coord,
     if (dist!=NULL) {
         *dist = minDist;
     }
-	return ret;
+    return ret;
 }
 
 
@@ -407,8 +407,8 @@ void RS_Spline::draw(RS_Painter* painter, RS_GraphicView* view) {
        b[i+1] = (*it).y;
        b[i+2] = 0.0;
 
-	RS_DEBUG->print("RS_Spline::draw: b[%d]: %f/%f", i, b[i], b[i+1]);
-	i+=3;
+    RS_DEBUG->print("RS_Spline::draw: b[%d]: %f/%f", i, b[i], b[i+1]);
+    i+=3;
    }
 
    // set all homogeneous weighting factors to 1.0
@@ -634,7 +634,7 @@ void RS_Spline::rbsplinu(int npts, int k, int p1,
 
     int i,j,icount,jcount;
     int i1;
-    //int x[30];		/* allows for 20 data points with basis function of order 5 */
+    //int x[30];        /* allows for 20 data points with basis function of order 5 */
     int nplusc;
 
     double step;
@@ -663,17 +663,17 @@ void RS_Spline::rbsplinu(int npts, int k, int p1,
     knotu(npts,k,x);
 
     /*
-    	printf("The knot vector is ");
-    	for (i = 1; i <= nplusc; i++){
-    		printf(" %d ", x[i]);
-    	}
-    	printf("\n");
+        printf("The knot vector is ");
+        for (i = 1; i <= nplusc; i++){
+            printf(" %d ", x[i]);
+        }
+        printf("\n");
 
-    	printf("The usable parameter range is ");
-    	for (i = k; i <= npts+1; i++){
-    		printf(" %d ", x[i]);
-    	}
-    	printf("\n");
+        printf("The usable parameter range is ");
+        for (i = k; i <= npts+1; i++){
+            printf(" %d ", x[i]);
+        }
+        printf("\n");
     */
 
     icount = 0;
@@ -691,12 +691,12 @@ void RS_Spline::rbsplinu(int npts, int k, int p1,
 
         rbasis(k,t,npts,x,h,nbasis);      /* generate the basis function for this value of t */
         /*
-        		printf("t = %f \n",t);
-        		printf("nbasis = ");
-        		for (i = 1; i <= npts; i++){
-        			printf("%f  ",nbasis[i]);
-        		}
-        		printf("\n");
+                printf("t = %f \n",t);
+                printf("nbasis = ");
+                for (i = 1; i <= npts; i++){
+                    printf("%f  ",nbasis[i]);
+                }
+                printf("\n");
         */
         for (j = 1; j <= 3; j++) {      /* generate a point on the curve */
             jcount = j;
@@ -706,13 +706,13 @@ void RS_Spline::rbsplinu(int npts, int k, int p1,
                 temp = nbasis[i]*b[jcount];
                 p[icount + j] = p[icount + j] + temp;
                 /*
-                				printf("jcount,nbasis,b,nbasis*b,p = %d %f %f %f %f\n",jcount,nbasis[i],b[jcount],temp,p[icount+j]);
+                                printf("jcount,nbasis,b,nbasis*b,p = %d %f %f %f %f\n",jcount,nbasis[i],b[jcount],temp,p[icount+j]);
                 */
                 jcount = jcount + 3;
             }
         }
         /*
-        		printf("icount, p %d %f %f %f \n",icount,p[icount+1],p[icount+2],p[icount+3]);
+                printf("icount, p %d %f %f %f \n",icount,p[icount+1],p[icount+2],p[icount+3]);
         */
         icount = icount + 3;
         t = t + step;

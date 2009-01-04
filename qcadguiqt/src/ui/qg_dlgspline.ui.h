@@ -22,7 +22,7 @@ void QG_DlgSpline::setSpline(RS_Spline& e) {
 
     QString s;
     s.setNum(spline->getDegree());
-	cbDegree->setCurrentText(s);
+    cbDegree->setCurrentText(s);
 
     cbClosed->setChecked(spline->isClosed());
 
@@ -42,8 +42,8 @@ void QG_DlgSpline::updateSpline() {
     spline->setClosed(cbClosed->isChecked());
     spline->setPen(wPen->getPen());
     spline->setLayer(cbLayer->currentText());
-    spline->update();
     spline->setDivision(RS_Math::eval(SplineDivisionEdit->text()));
     spline->setLabel(SplineLabelEdit->text());
+    spline->update();
 }
 

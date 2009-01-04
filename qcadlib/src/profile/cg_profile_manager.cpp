@@ -57,7 +57,7 @@ int ProfileManager::add_profile_uniform(const Parameters & p, std::string &error
 {
 
   std::string label    = p.get<std::string>("label");
-  if( get_profile(label) ) {error_msg = "Profile with label " + label + "already exist"; return 1;}
+  if( get_profile(label) ) {error_msg = "Profile with label " + label + " already exist"; return 1;}
 
   std::string property = p.get<std::string>("property");
 
@@ -83,7 +83,7 @@ int ProfileManager::add_profile_uniform(const Parameters & p, std::string &error
 int ProfileManager::add_profile_gauss(const Parameters & p, std::string &error_msg)
 {
   std::string label    = p.get<std::string>("label");
-  if( get_profile(label) ) {error_msg = "Profile with label " + label + "already exist"; return 1;}
+  if( get_profile(label) ) {error_msg = "Profile with label " + label + " already exist"; return 1;}
 
   std::string property = p.get<std::string>("property");
 
@@ -163,7 +163,7 @@ int ProfileManager::add_profile_gauss(const Parameters & p, std::string &error_m
 int ProfileManager::add_profile_erf(const Parameters & p, std::string &error_msg)
 {
   std::string label    = p.get<std::string>("label");
-  if( get_profile(label) ) {error_msg = "Profile with label " + label + "already exist"; return 1;}
+  if( get_profile(label) ) {error_msg = "Profile with label " + label + " already exist"; return 1;}
 
   std::string property = p.get<std::string>("property");
 

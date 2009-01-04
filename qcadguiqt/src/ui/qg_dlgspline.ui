@@ -154,23 +154,6 @@
                         <property name="name">
                             <cstring>unnamed</cstring>
                         </property>
-                        <spacer row="3" column="0">
-                            <property name="name">
-                                <cstring>spacer58</cstring>
-                            </property>
-                            <property name="orientation">
-                                <enum>Vertical</enum>
-                            </property>
-                            <property name="sizeType">
-                                <enum>Expanding</enum>
-                            </property>
-                            <property name="sizeHint">
-                                <size>
-                                    <width>20</width>
-                                    <height>60</height>
-                                </size>
-                            </property>
-                        </spacer>
                         <widget class="QComboBox" row="0" column="2">
                             <item>
                                 <property name="text">
@@ -197,23 +180,6 @@
                                 </size>
                             </property>
                         </widget>
-                        <spacer row="3" column="2">
-                            <property name="name">
-                                <cstring>spacer61</cstring>
-                            </property>
-                            <property name="orientation">
-                                <enum>Vertical</enum>
-                            </property>
-                            <property name="sizeType">
-                                <enum>Expanding</enum>
-                            </property>
-                            <property name="sizeHint">
-                                <size>
-                                    <width>20</width>
-                                    <height>60</height>
-                                </size>
-                            </property>
-                        </spacer>
                         <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="3">
                             <property name="name">
                                 <cstring>cbClosed</cstring>
@@ -230,17 +196,55 @@
                                 <string>Degree:</string>
                             </property>
                         </widget>
+                        <spacer row="3" column="2">
+                            <property name="name">
+                                <cstring>spacer61</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Vertical</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>20</width>
+                                    <height>30</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <spacer row="3" column="0">
+                            <property name="name">
+                                <cstring>spacer58</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Vertical</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>20</width>
+                                    <height>30</height>
+                                </size>
+                            </property>
+                        </spacer>
                         <widget class="QLabel" row="2" column="0">
                             <property name="name">
                                 <cstring>DivisionLabel</cstring>
                             </property>
                             <property name="text">
-                                <string>Division:</string>
+                                <string>Resolution:</string>
                             </property>
                         </widget>
                         <widget class="QLineEdit" row="2" column="1" rowspan="1" colspan="2">
                             <property name="name">
                                 <cstring>SplineDivisionEdit</cstring>
+                            </property>
+                            <property name="text">
+                                <string>8</string>
+                                <comment>the resolution of internal polygons</comment>
                             </property>
                         </widget>
                     </grid>

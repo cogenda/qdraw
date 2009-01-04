@@ -1167,6 +1167,13 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
         connect(action, SIGNAL(activated()), obj, SLOT(slotSetProfile()));
         break;
 
+        //mesh actions:
+    case RS2::ActionMesh:
+        action = new QAction(tr("Mesh Generation"), tr("&Mesh Generation"), 0, mw);
+        action->setStatusTip(tr("Mesh the CAD object"));
+        connect(action, SIGNAL(activated()), obj, SLOT(slotDoMesh()));
+        break;
+
         // Scripting actions:
         //
     case RS2::ActionScriptOpenIDE:
