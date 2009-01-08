@@ -143,7 +143,7 @@ public:
   }
 
   /** get ellipse division number */
-  unsigned int getDivision()
+  unsigned int getDivision() const
   { return division; }
 
   /** set ellipse division number */

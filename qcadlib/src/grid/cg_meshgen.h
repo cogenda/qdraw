@@ -28,9 +28,9 @@
 
 class RS_String;
 class RS_Vector;
-class RS_EntityContainer;
-
-
+class RS_Document;
+class RS_Document;
+class RS_GraphicView;
 
 class MeshGenerator
 {
@@ -38,21 +38,35 @@ public:
  /**
   * constructor, build PSLG from  RS_EntityContainer
   */
-  MeshGenerator(RS_EntityContainer * entities);
+  MeshGenerator(RS_Document * doc, RS_GraphicView * gv);
 
+  /**
+   * des, free triangle io
+   */
+  virtual ~MeshGenerator();
+  
   /**
    * generate mesh with PSLG
    */
   virtual void do_mesh();
 
-  virtual void export_mesh(const char * name);
+  /**
+   * export mesh as vtk ascii file format
+   */ 
+  virtual void export_mesh_vtk(const char * name);
 
 private:
 
  /**
-  * hold RS_EntityContainer, we will add mesh to this container later
+  * we will add mesh to RS_Document later
   */
-  RS_EntityContainer * _entities;
+  RS_Document * _doc;
+
+ /**
+  * we only mesh objects on RS_GraphicView
+  * and add final mesh to RS_GraphicView for display.
+  */
+  RS_GraphicView * _gv;
 
   /**
    * function to add point into PSLG, drop any overlaped points
@@ -84,6 +98,11 @@ private:
    * triangle data structure
    */
   triangulateio in, out;
+
+  void triangulateio_init();
+
+  void triangulateio_finalize();
+
 };
 
 #endif // #define __cg_meshgen_h__

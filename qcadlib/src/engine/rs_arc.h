@@ -236,7 +236,7 @@ public:
   }
 
   /** get arc division number */
-  unsigned int getDivision()
+  unsigned int getDivision() const
   { return division; }
 
   /** set arc division number */

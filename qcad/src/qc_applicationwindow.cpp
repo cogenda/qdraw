@@ -96,6 +96,7 @@
 #include "main.h"
 
 #include "cg_profile_editor.h"
+#include "cg_meshgen.h"
 
 QC_ApplicationWindow* QC_ApplicationWindow::appWindow = NULL;
 
@@ -4261,8 +4262,10 @@ void QC_ApplicationWindow::slotSetProfile()
 /// set profile, which will be assigned to each mesh point
 void QC_ApplicationWindow::slotDoMesh()
 {
-	std::cout<<*((RS_EntityContainer*)(this->getMDIWindow()->getDocument()))<<std::endl;
+  MeshGenerator mesher(getDocument(), getGraphicView());
+  mesher.do_mesh();
 
+  mesher.export_mesh_vtk("aa.vtk");
 }
 
 

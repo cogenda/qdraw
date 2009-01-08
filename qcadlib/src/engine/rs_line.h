@@ -137,7 +137,7 @@ public:
   }
 
   /** get line division number */
-  unsigned int getDivision()
+  unsigned int getDivision() const
   { return division; }
 
   /** set line division number */

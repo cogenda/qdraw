@@ -31,66 +31,101 @@
 
 
 RS_ActionModifyEntity::RS_ActionModifyEntity(RS_EntityContainer& container,
-        RS_GraphicView& graphicView)
-        :RS_ActionInterface("Modify Entity", container, graphicView) {
+    RS_GraphicView& graphicView)
+    :RS_ActionInterface("Modify Entity", container, graphicView)
+{
 
-    en = NULL;
+  en = NULL;
 }
 
 
-QAction* RS_ActionModifyEntity::createGUIAction(RS2::ActionType /*type*/, QObject* /*parent*/) {
-    QAction* action = new QAction(tr("Properties"), tr("&Properties"),
-                                  QKeySequence(), NULL);
-    action->setStatusTip(tr("Modify Entity Properties"));
-    return action;
+QAction* RS_ActionModifyEntity::createGUIAction(RS2::ActionType /*type*/, QObject* /*parent*/)
+{
+  QAction* action = new QAction(tr("Properties"), tr("&Properties"),
+                                QKeySequence(), NULL);
+  action->setStatusTip(tr("Modify Entity Properties"));
+  return action;
 }
 
-void RS_ActionModifyEntity::trigger() {
-    if (en!=NULL) {
-        RS_Entity* clone = en->clone();
-        if (RS_DIALOGFACTORY->requestModifyEntityDialog(clone)) {
-            container->addEntity(clone);
+/*
+void RS_ActionModifyEntity::trigger()
+{
+  if (en!=NULL)
+  {
+    RS_Entity* clone = en->clone();
+    if (RS_DIALOGFACTORY->requestModifyEntityDialog(clone))
+    {
+      container->addEntity(clone);
 
-            graphicView->deleteEntity(en);
-			en->setSelected(false);
+      graphicView->deleteEntity(en);
+      en->setSelected(false);
 
-			clone->setSelected(false);
-            graphicView->drawEntity(clone);
+      clone->setSelected(false);
+      graphicView->drawEntity(clone);
 
-            if (document!=NULL) {
-                document->startUndoCycle();
+      if (document!=NULL)
+      {
+        document->startUndoCycle();
 
-                document->addUndoable(clone);
-                en->setUndoState(true);
-                document->addUndoable(en);
+        document->addUndoable(clone);
+        en->setUndoState(true);
+        document->addUndoable(en);
 
-                document->endUndoCycle();
-            }
-            RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected());
-        } else {
-            delete clone;
-        }
-
-    } else {
-        RS_DEBUG->print("RS_ActionModifyEntity::trigger: Entity is NULL\n");
+        document->endUndoCycle();
+      }
+      RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected());
     }
-}
-
-
-
-void RS_ActionModifyEntity::mouseReleaseEvent(RS_MouseEvent* e) {
-    if (RS2::qtToRsButtonState(e->button())==RS2::RightButton) {
-        init(getStatus()-1);
-    } else {
-        en = catchEntity(e);
-        trigger();
+    else
+    {
+      delete clone;
     }
+
+  }
+  else
+  {
+    RS_DEBUG->print("RS_ActionModifyEntity::trigger: Entity is NULL\n");
+  }
+}
+*/
+
+void RS_ActionModifyEntity::trigger()
+{
+  if (en!=NULL)
+  {
+    if (RS_DIALOGFACTORY->requestModifyEntityDialog(en))
+    {
+      en->setSelected(false);
+
+      graphicView->drawEntity(en);
+
+      RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected());
+    }
+  }
+  else
+  {
+    RS_DEBUG->print("RS_ActionModifyEntity::trigger: Entity is NULL\n");
+  }
+}
+
+
+void RS_ActionModifyEntity::mouseReleaseEvent(RS_MouseEvent* e)
+{
+  if (RS2::qtToRsButtonState(e->button())==RS2::RightButton)
+  {
+    init(getStatus()-1);
+  }
+  else
+  {
+    en = catchEntity(e);
+    trigger();
+  }
 }
 
 
 
-void RS_ActionModifyEntity::updateMouseCursor() {
-    graphicView->setMouseCursor(RS2::SelectCursor);
+void RS_ActionModifyEntity::updateMouseCursor()
+{
+  graphicView->setMouseCursor(RS2::SelectCursor);
 }
 
 // EOF

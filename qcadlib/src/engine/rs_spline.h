@@ -151,7 +151,7 @@ public:
   }
 
   /** get Spline division number */
-  unsigned int getDivision()
+  unsigned int getDivision() const
   { return division; }
 
   /** set Spline division number */

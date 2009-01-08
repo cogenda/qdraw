@@ -130,7 +130,7 @@ public:
   }
 
   /** get circle division number */
-  unsigned int getDivision()
+  unsigned int getDivision() const
   { return division; }
 
   /** set circle division number */
@@ -155,7 +155,7 @@ public:
   }
 
   /** @return The center point (x) of this arc */
-  RS_Vector getCenter()
+  RS_Vector getCenter() const
   {
     return data.center;
   }
@@ -165,7 +165,7 @@ public:
     data.center = c;
   }
   /** @return The radius of this arc */
-  double getRadius()
+  double getRadius() const
   {
     return data.radius;
   }
