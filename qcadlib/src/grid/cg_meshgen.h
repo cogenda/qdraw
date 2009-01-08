@@ -50,6 +50,8 @@ public:
    */
   virtual void do_mesh(const QString &cmd);
 
+  virtual void draw_mesh();
+
   /**
    * export mesh as vtk ascii file format
    */ 

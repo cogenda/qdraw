@@ -4269,6 +4269,7 @@ void QC_ApplicationWindow::slotDoMesh()
     MeshGenerator mesher(getDocument(), getGraphicView());
     mesher.do_mesh(tri_setting.get_cmd_string());
     mesher.export_mesh_vtk("aa.vtk");
+    mesher.draw_mesh();
   }
 }
 

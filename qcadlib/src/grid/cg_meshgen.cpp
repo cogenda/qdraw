@@ -339,6 +339,44 @@ void MeshGenerator::do_mesh(const QString &cmd )
 }
 
 
+
+void MeshGenerator::draw_mesh()
+{
+  //create new layer
+  RS_Graphic * graphic = _gv->getGraphic();
+
+  QString layer_name = "mesh";
+  int i = 2;
+
+  if (graphic->getLayerList()!=NULL)
+  {
+    while (graphic->getLayerList()->find(layer_name) > 0)
+      layer_name.sprintf("mesh%d", i++);
+  }
+
+  RS_Layer* layer = new RS_Layer(layer_name);
+
+  graphic->addLayer(layer); //the new layer is set to active automatically
+
+  RS_EntityContainer* mesh = new RS_EntityContainer(_doc);
+
+  for(int i=0; i<out.numberoftriangles; ++i)
+  {
+    RS_Vector p1(out.pointlist[2*out.trianglelist[3*i+0]],out.pointlist[2*out.trianglelist[3*i+0]+1]);
+    RS_Vector p2(out.pointlist[2*out.trianglelist[3*i+1]],out.pointlist[2*out.trianglelist[3*i+1]+1]);
+    RS_Vector p3(out.pointlist[2*out.trianglelist[3*i+2]],out.pointlist[2*out.trianglelist[3*i+2]+1]);
+
+    mesh->addEntity(new RS_Line(mesh, RS_LineData(p1,p2))); 
+    mesh->addEntity(new RS_Line(mesh, RS_LineData(p2,p3))); 
+    mesh->addEntity(new RS_Line(mesh, RS_LineData(p3,p1))); 
+  }
+  _doc->addEntity(mesh);
+  _gv->drawEntity(mesh);
+
+}
+
+
+
 void MeshGenerator::export_mesh_vtk(const char * name)
 {
 
