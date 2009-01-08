@@ -1,0 +1,283 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>TriangleSetting</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>TriangleSetting</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>518</width>
+            <height>268</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Mesh Setting</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLayoutWidget" row="0" column="0">
+            <property name="name">
+                <cstring>layout2</cstring>
+            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QGroupBox">
+                    <property name="name">
+                        <cstring>groupBox1</cstring>
+                    </property>
+                    <property name="title">
+                        <string>Triangle Area Constraint</string>
+                    </property>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QCheckBox" row="0" column="0">
+                            <property name="name">
+                                <cstring>AreaConstraint</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Enable Triangle Area Constraint</string>
+                            </property>
+                        </widget>
+                        <spacer row="0" column="1">
+                            <property name="name">
+                                <cstring>spacer1</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                    </grid>
+                </widget>
+                <widget class="QGroupBox">
+                    <property name="name">
+                        <cstring>groupBox2</cstring>
+                    </property>
+                    <property name="title">
+                        <string>Quality Delaunay Mesh</string>
+                    </property>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
+                            <property name="name">
+                                <cstring>ConformingDelaunay</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Generate Conforming Delaunay Mesh</string>
+                            </property>
+                        </widget>
+                        <widget class="QCheckBox" row="0" column="0">
+                            <property name="name">
+                                <cstring>QualityControl</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Generate Quality Mesh</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit" row="0" column="3">
+                            <property name="name">
+                                <cstring>MinimalAngleEdit</cstring>
+                            </property>
+                        </widget>
+                        <spacer row="0" column="1">
+                            <property name="name">
+                                <cstring>spacer5</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>20</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QLabel" row="0" column="2">
+                            <property name="name">
+                                <cstring>textLabel1</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Minimal Angle:</string>
+                            </property>
+                        </widget>
+                    </grid>
+                </widget>
+                <widget class="QGroupBox">
+                    <property name="name">
+                        <cstring>groupBox3</cstring>
+                    </property>
+                    <property name="title">
+                        <string>Constrained Delaunay Mesh</string>
+                    </property>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <spacer row="0" column="1">
+                            <property name="name">
+                                <cstring>spacer6</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QCheckBox" row="0" column="0">
+                            <property name="name">
+                                <cstring>NoPointInsert</cstring>
+                            </property>
+                            <property name="text">
+                                <string>No Point insertion on Boundary</string>
+                            </property>
+                        </widget>
+                        <widget class="QCheckBox" row="0" column="2">
+                            <property name="name">
+                                <cstring>NoPointInsertMore</cstring>
+                            </property>
+                            <property name="text">
+                                <string>No Point Insert on any Segment</string>
+                            </property>
+                        </widget>
+                    </grid>
+                </widget>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout1</cstring>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <spacer>
+                            <property name="name">
+                                <cstring>spacer2</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>BOK</cstring>
+                            </property>
+                            <property name="text">
+                                <string>OK</string>
+                            </property>
+                        </widget>
+                        <spacer>
+                            <property name="name">
+                                <cstring>spacer3</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>BCancel</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Cancel</string>
+                            </property>
+                        </widget>
+                        <spacer>
+                            <property name="name">
+                                <cstring>spacer4</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                    </hbox>
+                </widget>
+            </vbox>
+        </widget>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>BCancel</sender>
+        <signal>clicked()</signal>
+        <receiver>TriangleSetting</receiver>
+        <slot>reject()</slot>
+    </connection>
+    <connection>
+        <sender>BOK</sender>
+        <signal>clicked()</signal>
+        <receiver>TriangleSetting</receiver>
+        <slot>SlotCmdString()</slot>
+    </connection>
+</connections>
+<includes>
+    <include location="local" impldecl="in implementation">cg_triangle_setting.ui.h</include>
+</includes>
+<variables>
+    <variable>QString _cmd_string;</variable>
+</variables>
+<slots>
+    <slot specifier="non virtual">SlotCmdString()</slot>
+</slots>
+<functions>
+    <function specifier="non virtual" returnType="const QString &amp;">get_cmd_string()</function>
+    <function specifier="non virtual">set_cmd_string( const QString &amp; cmd )</function>
+    <function access="private" specifier="non virtual">init()</function>
+</functions>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

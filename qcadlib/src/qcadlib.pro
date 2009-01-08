@@ -192,7 +192,8 @@ FORMS       = \
                profile/cg_profile_editor.ui\
                profile/cg_profile_editor_uniform.ui\
                profile/cg_profile_editor_gauss.ui\
-               profile/cg_profile_editor_erf.ui
+               profile/cg_profile_editor_erf.ui\
+               grid/cg_triangle_setting.ui
 
 
 TRANSLATIONS = ts/qcadlib_cs.ts \

@@ -48,7 +48,7 @@ public:
   /**
    * generate mesh with PSLG
    */
-  virtual void do_mesh();
+  virtual void do_mesh(const QString &cmd);
 
   /**
    * export mesh as vtk ascii file format

@@ -97,6 +97,7 @@
 
 #include "cg_profile_editor.h"
 #include "cg_meshgen.h"
+#include "cg_triangle_setting.h"
 
 QC_ApplicationWindow* QC_ApplicationWindow::appWindow = NULL;
 
@@ -4262,10 +4263,13 @@ void QC_ApplicationWindow::slotSetProfile()
 /// set profile, which will be assigned to each mesh point
 void QC_ApplicationWindow::slotDoMesh()
 {
-  MeshGenerator mesher(getDocument(), getGraphicView());
-  mesher.do_mesh();
-
-  mesher.export_mesh_vtk("aa.vtk");
+  TriangleSetting  tri_setting;
+  if(tri_setting.exec() == QDialog::Accepted)
+  {
+    MeshGenerator mesher(getDocument(), getGraphicView());
+    mesher.do_mesh(tri_setting.get_cmd_string());
+    mesher.export_mesh_vtk("aa.vtk");
+  }
 }
 
 

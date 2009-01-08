@@ -22,6 +22,7 @@
 #include "rs_string.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
+#include "rs_spline.h"
 #include "cg_meshgen.h"
 
 
@@ -69,7 +70,7 @@ void MeshGenerator::triangulateio_finalize()
 
 
 MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
-:_doc(doc), _gv(gv)
+    :_doc(doc), _gv(gv)
 {
   triangulateio_init();
 
@@ -77,7 +78,7 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
   if(g==NULL) return;
 
   //mesh all the entity on active layer
-  for (RS_Entity* e=g->firstEntity(RS2::ResolveNone); e!=NULL; e=g->nextEntity(RS2::ResolveNone))
+  for (RS_Entity* e=g->firstEntity(); e!=NULL; e=g->nextEntity())
     if(e->isOnActiveLayer() && e->isVisible())
     {
       switch (e->rtti())
@@ -138,15 +139,15 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
           double     a1, a2;
           if(arc->isReversed())
           {
-             // Arc Clockwise:
-             a2 = arc->getAngle1();
-             a1 = arc->getAngle2();
+            // Arc Clockwise:
+            a2 = arc->getAngle1();
+            a1 = arc->getAngle2();
           }
           else
           {
-             // Arc Counterclockwise:
-             a1 = arc->getAngle1();
-             a2 = arc->getAngle2();
+            // Arc Counterclockwise:
+            a1 = arc->getAngle1();
+            a2 = arc->getAngle2();
           }
           if (a1>a2-0.01)  a2+=2*M_PI;
 
@@ -198,7 +199,70 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
           break;
         }
 
+      case RS2::EntityEllipse :
+        {
+          const RS_Ellipse * ellipse = (const RS_Ellipse *)e;
+          int mark;
+          if(_mark_to_label.find(ellipse->getLabel())!=_mark_to_label.end())
+            mark = _mark_to_label[ellipse->getLabel()];
+          else
+          {
+            mark = _mark_to_label.size();
+            _mark_to_label[ellipse->getLabel()] = mark;
+          }
 
+          unsigned int division = ellipse->getDivision();
+          RS_Vector  center = ellipse->getCenter();
+          double     a = ellipse->getMajorRadius();
+          double     b = ellipse->getMinorRadius();
+          double     angel = ellipse->getAngle1();
+          RS_Vector  start = center + RS_Vector(a*cos(angel), b*sin(angel));
+          start.rotate(center, ellipse->getAngle());
+
+          RS_Vector  p1 = start;
+          RS_Vector  p2 = center + RS_Vector(a*cos(angel+2*M_PI/division), b*sin(angel+2*M_PI/division));
+          p2.rotate(center, ellipse->getAngle());
+
+          for(unsigned int n=1; n<=division; ++n)
+          {
+            CG_Segment segment;
+            segment.p1 = add_point(p1);
+            segment.p2 = add_point(p2);
+            segment.mark = mark;
+            _segments.push_back(segment);
+            p1 = p2;
+            p2 = center + RS_Vector(a*cos(angel+(n+1)*2*M_PI/division), b*sin(angel+(n+1)*2*M_PI/division));
+            p2.rotate(center, ellipse->getAngle());
+            if(n==division) p2 = start;
+          }
+          break;
+        }
+
+      case RS2::EntitySpline :
+        {
+          RS_Spline * spline = (RS_Spline *)e;
+          int mark;
+          if(_mark_to_label.find(spline->getLabel())!=_mark_to_label.end())
+            mark = _mark_to_label[spline->getLabel()];
+          else
+          {
+            mark = _mark_to_label.size();
+            _mark_to_label[spline->getLabel()] = mark;
+          }
+
+          for (RS_Entity* l=spline->firstEntity(); l!=NULL; l=spline->nextEntity())
+            if(l->rtti() == RS2::EntityLine )
+            {
+              const RS_Line * line = (const RS_Line *)l;
+              CG_Segment segment;
+              segment.p1 = add_point(line->getStartpoint());
+              segment.p2 = add_point(line->getEndpoint());
+              segment.mark = mark;
+              _segments.push_back(segment);
+            }
+
+          break;
+        }
 
       default: break;
       }
@@ -221,7 +285,7 @@ unsigned int MeshGenerator::add_point(const RS_Vector &v)
 }
 
 
-void MeshGenerator::do_mesh()
+void MeshGenerator::do_mesh(const QString &cmd )
 {
   if(_points.size() < 3) return;
 
@@ -270,7 +334,7 @@ void MeshGenerator::do_mesh()
   in.numberofregions = 0;
 
   // call Triangle here
-  triangulate("pzq30V", &in, &out, (struct triangulateio *) NULL);
+  triangulate(cmd.ascii(), &in, &out, (struct triangulateio *) NULL);
 
 }
 
@@ -289,7 +353,7 @@ void MeshGenerator::export_mesh_vtk(const char * name)
 
   for (int i=0; i<out.numberofpoints; ++i)
   {
-    fout << out.pointlist[2*i+0] << " " << out.pointlist[2*i+1] << " " << 0.0 << '\n';
+    fout << out.pointlist[2*i+0] << " \t" << out.pointlist[2*i+1] << " \t " << 0.0 << '\n';
   }
 
   fout << std::endl;

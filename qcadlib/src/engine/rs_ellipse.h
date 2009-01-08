@@ -187,7 +187,7 @@ public:
   }
 
   /** @return The start angle of this arc */
-  double getAngle1()
+  double getAngle1() const
   {
     return data.angle1;
   }
@@ -197,7 +197,7 @@ public:
     data.angle1 = a1;
   }
   /** @return The end angle of this arc */
-  double getAngle2()
+  double getAngle2() const
   {
     return data.angle2;
   }
@@ -209,7 +209,7 @@ public:
 
 
   /** @return The center point (x) of this arc */
-  RS_Vector getCenter()
+  RS_Vector getCenter() const
   {
     return data.center;
   }
@@ -220,7 +220,7 @@ public:
   }
 
   /** @return The endpoint of the major axis (relative to center). */
-  RS_Vector getMajorP()
+  RS_Vector getMajorP() const
   {
     return data.majorP;
   }
@@ -231,7 +231,7 @@ public:
   }
 
   /** @return The ratio of minor to major axis */
-  double getRatio()
+  double getRatio() const
   {
     return data.ratio;
   }
