@@ -94,7 +94,23 @@ private:
   /**
    * map mark to segment label
    */
-  std::map<RS_String, int> _mark_to_label;
+  std::map<RS_String, int> _label_to_mark;
+
+  struct CG_Region
+  {
+    bool hole;
+    double x;
+    double y;
+    double area_control; 
+    RS_String label;
+    RS_String material;
+  };
+
+  /**
+   * PSLG region(hole)
+   */
+  std::vector<CG_Region> _regions;
+
 
   /**
    * triangle data structure

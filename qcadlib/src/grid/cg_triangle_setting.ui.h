@@ -48,7 +48,7 @@ void TriangleSetting::SlotCmdString()
 
 void TriangleSetting::init()
 {
-  _cmd_string = "pzV";
+  _cmd_string = "pzAV";
 
   MinimalAngleEdit->setText("20");
 }

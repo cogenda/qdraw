@@ -23,6 +23,7 @@
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
 #include "rs_spline.h"
+#include "rs_hatch.h"
 #include "cg_meshgen.h"
 
 
@@ -35,6 +36,7 @@ void MeshGenerator::triangulateio_init()
   in.segmentlist = (int *) NULL;
   in.segmentmarkerlist = (int *) NULL;
   in.regionlist = (double *)NULL;
+  in.holelist = (double *)NULL;
 
   out.numberofpoints = 0;
   out.pointlist = (double *) NULL;
@@ -47,6 +49,7 @@ void MeshGenerator::triangulateio_init()
   out.segmentlist = (int *) NULL;
   out.segmentmarkerlist = (int *) NULL;
   out.numberofregions = 0;
+  out.numberofholes = 0;
 }
 
 
@@ -58,6 +61,7 @@ void MeshGenerator::triangulateio_finalize()
   free(in.segmentlist);
   free(in.segmentmarkerlist);
   free(in.regionlist);
+  free(in.holelist);
 
   free(out.pointlist);
   free(out.pointmarkerlist);
@@ -94,12 +98,12 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
         {
           const RS_Line * line = (const RS_Line *)e;
           int mark;
-          if(_mark_to_label.find(line->getLabel())!=_mark_to_label.end())
-            mark = _mark_to_label[line->getLabel()];
+          if(_label_to_mark.find(line->getLabel())!=_label_to_mark.end())
+            mark = _label_to_mark[line->getLabel()];
           else
           {
-            mark = _mark_to_label.size();
-            _mark_to_label[line->getLabel()] = mark;
+            mark = _label_to_mark.size();
+            _label_to_mark[line->getLabel()] = mark;
           }
 
           unsigned int division = line->getDivision();
@@ -125,12 +129,12 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
         {
           const RS_Arc * arc = (const RS_Arc *)e;
           int mark;
-          if(_mark_to_label.find(arc->getLabel())!=_mark_to_label.end())
-            mark = _mark_to_label[arc->getLabel()];
+          if(_label_to_mark.find(arc->getLabel())!=_label_to_mark.end())
+            mark = _label_to_mark[arc->getLabel()];
           else
           {
-            mark = _mark_to_label.size();
-            _mark_to_label[arc->getLabel()] = mark;
+            mark = _label_to_mark.size();
+            _label_to_mark[arc->getLabel()] = mark;
           }
 
           unsigned int division = arc->getDivision();
@@ -171,12 +175,12 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
         {
           const RS_Circle * circle = (const RS_Circle *)e;
           int mark;
-          if(_mark_to_label.find(circle->getLabel())!=_mark_to_label.end())
-            mark = _mark_to_label[circle->getLabel()];
+          if(_label_to_mark.find(circle->getLabel())!=_label_to_mark.end())
+            mark = _label_to_mark[circle->getLabel()];
           else
           {
-            mark = _mark_to_label.size();
-            _mark_to_label[circle->getLabel()] = mark;
+            mark = _label_to_mark.size();
+            _label_to_mark[circle->getLabel()] = mark;
           }
 
           unsigned int division = circle->getDivision();
@@ -203,12 +207,12 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
         {
           const RS_Ellipse * ellipse = (const RS_Ellipse *)e;
           int mark;
-          if(_mark_to_label.find(ellipse->getLabel())!=_mark_to_label.end())
-            mark = _mark_to_label[ellipse->getLabel()];
+          if(_label_to_mark.find(ellipse->getLabel())!=_label_to_mark.end())
+            mark = _label_to_mark[ellipse->getLabel()];
           else
           {
-            mark = _mark_to_label.size();
-            _mark_to_label[ellipse->getLabel()] = mark;
+            mark = _label_to_mark.size();
+            _label_to_mark[ellipse->getLabel()] = mark;
           }
 
           unsigned int division = ellipse->getDivision();
@@ -242,12 +246,12 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
         {
           RS_Spline * spline = (RS_Spline *)e;
           int mark;
-          if(_mark_to_label.find(spline->getLabel())!=_mark_to_label.end())
-            mark = _mark_to_label[spline->getLabel()];
+          if(_label_to_mark.find(spline->getLabel())!=_label_to_mark.end())
+            mark = _label_to_mark[spline->getLabel()];
           else
           {
-            mark = _mark_to_label.size();
-            _mark_to_label[spline->getLabel()] = mark;
+            mark = _label_to_mark.size();
+            _label_to_mark[spline->getLabel()] = mark;
           }
 
           for (RS_Entity* l=spline->firstEntity(); l!=NULL; l=spline->nextEntity())
@@ -261,6 +265,22 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
               _segments.push_back(segment);
             }
 
+          break;
+        }
+
+      case RS2::EntityHatch :
+        {
+          const RS_Hatch * hatch = (const RS_Hatch *)e;
+          RS_HatchData data = hatch->getData();
+          CG_Region region;
+
+          region.hole = data.hole;
+          region.x    = data.internal_point.x;
+          region.y    = data.internal_point.y;
+          region.area_control = data.area_control > 0? data.area_control : RS_MAXDOUBLE;
+          region.label = data.label;
+          region.material = data.material;
+          _regions.push_back(region);
           break;
         }
 
@@ -333,6 +353,32 @@ void MeshGenerator::do_mesh(const QString &cmd )
   in.numberofholes = 0;
   in.numberofregions = 0;
 
+  for(unsigned int i=0;i<_regions.size();i++)
+  {
+    if(_regions[i].hole)
+      in.numberofholes++;
+    else
+      in.numberofregions++;
+  }
+  in.holelist   = (double *) calloc(in.numberofholes*2, sizeof(double));
+  in.regionlist = (double *) calloc(in.numberofregions*4, sizeof(double));
+  double *pholelist = in.holelist;
+  double *pregionlist = in.regionlist;
+  for(unsigned int i=0;i<_regions.size();i++)
+  {
+    if(_regions[i].hole)
+    {
+      *pholelist++ = _regions[i].x;
+      *pholelist++ = _regions[i].y;
+    }
+    else
+    {
+      *pregionlist++ = _regions[i].x;
+      *pregionlist++ = _regions[i].y;
+      *pregionlist++ = double(i);
+      *pregionlist++ = _regions[i].area_control;
+    }
+  }
   // call Triangle here
   triangulate(cmd.ascii(), &in, &out, (struct triangulateio *) NULL);
 
@@ -366,9 +412,9 @@ void MeshGenerator::draw_mesh()
     RS_Vector p2(out.pointlist[2*out.trianglelist[3*i+1]],out.pointlist[2*out.trianglelist[3*i+1]+1]);
     RS_Vector p3(out.pointlist[2*out.trianglelist[3*i+2]],out.pointlist[2*out.trianglelist[3*i+2]+1]);
 
-    mesh->addEntity(new RS_Line(mesh, RS_LineData(p1,p2))); 
-    mesh->addEntity(new RS_Line(mesh, RS_LineData(p2,p3))); 
-    mesh->addEntity(new RS_Line(mesh, RS_LineData(p3,p1))); 
+    mesh->addEntity(new RS_Line(mesh, RS_LineData(p1,p2)));
+    mesh->addEntity(new RS_Line(mesh, RS_LineData(p2,p3)));
+    mesh->addEntity(new RS_Line(mesh, RS_LineData(p3,p1)));
   }
   _doc->addEntity(mesh);
   _gv->drawEntity(mesh);
@@ -414,46 +460,31 @@ void MeshGenerator::export_mesh_vtk(const char * name)
     fout << 5 << std::endl;
 
   fout << std::endl;
+
+  if( out.triangleattributelist!= NULL)
+  {
+    fout << "CELL_DATA "<<out.numberoftriangles     <<'\n';
+    fout << "SCALARS region float 1"  <<'\n';
+    fout << "LOOKUP_TABLE default"    <<'\n';
+    for(int i=0; i<out.numberoftriangles; ++i)
+    {
+      fout << static_cast<int>(out.triangleattributelist[i]+0.5)<<'\n';
+    }
+    fout<<std::endl;
+  }
+
+
   /*
-    fout << "CELL_DATA "<<_triangles.size()     <<'\n';
-   
-    fout << "SCALARS state float 1"  <<'\n';
-    fout << "LOOKUP_TABLE default"    <<'\n';
-    for(TriangleIt it=_triangles.begin(); it!=_triangles.end(); ++it)
-    {
-    	fout << (*it)->state()<<'\n';
-    }
-    fout<<std::endl;
-   
-   
-    fout << "SCALARS material float 1"  <<'\n';
-    fout << "LOOKUP_TABLE default"    <<'\n';
-    for(TriangleIt it=_triangles.begin(); it!=_triangles.end(); ++it)
-    {
-    	fout << (*it)->material()<<'\n';
-    }
-    fout<<std::endl;
-   
-   
-    fout << "SCALARS mark float 1"  <<'\n';
-    fout << "LOOKUP_TABLE default"    <<'\n';
-    for(TriangleIt it=_triangles.begin(); it!=_triangles.end(); ++it)
-    {
-    	fout << (*it)->mark()<<'\n';
-    }
-    fout<<std::endl;
-   
-   
-       //write node based boundary info to vtk
-    fout<<"POINT_DATA "<< _points.size()      <<'\n';
-    fout<<"SCALARS point_mark float 1" <<'\n';
-    fout<<"LOOKUP_TABLE default"       <<'\n';
-    for(unsigned int n=0; n<_points.size(); ++n)
-    {
-    	fout<<_points[n]->mark()<<'\n' ;
-    }
-    fout<<std::endl;
-    */
+          //write node based boundary info to vtk
+       fout<<"POINT_DATA "<< _points.size()      <<'\n';
+       fout<<"SCALARS point_mark float 1" <<'\n';
+       fout<<"LOOKUP_TABLE default"       <<'\n';
+       for(unsigned int n=0; n<_points.size(); ++n)
+       {
+       	fout<<_points[n]->mark()<<'\n' ;
+       }
+       fout<<std::endl;
+       */
   fout.close();
 
 
