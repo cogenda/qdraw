@@ -42,46 +42,50 @@
  *
  * @author Andrew Mustun
  */
-class RS_Information {
+class RS_Information
+{
 public:
-    RS_Information(RS_EntityContainer& entityContainer);
+  RS_Information(RS_EntityContainer& entityContainer);
 
-	static bool isDimension(RS2::EntityType type);
-	static bool isTrimmable(RS_Entity* e);
-	static bool isTrimmable(RS_Entity* e1, RS_Entity* e2);
+  static bool isDimension(RS2::EntityType type);
+  static bool isTrimmable(RS_Entity* e);
+  static bool isTrimmable(RS_Entity* e1, RS_Entity* e2);
 
-    RS_Vector getNearestEndpoint(const RS_Vector& point,
-                                 double* dist = NULL) const;
-    RS_Vector getNearestPointOnEntity(const RS_Vector& point,
-	                                  bool onEntity=true, 
-                                      double* dist = NULL,
-                                      RS_Entity** entity=NULL) const;
-    RS_Entity* getNearestEntity(const RS_Vector& point,
-                                double* dist = NULL,
-                                RS2::ResolveLevel level=RS2::ResolveAll) const;
+  RS_Vector getNearestEndpoint(const RS_Vector& point,
+                               double* dist = NULL) const;
+  RS_Vector getNearestPointOnEntity(const RS_Vector& point,
+                                    bool onEntity=true,
+                                    double* dist = NULL,
+                                    RS_Entity** entity=NULL) const;
+  RS_Entity* getNearestEntity(const RS_Vector& point,
+                              double* dist = NULL,
+                              RS2::ResolveLevel level=RS2::ResolveAll) const;
 
-    static RS_VectorSolutions getIntersection(RS_Entity* e1,
-            RS_Entity* e2,
-            bool onEntities = false);
+  static RS_VectorSolutions getIntersection(RS_Entity* e1,
+      RS_Entity* e2,
+      bool onEntities = false);
+  static bool hasIntersection(RS_Entity* e1,
+      RS_Entity* e2,
+      bool onEntities = false);
 
-    static RS_VectorSolutions getIntersectionLineLine(RS_Line* e1,
-            RS_Line* e2);
+  static RS_VectorSolutions getIntersectionLineLine(RS_Line* e1,
+      RS_Line* e2);
 
-    static RS_VectorSolutions getIntersectionLineArc(RS_Line* line,
-            RS_Arc* arc);
+  static RS_VectorSolutions getIntersectionLineArc(RS_Line* line,
+      RS_Arc* arc);
 
-    static RS_VectorSolutions getIntersectionArcArc(RS_Arc* e1,
-            RS_Arc* e2);
-    
-	static RS_VectorSolutions getIntersectionLineEllipse(RS_Line* line,
-            RS_Ellipse* ellipse);
+  static RS_VectorSolutions getIntersectionArcArc(RS_Arc* e1,
+      RS_Arc* e2);
 
-    static bool isPointInsideContour(const RS_Vector& point,
-                                     RS_EntityContainer* contour,
-									 bool* onContour=NULL);
-	
+  static RS_VectorSolutions getIntersectionLineEllipse(RS_Line* line,
+      RS_Ellipse* ellipse);
+
+  static bool isPointInsideContour(const RS_Vector& point,
+                                   RS_EntityContainer* contour,
+                                   bool* onContour=NULL);
+
 protected:
-    RS_EntityContainer* container;
+  RS_EntityContainer* container;
 };
 
 

@@ -126,6 +126,7 @@ public:
   void clean();
   RS_Vector get(int i) const;
   int getNumber() const;
+  int getValidNumber() const;
   bool hasValid() const;
   void set(int i, const RS_Vector& v);
   void setTangent(bool t);

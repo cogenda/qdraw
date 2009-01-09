@@ -33,6 +33,8 @@ void QG_DlgLine::setLine(RS_Line& l) {
     s.setNum(line->getDivision());
     lineDivisionEdit->setText(s);
 
+    PointSet->setChecked(line->isPointSet());
+
     // get line label
     lineLabelEdit->setText(line->getLabel());
 
@@ -47,6 +49,7 @@ void QG_DlgLine::updateLine() {
     line->setLayer(cbLayer->currentText());
 
     line->setDivision(RS_Math::eval(lineDivisionEdit->text()));
+    line->setPointSet(PointSet->isChecked());
     line->setLabel(lineLabelEdit->text());
 }
 

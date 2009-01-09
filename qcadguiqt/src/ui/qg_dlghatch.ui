@@ -8,303 +8,351 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>492</width>
-            <height>376</height>
+            <width>505</width>
+            <height>398</height>
         </rect>
     </property>
     <property name="caption">
         <string>Choose Hatch Attributes</string>
     </property>
-    <vbox>
+    <grid>
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QLayoutWidget">
+        <widget class="QLayoutWidget" row="0" column="0">
             <property name="name">
-                <cstring>layout16</cstring>
+                <cstring>layout10</cstring>
             </property>
-            <hbox>
+            <vbox>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
                 <widget class="QLayoutWidget">
                     <property name="name">
-                        <cstring>layout15</cstring>
+                        <cstring>layout9</cstring>
                     </property>
-                    <vbox>
+                    <hbox>
                         <property name="name">
                             <cstring>unnamed</cstring>
                         </property>
                         <widget class="QLayoutWidget">
                             <property name="name">
-                                <cstring>layout27</cstring>
+                                <cstring>layout8</cstring>
                             </property>
-                            <hbox>
+                            <vbox>
                                 <property name="name">
                                     <cstring>unnamed</cstring>
                                 </property>
-                                <widget class="QLabel">
+                                <widget class="QLayoutWidget">
                                     <property name="name">
-                                        <cstring>HatchLabel</cstring>
+                                        <cstring>layout27</cstring>
                                     </property>
-                                    <property name="text">
-                                        <string>Label:</string>
+                                    <hbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <widget class="QLabel">
+                                            <property name="name">
+                                                <cstring>HatchLabel</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>Label:</string>
+                                            </property>
+                                        </widget>
+                                        <spacer>
+                                            <property name="name">
+                                                <cstring>spacer20</cstring>
+                                            </property>
+                                            <property name="orientation">
+                                                <enum>Horizontal</enum>
+                                            </property>
+                                            <property name="sizeType">
+                                                <enum>Expanding</enum>
+                                            </property>
+                                            <property name="sizeHint">
+                                                <size>
+                                                    <width>16</width>
+                                                    <height>20</height>
+                                                </size>
+                                            </property>
+                                        </spacer>
+                                        <widget class="QLineEdit">
+                                            <property name="name">
+                                                <cstring>HatchLabelEdit</cstring>
+                                            </property>
+                                        </widget>
+                                    </hbox>
+                                </widget>
+                                <widget class="QLayoutWidget">
+                                    <property name="name">
+                                        <cstring>layout9</cstring>
+                                    </property>
+                                    <hbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <widget class="QLabel">
+                                            <property name="name">
+                                                <cstring>MaterialLabel</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>Material:</string>
+                                            </property>
+                                        </widget>
+                                        <spacer>
+                                            <property name="name">
+                                                <cstring>spacer22</cstring>
+                                            </property>
+                                            <property name="orientation">
+                                                <enum>Horizontal</enum>
+                                            </property>
+                                            <property name="sizeType">
+                                                <enum>Expanding</enum>
+                                            </property>
+                                            <property name="sizeHint">
+                                                <size>
+                                                    <width>16</width>
+                                                    <height>20</height>
+                                                </size>
+                                            </property>
+                                        </spacer>
+                                        <widget class="QComboBox">
+                                            <property name="name">
+                                                <cstring>MaterialBox</cstring>
+                                            </property>
+                                        </widget>
+                                    </hbox>
+                                </widget>
+                                <widget class="QLayoutWidget">
+                                    <property name="name">
+                                        <cstring>layout14</cstring>
+                                    </property>
+                                    <hbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <widget class="QLabel">
+                                            <property name="name">
+                                                <cstring>AreaLabel</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>AreaControl:</string>
+                                            </property>
+                                        </widget>
+                                        <spacer>
+                                            <property name="name">
+                                                <cstring>spacer20_2</cstring>
+                                            </property>
+                                            <property name="orientation">
+                                                <enum>Horizontal</enum>
+                                            </property>
+                                            <property name="sizeType">
+                                                <enum>Expanding</enum>
+                                            </property>
+                                            <property name="sizeHint">
+                                                <size>
+                                                    <width>16</width>
+                                                    <height>20</height>
+                                                </size>
+                                            </property>
+                                        </spacer>
+                                        <widget class="QLineEdit">
+                                            <property name="name">
+                                                <cstring>AreaEdit</cstring>
+                                            </property>
+                                        </widget>
+                                    </hbox>
+                                </widget>
+                                <widget class="QLayoutWidget">
+                                    <property name="name">
+                                        <cstring>layout7</cstring>
+                                    </property>
+                                    <hbox>
+                                        <property name="name">
+                                            <cstring>unnamed</cstring>
+                                        </property>
+                                        <widget class="QCheckBox">
+                                            <property name="name">
+                                                <cstring>HoleCheckBox</cstring>
+                                            </property>
+                                            <property name="text">
+                                                <string>&amp;Make it as hole</string>
+                                            </property>
+                                            <property name="accel">
+                                                <string>Alt+M</string>
+                                            </property>
+                                        </widget>
+                                        <spacer>
+                                            <property name="name">
+                                                <cstring>spacer5</cstring>
+                                            </property>
+                                            <property name="orientation">
+                                                <enum>Horizontal</enum>
+                                            </property>
+                                            <property name="sizeType">
+                                                <enum>Expanding</enum>
+                                            </property>
+                                            <property name="sizeHint">
+                                                <size>
+                                                    <width>40</width>
+                                                    <height>20</height>
+                                                </size>
+                                            </property>
+                                        </spacer>
+                                    </hbox>
+                                </widget>
+                                <widget class="QG_WidgetPen">
+                                    <property name="name">
+                                        <cstring>wPen</cstring>
+                                    </property>
+                                    <property name="sizePolicy">
+                                        <sizepolicy>
+                                            <hsizetype>3</hsizetype>
+                                            <vsizetype>3</vsizetype>
+                                            <horstretch>0</horstretch>
+                                            <verstretch>0</verstretch>
+                                        </sizepolicy>
                                     </property>
                                 </widget>
-                                <spacer>
-                                    <property name="name">
-                                        <cstring>spacer20</cstring>
-                                    </property>
-                                    <property name="orientation">
-                                        <enum>Horizontal</enum>
-                                    </property>
-                                    <property name="sizeType">
-                                        <enum>Expanding</enum>
-                                    </property>
-                                    <property name="sizeHint">
-                                        <size>
-                                            <width>16</width>
-                                            <height>20</height>
-                                        </size>
-                                    </property>
-                                </spacer>
-                                <widget class="QLineEdit">
-                                    <property name="name">
-                                        <cstring>HatchLabelEdit</cstring>
-                                    </property>
-                                </widget>
-                            </hbox>
+                            </vbox>
                         </widget>
-                        <widget class="QLayoutWidget">
+                        <widget class="QButtonGroup">
                             <property name="name">
-                                <cstring>layout9</cstring>
+                                <cstring>bgParameter</cstring>
                             </property>
-                            <hbox>
+                            <property name="title">
+                                <string>Pattern</string>
+                            </property>
+                            <grid>
                                 <property name="name">
                                     <cstring>unnamed</cstring>
                                 </property>
-                                <widget class="QLabel">
+                                <widget class="QLineEdit" row="3" column="1">
                                     <property name="name">
-                                        <cstring>MaterialLabel</cstring>
+                                        <cstring>leAngle</cstring>
+                                    </property>
+                                </widget>
+                                <widget class="QLineEdit" row="2" column="1">
+                                    <property name="name">
+                                        <cstring>leScale</cstring>
+                                    </property>
+                                </widget>
+                                <widget class="QLabel" row="3" column="0">
+                                    <property name="name">
+                                        <cstring>lAngle</cstring>
                                     </property>
                                     <property name="text">
-                                        <string>Material:</string>
+                                        <string>Angle:</string>
                                     </property>
                                 </widget>
-                                <spacer>
+                                <widget class="QLabel" row="2" column="0">
                                     <property name="name">
-                                        <cstring>spacer22</cstring>
-                                    </property>
-                                    <property name="orientation">
-                                        <enum>Horizontal</enum>
-                                    </property>
-                                    <property name="sizeType">
-                                        <enum>Expanding</enum>
-                                    </property>
-                                    <property name="sizeHint">
-                                        <size>
-                                            <width>16</width>
-                                            <height>20</height>
-                                        </size>
-                                    </property>
-                                </spacer>
-                                <widget class="QComboBox">
-                                    <property name="name">
-                                        <cstring>MaterialBox</cstring>
-                                    </property>
-                                </widget>
-                            </hbox>
-                        </widget>
-                        <widget class="QLayoutWidget">
-                            <property name="name">
-                                <cstring>layout14</cstring>
-                            </property>
-                            <hbox>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="QLabel">
-                                    <property name="name">
-                                        <cstring>AreaLabel</cstring>
+                                        <cstring>lScale</cstring>
                                     </property>
                                     <property name="text">
-                                        <string>AreaControl:</string>
+                                        <string>Scale:</string>
                                     </property>
                                 </widget>
-                                <spacer>
+                                <widget class="QG_PatternBox" row="1" column="0" rowspan="1" colspan="2">
                                     <property name="name">
-                                        <cstring>spacer20_2</cstring>
-                                    </property>
-                                    <property name="orientation">
-                                        <enum>Horizontal</enum>
-                                    </property>
-                                    <property name="sizeType">
-                                        <enum>Expanding</enum>
-                                    </property>
-                                    <property name="sizeHint">
-                                        <size>
-                                            <width>16</width>
-                                            <height>20</height>
-                                        </size>
-                                    </property>
-                                </spacer>
-                                <widget class="QLineEdit">
-                                    <property name="name">
-                                        <cstring>AreaEdit</cstring>
+                                        <cstring>cbPattern</cstring>
                                     </property>
                                 </widget>
-                            </hbox>
+                                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
+                                    <property name="name">
+                                        <cstring>cbSolid</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>S&amp;olid Fill</string>
+                                    </property>
+                                </widget>
+                                <widget class="QG_GraphicView" row="5" column="0" rowspan="1" colspan="2">
+                                    <property name="name">
+                                        <cstring>gvPreview</cstring>
+                                    </property>
+                                </widget>
+                                <widget class="QCheckBox" row="4" column="0" rowspan="1" colspan="2">
+                                    <property name="name">
+                                        <cstring>cbEnablePreview</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>E&amp;nable Preview</string>
+                                    </property>
+                                    <property name="accel">
+                                        <string>Alt+N</string>
+                                    </property>
+                                </widget>
+                            </grid>
                         </widget>
-                        <widget class="QG_WidgetPen">
-                            <property name="name">
-                                <cstring>wPen</cstring>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>3</hsizetype>
-                                    <vsizetype>3</vsizetype>
-                                    <horstretch>0</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                        </widget>
-                    </vbox>
+                    </hbox>
                 </widget>
-                <widget class="QButtonGroup">
+                <widget class="QLayoutWidget">
                     <property name="name">
-                        <cstring>bgParameter</cstring>
+                        <cstring>Layout1</cstring>
                     </property>
-                    <property name="title">
-                        <string>Pattern</string>
-                    </property>
-                    <grid>
+                    <hbox>
                         <property name="name">
                             <cstring>unnamed</cstring>
                         </property>
-                        <widget class="QLineEdit" row="3" column="1">
+                        <property name="margin">
+                            <number>0</number>
+                        </property>
+                        <property name="spacing">
+                            <number>6</number>
+                        </property>
+                        <spacer>
                             <property name="name">
-                                <cstring>leAngle</cstring>
+                                <cstring>Horizontal Spacing2</cstring>
                             </property>
-                        </widget>
-                        <widget class="QLineEdit" row="2" column="1">
-                            <property name="name">
-                                <cstring>leScale</cstring>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
                             </property>
-                        </widget>
-                        <widget class="QLabel" row="3" column="0">
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>20</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QPushButton">
                             <property name="name">
-                                <cstring>lAngle</cstring>
+                                <cstring>buttonOk</cstring>
                             </property>
                             <property name="text">
-                                <string>Angle:</string>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="2" column="0">
-                            <property name="name">
-                                <cstring>lScale</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Scale:</string>
-                            </property>
-                        </widget>
-                        <widget class="QG_PatternBox" row="1" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>cbPattern</cstring>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>cbSolid</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Solid Fill</string>
-                            </property>
-                        </widget>
-                        <widget class="QG_GraphicView" row="5" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>gvPreview</cstring>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox" row="4" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>cbEnablePreview</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Ena&amp;ble Preview</string>
+                                <string>O&amp;K</string>
                             </property>
                             <property name="accel">
-                                <string>Alt+B</string>
+                                <string>Alt+K</string>
+                            </property>
+                            <property name="autoDefault">
+                                <bool>true</bool>
+                            </property>
+                            <property name="default">
+                                <bool>true</bool>
                             </property>
                         </widget>
-                    </grid>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>buttonCancel</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Cancel</string>
+                            </property>
+                            <property name="accel">
+                                <string></string>
+                            </property>
+                            <property name="autoDefault">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                    </hbox>
                 </widget>
-            </hbox>
+            </vbox>
         </widget>
-        <widget class="QLayoutWidget">
-            <property name="name">
-                <cstring>Layout1</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <property name="margin">
-                    <number>0</number>
-                </property>
-                <property name="spacing">
-                    <number>6</number>
-                </property>
-                <spacer>
-                    <property name="name">
-                        <cstring>Horizontal Spacing2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>20</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>buttonOk</cstring>
-                    </property>
-                    <property name="text">
-                        <string>O&amp;K</string>
-                    </property>
-                    <property name="accel">
-                        <string>Alt+K</string>
-                    </property>
-                    <property name="autoDefault">
-                        <bool>true</bool>
-                    </property>
-                    <property name="default">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>buttonCancel</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Cancel</string>
-                    </property>
-                    <property name="accel">
-                        <string></string>
-                    </property>
-                    <property name="autoDefault">
-                        <bool>true</bool>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
-    </vbox>
+    </grid>
 </widget>
 <customwidgets>
     <customwidget>

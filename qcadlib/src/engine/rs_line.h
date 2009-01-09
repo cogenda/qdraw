@@ -144,6 +144,12 @@ public:
   void setDivision(unsigned int d)
   { division = d; }
 
+  bool isPointSet() const
+  { return point_set; }
+
+  void setPointSet(bool b)
+  { point_set = b; }
+
   /**
    * @return Direction 1. The angle at which the line starts at
    * the startpoint.
@@ -251,6 +257,11 @@ protected:
    * the line can be divided into sub edges
    */
   unsigned int division;
+
+  /**
+   * consider the line as a point set, not segment
+   */
+  bool point_set;
 }
 ;
 

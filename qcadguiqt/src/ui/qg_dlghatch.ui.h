@@ -148,6 +148,8 @@ void QG_DlgHatch::setHatch(RS_Hatch& h, bool isNew)
 
   // set label
   HatchLabelEdit->setText(hatch->getLabel());
+
+  HoleCheckBox->setChecked(hatch->getData().hole);
 }
 
 
@@ -169,6 +171,7 @@ void QG_DlgHatch::updateHatch()
       if(ok) hatch->getData().area_control = area;
     }
     hatch->getData().material = MaterialBox->currentText();
+    hatch->getData().hole = HoleCheckBox->isChecked();
   }
 }
 

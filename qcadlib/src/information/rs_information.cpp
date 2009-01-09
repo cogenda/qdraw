@@ -422,6 +422,13 @@ RS_VectorSolutions RS_Information::getIntersection(RS_Entity* e1,
 }
 
 
+bool RS_Information::hasIntersection(RS_Entity* e1, RS_Entity* e2, bool onEntities)
+{
+  RS_VectorSolutions sol = getIntersection(e1, e2, onEntities);
+  RS_Vector p = sol.get(0);
+  return p.valid;
+}
+
 
 /**
  * @return Intersection between two lines.

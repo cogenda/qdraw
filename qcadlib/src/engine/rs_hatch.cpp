@@ -24,6 +24,7 @@
 **
 **********************************************************************/
 
+#include <cassert>
 
 #include "rs_hatch.h"
 
@@ -133,6 +134,8 @@ void RS_Hatch::update()
 {
   RS_DEBUG->print("RS_Hatch::update");
   RS_DEBUG->print("RS_Hatch::update: contour has %d loops", count());
+
+  findInternalPoint();
 
 #if QT_VERSION>=0x030000
   if (updateRunning)
@@ -553,6 +556,75 @@ void RS_Hatch::activateContour(bool on)
 }
 
 
+bool RS_Hatch::hasIntersectionWithLine(RS_Entity* line)
+{
+  unsigned int intersection_point = 0;
+  for (RS_Entity* e = firstEntity(RS2::ResolveAll); e!=NULL; e = nextEntity(RS2::ResolveAll))
+  {
+    // intersection(s) from ray with contour entity:
+    RS_VectorSolutions sol = RS_Information::getIntersection(line, e, true);
+    intersection_point += sol.getValidNumber();
+  }
+
+  return intersection_point>1;
+}
+
+
+void RS_Hatch::findInternalPoint()
+{
+  if(!isVisible()) return;
+
+  bool find = false;
+
+  calculateBorders();
+  RS_Vector pmin, pmax;
+
+  // hatch bound box
+  RS_Vector p1(getMin().x-1e-3, getMin().y-1e-3);
+  RS_Vector p2(getMax().x+1e-3, getMin().y-1e-3);
+  RS_Vector p3(getMax().x+1e-3, getMax().y+1e-3);
+  RS_Vector p4(getMin().x-1e-3, getMax().y+1e-3);
+
+  RS_Line ray1(NULL, RS_LineData(p1, p3));
+  RS_Line ray2(NULL, RS_LineData(p2, p4));
+
+  assert(hasIntersectionWithLine(&ray1) || hasIntersectionWithLine(&ray2));
+  if(hasIntersectionWithLine(&ray1))
+  {
+    pmin = p1;
+    pmax = p3;
+  }
+  else if(hasIntersectionWithLine(&ray2))
+  {
+    pmin = p2;
+    pmax = p4;
+  }
+
+  do
+  {
+    RS_Vector p = (pmin+pmax)/2;
+    bool on_hatch;
+    bool in_hatch = RS_Information::isPointInsideContour(p, this, &on_hatch);
+    if(in_hatch && !on_hatch)
+    {
+      find = true;
+      data.internal_point = p;
+      break;
+    }
+    RS_Line hray1(NULL, RS_LineData(pmin, p));
+    RS_Line hray2(NULL, RS_LineData(p, pmax));
+    if(hasIntersectionWithLine(&hray1))
+    { pmax = p; }
+    else if(hasIntersectionWithLine(&hray2))
+    { pmin = p; }
+
+  }
+  while((pmin-pmax).magnitude()>1e-4);
+
+  assert(find);
+}
+
+
 /**
  * Overrides drawing of subentities. This is only ever called for solid fills.
  */
@@ -617,7 +689,7 @@ void RS_Hatch::draw(RS_Painter* painter, RS_GraphicView* view,
            e=loop->nextEntity(RS2::ResolveNone))
       {
 
-	e->setLayer(getLayer());
+        e->setLayer(getLayer());
         switch (e->rtti())
         {
         case RS2::EntityLine:
@@ -732,9 +804,9 @@ void RS_Hatch::draw(RS_Painter* painter, RS_GraphicView* view,
             lastY = y2;
             lastValid=true;
           }
-	  break;
+          break;
 
-	case RS2::EntityEllipse:
+        case RS2::EntityEllipse:
           {
             RS_Ellipse* ellipse = (RS_Ellipse*)e;
 
@@ -758,13 +830,13 @@ void RS_Hatch::draw(RS_Painter* painter, RS_GraphicView* view,
 
             RS_PointArray pa2;
             painter->createEllipse(pa2,
-	                       view->toGui(ellipse->getCenter()),
-                               view->toGuiDX(ellipse->getMajorRadius()),
-			       view->toGuiDX(ellipse->getMinorRadius()),
-			       ellipse->getAngle(),
-                               ellipse->getAngle1(),
-                               ellipse->getAngle2(),
-                               ellipse->isReversed());
+                                   view->toGui(ellipse->getCenter()),
+                                   view->toGuiDX(ellipse->getMajorRadius()),
+                                   view->toGuiDX(ellipse->getMinorRadius()),
+                                   ellipse->getAngle(),
+                                   ellipse->getAngle1(),
+                                   ellipse->getAngle2(),
+                                   ellipse->isReversed());
 
             pa.resize(s+pa2.size());
             pa.putPoints(s, pa2.size(), pa2);

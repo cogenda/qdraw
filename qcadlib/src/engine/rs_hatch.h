@@ -40,7 +40,7 @@ public:
   /**
    * Default constructor. Leaves the data object uninitialized.
    */
-  RS_HatchData():material(""), area_control(-1) {}
+  RS_HatchData():area_control(-1), material("")  {}
 
   /**
    * @param solid true: solid fill, false: pattern.
@@ -52,7 +52,7 @@ public:
                double angle,
                const RS_String& pattern
 	       )
-  :material(""), area_control(-1)
+  :hole(false),  area_control(-1), material("")
   {
     this->solid = solid;
     this->scale = scale;
@@ -75,6 +75,7 @@ public:
                const RS_String& material,
 	       double area_control
 	       )
+  :hole(false)
   {
     this->solid = solid;
     this->scale = scale;
@@ -93,13 +94,15 @@ public:
 
 public:
   bool solid;
+  bool hole;
   double scale;
   double angle;
+  double area_control;
   RS_String pattern;
   // the same as label in RS_Hatch
   RS_String label;
   RS_String material;
-  double area_control;
+  RS_Vector internal_point;
 };
 
 
@@ -198,10 +201,12 @@ public:
   {
     data.angle = angle;
   }
-
+  
   virtual void calculateBorders();
   void update();
   void activateContour(bool on);
+  void findInternalPoint();
+  bool hasIntersectionWithLine(RS_Entity* line);
 
   virtual void draw(RS_Painter* painter, RS_GraphicView* view,
                     double patternOffset=0.0);
