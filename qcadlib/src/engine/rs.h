@@ -139,7 +139,8 @@ public:
         EntityDimLeader,    /**< Leader Dimension */
         EntityHatch,        /**< Hatch */
         EntityImage,        /**< Image */
-        EntitySpline        /**< Spline */
+        EntitySpline,       /**< Spline */
+        EntityMesh          /**< Mesh */
     };
 
     /**
@@ -473,9 +474,9 @@ public:
      * Display formats for angles.
      */
     enum AngleFormat {
-        /** Degrees with decimal point (e.g. 24.5� */
+        /** Degrees with decimal point (e.g. 24.517 */
         DegreesDecimal,
-        /** Degrees, Minutes and Seconds (e.g. 24�'5'') */
+        /** Degrees, Minutes and Seconds (e.g. 2417'5'') */
         DegreesMinutesSeconds,
         /** Gradians with decimal point (e.g. 390.5)*/
         Gradians,

@@ -24,6 +24,7 @@
 #include "rs_graphicview.h"
 #include "rs_spline.h"
 #include "rs_hatch.h"
+#include "rs_mesh.h"
 #include "cg_meshgen.h"
 
 
@@ -56,20 +57,41 @@ void MeshGenerator::triangulateio_init()
 void MeshGenerator::triangulateio_finalize()
 {
   free(in.pointlist);
+  in.pointlist=0;
   free(in.pointmarkerlist);
+  in.pointmarkerlist=0;
   free(in.pointattributelist);
-  free(in.segmentlist);
-  free(in.segmentmarkerlist);
-  free(in.regionlist);
-  free(in.holelist);
+  in.pointattributelist=0;
 
+  free(in.segmentlist);
+  in.segmentlist=0;
+  free(in.segmentmarkerlist);
+  in.segmentmarkerlist=0;
+
+  free(in.regionlist);
+  in.regionlist=0;
+  free(in.holelist);
+  in.holelist=0;
+
+  out.numberofpoints = 0;
   free(out.pointlist);
+  out.pointlist=0;
   free(out.pointmarkerlist);
+  out.pointmarkerlist=0;
   free(out.pointattributelist);
+  out.pointattributelist=0;
+
+  out.numberoftriangles = 0;
   free(out.trianglelist);
+  out.trianglelist=0;
   free(out.triangleattributelist);
+  out.triangleattributelist=0;
+
+  out.numberofsegments = 0;
   free(out.segmentlist);
+  out.segmentlist=0;
   free(out.segmentmarkerlist);
+  out.segmentmarkerlist=0;
 }
 
 
@@ -77,8 +99,12 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
     :_doc(doc), _gv(gv)
 {
   triangulateio_init();
+}
 
-  RS_Graphic * g = gv->getGraphic();
+
+void MeshGenerator::convert_cad_to_pslg()
+{
+  RS_Graphic * g = _gv->getGraphic();
   if(g==NULL) return;
 
   //mesh all the entity on active layer
@@ -114,11 +140,19 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
 
           for(unsigned int n=0; n<division; ++n)
           {
-            CG_Segment segment;
-            segment.p1 = add_point(p1);
-            segment.p2 = add_point(p2);
-            segment.mark = mark;
-            _segments.push_back(segment);
+            if(!line->isPointSet())
+            {
+              CG_Segment segment;
+              segment.p1 = add_point(p1);
+              segment.p2 = add_point(p2);
+              segment.mark = mark;
+              _segments.push_back(segment);
+            }
+            else
+            {
+              add_point(p1);
+              add_point(p2);
+            }
             p1 = p2;
             p2 = p1 + (end - start)/division;
           }
@@ -307,6 +341,11 @@ unsigned int MeshGenerator::add_point(const RS_Vector &v)
 
 void MeshGenerator::do_mesh(const QString &cmd )
 {
+  triangulateio_init();
+
+  // we only mesh cad entity on current layer, and visitable
+  convert_cad_to_pslg();
+
   if(_points.size() < 3) return;
 
   //set point
@@ -349,7 +388,7 @@ void MeshGenerator::do_mesh(const QString &cmd )
     *psegmentmarkerlist++ = _segments[i].mark;
   }
 
-  //set region information
+  //set region/hole information
   in.numberofholes = 0;
   in.numberofregions = 0;
 
@@ -382,6 +421,17 @@ void MeshGenerator::do_mesh(const QString &cmd )
   // call Triangle here
   triangulate(cmd.ascii(), &in, &out, (struct triangulateio *) NULL);
 
+  draw_mesh();
+
+  triangulateio_finalize();
+}
+
+
+void MeshGenerator::refine_mesh(const QString &cmd)
+{
+  triangulateio_init();
+
+  triangulateio_finalize();
 }
 
 
@@ -404,7 +454,7 @@ void MeshGenerator::draw_mesh()
 
   graphic->addLayer(layer); //the new layer is set to active automatically
 
-  RS_EntityContainer* mesh = new RS_EntityContainer(_doc);
+  RS_Mesh* mesh = new RS_Mesh(_doc);
 
   for(int i=0; i<out.numberoftriangles; ++i)
   {
@@ -416,6 +466,7 @@ void MeshGenerator::draw_mesh()
     mesh->addEntity(new RS_Line(mesh, RS_LineData(p2,p3)));
     mesh->addEntity(new RS_Line(mesh, RS_LineData(p3,p1)));
   }
+
   _doc->addEntity(mesh);
   _gv->drawEntity(mesh);
 

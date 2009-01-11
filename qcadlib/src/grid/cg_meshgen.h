@@ -36,12 +36,12 @@ class MeshGenerator
 {
 public:
  /**
-  * constructor, build PSLG from  RS_EntityContainer
+  * constructor, hold RS_Document and RS_GraphicView pointer
   */
   MeshGenerator(RS_Document * doc, RS_GraphicView * gv);
 
   /**
-   * des, free triangle io
+   * des, free triangle in
    */
   virtual ~MeshGenerator();
   
@@ -50,10 +50,13 @@ public:
    */
   virtual void do_mesh(const QString &cmd);
 
-  virtual void draw_mesh();
+  /**
+   * refine existing mesh
+   */
+  virtual void refine_mesh(const QString &cmd);
 
   /**
-   * export mesh as vtk ascii file format
+   * export mesh as vtk ascii file format, debug only
    */ 
   virtual void export_mesh_vtk(const char * name);
 
@@ -71,9 +74,19 @@ private:
   RS_GraphicView * _gv;
 
   /**
+   * build PSLG from visitable Entities in current layer
+   */
+  void convert_cad_to_pslg();
+
+  /**
    * function to add point into PSLG, drop any overlaped points
    */
   unsigned int add_point(const RS_Vector &v);
+
+  /**
+   * draw mesh to the graph
+   */
+  void draw_mesh();
 
   /**
    * PSLG points

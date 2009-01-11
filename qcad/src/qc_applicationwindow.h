@@ -226,6 +226,7 @@ public slots:
 
   void slotSetProfile();
   void slotDoMesh();
+  void slotRefineMesh();
 
   void slotAssistantError(const QString&);
 

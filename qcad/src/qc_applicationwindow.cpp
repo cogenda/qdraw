@@ -1181,7 +1181,7 @@ void QC_ApplicationWindow::initActions()
   menu->insertSeparator();
   action = actionFactory.createAction(RS2::ActionMesh, this);
   action->addTo(menu);
-  menuBar()->insertItem(tr("&Grid"), menu);
+  menuBar()->insertItem(tr("Mesh&Gen"), menu);
 
   // Help menu:
   //
@@ -4269,10 +4269,14 @@ void QC_ApplicationWindow::slotDoMesh()
     MeshGenerator mesher(getDocument(), getGraphicView());
     mesher.do_mesh(tri_setting.get_cmd_string());
     mesher.export_mesh_vtk("aa.vtk");
-    mesher.draw_mesh();
   }
 }
 
+
+void QC_ApplicationWindow::slotRefineMesh()
+{
+
+}
 
 
 /**
