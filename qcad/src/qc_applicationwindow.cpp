@@ -98,6 +98,7 @@
 #include "cg_profile_editor.h"
 #include "cg_meshgen.h"
 #include "cg_triangle_setting.h"
+#include "cg_export_mesh.h"
 
 QC_ApplicationWindow* QC_ApplicationWindow::appWindow = NULL;
 
@@ -1181,8 +1182,10 @@ void QC_ApplicationWindow::initActions()
   menu->insertSeparator();
   action = actionFactory.createAction(RS2::ActionMesh, this);
   action->addTo(menu);
+  menu->insertSeparator();
   action = actionFactory.createAction(RS2::ActionMeshRefinement, this);
   action->addTo(menu);
+  menu->insertSeparator();
   action = actionFactory.createAction(RS2::ActionMeshExport, this);
   action->addTo(menu);
   menuBar()->insertItem(tr("Mesh&Gen"), menu);
@@ -4272,7 +4275,6 @@ void QC_ApplicationWindow::slotDoMesh()
   {
     MeshGenerator mesher(getDocument(), getGraphicView());
     mesher.do_mesh(tri_setting.get_cmd_string());
-    mesher.export_mesh_vtk("aa.vtk");
   }
 }
 
@@ -4285,7 +4287,8 @@ void QC_ApplicationWindow::slotRefineMesh()
 
 void QC_ApplicationWindow::slotExportMesh()
 {
-
+  CG_MeshExport mesh_export(this, getGraphicView());
+  mesh_export.write_mesh_to_tif();
 }
 
 

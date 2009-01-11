@@ -108,6 +108,7 @@ HEADERS     = \
               profile/cg_parameters.h\
               profile/cg_profile_editor.h\
               grid/cg_meshgen.h\
+              grid/cg_export_mesh.h\
               grid/triangle.h\
               scripting/rs_python.h \
               scripting/rs_simplepython.h \
@@ -183,6 +184,7 @@ SOURCES     = \
               modification/rs_selection.cpp \
               profile/cg_profile_manager.cpp\
               grid/cg_meshgen.cpp\
+              grid/cg_export_mesh.cpp\
               grid/triangle.c\
               scripting/rs_python.cpp \
               scripting/rs_simplepython.cpp \

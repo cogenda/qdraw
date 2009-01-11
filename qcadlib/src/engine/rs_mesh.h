@@ -71,7 +71,8 @@ public:
   RS_String & tri_cmd()
   {return _tri_cmd;}
 
-  //void export_mesh(char *);
+  void export_mesh(const RS_String & file);
+
 private:
 
   /**
