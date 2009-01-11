@@ -19,6 +19,7 @@
 **********************************************************************/
 #include <fstream>
 
+
 #include "rs_string.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
@@ -26,73 +27,6 @@
 #include "rs_hatch.h"
 #include "rs_mesh.h"
 #include "cg_meshgen.h"
-
-
-void MeshGenerator::triangulateio_init()
-{
-  // init Triangle io structure.
-  in.pointlist = (double *) NULL;
-  in.pointattributelist = (double *) NULL;
-  in.pointmarkerlist = (int *) NULL;
-  in.segmentlist = (int *) NULL;
-  in.segmentmarkerlist = (int *) NULL;
-  in.regionlist = (double *)NULL;
-  in.holelist = (double *)NULL;
-
-  out.numberofpoints = 0;
-  out.pointlist = (double *) NULL;
-  out.pointattributelist = (double *) NULL;
-  out.pointmarkerlist = (int *) NULL;
-  out.numberoftriangles = 0;
-  out.trianglelist = (int *) NULL;
-  out.triangleattributelist = (double *) NULL;
-  out.numberofsegments = 0;
-  out.segmentlist = (int *) NULL;
-  out.segmentmarkerlist = (int *) NULL;
-  out.numberofregions = 0;
-  out.numberofholes = 0;
-}
-
-
-void MeshGenerator::triangulateio_finalize()
-{
-  free(in.pointlist);
-  in.pointlist=0;
-  free(in.pointmarkerlist);
-  in.pointmarkerlist=0;
-  free(in.pointattributelist);
-  in.pointattributelist=0;
-
-  free(in.segmentlist);
-  in.segmentlist=0;
-  free(in.segmentmarkerlist);
-  in.segmentmarkerlist=0;
-
-  free(in.regionlist);
-  in.regionlist=0;
-  free(in.holelist);
-  in.holelist=0;
-
-  out.numberofpoints = 0;
-  free(out.pointlist);
-  out.pointlist=0;
-  free(out.pointmarkerlist);
-  out.pointmarkerlist=0;
-  free(out.pointattributelist);
-  out.pointattributelist=0;
-
-  out.numberoftriangles = 0;
-  free(out.trianglelist);
-  out.trianglelist=0;
-  free(out.triangleattributelist);
-  out.triangleattributelist=0;
-
-  out.numberofsegments = 0;
-  free(out.segmentlist);
-  out.segmentlist=0;
-  free(out.segmentmarkerlist);
-  out.segmentmarkerlist=0;
-}
 
 
 MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
@@ -306,15 +240,24 @@ void MeshGenerator::convert_cad_to_pslg()
         {
           const RS_Hatch * hatch = (const RS_Hatch *)e;
           RS_HatchData data = hatch->getData();
-          CG_Region region;
 
-          region.hole = data.hole;
-          region.x    = data.internal_point.x;
-          region.y    = data.internal_point.y;
-          region.area_control = data.area_control > 0? data.area_control : RS_MAXDOUBLE;
-          region.label = data.label;
-          region.material = data.material;
-          _regions.push_back(region);
+          if(data.hole)
+          {
+            CG_Hole hole;
+            hole.x    = data.internal_point.x;
+            hole.y    = data.internal_point.y;
+            _holes.push_back(hole);
+          }
+          else
+          {
+            CG_Region region;
+            region.x    = data.internal_point.x;
+            region.y    = data.internal_point.y;
+            region.area_control = data.area_control > 0? data.area_control : RS_MAXDOUBLE;
+            region.label = data.label;
+            region.material = data.material;
+            _regions.push_back(region);
+          }
           break;
         }
 
@@ -389,39 +332,37 @@ void MeshGenerator::do_mesh(const QString &cmd )
   }
 
   //set region/hole information
-  in.numberofholes = 0;
-  in.numberofregions = 0;
-
-  for(unsigned int i=0;i<_regions.size();i++)
-  {
-    if(_regions[i].hole)
-      in.numberofholes++;
-    else
-      in.numberofregions++;
-  }
-  in.holelist   = (double *) calloc(in.numberofholes*2, sizeof(double));
+  in.numberofregions = _regions.size();
   in.regionlist = (double *) calloc(in.numberofregions*4, sizeof(double));
-  double *pholelist = in.holelist;
   double *pregionlist = in.regionlist;
   for(unsigned int i=0;i<_regions.size();i++)
   {
-    if(_regions[i].hole)
-    {
-      *pholelist++ = _regions[i].x;
-      *pholelist++ = _regions[i].y;
-    }
-    else
-    {
-      *pregionlist++ = _regions[i].x;
-      *pregionlist++ = _regions[i].y;
-      *pregionlist++ = double(i);
-      *pregionlist++ = _regions[i].area_control;
-    }
+    *pregionlist++ = _regions[i].x;
+    *pregionlist++ = _regions[i].y;
+    *pregionlist++ = double(i);
+    *pregionlist++ = _regions[i].area_control;
   }
+
+  in.numberofholes = _holes.size();
+  in.holelist   = (double *) calloc(in.numberofholes*2, sizeof(double));
+  double *pholelist = in.holelist;
+  for(unsigned int i=0;i<_holes.size();i++)
+  {
+    *pholelist++ = _holes[i].x;
+    *pholelist++ = _holes[i].y;
+  }
+
   // call Triangle here
   triangulate(cmd.ascii(), &in, &out, (struct triangulateio *) NULL);
 
-  draw_mesh();
+  RS_Mesh* mesh = draw_mesh();
+
+  triangulateio_copy(out, mesh->get_triangulateio());
+  for(std::map<RS_String, int>::iterator it=_label_to_mark.begin(); it!=_label_to_mark.end(); ++it)
+    mesh->add_segment_info(it->second, it->first);
+  for(unsigned int i=0;i<_regions.size();i++)
+    mesh->add_region_info(i, _regions[i].label, _regions[i].material);
+  mesh->tri_cmd() = cmd;
 
   triangulateio_finalize();
 }
@@ -431,12 +372,23 @@ void MeshGenerator::refine_mesh(const QString &cmd)
 {
   triangulateio_init();
 
+  // find existing RS_Mesh oject
+  RS_Graphic * g = _gv->getGraphic();
+  if(g==NULL) return;
+
+  for (RS_Entity* e=g->firstEntity(); e!=NULL; e=g->nextEntity())
+    if(e->isOnActiveLayer() && e->isVisible() && e->rtti()== RS2::EntityMesh)
+    {}
+
+  // modify the mesh , do not create new mesh!
+
+
   triangulateio_finalize();
 }
 
 
 
-void MeshGenerator::draw_mesh()
+RS_Mesh* MeshGenerator::draw_mesh()
 {
   //create new layer
   RS_Graphic * graphic = _gv->getGraphic();
@@ -470,8 +422,173 @@ void MeshGenerator::draw_mesh()
   _doc->addEntity(mesh);
   _gv->drawEntity(mesh);
 
+  return mesh;
 }
 
+
+
+
+void MeshGenerator::triangulateio_init()
+{
+  // init Triangle io structure.
+  in.pointlist = (double *) NULL;
+  in.pointattributelist = (double *) NULL;
+  in.pointmarkerlist = (int *) NULL;
+  in.trianglearealist= (double *) NULL;
+  in.segmentlist = (int *) NULL;
+  in.segmentmarkerlist = (int *) NULL;
+  in.regionlist = (double *)NULL;
+  in.holelist = (double *)NULL;
+
+  out.numberofpoints = 0;
+  out.pointlist = (double *) NULL;
+  out.pointattributelist = (double *) NULL;
+  out.pointmarkerlist = (int *) NULL;
+  out.numberoftriangles = 0;
+  out.trianglelist = (int *) NULL;
+  out.triangleattributelist = (double *) NULL;
+  out.trianglearealist = (double *) NULL;
+  out.numberofsegments = 0;
+  out.segmentlist = (int *) NULL;
+  out.segmentmarkerlist = (int *) NULL;
+  out.numberofregions = 0;
+  out.numberofholes = 0;
+}
+
+
+void MeshGenerator::triangulateio_finalize()
+{
+  free(in.pointlist);
+  in.pointlist=0;
+  free(in.pointmarkerlist);
+  in.pointmarkerlist=0;
+  free(in.pointattributelist);
+  in.pointattributelist=0;
+
+  free(in.segmentlist);
+  in.segmentlist=0;
+  free(in.segmentmarkerlist);
+  in.segmentmarkerlist=0;
+
+  free(in.trianglelist);
+  free(in.triangleattributelist);
+  free(in.trianglearealist);
+  in.numberoftriangles=0;
+
+  free(in.regionlist);
+  in.regionlist=0;
+  free(in.holelist);
+  in.holelist=0;
+
+  out.numberofpoints = 0;
+  free(out.pointlist);
+  out.pointlist=0;
+  free(out.pointmarkerlist);
+  out.pointmarkerlist=0;
+  free(out.pointattributelist);
+  out.pointattributelist=0;
+
+  out.numberoftriangles = 0;
+  free(out.trianglelist);
+  out.trianglelist=0;
+  free(out.triangleattributelist);
+  out.triangleattributelist=0;
+
+  out.numberofsegments = 0;
+  free(out.segmentlist);
+  out.segmentlist=0;
+  free(out.segmentmarkerlist);
+  out.segmentmarkerlist=0;
+}
+
+
+
+void MeshGenerator::triangulateio_copy(const triangulateio & src, triangulateio & dst)
+{
+  dst.numberofpoints = src.numberofpoints;
+  dst.numberofpointattributes = src.numberofpointattributes;
+
+  if(dst.numberofpoints)
+  {
+    dst.pointlist = (double *) calloc(dst.numberofpoints*2, sizeof(double));
+    dst.pointmarkerlist = (int *) calloc(dst.numberofpoints, sizeof(int));
+
+    for(int i=0; i<dst.numberofpoints; ++i)
+    {
+      dst.pointlist[2*i+0]   = src.pointlist[2*i+0];
+      dst.pointlist[2*i+1]   = src.pointlist[2*i+1];
+      dst.pointmarkerlist[i] = src.pointmarkerlist[i];
+    }
+  }
+
+  if(dst.numberofpointattributes)
+  {
+    dst.pointattributelist = (double *)calloc(dst.numberofpoints*dst.numberofpointattributes, sizeof(double));
+    for(int i=0; i<dst.numberofpoints; ++i)
+      for(int j=0; j<dst.numberofpointattributes;++j)
+        dst.pointattributelist[dst.numberofpointattributes*i+j] = \
+            src.pointattributelist[dst.numberofpointattributes*i+j];
+  }
+
+
+  dst.numberoftriangles = src.numberoftriangles;
+  if(dst.numberoftriangles)
+  {
+    dst.trianglelist = (int *) calloc(3*dst.numberoftriangles, sizeof(int));
+    for(int i=0; i<dst.numberoftriangles; ++i)
+    {
+      dst.trianglelist[3*i+0]   = src.trianglelist[3*i+0];
+      dst.trianglelist[3*i+1]   = src.trianglelist[3*i+1];
+      dst.trianglelist[3*i+2]   = src.trianglelist[3*i+2];
+    }
+  }
+
+  dst.numberoftriangleattributes = src.numberoftriangleattributes;
+  if(dst.numberoftriangleattributes)
+  {
+    dst.triangleattributelist=(double *) calloc(dst.numberoftriangleattributes*dst.numberoftriangles, sizeof(double));
+    for(int i=0; i<dst.numberoftriangles; ++i)
+      for(int j=0; j<dst.numberoftriangleattributes;++j)
+        dst.triangleattributelist[dst.numberoftriangleattributes*i+j] = \
+            src.triangleattributelist[dst.numberoftriangleattributes*i+j];
+  }
+
+  dst.numberofsegments = src.numberofsegments;
+  if(dst.numberofsegments)
+  {
+    dst.segmentlist =  (int *) calloc(dst.numberofsegments*2,  sizeof(int));
+    dst.segmentmarkerlist = (int *) calloc(dst.numberofsegments, sizeof(int));
+    for(int i=0; i<dst.numberofsegments; ++i)
+    {
+      dst.segmentlist[2*i+0]   = src.segmentlist[2*i+0];
+      dst.segmentlist[2*i+1]   = src.segmentlist[2*i+1];
+      dst.segmentmarkerlist[i] = src.segmentmarkerlist[i];
+    }
+  }
+
+  dst.numberofholes = src.numberofholes;
+  if(dst.numberofholes)
+  {
+    dst.holelist   = (double *) calloc(dst.numberofholes*2, sizeof(double));
+    for(int i=0; i<dst.numberofholes; ++i)
+    {
+      dst.holelist[2*i+0]   = src.holelist[2*i+0];
+      dst.holelist[2*i+1]   = src.holelist[2*i+1];
+    }
+  }
+
+  dst.numberofregions = src.numberofregions;
+  if(dst.numberofregions)
+  {
+    dst.regionlist   = (double *) calloc(dst.numberofregions*2, sizeof(double));
+    for(int i=0; i<dst.numberofregions; ++i)
+    {
+      dst.regionlist[2*i+0]   = src.regionlist[2*i+0];
+      dst.regionlist[2*i+1]   = src.regionlist[2*i+1];
+    }
+  }
+
+}
 
 
 void MeshGenerator::export_mesh_vtk(const char * name)

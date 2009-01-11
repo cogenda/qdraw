@@ -1181,6 +1181,10 @@ void QC_ApplicationWindow::initActions()
   menu->insertSeparator();
   action = actionFactory.createAction(RS2::ActionMesh, this);
   action->addTo(menu);
+  action = actionFactory.createAction(RS2::ActionMeshRefinement, this);
+  action->addTo(menu);
+  action = actionFactory.createAction(RS2::ActionMeshExport, this);
+  action->addTo(menu);
   menuBar()->insertItem(tr("Mesh&Gen"), menu);
 
   // Help menu:
@@ -4274,6 +4278,12 @@ void QC_ApplicationWindow::slotDoMesh()
 
 
 void QC_ApplicationWindow::slotRefineMesh()
+{
+
+}
+
+
+void QC_ApplicationWindow::slotExportMesh()
 {
 
 }

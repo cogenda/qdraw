@@ -52,6 +52,7 @@ HEADERS     = \
               engine/rs_layerlistlistener.h \
               engine/rs_leader.h \
               engine/rs_line.h \
+              engine/rs_mesh.h \
               engine/rs_pattern.h \
               engine/rs_patternlist.h \
               engine/rs_pen.h \
@@ -146,6 +147,7 @@ SOURCES     = \
               engine/rs_layerlist.cpp \
               engine/rs_leader.cpp \
               engine/rs_line.cpp \
+              engine/rs_mesh.cpp \
               engine/rs_pattern.cpp \
               engine/rs_patternlist.cpp \
               engine/rs_point.cpp \

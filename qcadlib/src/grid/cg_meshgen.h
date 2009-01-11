@@ -31,6 +31,7 @@ class RS_Vector;
 class RS_Document;
 class RS_Document;
 class RS_GraphicView;
+class RS_Mesh;
 
 class MeshGenerator
 {
@@ -44,7 +45,7 @@ public:
    * des, free triangle in
    */
   virtual ~MeshGenerator();
-  
+
   /**
    * generate mesh with PSLG
    */
@@ -57,7 +58,7 @@ public:
 
   /**
    * export mesh as vtk ascii file format, debug only
-   */ 
+   */
   virtual void export_mesh_vtk(const char * name);
 
 private:
@@ -86,7 +87,7 @@ private:
   /**
    * draw mesh to the graph
    */
-  void draw_mesh();
+  RS_Mesh* draw_mesh();
 
   /**
    * PSLG points
@@ -111,19 +112,28 @@ private:
 
   struct CG_Region
   {
-    bool hole;
     double x;
     double y;
-    double area_control; 
+    double area_control;
     RS_String label;
     RS_String material;
   };
 
   /**
-   * PSLG region(hole)
+   * PSLG region
    */
   std::vector<CG_Region> _regions;
 
+  struct CG_Hole
+  {
+    double x;
+    double y;
+  };
+
+  /**
+   * PSLG hole
+   */
+  std::vector<CG_Hole> _holes;
 
   /**
    * triangle data structure
@@ -134,6 +144,7 @@ private:
 
   void triangulateio_finalize();
 
+  void triangulateio_copy(const triangulateio & src, triangulateio & dst);
 };
 
 #endif // #define __cg_meshgen_h__

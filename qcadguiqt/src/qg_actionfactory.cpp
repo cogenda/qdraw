@@ -1169,9 +1169,21 @@ QAction* QG_ActionFactory::createAction(RS2::ActionType id, QObject* obj) {
 
         //mesh actions:
     case RS2::ActionMesh:
-        action = new QAction(tr("Mesh Generation"), tr("&Mesh Generation"), 0, mw);
+        action = new QAction(tr("Mesh Generation"), tr("Mesh &Generation"), 0, mw);
         action->setStatusTip(tr("Mesh the CAD object"));
         connect(action, SIGNAL(activated()), obj, SLOT(slotDoMesh()));
+        break;
+
+    case RS2::ActionMeshRefinement:
+        action = new QAction(tr("Mesh Refinement"), tr("Mesh &Refinement"), 0, mw);
+        action->setStatusTip(tr("Refine the existing mesh"));
+        connect(action, SIGNAL(activated()), obj, SLOT(slotRefineMesh()));
+        break;
+
+    case RS2::ActionMeshExport:
+        action = new QAction(tr("Mesh Export"), tr("Mesh &Export"), 0, mw);
+        action->setStatusTip(tr("Write mesh to file"));
+        connect(action, SIGNAL(activated()), obj, SLOT(slotExportMesh()));
         break;
 
         // Scripting actions:

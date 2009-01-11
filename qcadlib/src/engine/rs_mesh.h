@@ -22,7 +22,9 @@
 #ifndef RS_MESH_H
 #define RS_MESH_H
 
+#include <map>
 
+#include "triangle.h"
 #include "rs_entitycontainer.h"
 
 /**
@@ -35,12 +37,9 @@ class RS_Mesh : public RS_EntityContainer
 
 public:
 
-  RS_Mesh(RS_EntityContainer* parent=NULL, bool owner=true)
-  :RS_EntityContainer(parent, owner)
-  {}
+  RS_Mesh(RS_EntityContainer* parent=NULL, bool owner=true);
 
-  virtual ~RS_Mesh()
-  {}
+  virtual ~RS_Mesh();
 
   virtual void initLabel()
   {
@@ -54,13 +53,44 @@ public:
     return RS2::EntityMesh;
   }
 
-  //virtual void set_mesh();
-  //virtual void export_mesh(char *);
+  triangulateio & get_triangulateio()
+  { return io; }
+
+  const triangulateio & get_triangulateio() const
+  { return io; }
+
+  void add_segment_info(int mark, RS_String label)
+  { _segment_mark_to_label[mark] = label;  }
+
+  void add_region_info(int mark, RS_String label, RS_String material)
+  { _region_mark_to_label_material[mark] = std::make_pair(label, material); }
+
+  const RS_String & tri_cmd() const
+  {return _tri_cmd;}
+
+  RS_String & tri_cmd()
+  {return _tri_cmd;}
+
+  //void export_mesh(char *);
 private:
 
-  // mesh data is here
-}
-;
+  /**
+   *  mesh data is here
+   */
+  triangulateio io;
+
+  /**
+   * segment mark to segment label (in QString)
+   */
+  std::map<int , RS_String> _segment_mark_to_label;
+
+  /**
+   * segment mark to region label and material
+   */
+  std::map<int, std::pair<RS_String, RS_String> > _region_mark_to_label_material;
+
+  RS_String _tri_cmd;
+};
 
 
 #endif
