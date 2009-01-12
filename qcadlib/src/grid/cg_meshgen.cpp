@@ -62,7 +62,7 @@ void MeshGenerator::convert_cad_to_pslg()
             mark = _label_to_mark[line->getLabel()];
           else
           {
-            mark = _label_to_mark.size();
+            mark = _label_to_mark.size()+1;
             _label_to_mark[line->getLabel()] = mark;
           }
 
@@ -101,7 +101,7 @@ void MeshGenerator::convert_cad_to_pslg()
             mark = _label_to_mark[arc->getLabel()];
           else
           {
-            mark = _label_to_mark.size();
+            mark = _label_to_mark.size()+1;
             _label_to_mark[arc->getLabel()] = mark;
           }
 
@@ -147,7 +147,7 @@ void MeshGenerator::convert_cad_to_pslg()
             mark = _label_to_mark[circle->getLabel()];
           else
           {
-            mark = _label_to_mark.size();
+            mark = _label_to_mark.size()+1;
             _label_to_mark[circle->getLabel()] = mark;
           }
 
@@ -179,7 +179,7 @@ void MeshGenerator::convert_cad_to_pslg()
             mark = _label_to_mark[ellipse->getLabel()];
           else
           {
-            mark = _label_to_mark.size();
+            mark = _label_to_mark.size()+1;
             _label_to_mark[ellipse->getLabel()] = mark;
           }
 
@@ -218,7 +218,7 @@ void MeshGenerator::convert_cad_to_pslg()
             mark = _label_to_mark[spline->getLabel()];
           else
           {
-            mark = _label_to_mark.size();
+            mark = _label_to_mark.size()+1;
             _label_to_mark[spline->getLabel()] = mark;
           }
 
@@ -551,6 +551,12 @@ void MeshGenerator::triangulateio_copy(const triangulateio & src, triangulateio 
       for(int j=0; j<dst.numberoftriangleattributes;++j)
         dst.triangleattributelist[dst.numberoftriangleattributes*i+j] = \
             src.triangleattributelist[dst.numberoftriangleattributes*i+j];
+  }
+  else
+  {
+    dst.triangleattributelist=(double *) calloc(dst.numberoftriangles, sizeof(double));
+    for(int i=0; i<dst.numberoftriangles; ++i)
+      dst.triangleattributelist[i] = 0;
   }
 
   dst.numberofsegments = src.numberofsegments;
