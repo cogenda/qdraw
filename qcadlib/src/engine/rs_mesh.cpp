@@ -20,13 +20,16 @@
 
 #include <ctime>
 #include <fstream>
+#include <set>
 
 #include "rs_settings.h"
 #include "rs_units.h"
 #include "rs_mesh.h"
+#include "cg_profile.h"
+#include "cg_profile_manager.h"
 
 RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
-  :RS_EntityContainer(parent, owner)
+  :RS_EntityContainer(parent, owner), _pm(0)
 {
   io.numberofpoints = 0;
   io.pointlist = (double *) NULL;
@@ -83,11 +86,16 @@ void RS_Mesh::export_mesh(const RS_String & file)
 
   std::ofstream fout;
   fout.open(file.ascii(), std::ofstream::trunc);
+  // set the float number precision
+  fout.precision(8);
+
+  // set output width and format
+  fout<< std::scientific << std::right;
 
   time_t          _time;
   time(&_time);
 
-  fout << "h TIF V1.2.1 created by SMESH, Copyright (C) by Cogenda Inc. Date: " << ctime(&_time)  << '\n';
+  fout << "h TIF V1.2.1 created by QDRAW, Copyright (C) by Cogenda Inc. Date: " << ctime(&_time)  << '\n';
   fout << "cd GEN          blnk               blnk          blnk        cart2D    1.00000E+00  0.00000E+00"  << '\n';
   fout << "cg   3.00000E+02" << '\n';
 
@@ -95,8 +103,8 @@ void RS_Mesh::export_mesh(const RS_String & file)
   for(int i=0; i<io.numberofpoints; ++i)
     fout<< 'c' << '\t'
         << i+1 << '\t'
-        << io.pointlist[2*i+0]*um << '\t' << '\t'
-        << io.pointlist[2*i+1]*um << '\t' << '\t'
+        << io.pointlist[2*i+0]*um << '\t'
+        << io.pointlist[2*i+1]*um << '\t'
         << io.pointmarkerlist[i] << '\n';
   fout<<'\n';
 
@@ -147,7 +155,44 @@ void RS_Mesh::export_mesh(const RS_String & file)
         << 0 << '\n';
   fout<<'\n';
 
+  // multimap<point index, region index>
+  std::multimap<int, int> point_region_map;
+  typedef std::multimap<int, int>::iterator PM_It;
+  for(int i=0; i<3*io.numberoftriangles; ++i)
+  {
+    int r = int(io.triangleattributelist[i/3]+0.5); // region index
+    int p = io.trianglelist[i]; //point index
+    std::pair<PM_It, PM_It> pm_it_pair = point_region_map.equal_range(p);
+
+    std::set<int> region_list;
+    PM_It pm_it = pm_it_pair.first;
+    for(; pm_it!=pm_it_pair.second; ++pm_it)
+      region_list.insert(pm_it->second);
+
+    if(region_list.find(r) == region_list.end() )
+      point_region_map.insert(std::make_pair(p,r));
+  }
   // write profile information
+  fout<< "s    6 Net Total Donor Accept N-type P-type" << '\n';
+
+  PM_It pm_it = point_region_map.begin();
+  for(;pm_it!=point_region_map.end(); ++pm_it)
+  {
+    double x = io.pointlist[2*pm_it->first+0];
+    double y = io.pointlist[2*pm_it->first+1];
+    double Na = fabs(_pm->profile("Na", x, y));
+    double Nd = fabs(_pm->profile("Nd", x, y));
+
+    fout<< 'n' << '\t'
+        << pm_it->first+1 << '\t'
+        << _region_mark_to_label_material[pm_it->second].second << '\t'
+        << 0.5*(Nd-Na) << '\t'
+        << 0.5*(Nd+Na) << '\t'
+        << Nd << '\t'
+        << Na << '\t'
+        << Nd << '\t'
+        << Na << '\n';
+  }
 
   fout.close();
 }

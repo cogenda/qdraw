@@ -29,8 +29,8 @@
 #include "cg_meshgen.h"
 
 
-MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv)
-    :_doc(doc), _gv(gv)
+MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv, ProfileManager *pm)
+  :_doc(doc), _gv(gv), _pm(pm)
 {
   triangulateio_init();
 }
@@ -363,6 +363,7 @@ void MeshGenerator::do_mesh(const QString &cmd )
   for(unsigned int i=0;i<_regions.size();i++)
     mesh->add_region_info(i, _regions[i].label, _regions[i].material);
   mesh->tri_cmd() = cmd;
+  mesh->set_profile_manager(_pm);
 
   triangulateio_finalize();
 }

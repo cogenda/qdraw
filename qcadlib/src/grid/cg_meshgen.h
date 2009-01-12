@@ -32,6 +32,7 @@ class RS_Document;
 class RS_Document;
 class RS_GraphicView;
 class RS_Mesh;
+class ProfileManager;
 
 class MeshGenerator
 {
@@ -39,7 +40,7 @@ public:
  /**
   * constructor, hold RS_Document and RS_GraphicView pointer
   */
-  MeshGenerator(RS_Document * doc, RS_GraphicView * gv);
+  MeshGenerator(RS_Document * doc, RS_GraphicView * gv, ProfileManager * pm);
 
   /**
    * des, free triangle in
@@ -145,6 +146,11 @@ private:
   void triangulateio_finalize();
 
   void triangulateio_copy(const triangulateio & src, triangulateio & dst);
+
+  /**
+   * hold a pointer to ProfileManager
+   */
+  ProfileManager *_pm;
 };
 
 #endif // #define __cg_meshgen_h__

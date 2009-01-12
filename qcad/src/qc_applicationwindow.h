@@ -302,6 +302,16 @@ public:
     return NULL;
   }
 
+  virtual ProfileManager* getProfileManager()
+  {
+    QC_MDIWindow* m = getMDIWindow();
+    if (m!=NULL)
+    {
+      return m->getProfileManager();
+    }
+    return NULL;
+  }
+
   /**
    * Creates a new document. Implementation from RS_MainWindowInterface.
    */

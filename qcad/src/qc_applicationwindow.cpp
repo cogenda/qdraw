@@ -4273,7 +4273,7 @@ void QC_ApplicationWindow::slotDoMesh()
   TriangleSetting  tri_setting;
   if(tri_setting.exec() == QDialog::Accepted)
   {
-    MeshGenerator mesher(getDocument(), getGraphicView());
+    MeshGenerator mesher(getDocument(), getGraphicView(), getProfileManager());
     mesher.do_mesh(tri_setting.get_cmd_string());
   }
 }

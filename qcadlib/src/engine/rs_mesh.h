@@ -27,10 +27,12 @@
 #include "triangle.h"
 #include "rs_entitycontainer.h"
 
+class ProfileManager;
+
 /**
  * Class representing a mesh.
  *
- * @author Gong Ding
+ * @author Gong Ding  gdiso@cogenda.com
  */
 class RS_Mesh : public RS_EntityContainer
 {
@@ -71,6 +73,9 @@ public:
   RS_String & tri_cmd()
   {return _tri_cmd;}
 
+  void set_profile_manager(ProfileManager *pm)
+  { _pm = pm; }
+
   void export_mesh(const RS_String & file);
 
 private:
@@ -90,7 +95,15 @@ private:
    */
   std::map<int, std::pair<RS_String, RS_String> > _region_mark_to_label_material;
 
+  /**
+   * Triangle command line switch
+   */
   RS_String _tri_cmd;
+
+  /**
+   * hold a pointer to ProfileManager
+   */
+  ProfileManager *_pm;
 };
 
 
