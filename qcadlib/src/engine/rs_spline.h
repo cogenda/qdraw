@@ -156,7 +156,7 @@ public:
 
   /** set Spline division number */
   void setDivision(unsigned int d)
-  { division = d; }
+  { division = d < 1 ? 1 : d; }
 
   virtual RS_VectorSolutions getRefPoints();
   virtual RS_Vector getNearestRef(const RS_Vector& coord,

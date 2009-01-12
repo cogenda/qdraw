@@ -135,7 +135,7 @@ public:
 
   /** set circle division number */
   void setDivision(unsigned int d)
-  { division = d; }
+  { division = d < 3 ? 3 : d; }
 
   /**
    * @return Direction 1. The angle at which the arc starts at

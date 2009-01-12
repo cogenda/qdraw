@@ -142,7 +142,7 @@ public:
 
   /** set line division number */
   void setDivision(unsigned int d)
-  { division = d; }
+  { division = d < 1 ? 1 : d; }
 
   bool isPointSet() const
   { return point_set; }

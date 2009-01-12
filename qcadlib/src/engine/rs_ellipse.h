@@ -148,7 +148,7 @@ public:
 
   /** set ellipse division number */
   void setDivision(unsigned int d)
-  { division = d; }
+  { division = d < 3 ? 3 : d; }
 
   virtual void moveStartpoint(const RS_Vector& pos);
   virtual void moveEndpoint(const RS_Vector& pos);

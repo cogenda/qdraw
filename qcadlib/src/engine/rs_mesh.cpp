@@ -21,6 +21,8 @@
 #include <ctime>
 #include <fstream>
 
+#include "rs_settings.h"
+#include "rs_units.h"
 #include "rs_mesh.h"
 
 RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
@@ -68,6 +70,17 @@ void RS_Mesh::export_mesh(const RS_String & file)
 {
   if(!io.numberofpoints || !io.numberoftriangles) return;
 
+  QString def_unit = "Micron";
+#ifdef QC_PREDEFINED_UNIT
+  def_unit = QC_PREDEFINED_UNIT;
+#endif
+  RS_SETTINGS->beginGroup("/Defaults");
+  QString unit_string = RS_SETTINGS->readEntry("/Unit", def_unit);
+  RS_SETTINGS->endGroup();
+
+  double mm = RS_Units::getFactorToMM( RS_Units::stringToUnit(unit_string) );
+  double um = 1e3*mm;
+
   std::ofstream fout;
   fout.open(file.ascii(), std::ofstream::trunc);
 
@@ -82,8 +95,8 @@ void RS_Mesh::export_mesh(const RS_String & file)
   for(int i=0; i<io.numberofpoints; ++i)
     fout<< 'c' << '\t'
         << i+1 << '\t'
-        << io.pointlist[2*i+0] << '\t' << '\t'
-        << io.pointlist[2*i+1] << '\t' << '\t'
+        << io.pointlist[2*i+0]*um << '\t' << '\t'
+        << io.pointlist[2*i+1]*um << '\t' << '\t'
         << io.pointmarkerlist[i] << '\n';
   fout<<'\n';
 
