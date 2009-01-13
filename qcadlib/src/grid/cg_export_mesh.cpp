@@ -108,10 +108,7 @@ RS_String CG_MeshExport::getSaveFileName(QWidget* parent)
 #ifndef QT_NO_FILEDIALOG
   // read default settings:
   RS_SETTINGS->beginGroup("/Paths");
-  RS_String defDir = RS_SETTINGS->readEntry("/Save",
-                     RS_SYSTEM->getHomeDir());
-  RS_String defFilter = RS_SETTINGS->readEntry("/SaveFilter",
-                        "Technology interchange format (*.tif)");
+  RS_String defDir = RS_SETTINGS->readEntry("/Save", RS_SYSTEM->getHomeDir());
   RS_SETTINGS->endGroup();
 
   // prepare file save as dialog:
@@ -126,9 +123,6 @@ RS_String CG_MeshExport::getSaveFileName(QWidget* parent)
   fileDlg->setMode(QFileDialog::AnyFile);
   fileDlg->setCaption(QObject::tr("Save Mesh As"));
   fileDlg->setDir(defDir);
-#if QT_VERSION>=0x030000
-  fileDlg->setSelectedFilter(defFilter);
-#endif
 
   // run dialog:
   do

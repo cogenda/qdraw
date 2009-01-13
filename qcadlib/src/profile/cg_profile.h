@@ -23,6 +23,7 @@
 
 #include <cmath>
 #include <string>
+#include <sstream>
 
 /**
  * the base class for profile function
@@ -33,6 +34,8 @@ public:
   /**
    * constructor, do nothing
    */
+  Profile() {}
+
   Profile(const std::string &label, const std::string &property, double xmin, double xmax, double ymin, double ymax)
       : _label(label), _property(property), _xmin(xmin), _xmax(xmax), _ymin(ymin), _ymax(ymax)
   {}
@@ -102,6 +105,7 @@ public:
   virtual void   set_y_junction(double ) {}
 
   virtual std::string type() const=0;
+  virtual std::string format_string() const=0;
 
 protected:
 
@@ -152,6 +156,21 @@ public:
       : Profile(label, property, xmin, xmax, ymin, ymax), _PEAK(N)
   {}
 
+  UniformProfile(const std::string str)
+  {
+    std::stringstream ss;
+    std::string _type;
+    ss << str;
+    ss  >> _type
+        >> _label
+        >> _property
+        >> _PEAK
+        >> _xmin
+        >> _xmax
+        >> _ymin
+        >> _ymax;
+  }
+
   /**
    * compute doping concentration by point location
    */
@@ -167,6 +186,20 @@ public:
   virtual double peak() const      { return _PEAK; }
 
   virtual std::string type() const { return "Uniform"; }
+
+  virtual std::string format_string() const
+  {
+    std::stringstream ss;
+    ss  << type()     << ' '
+        << label()    << ' '
+        << property() << ' '
+        << _PEAK      << ' '
+        << xmin()     << ' '
+        << xmax()     << ' '
+        << ymin()     << ' '
+        << ymax()     << '\n';
+    return ss.str();
+  }
 
 private:
   /**
@@ -188,8 +221,34 @@ public:
     : Profile(label, property, xmin, xmax, ymin, ymax), _PEAK(N),  _XCHAR(XCHAR),  _YCHAR(YCHAR)
   {
     _dose  = false;
+    _DOSE  = 0;
     _ratio = false;
+    _XY_RATIO = 0;
     _junction = false;
+    _Y_JUNCTION = 0;
+  }
+
+  GaussProfile(const std::string str)
+  {
+    std::stringstream ss;
+    std::string _type;
+    ss << str;
+    ss  >> _type
+        >> _label
+        >> _property
+        >> _dose
+        >> _DOSE
+        >> _PEAK
+        >> _ratio
+        >> _XY_RATIO
+        >> _XCHAR
+        >> _junction
+        >> _YCHAR
+        >> _Y_JUNCTION
+        >> _xmin
+        >> _xmax
+        >> _ymin
+        >> _ymax;
   }
 
   double profile(double x, double y) const
@@ -212,11 +271,11 @@ public:
     return _PEAK*dx*dy;
   }
 
-  virtual bool   have_dose()   const         { return _dose==true;  }
-  virtual bool   have_peak()   const         { return _dose==false; }
-  virtual double dose()  const        { return _DOSE; }
-  virtual double peak()  const        { return _PEAK; }
-  virtual void set_dose(double dose)  { _DOSE = dose; _dose = true; }
+  virtual bool   have_dose()   const           { return _dose==true;  }
+  virtual bool   have_peak()   const           { return _dose==false; }
+  virtual double dose()  const                 { return _DOSE; }
+  virtual double peak()  const                 { return _PEAK; }
+  virtual void   set_dose(double dose)         { _DOSE = dose; _dose = true; }
 
   virtual bool   have_xy_ratio() const         { return _ratio==true;  }
   virtual bool   have_xchar()    const         { return _ratio==false; }
@@ -231,6 +290,27 @@ public:
   virtual void   set_y_junction(double y_junction)  { _Y_JUNCTION = y_junction; _junction = true; }
 
   virtual std::string type() const { return "Gauss"; }
+  virtual std::string format_string() const
+  {
+    std::stringstream ss;
+    ss  << type()      << ' '
+        << label()     << ' '
+        << property()  << ' '
+        << _dose       << ' '
+        << _DOSE       << ' '
+        << _PEAK       << ' '
+        << _ratio      << ' '
+        << _XY_RATIO   << ' '
+        << _XCHAR      << ' '
+        << _junction   << ' '
+        << _YCHAR      << ' '
+        << _Y_JUNCTION << ' '
+        << xmin()      << ' '
+        << xmax()      << ' '
+        << ymin()      << ' '
+        << ymax()      << '\n';
+    return ss.str();
+  }
 
 private:
 
@@ -294,8 +374,35 @@ public:
            double N, double XCHAR, double YCHAR)
     : Profile(label, property, xmin, xmax, ymin, ymax), _PEAK(N),  _XCHAR(XCHAR),  _YCHAR(YCHAR)
   {
+    _dose  = false;
+    _DOSE  = 0;
     _ratio = false;
+    _XY_RATIO = 0;
     _junction = false;
+    _Y_JUNCTION = 0;
+  }
+
+  ErfProfile(const std::string str)
+  {
+    std::stringstream ss;
+    std::string _type;
+    ss << str;
+    ss  >> _type
+        >> _label
+        >> _property
+        >> _dose
+        >> _DOSE
+        >> _PEAK
+        >> _ratio
+        >> _XY_RATIO
+        >> _XCHAR
+        >> _junction
+        >> _YCHAR
+        >> _Y_JUNCTION
+        >> _xmin
+        >> _xmax
+        >> _ymin
+        >> _ymax;
   }
 
   double profile(double x,double y) const
@@ -330,6 +437,27 @@ public:
   virtual void   set_y_junction(double y_junction)  { _Y_JUNCTION = y_junction; _junction = true; }
 
   virtual std::string type() const { return "Erf"; }
+  virtual std::string format_string() const
+  {
+    std::stringstream ss;
+    ss  << type()      << ' '
+        << label()     << ' '
+        << property()  << ' '
+        << _dose       << ' '
+        << _DOSE       << ' '
+        << _PEAK       << ' '
+        << _ratio      << ' '
+        << _XY_RATIO   << ' '
+        << _XCHAR      << ' '
+        << _junction   << ' '
+        << _YCHAR      << ' '
+        << _Y_JUNCTION << ' '
+        << xmin()      << ' '
+        << xmax()      << ' '
+        << ymin()      << ' '
+        << ymax()      << '\n';
+    return ss.str();
+  }
 
 private:
 

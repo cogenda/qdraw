@@ -306,6 +306,8 @@
 <functions>
     <function access="private" specifier="non virtual">init()</function>
     <function specifier="non virtual">set_profile_maneger( ProfileManager * pm )</function>
+    <function access="private" specifier="non virtual" returnType="QString">getLoadFileName()</function>
+    <function access="private" specifier="non virtual" returnType="QString">getSaveFileName()</function>
 </functions>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

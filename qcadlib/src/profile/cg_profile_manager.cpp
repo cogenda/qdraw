@@ -17,12 +17,19 @@
 ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 **
 **********************************************************************/
+#include <fstream>
+#include <sstream>
 
 #include "cg_profile.h"
 #include "cg_profile_manager.h"
 #include "cg_parameters.h"
 
 ProfileManager::~ProfileManager()
+{
+  clear();
+}
+
+void ProfileManager::clear()
 {
   for(unsigned int n=0; n<_profiles.size(); ++n)
     delete _profiles[n];
@@ -72,8 +79,7 @@ int ProfileManager::add_profile_uniform(const Parameters & p, std::string &error
   if(ymin-ymax>1e-8) {error_msg = "Ymin is larger than Ymax"; return 1;}
 
   Profile * f = new UniformProfile(label, property, xmin, xmax, ymin, ymax, peak);
-  _profiles.push_back(f);
-  _profile_map[label] = f;
+  insert_profile(f);
 
   error_msg = "";
   return 0;
@@ -142,8 +148,7 @@ int ProfileManager::add_profile_gauss(const Parameters & p, std::string &error_m
   if(peak<=0.0) {error_msg = "Negtive peak value is not allowed"; return 1;}
 
   Profile * f = new GaussProfile(label, property, xmin, xmax, ymin, ymax, peak, XCHAR, YCHAR);
-  _profiles.push_back(f);
-  _profile_map[label] = f;
+  insert_profile(f);
 
   if(p.have_parameter<double>("xy.ratio"))
     f->set_xy_ratio(p.get<double>("xy.ratio"));
@@ -223,8 +228,7 @@ int ProfileManager::add_profile_erf(const Parameters & p, std::string &error_msg
 
 
   Profile * f = new ErfProfile(label, property, xmin, xmax, ymin, ymax, peak, XCHAR, YCHAR);
-  _profiles.push_back(f);
-  _profile_map[label] = f;
+  insert_profile(f);
 
   if(p.have_parameter<double>("xy.ratio"))
     f->set_xy_ratio(p.get<double>("xy.ratio"));
@@ -243,6 +247,8 @@ int ProfileManager::add_profile_erf(const Parameters & p, std::string &error_msg
 
 void ProfileManager::insert_profile(const Profile * profile)
 {
+  if( _profile_map.find(profile->label()) != _profile_map.end() )
+    delete_profile(profile->label());
   _profiles.push_back(profile);
   _profile_map[profile->label()] = profile;
 }
@@ -309,4 +315,53 @@ const Profile * ProfileManager::get_profile(const std::string &label) const
     return (*_profile_map.find(label)).second;
 
   return NULL;
+}
+
+
+
+void ProfileManager::load_profiles_from_file(const std::string &filename, bool append)
+{
+  if(!append) clear();
+
+  std::ifstream  in(filename.c_str());
+  while(!in.eof())
+  {
+    std::string line;
+    std::string type;
+    std::getline(in,line);
+    std::stringstream ss;
+    ss << line;
+    ss >> type;
+    if (type == "Uniform")
+    {
+      Profile * f = new UniformProfile(line);
+      insert_profile(f);
+    }
+
+    if (type == "Gauss")
+    {
+      Profile * f = new GaussProfile(line);
+      insert_profile(f);
+    }
+
+    if (type == "Erf")
+    {
+      Profile * f = new ErfProfile(line);
+      insert_profile(f);
+    }
+  }
+  in.close();
+}
+
+
+void ProfileManager::save_profiles_to_file(const std::string &filename)
+{
+  std::ofstream fout;
+  fout.open(filename.c_str(), std::ofstream::trunc);
+
+  std::vector<const Profile * >::iterator it = _profiles.begin();
+  for(; it != _profiles.end(); ++it)
+    fout<<(*it)->format_string();
+
+  fout.close();
 }

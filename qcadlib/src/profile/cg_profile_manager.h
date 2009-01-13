@@ -47,7 +47,8 @@ public:
   int add_profile(const Parameters &, std::string &error_msg);
 
   /**
-   * insert profile into Profile Manager
+   * insert profile into Profile Manager, will replace existing profile
+   * if it has the same lable
    */
   void insert_profile(const Profile * profile);
 
@@ -85,7 +86,7 @@ public:
   /**
    * load profile information from file
    */
-  void load_profiles_from_file(const std::string &filename);
+  void load_profiles_from_file(const std::string &filename, bool append);
 
   /**
    * save profile information to external files
@@ -102,6 +103,8 @@ private:
  int add_profile_gauss(const Parameters & p, std::string &error_msg);
 
  int add_profile_erf(const Parameters & p, std::string &error_msg);
+
+ void clear();
 
  /**
   * the pointer vector to Profile
