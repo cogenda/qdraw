@@ -9,7 +9,7 @@
 ** These will automatically be called by the form's constructor and
 ** destructor.
 *****************************************************************************/
-
+#include "rs_math.h"
 
 const QString & TriangleSetting::get_cmd_string()
 {
@@ -25,7 +25,7 @@ void TriangleSetting::set_cmd_string( const QString & cmd )
 
 void TriangleSetting::SlotCmdString()
 {
-  if(AreaConstraint->isChecked())
+  if(!_refine && AreaConstraint->isChecked())
     _cmd_string += "a";
 
   if(QualityControl->isChecked())
@@ -42,13 +42,48 @@ void TriangleSetting::SlotCmdString()
   if(NoPointInsertMore->isChecked())
     _cmd_string += "Y";
 
+  _max_dispersion = RS_Math::eval(MaxDispersion->text());
+  _signed_log = SignedLog->isChecked();
+
   this->accept();
 }
 
 
 void TriangleSetting::init()
 {
-  _cmd_string = "pzAV";
 
+}
+
+
+bool TriangleSetting::measure_with_signed_log()
+{
+   return _signed_log;
+}
+
+
+double TriangleSetting::get_dispersion()
+{
+  return _max_dispersion;
+}
+
+
+void TriangleSetting::init_mesh( const QString & cmd )
+{
+  _refine = false;
+  _cmd_string = "pzAV";
+  groupBox4->setEnabled(false);
   MinimalAngleEdit->setText("20");
+}
+
+
+void TriangleSetting::init_refine( const QString & cmd )
+{
+  _refine = true;
+  _cmd_string = "pzraV";
+  AreaConstraint->setChecked(true);
+  groupBox1->setEnabled(false);
+  MeshRefinement->setChecked(true);
+  MinimalAngleEdit->setText("20");
+  MaxDispersion->setText("3");
+  SignedLog->setChecked(true);
 }

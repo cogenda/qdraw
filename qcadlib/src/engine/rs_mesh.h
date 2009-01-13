@@ -76,7 +76,11 @@ public:
   void set_profile_manager(ProfileManager *pm)
   { _pm = pm; }
 
+  void set_refine_flag(double d, bool signed_log);
+
   void export_mesh(const RS_String & file);
+
+  void clear();
 
 private:
 
@@ -84,6 +88,12 @@ private:
    *  mesh data is here
    */
   triangulateio io;
+
+  void clear_triangulateio();
+
+  double max_dispersion(int a, int b, int c, bool signed_log);
+
+  double triangle_area(int a, int b, int c);
 
   /**
    * segment mark to segment label (in QString)

@@ -18,7 +18,8 @@
 **
 **********************************************************************/
 
-#include <ctime>
+#include <string.h>
+#include <time.h>
 #include <fstream>
 #include <set>
 
@@ -31,27 +32,25 @@
 RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
   :RS_EntityContainer(parent, owner), _pm(0)
 {
-  io.numberofpoints = 0;
-  io.pointlist = (double *) NULL;
-  io.pointattributelist = (double *) NULL;
-  io.pointmarkerlist = (int *) NULL;
-
-  io.numberoftriangles = 0;
-  io.trianglelist = (int *) NULL;
-  io.triangleattributelist = (double *) NULL;
-  io.trianglearealist = (double *) NULL;
-
-  io.numberofsegments = 0;
-  io.segmentlist = (int *) NULL;
-  io.segmentmarkerlist = (int *) NULL;
-  io.numberofregions = 0;
-  io.numberofholes = 0;
-  io.regionlist = (double *)NULL;
-  io.holelist = (double *)NULL;
+  memset(&io, 0, sizeof(triangulateio));
 }
 
 
 RS_Mesh::~RS_Mesh()
+{
+  clear_triangulateio();
+}
+
+
+void RS_Mesh::clear()
+{
+  clear_triangulateio();
+  RS_EntityContainer::clear();
+}
+
+
+
+void RS_Mesh::clear_triangulateio()
 {
   free(io.pointlist);
   free(io.pointmarkerlist);
@@ -66,7 +65,85 @@ RS_Mesh::~RS_Mesh()
 
   free(io.regionlist);
   free(io.holelist);
+
+  memset(&io, 0, sizeof(triangulateio));
 }
+
+
+void RS_Mesh::set_refine_flag(double d, bool signed_log)
+{
+  //double  Ld = sqrt(eps*kb*T/(e*e*doping));
+  //eps  = 8.85e-12;
+  //kb   = 1.3806503e-23;
+  //e    = 1.602176462e-19;
+
+  io.numberofcorners = 3;
+  io.trianglearealist = (double *) calloc(io.numberoftriangles, sizeof(double));
+  for(int i=0; i<io.numberoftriangles; i++)
+  {
+    int a = io.trianglelist[3*i+0];
+    int b = io.trianglelist[3*i+1];
+    int c = io.trianglelist[3*i+2];
+    double area = triangle_area(a, b, c);
+    double dispersion = max_dispersion(a, b, c, signed_log);
+    if(dispersion>d)
+    {
+      double scale = d/dispersion;
+      if(scale < 0.25) scale = 0.25;
+      io.trianglearealist[i] = d/dispersion*area;
+    }
+    else
+      io.trianglearealist[i] = 1.1*area;
+  }
+}
+
+
+double RS_Mesh::triangle_area(int a, int b, int c)
+{
+  double x1 = io.pointlist[2*a+0];
+  double y1 = io.pointlist[2*a+1];
+
+  double x2 = io.pointlist[2*b+0];
+  double y2 = io.pointlist[2*b+1];
+
+  double x3 = io.pointlist[2*c+0];
+  double y3 = io.pointlist[2*c+1];
+
+  double d1 = sqrt((x3-x2)*(x3-x2) +(y3-y2)*(y3-y2));
+  double d2 = sqrt((x1-x3)*(x1-x3) +(y1-y3)*(y1-y3));
+  double d3 = sqrt((x1-x2)*(x1-x2) +(y1-y2)*(y1-y2));
+  double d = 0.5*(d1+d2+d3);
+
+  return sqrt(d*(d-d1)*(d-d2)*(d-d3));
+}
+
+
+double RS_Mesh::max_dispersion(int a, int b, int c, bool signed_log)
+{
+  double xa = io.pointlist[2*a+0];
+  double ya = io.pointlist[2*a+1];
+
+  double xb = io.pointlist[2*b+0];
+  double yb = io.pointlist[2*b+1];
+
+  double xc = io.pointlist[2*c+0];
+  double yc = io.pointlist[2*c+1];
+
+  double pa = fabs(_pm->profile("Nd", xa, ya)) - fabs(_pm->profile("Na", xa, ya));
+  double pb = fabs(_pm->profile("Nd", xb, yb)) - fabs(_pm->profile("Na", xb, yb));
+  double pc = fabs(_pm->profile("Nd", xc, yc)) - fabs(_pm->profile("Na", xc, yc));
+
+  if(signed_log)
+  {
+    pa = (pa > 0 ? 1.0 : -1.0) * log(fabs(pa) + 1);
+    pb = (pb > 0 ? 1.0 : -1.0) * log(fabs(pb) + 1);
+    pc = (pc > 0 ? 1.0 : -1.0) * log(fabs(pc) + 1);
+  }
+
+  return  std::max(std::max(fabs(pa-pb),fabs(pb-pc)),fabs(pc-pa))+1e-6;
+}
+
+
 
 
 void RS_Mesh::export_mesh(const RS_String & file)

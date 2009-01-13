@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>518</width>
-            <height>268</height>
+            <width>531</width>
+            <height>369</height>
         </rect>
     </property>
     <property name="caption">
@@ -21,7 +21,7 @@
         </property>
         <widget class="QLayoutWidget" row="0" column="0">
             <property name="name">
-                <cstring>layout2</cstring>
+                <cstring>layout3</cstring>
             </property>
             <vbox>
                 <property name="name">
@@ -170,6 +170,99 @@
                         </widget>
                     </grid>
                 </widget>
+                <widget class="QGroupBox">
+                    <property name="name">
+                        <cstring>groupBox4</cstring>
+                    </property>
+                    <property name="title">
+                        <string>Mesh Refinement</string>
+                    </property>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QLabel" row="0" column="2">
+                            <property name="name">
+                                <cstring>textLabel2</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Max Profile Dispersion:</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit" row="0" column="3" rowspan="1" colspan="2">
+                            <property name="name">
+                                <cstring>MaxDispersion</cstring>
+                            </property>
+                        </widget>
+                        <spacer row="0" column="1">
+                            <property name="name">
+                                <cstring>spacer7</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <spacer row="1" column="0" rowspan="1" colspan="2">
+                            <property name="name">
+                                <cstring>spacer8</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>180</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <spacer row="1" column="4">
+                            <property name="name">
+                                <cstring>spacer9</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>50</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QCheckBox" row="1" column="2" rowspan="1" colspan="2">
+                            <property name="name">
+                                <cstring>SignedLog</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Measure with SignedLog</string>
+                            </property>
+                        </widget>
+                        <widget class="QCheckBox" row="0" column="0">
+                            <property name="name">
+                                <cstring>MeshRefinement</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Mesh Refine</string>
+                            </property>
+                        </widget>
+                    </grid>
+                </widget>
                 <widget class="QLayoutWidget">
                     <property name="name">
                         <cstring>layout1</cstring>
@@ -269,7 +362,10 @@
     <include location="local" impldecl="in implementation">cg_triangle_setting.ui.h</include>
 </includes>
 <variables>
-    <variable>QString _cmd_string;</variable>
+    <variable access="private">QString _cmd_string;</variable>
+    <variable access="private">bool _signed_log;</variable>
+    <variable access="private">double _max_dispersion;</variable>
+    <variable access="private">bool _refine;</variable>
 </variables>
 <slots>
     <slot specifier="non virtual">SlotCmdString()</slot>
@@ -278,6 +374,10 @@
     <function specifier="non virtual" returnType="const QString &amp;">get_cmd_string()</function>
     <function specifier="non virtual">set_cmd_string( const QString &amp; cmd )</function>
     <function access="private" specifier="non virtual">init()</function>
+    <function specifier="non virtual" returnType="bool">measure_with_signed_log()</function>
+    <function specifier="non virtual" returnType="double">get_dispersion()</function>
+    <function specifier="non virtual">init_mesh( const QString &amp; cmd )</function>
+    <function specifier="non virtual">init_refine( const QString &amp; cmd )</function>
 </functions>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

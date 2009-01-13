@@ -19,6 +19,7 @@
 **********************************************************************/
 #include <fstream>
 
+#include <qmessagebox.h>
 
 #include "rs_string.h"
 #include "rs_graphic.h"
@@ -369,7 +370,7 @@ void MeshGenerator::do_mesh(const QString &cmd )
 }
 
 
-void MeshGenerator::refine_mesh(const QString &cmd)
+void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_log)
 {
   triangulateio_init();
 
@@ -377,12 +378,33 @@ void MeshGenerator::refine_mesh(const QString &cmd)
   RS_Graphic * g = _gv->getGraphic();
   if(g==NULL) return;
 
-  for (RS_Entity* e=g->firstEntity(); e!=NULL; e=g->nextEntity())
-    if(e->isOnActiveLayer() && e->isVisible() && e->rtti()== RS2::EntityMesh)
-    {}
+  RS_Mesh* mesh = find_mesh();
+  if(mesh==NULL) return;
 
-  // modify the mesh , do not create new mesh!
+  mesh->set_refine_flag(max_d, signed_log);
 
+  triangulateio & mesh_in = mesh->get_triangulateio();
+
+  triangulate(cmd.ascii(), &mesh_in, &out, (struct triangulateio *) NULL);
+
+  _gv->deleteEntity(mesh);
+
+  mesh->clear();
+
+  for(int i=0; i<out.numberoftriangles; ++i)
+  {
+    RS_Vector p1(out.pointlist[2*out.trianglelist[3*i+0]],out.pointlist[2*out.trianglelist[3*i+0]+1]);
+    RS_Vector p2(out.pointlist[2*out.trianglelist[3*i+1]],out.pointlist[2*out.trianglelist[3*i+1]+1]);
+    RS_Vector p3(out.pointlist[2*out.trianglelist[3*i+2]],out.pointlist[2*out.trianglelist[3*i+2]+1]);
+
+    mesh->addEntity(new RS_Line(mesh, RS_LineData(p1,p2)));
+    mesh->addEntity(new RS_Line(mesh, RS_LineData(p2,p3)));
+    mesh->addEntity(new RS_Line(mesh, RS_LineData(p3,p1)));
+  }
+
+  _gv->drawEntity(mesh);
+
+  triangulateio_copy(out, mesh->get_triangulateio());
 
   triangulateio_finalize();
 }
@@ -428,6 +450,51 @@ RS_Mesh* MeshGenerator::draw_mesh()
 
 
 
+RS_Mesh* MeshGenerator::find_mesh()
+{
+  //find if mesh exist
+  RS_Mesh * mesh = NULL;
+  RS_Mesh * mesh_select = NULL;
+  unsigned int n_mesh = 0;
+  unsigned int n_mesh_select = 0;
+
+  RS_Graphic * g = _gv->getGraphic();
+  if(g==NULL) return NULL;
+
+  //mesh all the entity on active layer
+  for (RS_Entity* e=g->firstEntity(); e!=NULL; e=g->nextEntity())
+    if(e->isOnActiveLayer() && e->isVisible() && e->rtti() == RS2::EntityMesh)
+  {
+    mesh = (RS_Mesh *)e;
+    n_mesh++;
+    if(e->isSelected())
+    {
+      mesh_select = (RS_Mesh *)e;
+      n_mesh_select++;
+    }
+  }
+  // only one mesh object exist
+  if(mesh && n_mesh==1) return mesh;
+
+  // return the select mesh
+  if(mesh_select && n_mesh_select==1) return mesh_select;
+
+  //errors
+  if(mesh==NULL)
+  {
+    QMessageBox::critical( 0, "Mesh Refinement", "No mesh can be found");
+    return NULL;
+  }
+
+  if(n_mesh_select>1)
+  {
+    QMessageBox::critical( 0, "Mesh Refinement", "More than one mesh select");
+    return NULL;
+  }
+
+  return NULL;
+}
+
 
 void MeshGenerator::triangulateio_init()
 {
@@ -435,7 +502,9 @@ void MeshGenerator::triangulateio_init()
   in.pointlist = (double *) NULL;
   in.pointattributelist = (double *) NULL;
   in.pointmarkerlist = (int *) NULL;
-  in.trianglearealist= (double *) NULL;
+  in.trianglelist = (int *) NULL;
+  in.trianglearealist = (double *) NULL;
+  in.triangleattributelist = (double *) NULL;
   in.segmentlist = (int *) NULL;
   in.segmentmarkerlist = (int *) NULL;
   in.regionlist = (double *)NULL;
@@ -648,18 +717,6 @@ void MeshGenerator::export_mesh_vtk(const char * name)
     fout<<std::endl;
   }
 
-
-  /*
-          //write node based boundary info to vtk
-       fout<<"POINT_DATA "<< _points.size()      <<'\n';
-       fout<<"SCALARS point_mark float 1" <<'\n';
-       fout<<"LOOKUP_TABLE default"       <<'\n';
-       for(unsigned int n=0; n<_points.size(); ++n)
-       {
-       	fout<<_points[n]->mark()<<'\n' ;
-       }
-       fout<<std::endl;
-       */
   fout.close();
 
 

@@ -1182,10 +1182,8 @@ void QC_ApplicationWindow::initActions()
   menu->insertSeparator();
   action = actionFactory.createAction(RS2::ActionMesh, this);
   action->addTo(menu);
-  menu->insertSeparator();
   action = actionFactory.createAction(RS2::ActionMeshRefinement, this);
   action->addTo(menu);
-  menu->insertSeparator();
   action = actionFactory.createAction(RS2::ActionMeshExport, this);
   action->addTo(menu);
   menuBar()->insertItem(tr("Mesh&Gen"), menu);
@@ -4271,6 +4269,8 @@ void QC_ApplicationWindow::slotSetProfile()
 void QC_ApplicationWindow::slotDoMesh()
 {
   TriangleSetting  tri_setting;
+  tri_setting.init_mesh("");
+
   if(tri_setting.exec() == QDialog::Accepted)
   {
     MeshGenerator mesher(getDocument(), getGraphicView(), getProfileManager());
@@ -4281,7 +4281,15 @@ void QC_ApplicationWindow::slotDoMesh()
 
 void QC_ApplicationWindow::slotRefineMesh()
 {
-
+  TriangleSetting  tri_setting;
+  tri_setting.init_refine("");
+  if(tri_setting.exec() == QDialog::Accepted)
+  {
+    MeshGenerator mesher(getDocument(), getGraphicView(), getProfileManager());
+    mesher.refine_mesh(tri_setting.get_cmd_string(),
+                       tri_setting.get_dispersion(),
+                       tri_setting.measure_with_signed_log());
+  }
 }
 
 

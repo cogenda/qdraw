@@ -55,7 +55,7 @@ public:
   /**
    * refine existing mesh
    */
-  virtual void refine_mesh(const QString &cmd);
+  virtual void refine_mesh(const QString &cmd, double max_d, bool signed_log);
 
   /**
    * export mesh as vtk ascii file format, debug only
@@ -89,6 +89,11 @@ private:
    * draw mesh to the graph
    */
   RS_Mesh* draw_mesh();
+
+  /**
+   * find existing mesh
+   */
+  RS_Mesh* find_mesh();
 
   /**
    * PSLG points
