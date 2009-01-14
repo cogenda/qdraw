@@ -26,8 +26,12 @@
 #include "rs_settings.h"
 #include "rs_units.h"
 #include "rs_mesh.h"
+#include "rs_graphic.h"
+#include "rs_graphicview.h"
 #include "cg_profile.h"
 #include "cg_profile_manager.h"
+
+
 
 RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
   :RS_EntityContainer(parent, owner), _pm(0)
@@ -104,6 +108,7 @@ double RS_Mesh::triangle_area(int a, int b, int c)
   return sqrt(d*(d-d1)*(d-d2)*(d-d3));
 }
 
+
 double RS_Mesh::triangle_area_constraint(int a, int b, int c, double dmax, bool signed_log)
 {
   double Scale = 1.1;
@@ -146,6 +151,20 @@ double RS_Mesh::triangle_area_constraint(int a, int b, int c, double dmax, bool 
 }
 
 
+
+void RS_Mesh::draw(RS_Painter* painter, RS_GraphicView* view,  double /*patternOffset*/)
+{
+
+  if (painter==NULL || view==NULL)
+  {
+    return;
+  }
+
+  for (RS_Entity* e=firstEntity(RS2::ResolveNone); e!=NULL; e = nextEntity(RS2::ResolveNone))
+  {
+    view->drawEntity(e);
+  }
+}
 
 
 void RS_Mesh::export_mesh(const RS_String & file)

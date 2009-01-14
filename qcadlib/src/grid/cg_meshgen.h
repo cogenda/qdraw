@@ -86,9 +86,15 @@ private:
   unsigned int add_point(const RS_Vector &v);
 
   /**
+   * create a new layer to hold the mesh
+   */
+  void create_new_mesh_layer();
+
+  /**
    * draw mesh to the graph
    */
-  RS_Mesh* draw_mesh();
+  void draw_mesh(RS_Mesh* mesh);
+
 
   /**
    * find existing mesh

@@ -79,9 +79,14 @@ public:
   const Profile * get_profile(const std::string &label) const;
 
   /**
-   * get the profile quatity at given point (x,y)
+   * get the profile quatity at given point (x,y) with given property
    */
   double profile(const std::string &property, double x, double y) const;
+
+  /**
+   * get the profile quatity at given point (x,y)
+   */
+  double profile(double x, double y) const;
 
   /**
    * load profile information from file

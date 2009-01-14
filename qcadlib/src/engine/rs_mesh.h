@@ -55,6 +55,8 @@ public:
     return RS2::EntityMesh;
   }
 
+  virtual void draw(RS_Painter*, RS_GraphicView*,  double );
+
   triangulateio & get_triangulateio()
   { return io; }
 
@@ -114,6 +116,13 @@ private:
    * hold a pointer to ProfileManager
    */
   ProfileManager *_pm;
+
+  bool _draw_segment;
+
+  bool _draw_mesh;
+
+  bool _draw_contour;
+
 };
 
 

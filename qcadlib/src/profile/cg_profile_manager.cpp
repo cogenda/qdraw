@@ -305,6 +305,19 @@ double ProfileManager::profile(const std::string & property, double x, double y)
 }
 
 
+double ProfileManager::profile(double x, double y) const
+{
+  double q = 0;
+  std::vector<const Profile * >::const_iterator it = _profiles.begin();
+  for(; it != _profiles.end(); ++it)
+  {
+      q += property_to_real((*it)->property()) * (*it)->profile(x, y);
+  }
+
+  return q;
+}
+
+
 const Profile * ProfileManager::get_profile(unsigned int n) const
 { return _profiles[n]; }
 
