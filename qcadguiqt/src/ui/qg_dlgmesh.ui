@@ -1,0 +1,167 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>QG_DlgMesh</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>QG_DlgMesh</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>368</width>
+            <height>174</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Choose Mesh Display Settings</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QLayoutWidget" row="0" column="0">
+            <property name="name">
+                <cstring>layout6</cstring>
+            </property>
+            <vbox>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout4</cstring>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QButtonGroup">
+                            <property name="name">
+                                <cstring>buttonGroup1</cstring>
+                            </property>
+                            <property name="title">
+                                <string>Display Style</string>
+                            </property>
+                            <grid>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QRadioButton" row="0" column="0">
+                                    <property name="name">
+                                        <cstring>rb_outline</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Outline</string>
+                                    </property>
+                                </widget>
+                                <widget class="QRadioButton" row="1" column="0">
+                                    <property name="name">
+                                        <cstring>rb_mesh</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>mesh</string>
+                                    </property>
+                                </widget>
+                            </grid>
+                        </widget>
+                        <widget class="QGroupBox">
+                            <property name="name">
+                                <cstring>groupBox2</cstring>
+                            </property>
+                            <property name="title">
+                                <string>Contour Plot</string>
+                            </property>
+                            <grid>
+                                <property name="name">
+                                    <cstring>unnamed</cstring>
+                                </property>
+                                <widget class="QLineEdit" row="1" column="1">
+                                    <property name="name">
+                                        <cstring>ContourLine</cstring>
+                                    </property>
+                                </widget>
+                                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
+                                    <property name="name">
+                                        <cstring>Contour</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Enable Contour Plot</string>
+                                    </property>
+                                </widget>
+                                <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
+                                    <property name="name">
+                                        <cstring>ContorWithSignedLog</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Use logarithmic scale</string>
+                                    </property>
+                                </widget>
+                                <widget class="QLabel" row="1" column="0">
+                                    <property name="name">
+                                        <cstring>textLabel1</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Contour Lines:</string>
+                                    </property>
+                                </widget>
+                            </grid>
+                        </widget>
+                    </hbox>
+                </widget>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout5</cstring>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <spacer>
+                            <property name="name">
+                                <cstring>spacer8</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>190</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>b_ok</cstring>
+                            </property>
+                            <property name="text">
+                                <string>OK</string>
+                            </property>
+                        </widget>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>b_cancel</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Cancel</string>
+                            </property>
+                        </widget>
+                    </hbox>
+                </widget>
+            </vbox>
+        </widget>
+    </grid>
+</widget>
+<includes>
+    <include location="local" impldecl="in declaration">rs_mesh.h</include>
+    <include location="local" impldecl="in implementation">qg_dlgmesh.ui.h</include>
+</includes>
+<functions>
+    <function specifier="non virtual">setMesh( RS_Mesh &amp; mesh )</function>
+    <function specifier="non virtual">updateMesh()</function>
+</functions>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>

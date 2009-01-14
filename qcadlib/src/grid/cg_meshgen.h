@@ -91,12 +91,6 @@ private:
   void create_new_mesh_layer();
 
   /**
-   * draw mesh to the graph
-   */
-  void draw_mesh(RS_Mesh* mesh);
-
-
-  /**
    * find existing mesh
    */
   RS_Mesh* find_mesh();

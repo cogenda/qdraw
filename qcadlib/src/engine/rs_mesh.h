@@ -55,6 +55,8 @@ public:
     return RS2::EntityMesh;
   }
 
+  virtual void update();
+
   virtual void draw(RS_Painter*, RS_GraphicView*,  double );
 
   triangulateio & get_triangulateio()
@@ -116,6 +118,8 @@ private:
    * hold a pointer to ProfileManager
    */
   ProfileManager *_pm;
+
+  RS_Vector linear_interpolation(RS_Vector a, RS_Vector b, double level);
 
   bool _draw_segment;
 

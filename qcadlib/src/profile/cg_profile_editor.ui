@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>286</width>
-            <height>292</height>
+            <width>282</width>
+            <height>276</height>
         </rect>
     </property>
     <property name="caption">
@@ -19,228 +19,238 @@
         <property name="name">
             <cstring>unnamed</cstring>
         </property>
-        <widget class="QLayoutWidget" row="1" column="0">
+        <widget class="QLayoutWidget" row="0" column="0">
             <property name="name">
-                <cstring>layout7</cstring>
+                <cstring>layout3</cstring>
             </property>
-            <hbox>
+            <vbox>
                 <property name="name">
                     <cstring>unnamed</cstring>
                 </property>
-                <spacer>
+                <widget class="QGroupBox">
                     <property name="name">
-                        <cstring>spacer7</cstring>
+                        <cstring>groupBox1</cstring>
                     </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
+                    <property name="title">
+                        <string>Profile Editor</string>
                     </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>200</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>BOK</cstring>
-                    </property>
-                    <property name="text">
-                        <string>O&amp;K</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>BCancel</cstring>
-                    </property>
-                    <property name="text">
-                        <string>C&amp;ancel</string>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
-        <widget class="QGroupBox" row="0" column="0">
-            <property name="name">
-                <cstring>groupBox1</cstring>
-            </property>
-            <property name="title">
-                <string>Profile Editor</string>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QListBox" row="0" column="0" rowspan="9" colspan="1">
-                    <property name="name">
-                        <cstring>ProfileList</cstring>
-                    </property>
-                    <property name="sizePolicy">
-                        <sizepolicy>
-                            <hsizetype>7</hsizetype>
-                            <vsizetype>7</vsizetype>
-                            <horstretch>0</horstretch>
-                            <verstretch>0</verstretch>
-                        </sizepolicy>
-                    </property>
-                </widget>
-                <spacer row="3" column="1" rowspan="2" colspan="1">
-                    <property name="name">
-                        <cstring>spacer1</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>86</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <spacer row="3" column="3" rowspan="2" colspan="1">
-                    <property name="name">
-                        <cstring>spacer8</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Horizontal</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>85</width>
-                            <height>20</height>
-                        </size>
-                    </property>
-                </spacer>
-                <spacer row="1" column="2">
-                    <property name="name">
-                        <cstring>spacer2_2</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>20</width>
-                            <height>16</height>
-                        </size>
-                    </property>
-                </spacer>
-                <spacer row="3" column="2">
-                    <property name="name">
-                        <cstring>spacer2_3</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>20</width>
-                            <height>16</height>
-                        </size>
-                    </property>
-                </spacer>
-                <spacer row="5" column="2">
-                    <property name="name">
-                        <cstring>spacer2_4</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>20</width>
-                            <height>16</height>
-                        </size>
-                    </property>
-                </spacer>
-                <spacer row="7" column="2">
-                    <property name="name">
-                        <cstring>spacer2_5</cstring>
-                    </property>
-                    <property name="orientation">
-                        <enum>Vertical</enum>
-                    </property>
-                    <property name="sizeType">
-                        <enum>Expanding</enum>
-                    </property>
-                    <property name="sizeHint">
-                        <size>
-                            <width>20</width>
-                            <height>16</height>
-                        </size>
-                    </property>
-                </spacer>
-                <widget class="QPushButton" row="8" column="2">
-                    <property name="name">
-                        <cstring>BSave</cstring>
-                    </property>
-                    <property name="text">
-                        <string>save...</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="6" column="2">
-                    <property name="name">
-                        <cstring>BLoad</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Load...</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="4" column="2">
-                    <property name="name">
-                        <cstring>BDelete</cstring>
-                    </property>
-                    <property name="text">
-                        <string>delete</string>
-                    </property>
-                </widget>
-                <widget class="QPushButton" row="2" column="2">
-                    <property name="name">
-                        <cstring>BEdit</cstring>
-                    </property>
-                    <property name="text">
-                        <string>Edit...</string>
-                    </property>
-                </widget>
-                <widget class="QComboBox" row="0" column="2">
-                    <item>
-                        <property name="text">
-                            <string>Add Uniform</string>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
                         </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>Add Gauss</string>
-                        </property>
-                    </item>
-                    <item>
-                        <property name="text">
-                            <string>Add Erf</string>
-                        </property>
-                    </item>
-                    <property name="name">
-                        <cstring>BNew</cstring>
-                    </property>
+                        <widget class="QListBox" row="0" column="0" rowspan="9" colspan="1">
+                            <property name="name">
+                                <cstring>ProfileList</cstring>
+                            </property>
+                            <property name="sizePolicy">
+                                <sizepolicy>
+                                    <hsizetype>7</hsizetype>
+                                    <vsizetype>7</vsizetype>
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                </sizepolicy>
+                            </property>
+                        </widget>
+                        <spacer row="3" column="1" rowspan="2" colspan="1">
+                            <property name="name">
+                                <cstring>spacer1</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>86</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <spacer row="3" column="3" rowspan="2" colspan="1">
+                            <property name="name">
+                                <cstring>spacer8</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>85</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <spacer row="1" column="2">
+                            <property name="name">
+                                <cstring>spacer2_2</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Vertical</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>20</width>
+                                    <height>16</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <spacer row="3" column="2">
+                            <property name="name">
+                                <cstring>spacer2_3</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Vertical</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>20</width>
+                                    <height>16</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <spacer row="5" column="2">
+                            <property name="name">
+                                <cstring>spacer2_4</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Vertical</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>20</width>
+                                    <height>16</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <spacer row="7" column="2">
+                            <property name="name">
+                                <cstring>spacer2_5</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Vertical</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>20</width>
+                                    <height>16</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QPushButton" row="8" column="2">
+                            <property name="name">
+                                <cstring>BSave</cstring>
+                            </property>
+                            <property name="text">
+                                <string>save...</string>
+                            </property>
+                        </widget>
+                        <widget class="QPushButton" row="6" column="2">
+                            <property name="name">
+                                <cstring>BLoad</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Load...</string>
+                            </property>
+                        </widget>
+                        <widget class="QPushButton" row="4" column="2">
+                            <property name="name">
+                                <cstring>BDelete</cstring>
+                            </property>
+                            <property name="text">
+                                <string>delete</string>
+                            </property>
+                        </widget>
+                        <widget class="QPushButton" row="2" column="2">
+                            <property name="name">
+                                <cstring>BEdit</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Edit...</string>
+                            </property>
+                        </widget>
+                        <widget class="QComboBox" row="0" column="2">
+                            <item>
+                                <property name="text">
+                                    <string>Add Uniform</string>
+                                </property>
+                            </item>
+                            <item>
+                                <property name="text">
+                                    <string>Add Gauss</string>
+                                </property>
+                            </item>
+                            <item>
+                                <property name="text">
+                                    <string>Add Erf</string>
+                                </property>
+                            </item>
+                            <property name="name">
+                                <cstring>BNew</cstring>
+                            </property>
+                        </widget>
+                    </grid>
                 </widget>
-            </grid>
+                <widget class="QLayoutWidget">
+                    <property name="name">
+                        <cstring>layout7</cstring>
+                    </property>
+                    <hbox>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <spacer>
+                            <property name="name">
+                                <cstring>spacer7</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>200</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>BOK</cstring>
+                            </property>
+                            <property name="text">
+                                <string>O&amp;K</string>
+                            </property>
+                        </widget>
+                        <widget class="QPushButton">
+                            <property name="name">
+                                <cstring>BCancel</cstring>
+                            </property>
+                            <property name="text">
+                                <string>C&amp;ancel</string>
+                            </property>
+                        </widget>
+                    </hbox>
+                </widget>
+            </vbox>
         </widget>
     </grid>
 </widget>

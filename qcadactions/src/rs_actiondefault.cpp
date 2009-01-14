@@ -227,8 +227,7 @@ void RS_ActionDefault::mousePressEvent(RS_MouseEvent* e)
         data.offset = v2-v1;
         m.move(data);
         setStatus(Neutral);
-        RS_DIALOGFACTORY->updateSelectionWidget(
-          container->countSelected());
+        RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected());
         RS_DIALOGFACTORY->requestToolBar(RS2::ToolBarMain);
       }
       break;
@@ -246,8 +245,7 @@ void RS_ActionDefault::mousePressEvent(RS_MouseEvent* e)
         m.moveRef(data);
         //container->moveSelectedRef(v1, v2-v2);
         setStatus(Neutral);
-        RS_DIALOGFACTORY->updateSelectionWidget(
-          container->countSelected());
+        RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected());
         RS_DIALOGFACTORY->requestToolBar(RS2::ToolBarMain);
       }
       break;

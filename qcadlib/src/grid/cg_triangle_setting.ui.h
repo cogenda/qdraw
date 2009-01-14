@@ -69,30 +69,6 @@ void TriangleSetting::SlotCmdString()
 void TriangleSetting::init()
 {
 
-  RS_SETTINGS->beginGroup("/Mesh");
-  QString area = RS_SETTINGS->readEntry("/AreaConstraint", "F");
-  QString quality = RS_SETTINGS->readEntry("/Quality", "T");
-  QString delaunay = RS_SETTINGS->readEntry("/Delaunay", "T");
-  QString minimal_angle = RS_SETTINGS->readEntry("/MinimalAngle", "20");
-  QString no_point_insert1 = RS_SETTINGS->readEntry("/NoPointInsert", "F");
-  QString no_point_insert2 = RS_SETTINGS->readEntry("/NoPointInsertMore", "F");
-  QString max_dispersion = RS_SETTINGS->readEntry("/MaxDispersion", "3");
-  QString signed_log = RS_SETTINGS->readEntry("/DispersionWithSignedLog", "T");
-  RS_SETTINGS->endGroup();
-
-  if(!_refine)
-    AreaConstraint->setChecked(area=="T");
-  ConformingDelaunay->setChecked(delaunay=="T");
-  QualityControl->setChecked(quality=="T");
-  MinimalAngleEdit->setText(minimal_angle);
-  NoPointInsert->setChecked(no_point_insert1=="T");
-  NoPointInsertMore->setChecked(no_point_insert2=="T");
-
-  if(_refine)
-  {
-    MaxDispersion->setText(max_dispersion);
-    SignedLog->setChecked(signed_log=="T");
-  }
 }
 
 
@@ -113,6 +89,22 @@ void TriangleSetting::init_mesh( const QString & cmd )
   _refine = false;
   _cmd_string = "pzAV";
   groupBox4->setEnabled(false);
+
+  RS_SETTINGS->beginGroup("/Mesh");
+  QString area = RS_SETTINGS->readEntry("/AreaConstraint", "F");
+  QString quality = RS_SETTINGS->readEntry("/Quality", "T");
+  QString delaunay = RS_SETTINGS->readEntry("/Delaunay", "T");
+  QString minimal_angle = RS_SETTINGS->readEntry("/MinimalAngle", "20");
+  QString no_point_insert1 = RS_SETTINGS->readEntry("/NoPointInsert", "F");
+  QString no_point_insert2 = RS_SETTINGS->readEntry("/NoPointInsertMore", "F");
+  RS_SETTINGS->endGroup();
+
+  AreaConstraint->setChecked(area=="T");
+  ConformingDelaunay->setChecked(delaunay=="T");
+  QualityControl->setChecked(quality=="T");
+  MinimalAngleEdit->setText(minimal_angle);
+  NoPointInsert->setChecked(no_point_insert1=="T");
+  NoPointInsertMore->setChecked(no_point_insert2=="T");
 }
 
 
@@ -124,4 +116,23 @@ void TriangleSetting::init_refine( const QString & cmd )
   groupBox1->setEnabled(false);
   MeshRefinement->setChecked(true);
   MeshRefinement->setEnabled(false);
+
+  RS_SETTINGS->beginGroup("/Mesh");
+  QString quality = RS_SETTINGS->readEntry("/Quality", "T");
+  QString delaunay = RS_SETTINGS->readEntry("/Delaunay", "T");
+  QString minimal_angle = RS_SETTINGS->readEntry("/MinimalAngle", "20");
+  QString no_point_insert1 = RS_SETTINGS->readEntry("/NoPointInsert", "F");
+  QString no_point_insert2 = RS_SETTINGS->readEntry("/NoPointInsertMore", "F");
+  QString max_dispersion = RS_SETTINGS->readEntry("/MaxDispersion", "3");
+  QString signed_log = RS_SETTINGS->readEntry("/DispersionWithSignedLog", "T");
+  RS_SETTINGS->endGroup();
+
+  ConformingDelaunay->setChecked(delaunay=="T");
+  QualityControl->setChecked(quality=="T");
+  MinimalAngleEdit->setText(minimal_angle);
+  NoPointInsert->setChecked(no_point_insert1=="T");
+  NoPointInsertMore->setChecked(no_point_insert2=="T");
+  MaxDispersion->setText(max_dispersion);
+  SignedLog->setChecked(signed_log=="T");
+
 }

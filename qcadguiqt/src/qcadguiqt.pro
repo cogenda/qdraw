@@ -82,6 +82,7 @@ FORMS       = \
               ui/qg_dlgellipse.ui \
               ui/qg_dlgmirror.ui \
               ui/qg_dlgmove.ui \
+              ui/qg_dlgmesh.ui \
               ui/qg_dlgmoverotate.ui \
               ui/qg_dlgoptionsdrawing.ui \
               ui/qg_dlgoptionsgeneral.ui \

@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -97,8 +97,7 @@ void RS_ActionModifyDeleteFree::trigger()
 
           init();
 
-          RS_DIALOGFACTORY->updateSelectionWidget(
-            container->countSelected());
+          RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected());
         }
         else
         {

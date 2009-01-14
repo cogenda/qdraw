@@ -290,7 +290,11 @@ void MeshGenerator::do_mesh(const QString &cmd )
   // we only mesh cad entity on current layer, and visitable
   convert_cad_to_pslg();
 
-  if(_points.size() < 3) return;
+  if(_points.size() < 3)
+  {
+    QMessageBox::critical( 0, "Mesh Generation", "No Mesh generated due to invalid geometry");
+    return;
+  }
 
   //set point
   in.numberofpoints = _points.size();
@@ -358,7 +362,6 @@ void MeshGenerator::do_mesh(const QString &cmd )
 
   create_new_mesh_layer();
   RS_Mesh* mesh =  new RS_Mesh(_doc);
-  draw_mesh(mesh);
 
   triangulateio_copy(out, mesh->get_triangulateio());
   for(std::map<RS_String, int>::iterator it=_label_to_mark.begin(); it!=_label_to_mark.end(); ++it)
@@ -367,6 +370,11 @@ void MeshGenerator::do_mesh(const QString &cmd )
     mesh->add_region_info(i, _regions[i].label, _regions[i].material);
   mesh->tri_cmd() = cmd;
   mesh->set_profile_manager(_pm);
+
+  mesh->update();
+
+  _doc->addEntity(mesh);
+  _gv->drawEntity(mesh);
 
   triangulateio_finalize();
 }
@@ -392,151 +400,15 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
   _gv->deleteEntity(mesh);
 
   mesh->clear();
-  draw_mesh(mesh);
-
   triangulateio_copy(out, mesh->get_triangulateio());
+
+  mesh->update();
+  _gv->drawEntity(mesh);
 
   triangulateio_finalize();
 }
 
 
-
-void MeshGenerator::draw_mesh(RS_Mesh* mesh)
-{
-  //build the bound box
-  RS_Vector bbox_min( RS_MAXDOUBLE,  RS_MAXDOUBLE,  RS_MAXDOUBLE);
-  RS_Vector bbox_max(-RS_MAXDOUBLE, -RS_MAXDOUBLE, -RS_MAXDOUBLE);
-  for(int i=0; i<out.numberofpoints; ++i)
-  {
-    double z   = _pm->profile(out.pointlist[2*i], out.pointlist[2*i+1]);
-    bbox_min.x = bbox_min.x > out.pointlist[2*i  ] ? out.pointlist[2*i  ] : bbox_min.x;
-    bbox_min.y = bbox_min.y > out.pointlist[2*i+1] ? out.pointlist[2*i+1] : bbox_min.y;
-    bbox_min.z = bbox_min.z > z ? z : bbox_min.z;
-
-    bbox_max.x = bbox_max.x < out.pointlist[2*i  ] ? out.pointlist[2*i  ] : bbox_max.x;
-    bbox_max.y = bbox_max.y < out.pointlist[2*i+1] ? out.pointlist[2*i+1] : bbox_max.y;
-    bbox_max.z = bbox_max.z < z ? z : bbox_max.z;
-  }
-
-  RS_Vector bbox = bbox_max - bbox_min;
-
-  int    NumContour = 20;
-  double contLen = (bbox.z) / (NumContour + 1);
-
-  for(int i=0; i<out.numberoftriangles; ++i)
-  {
-
-    // mesh triangle
-    RS_Vector a(out.pointlist[2*out.trianglelist[3*i+0]], out.pointlist[2*out.trianglelist[3*i+0]+1]);
-    RS_Vector b(out.pointlist[2*out.trianglelist[3*i+1]], out.pointlist[2*out.trianglelist[3*i+1]+1]);
-    RS_Vector c(out.pointlist[2*out.trianglelist[3*i+2]], out.pointlist[2*out.trianglelist[3*i+2]+1]);
-
-    mesh->addEntity(new RS_Line(mesh, RS_LineData(a,b)));
-    mesh->addEntity(new RS_Line(mesh, RS_LineData(b,c)));
-    mesh->addEntity(new RS_Line(mesh, RS_LineData(c,a)));
-
-    //contour
-
-    if(fabs(contLen)>1e-14)
-    {
-      a.z = _pm->profile(a.x, a.y);
-      b.z = _pm->profile(b.x, b.y);
-      c.z = _pm->profile(c.x, c.y);
-
-      // a
-      // |\
-      // | \
-      // b--c
-
-      // Variable to hold which level is using now.
-      double level;
-      double factor;
-
-      // Array to hold the points.
-      RS_Vector temp1, temp2;
-      RS_Vector tempa = a;
-      RS_Vector tempb = b;
-      RS_Vector tempc = c;
-
-      // Sort the three points tempa, tempb, tempc in increasing z components;
-      if (tempa.z > tempb.z) std::swap(tempa, tempb);
-      if (tempb.z > tempc.z)
-      {
-        if(tempc.z < tempa.z) std::swap(tempa, tempc);
-        std::swap(tempb, tempc);
-      }
-
-      // Loop though all the levels
-      for (level = bbox_min.z; level <= bbox_max.z; level += contLen)
-      {
-        // Check if the step size is in range: 1 < level < MaxContour
-        //fprintf(stderr,"%e %e %e %e\n",level,tempa.z,tempb.z,tempc.z);
-        if ((level == tempa.z) && (level == tempc.z))
-        {
-          mesh->addEntity(new RS_Line(mesh, RS_LineData(tempa, tempb)));
-          mesh->addEntity(new RS_Line(mesh, RS_LineData(tempb, tempc)));
-          mesh->addEntity(new RS_Line(mesh, RS_LineData(tempc, tempa)));
-          break;
-        }
-        else if ((level >= tempa.z) && (level <= tempc.z))
-        { // OK, test each edge, please.
-          if      ((level == tempa.z) && (tempa.z == tempb.z) && (tempb.z != tempc.z))
-          {
-            temp1.x = tempa.x;    temp2.x = tempb.x;
-            temp1.y = tempa.y;    temp2.y = tempb.y;
-          }
-          else if ((level == tempc.z) && (tempc.z == tempb.z) && (tempa.z != tempb.z))
-          {
-            temp1.x = tempb.x;    temp2.x = tempc.x;
-            temp1.y = tempb.y;    temp2.y = tempc.y;
-          }
-          else if (level == tempb.z)
-          { // Now tempb (level) MUST be between tempa and tempc
-            // so a<level=b<c
-
-            factor = (level - tempa.z) / (tempc.z - tempa.z);
-            temp1.x = tempa.x + (tempc.x - tempa.x) * factor;
-            temp1.y = tempa.y + (tempc.y - tempa.y) * factor;
-            temp2.x = tempb.x;
-            temp2.y = tempb.y;
-          }
-          else if (level < tempb.z)
-          { // tempb and tempc above the tempa
-            // a<level<b<c
-
-            factor = (level - tempa.z) / (tempb.z - tempa.z);
-            temp1.x = tempa.x + (tempb.x - tempa.x) * factor;
-            temp1.y = tempa.y + (tempb.y - tempa.y) * factor;
-
-            factor = (level - tempa.z) / (tempc.z - tempa.z);
-            temp2.x = tempa.x + (tempc.x - tempa.x) * factor;
-            temp2.y = tempa.y + (tempc.y - tempa.y) * factor;
-
-          }
-          else
-          { // tempa and tempb are below tempc
-            // a<b<level<c
-
-            factor = (level - tempa.z) / (tempc.z - tempa.z);
-            temp1.x = tempa.x + (tempc.x - tempa.x) * factor;
-            temp1.y = tempa.y + (tempc.y - tempa.y) * factor;
-
-            factor = (level - tempb.z) / (tempc.z - tempb.z);
-            temp2.x = tempb.x + (tempc.x - tempb.x) * factor;
-            temp2.y = tempb.y + (tempc.y - tempb.y) * factor;
-
-          }
-
-          mesh->addEntity(new RS_Line(mesh, RS_LineData(temp1, temp2)));
-        }
-      }
-    }
-  }
-
-  _doc->addEntity(mesh);
-  _gv->drawEntity(mesh);
-
-}
 
 
 void MeshGenerator::create_new_mesh_layer()

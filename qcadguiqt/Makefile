@@ -60,6 +60,7 @@ prepare: src/Makefile
 	$(MAKE) ui$${sep}qg_dlginsert.h; \
 	$(MAKE) ui$${sep}qg_dlgline.h; \
 	$(MAKE) ui$${sep}qg_dlgellipse.h; \
+	$(MAKE) ui$${sep}qg_dlgmesh.h; \
 	$(MAKE) ui$${sep}qg_dlgmirror.h; \
 	$(MAKE) ui$${sep}qg_dlgmove.h; \
 	$(MAKE) ui$${sep}qg_dlgmoverotate.h; \
