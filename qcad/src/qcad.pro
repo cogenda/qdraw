@@ -13,77 +13,25 @@ exists( ../../mkspecs/defs.pro ) {
 
 # Application specific targets:
 
-# CAM Expert:
-rs_cam {
-  rs_demo {
-    rs_apple {
-      TARGET = CAMExpertDemo
-    }
-    else {
-      TARGET = camexpert_demo
-    }
-  }
-  else {
-    rs_apple {
-      TARGET = CAMExpert
-    }
-    else {
-      TARGET = camexpert
-    }
-  }
+rs_apple {
+      TARGET = QDraw
+}
+else {
+      TARGET = qdraw
 }
 
-# QCad:
-else {
-  rs_demo {
-    rs_apple {
-      TARGET = QCadDemo
-    }
-    else {
-      TARGET = qcad_demo
-    }
-  }
-  else {
-    rs_apple {
-      TARGET = QCad
-    }
-    else {
-      TARGET = qcad
-    }
-  }
-}
+
 
 
 # Application specific defines:
-
-# CAM Expert:
-rs_cam {
-	rs_demo {
-    	DEFINES += QC_APPKEY="\"/CAMExpertDemo\"" QC_APPDIR="\"camexpertdemo\""
-		DEFINES += QC_APPNAME="\"CAM Expert Demo\""
-	}
-	else {
-    	DEFINES += QC_APPKEY="\"/CAMExpert\"" QC_APPDIR="\"camexpert\""
-		DEFINES += QC_APPNAME="\"CAM Expert\""
-	}
+rs_custom {
+  #allows override app name with custom one
 }
-
-# QCad:
 else {
-	rs_custom {
-		#allows override app name with custom one
-	}
-	else {
-		rs_demo {
-			DEFINES += QC_APPKEY="\"/QCadDemo\"" QC_APPDIR="\"qcaddemo\""
-			DEFINES += QC_APPNAME="\"QCad Demo\""
-		}
-		else {
-			DEFINES += QC_APPKEY="\"/QCad\"" QC_APPDIR="\"qcad\""
-			DEFINES += QC_APPNAME="\"QCad\""
-		}
-	}
+  DEFINES += QC_APPKEY="\"/QDraw\"" QC_APPDIR="\"qdraw\""
+  DEFINES += QC_APPNAME="\"QDraw\""
 }
+
 
 
 # libraries:

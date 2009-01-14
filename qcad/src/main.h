@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid QCad Professional Edition licenses may use 
+** Licensees holding valid QCad Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -30,12 +30,9 @@
 #include <qstringlist.h>
 
 #define QC_VERSION "2.0.5.0"
+
 #ifndef QC_APPNAME
-# ifdef RS_DEMO
-#  define QC_APPNAME "QCad Demo"
-# else
-#  define QC_APPNAME "QCad"
-# endif
+#  define QC_APPNAME "QDraw"
 #endif
 
 #ifndef QC_DEBUGGING
@@ -43,7 +40,7 @@
 #endif
 
 #ifndef QC_COMPANYKEY
-#define QC_COMPANYKEY "/RibbonSoft"
+#define QC_COMPANYKEY "/Cogenda"
 #endif
 
 QStringList handleArgs(int argc, char** argv);

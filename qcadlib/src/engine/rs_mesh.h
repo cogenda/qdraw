@@ -91,7 +91,7 @@ private:
 
   void clear_triangulateio();
 
-  double max_dispersion(int a, int b, int c, bool signed_log);
+  double triangle_area_constraint(int a, int b, int c, double dmax, bool signed_log);
 
   double triangle_area(int a, int b, int c);
 

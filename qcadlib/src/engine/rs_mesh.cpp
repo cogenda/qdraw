@@ -70,12 +70,8 @@ void RS_Mesh::clear_triangulateio()
 }
 
 
-void RS_Mesh::set_refine_flag(double d, bool signed_log)
+void RS_Mesh::set_refine_flag(double dmax, bool signed_log)
 {
-  //double  Ld = sqrt(eps*kb*T/(e*e*doping));
-  //eps  = 8.85e-12;
-  //kb   = 1.3806503e-23;
-  //e    = 1.602176462e-19;
 
   io.numberofcorners = 3;
   io.trianglearealist = (double *) calloc(io.numberoftriangles, sizeof(double));
@@ -84,16 +80,7 @@ void RS_Mesh::set_refine_flag(double d, bool signed_log)
     int a = io.trianglelist[3*i+0];
     int b = io.trianglelist[3*i+1];
     int c = io.trianglelist[3*i+2];
-    double area = triangle_area(a, b, c);
-    double dispersion = max_dispersion(a, b, c, signed_log);
-    if(dispersion>d)
-    {
-      double scale = d/dispersion;
-      if(scale < 0.25) scale = 0.25;
-      io.trianglearealist[i] = d/dispersion*area;
-    }
-    else
-      io.trianglearealist[i] = 1.1*area;
+    io.trianglearealist[i] = triangle_area_constraint(a, b, c, dmax, signed_log);
   }
 }
 
@@ -117,9 +104,10 @@ double RS_Mesh::triangle_area(int a, int b, int c)
   return sqrt(d*(d-d1)*(d-d2)*(d-d3));
 }
 
-
-double RS_Mesh::max_dispersion(int a, int b, int c, bool signed_log)
+double RS_Mesh::triangle_area_constraint(int a, int b, int c, double dmax, bool signed_log)
 {
+  double Scale = 1.1;
+  double area  = triangle_area(a, b, c);
   double xa = io.pointlist[2*a+0];
   double ya = io.pointlist[2*a+1];
 
@@ -133,6 +121,8 @@ double RS_Mesh::max_dispersion(int a, int b, int c, bool signed_log)
   double pb = fabs(_pm->profile("Nd", xb, yb)) - fabs(_pm->profile("Na", xb, yb));
   double pc = fabs(_pm->profile("Nd", xc, yc)) - fabs(_pm->profile("Na", xc, yc));
 
+  double doping = fabs(pa+pb+pc)/3.0;
+
   if(signed_log)
   {
     pa = (pa > 0 ? 1.0 : -1.0) * log(fabs(pa) + 1);
@@ -140,7 +130,19 @@ double RS_Mesh::max_dispersion(int a, int b, int c, bool signed_log)
     pc = (pc > 0 ? 1.0 : -1.0) * log(fabs(pc) + 1);
   }
 
-  return  std::max(std::max(fabs(pa-pb),fabs(pb-pc)),fabs(pc-pa))+1e-6;
+  double dispersion =  std::max(std::max(fabs(pa-pb),fabs(pb-pc)),fabs(pc-pa))+1e-6;
+
+  double eps  = 8.85e-12;
+  double kb   = 1.3806503e-23;
+  double e    = 1.602176462e-19;
+  double Ld   = sqrt(13*eps*kb*300/(e*e*doping));
+
+  if(dispersion>dmax)
+    Scale = Ld*Ld/(2*area) < dmax/dispersion ? Ld*Ld/(2*area) : dmax/dispersion;
+
+  if(Scale<0.25)       Scale = 0.25;
+
+  return area*Scale;
 }
 
 
