@@ -71,6 +71,12 @@ public:
   bool & draw_contour()
   { return _draw_contour; }
 
+  bool  draw_junction() const
+  { return _draw_junction; }
+
+  bool & draw_junction()
+  { return _draw_junction; }
+
   bool draw_mesh() const
   { return _draw_mesh; }
 
@@ -139,14 +145,31 @@ private:
    */
   std::map<int, std::pair<RS_String, RS_String> > _region_mark_to_label_material;
 
-  bool is_semiconductor();
-  bool is_conductor();
-  bool is_insulator();
+
+
+  enum  MaterialType
+  {
+    Vacuum                      = 0,
+    Semiconductor                  ,
+    SingleCompoundSemiconductor    ,
+    ComplexCompoundSemiconductor   ,
+    Conductor                      ,
+    Insulator                      ,
+    PML                            ,
+    INVALID_MATERIAL_TYPE            // should always be last
+  };
+
+  std::map<RS_String, MaterialType> material_name_to_material_type;
+
+  bool IsSemiconductor(const RS_String & mat_name);
+  bool IsInsulator(const RS_String & mat_name);
+  bool IsConductor(const RS_String & mat_name);
 
   /**
    * Triangle command line switch
    */
   RS_String _tri_cmd;
+
 
   /**
    * hold a pointer to ProfileManager
@@ -157,13 +180,17 @@ private:
 
   double profile(double x, double y);
 
-  static const int rainbow_color_table[20][3];
+
+
+  static const int rainbow_color_table[19][3];
 
   bool _draw_outline;
 
   bool _draw_mesh;
 
   bool _draw_contour;
+
+  bool _draw_junction;
 
   bool _use_signed_log;
 

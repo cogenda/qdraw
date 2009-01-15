@@ -25,7 +25,7 @@ void QG_DlgMesh::setMesh( RS_Mesh & e )
   ContourLine->setText(s);
   ContourLine->setEnabled(false);
   ContorWithSignedLog->setChecked(mesh->contour_with_signed_log());
-
+  Junction->setChecked(mesh->draw_junction());
 }
 
 
@@ -36,5 +36,9 @@ void QG_DlgMesh::updateMesh()
   mesh->draw_contour() = Contour->isChecked();
   mesh->contour_number() = RS_Math::eval(ContourLine->text());
   mesh->contour_with_signed_log() = ContorWithSignedLog->isChecked();
+  mesh->draw_junction() = Junction->isChecked();
+  if(Junction->isChecked())
+    mesh->draw_contour() = false;
+
   mesh->update();
 }

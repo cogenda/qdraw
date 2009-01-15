@@ -87,7 +87,7 @@ double TriangleSetting::get_dispersion()
 void TriangleSetting::init_mesh( const QString & cmd )
 {
   _refine = false;
-  _cmd_string = "pzAV";
+  _cmd_string = "pzAQ";
   groupBox4->setEnabled(false);
 
   RS_SETTINGS->beginGroup("/Mesh");
@@ -111,7 +111,7 @@ void TriangleSetting::init_mesh( const QString & cmd )
 void TriangleSetting::init_refine( const QString & cmd )
 {
   _refine = true;
-  _cmd_string = "pzraV";
+  _cmd_string = "pzraQ";
   AreaConstraint->setChecked(true);
   groupBox1->setEnabled(false);
   MeshRefinement->setChecked(true);

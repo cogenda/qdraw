@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>368</width>
-            <height>174</height>
+            <height>202</height>
         </rect>
     </property>
     <property name="caption">
@@ -51,7 +51,7 @@
                                         <cstring>rb_outline</cstring>
                                     </property>
                                     <property name="text">
-                                        <string>Outline</string>
+                                        <string>&amp;Outline</string>
                                     </property>
                                 </widget>
                                 <widget class="QRadioButton" row="1" column="0">
@@ -80,12 +80,12 @@
                                         <cstring>ContourLine</cstring>
                                     </property>
                                 </widget>
-                                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
+                                <widget class="QLabel" row="1" column="0">
                                     <property name="name">
-                                        <cstring>Contour</cstring>
+                                        <cstring>textLabel1</cstring>
                                     </property>
                                     <property name="text">
-                                        <string>Enable Contour Plot</string>
+                                        <string>Contour Lines:</string>
                                     </property>
                                 </widget>
                                 <widget class="QCheckBox" row="2" column="0" rowspan="1" colspan="2">
@@ -93,15 +93,32 @@
                                         <cstring>ContorWithSignedLog</cstring>
                                     </property>
                                     <property name="text">
-                                        <string>Use logarithmic scale</string>
+                                        <string>&amp;Use logarithmic scale</string>
+                                    </property>
+                                    <property name="accel">
+                                        <string>Alt+U</string>
                                     </property>
                                 </widget>
-                                <widget class="QLabel" row="1" column="0">
+                                <widget class="QCheckBox" row="0" column="0" rowspan="1" colspan="2">
                                     <property name="name">
-                                        <cstring>textLabel1</cstring>
+                                        <cstring>Contour</cstring>
                                     </property>
                                     <property name="text">
-                                        <string>Contour Lines:</string>
+                                        <string>E&amp;nable Contour Plot</string>
+                                    </property>
+                                    <property name="accel">
+                                        <string>Alt+N</string>
+                                    </property>
+                                </widget>
+                                <widget class="QCheckBox" row="3" column="0" rowspan="1" colspan="2">
+                                    <property name="name">
+                                        <cstring>Junction</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>Only plot &amp;Junction</string>
+                                    </property>
+                                    <property name="accel">
+                                        <string>Alt+J</string>
                                     </property>
                                 </widget>
                             </grid>
@@ -138,7 +155,7 @@
                                 <cstring>b_ok</cstring>
                             </property>
                             <property name="text">
-                                <string>OK</string>
+                                <string>O&amp;K</string>
                             </property>
                         </widget>
                         <widget class="QPushButton">

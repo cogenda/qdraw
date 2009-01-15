@@ -21,6 +21,7 @@
 #include <string.h>
 #include <time.h>
 #include <fstream>
+#include <vector>
 #include <set>
 
 #include "rs_settings.h"
@@ -33,7 +34,7 @@
 #include "cg_profile_manager.h"
 
 
-const int RS_Mesh::rainbow_color_table[20][3] =
+const int RS_Mesh::rainbow_color_table[19][3] =
   {
     {0,     0, 255},
     {0,   114, 255},
@@ -47,7 +48,6 @@ const int RS_Mesh::rainbow_color_table[20][3] =
     {0,   255,   0},
     {125, 255,   0},
     {180, 255,   0},
-    {220, 255,   0},
     {255, 255,   0},
     {255, 233,   0},
     {255, 207,   0},
@@ -67,8 +67,51 @@ RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
   _draw_outline = false;
   _draw_mesh = true;
   _draw_contour = true;
+  _draw_junction = false;
   _use_signed_log = false;
-  _contour_number = 20;
+  _contour_number = 19;
+
+  material_name_to_material_type["Si"     ]  = Semiconductor;
+  material_name_to_material_type["Silicon"]  = Semiconductor;
+  material_name_to_material_type["Ge"     ]  = Semiconductor;
+  material_name_to_material_type["GaAs"   ]  = Semiconductor;
+  material_name_to_material_type["InAs"   ]  = Semiconductor;
+  material_name_to_material_type["InSb"   ]  = Semiconductor;
+  material_name_to_material_type["InP"    ]  = Semiconductor;
+  material_name_to_material_type["InN"    ]  = Semiconductor;
+  material_name_to_material_type["SiGe"   ]  = SingleCompoundSemiconductor;
+  material_name_to_material_type["AlGaAs" ]  = SingleCompoundSemiconductor;
+  material_name_to_material_type["InGaAs" ]  = SingleCompoundSemiconductor;
+  material_name_to_material_type["HgCdTe" ]  = SingleCompoundSemiconductor;
+  material_name_to_material_type["AlInAs" ]  = SingleCompoundSemiconductor;
+  material_name_to_material_type["GaAsP"  ]  = SingleCompoundSemiconductor;
+  material_name_to_material_type["InGaP"  ]  = SingleCompoundSemiconductor;
+  material_name_to_material_type["InAsP"  ]  = SingleCompoundSemiconductor;
+  material_name_to_material_type["3C-SiC" ]  = Semiconductor;
+  material_name_to_material_type["S-SiO2" ]  = Semiconductor;
+
+  material_name_to_material_type["Ox"     ]  = Insulator;
+  material_name_to_material_type["SiO2"   ]  = Insulator;
+  material_name_to_material_type["Nitride"]  = Insulator;
+  material_name_to_material_type["Si3N4"  ]  = Insulator;
+  material_name_to_material_type["Nit"    ]  = Insulator;
+
+  material_name_to_material_type["Air"    ]  = Insulator;
+
+  material_name_to_material_type["Elec"   ]  = Conductor;
+  material_name_to_material_type["Al"     ]  = Conductor;
+  material_name_to_material_type["Ag"     ]  = Conductor;
+  material_name_to_material_type["Silver" ]  = Conductor;
+  material_name_to_material_type["Au"     ]  = Conductor;
+  material_name_to_material_type["Gold"   ]  = Conductor;
+  material_name_to_material_type["Cu"     ]  = Conductor;
+  material_name_to_material_type["Copper" ]  = Conductor;
+  material_name_to_material_type["PolySi" ]  = Conductor;
+  material_name_to_material_type["TiSi2"  ]  = Conductor;
+
+  material_name_to_material_type["Vacuum" ]  = Vacuum;
+
+  material_name_to_material_type["PML"    ]  = PML;
 }
 
 
@@ -219,8 +262,24 @@ void RS_Mesh::update()
     }
   }
 
-  int    NumContour = _contour_number;
-  double contLen = (bbox.z) / (NumContour-1);
+
+  std::vector<double> contour_level;
+
+  if(_draw_contour)
+  {
+    double contLen = (bbox.z) / (_contour_number-1);
+    double level = bbox_min.z + 0.001*fabs(bbox_min.z);
+    for (int n = 0; n < _contour_number; level+= contLen, ++n)
+      contour_level.push_back(level);
+    contour_level[contour_level.size()-1] = bbox_max.z - 0.001*fabs(bbox_max.z);
+  }
+
+  if(_draw_junction)
+  {
+    contour_level.push_back(0.0);
+  }
+
+
 
   for(int i=0; i<io.numberoftriangles; ++i)
   {
@@ -237,16 +296,20 @@ void RS_Mesh::update()
     }
 
     //draw contour
-    if(_draw_contour && fabs(contLen)>1e-14)
+    if((_draw_contour || _draw_junction) && fabs(bbox.z)>1e-14)
     {
+      int r = int(io.triangleattributelist[i]+0.5);
+      RS_String material = _region_mark_to_label_material[r].second;
+      if(!IsSemiconductor(material)) continue;
+
       a.z = profile(a.x, a.y);
       b.z = profile(b.x, b.y);
       c.z = profile(c.x, c.y);
 
-      // a
-      // |\
-      // | \
-      // b--c
+      // a     //
+      // |\    //
+      // | \   //
+      // b--c  //
 
       // Array to hold the points.
       RS_Vector temp1, temp2;
@@ -263,10 +326,13 @@ void RS_Mesh::update()
       }
 
       // Loop though all the levels
-      double level = bbox_min.z;
 
-      for (int level_index = 0; level_index < NumContour; level += contLen, ++level_index)
+
+      for (unsigned int n=0; n<contour_level.size(); ++n)
       {
+        double level = contour_level[n];
+
+
         // Check if the step size is in range: 1 < level < MaxContour
         // get zero point
 
@@ -306,12 +372,20 @@ void RS_Mesh::update()
           }
 
           RS_Line * contour_line = new RS_Line(this, RS_LineData(temp1, temp2));
-          RS_Pen pen;
-          pen.setColor(RS_Color(rainbow_color_table[level_index][0],
-                                rainbow_color_table[level_index][1],
-                                rainbow_color_table[level_index][2]));
-          contour_line->setPen(pen);
-
+          if(_draw_contour)
+          {
+            RS_Pen pen;
+            pen.setColor(RS_Color(rainbow_color_table[n][0],
+                                  rainbow_color_table[n][1],
+                                  rainbow_color_table[n][2]));
+            contour_line->setPen(pen);
+          }
+          if(_draw_junction)
+          {
+            RS_Pen pen;
+            pen.setColor(RS_Color(255, 0, 0));
+            contour_line->setPen(pen);
+          }
           this->addEntity(contour_line);
         }
       }
@@ -320,37 +394,39 @@ void RS_Mesh::update()
   }
 
   // draw contour legend
-  if(_draw_contour && fabs(contLen)>1e-14)
+  if(_draw_contour && fabs(bbox.z)>1e-14)
   {
     double legend_start_x = bbox_max.x + 0.05*(bbox_max.x - bbox_min.x);
     double legend_end_x   = bbox_max.x + 0.10*(bbox_max.x - bbox_min.x);
     double legend_text_x  = bbox_max.x + 0.11*(bbox_max.x - bbox_min.x);
     double legend_start_y = bbox_max.y - 0.05*(bbox_max.y - bbox_min.y);
     double legend_end_y   = bbox_min.y + 0.05*(bbox_max.y - bbox_min.y);
-    double legend_dist_y  = (legend_start_y - legend_end_y)/(NumContour-1);
+    double legend_dist_y  = (legend_start_y - legend_end_y)/(_contour_number-1);
 
-    double level = bbox_min.z;
-    for (int level_index = 0; level_index < NumContour; level += contLen, ++level_index)
+
+    for (unsigned int n = 0; n < contour_level.size(); ++n)
     {
+      double level = contour_level[n];
+
       RS_Vector start(legend_start_x, legend_start_y);
       RS_Vector end  (legend_end_x, legend_start_y);
       RS_Line * legend_line = new RS_Line(this, RS_LineData(start, end));
       RS_Pen pen;
-      pen.setColor(RS_Color(rainbow_color_table[level_index][0],
-                            rainbow_color_table[level_index][1],
-                            rainbow_color_table[level_index][2]));
+      pen.setColor(RS_Color(rainbow_color_table[n][0],
+                            rainbow_color_table[n][1],
+                            rainbow_color_table[n][2]));
       legend_line->setPen(pen);
       this->addEntity(legend_line);
 
 
-      if(level_index%4 == 0 || level_index==NumContour-1)
+      if(n%3==0)
       {
         RS_Vector insertionPoint(legend_text_x, legend_start_y);
         RS_String value;
         value.setNum(level);
         RS_TextData text( insertionPoint,
                           legend_dist_y/2,
-                          10*legend_dist_y,
+                          12*legend_dist_y,
                           RS2::VAlignMiddle,
                           RS2::HAlignLeft,
                           RS2::LeftToRight,
@@ -415,6 +491,37 @@ double RS_Mesh::profile(double x, double y)
   return z;
 }
 
+
+bool RS_Mesh::IsSemiconductor(const RS_String & mat_name)
+{
+
+  if ( material_name_to_material_type[mat_name] == Semiconductor                  ||
+       material_name_to_material_type[mat_name] == SingleCompoundSemiconductor    ||
+       material_name_to_material_type[mat_name] == ComplexCompoundSemiconductor
+     )
+    return true;
+
+  return false;
+}
+
+
+bool RS_Mesh::IsInsulator(const RS_String & mat_name)
+{
+
+  if ( material_name_to_material_type[mat_name] == Insulator )
+    return true;
+
+  return false;
+}
+
+bool RS_Mesh::IsConductor(const RS_String & mat_name)
+{
+
+  if ( material_name_to_material_type[mat_name] == Conductor )
+    return true;
+
+  return false;
+}
 
 
 void RS_Mesh::export_mesh(const RS_String & file)
