@@ -106,7 +106,7 @@ void QG_DlgHatch::setHatch(RS_Hatch& h, bool isNew)
   if (isNew)
   {
     RS_SETTINGS->beginGroup("/Draw");
-    QString solid = RS_SETTINGS->readEntry("/HatchSolid", "0");
+    QString solid = RS_SETTINGS->readEntry("/HatchSolid", "1");
     QString pat = RS_SETTINGS->readEntry("/HatchPattern", "ANSI31");
     QString scale = RS_SETTINGS->readEntry("/HatchScale", "1.0");
     QString angle = RS_SETTINGS->readEntry("/HatchAngle", "0.0");
@@ -128,6 +128,8 @@ void QG_DlgHatch::setHatch(RS_Hatch& h, bool isNew)
     s.setNum(RS_Math::rad2deg(hatch->getAngle()));
     leAngle->setText(s);
   }
+
+  cbSolid->setEnabled(false);
 
   wPen->setPen(hatch->getPen(false), true, false, "Pen");
 

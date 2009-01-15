@@ -11,13 +11,30 @@
 *****************************************************************************/
 
 
-void QG_DlgMesh::setMesh( RS_Mesh & mesh )
+void QG_DlgMesh::setMesh( RS_Mesh & e )
 {
+  mesh = &e;
+
+  rb_outline->setChecked(mesh->draw_outline());
+  rb_mesh->setChecked(mesh->draw_mesh());
+
+  Contour->setChecked(mesh->draw_contour());
+
+  QString s;
+  s.setNum(mesh->contour_number());
+  ContourLine->setText(s);
+  ContourLine->setEnabled(false);
+  ContorWithSignedLog->setChecked(mesh->contour_with_signed_log());
 
 }
 
 
 void QG_DlgMesh::updateMesh()
 {
-
+  mesh->draw_outline() = rb_outline->isChecked();
+  mesh->draw_mesh() = rb_mesh->isChecked();
+  mesh->draw_contour() = Contour->isChecked();
+  mesh->contour_number() = RS_Math::eval(ContourLine->text());
+  mesh->contour_with_signed_log() = ContorWithSignedLog->isChecked();
+  mesh->update();
 }

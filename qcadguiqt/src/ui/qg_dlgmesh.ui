@@ -155,10 +155,27 @@
         </widget>
     </grid>
 </widget>
+<connections>
+    <connection>
+        <sender>b_ok</sender>
+        <signal>clicked()</signal>
+        <receiver>QG_DlgMesh</receiver>
+        <slot>accept()</slot>
+    </connection>
+    <connection>
+        <sender>b_cancel</sender>
+        <signal>clicked()</signal>
+        <receiver>QG_DlgMesh</receiver>
+        <slot>reject()</slot>
+    </connection>
+</connections>
 <includes>
     <include location="local" impldecl="in declaration">rs_mesh.h</include>
     <include location="local" impldecl="in implementation">qg_dlgmesh.ui.h</include>
 </includes>
+<variables>
+    <variable access="private">RS_Mesh * mesh;</variable>
+</variables>
 <functions>
     <function specifier="non virtual">setMesh( RS_Mesh &amp; mesh )</function>
     <function specifier="non virtual">updateMesh()</function>

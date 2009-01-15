@@ -26,10 +26,36 @@
 #include "rs_settings.h"
 #include "rs_units.h"
 #include "rs_mesh.h"
+#include "rs_text.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
 #include "cg_profile.h"
 #include "cg_profile_manager.h"
+
+
+const int RS_Mesh::rainbow_color_table[20][3] =
+  {
+    {0,     0, 255},
+    {0,   114, 255},
+    {0,   161, 255},
+    {0,   197, 255},
+    {0,   228, 255},
+    {0,   255, 255},
+    {0,   255, 221},
+    {0,   255, 179},
+    {0,   255, 127},
+    {0,   255,   0},
+    {125, 255,   0},
+    {180, 255,   0},
+    {220, 255,   0},
+    {255, 255,   0},
+    {255, 233,   0},
+    {255, 207,   0},
+    {255, 178,   0},
+    {255, 148,   0},
+    {255, 103,   0},
+    {255,   0,   0}
+  };
 
 
 
@@ -37,6 +63,12 @@ RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
     :RS_EntityContainer(parent, owner), _pm(0)
 {
   memset(&io, 0, sizeof(triangulateio));
+
+  _draw_outline = false;
+  _draw_mesh = true;
+  _draw_contour = true;
+  _use_signed_log = false;
+  _contour_number = 20;
 }
 
 
@@ -163,7 +195,7 @@ void RS_Mesh::update()
   RS_Vector bbox_max(-RS_MAXDOUBLE, -RS_MAXDOUBLE, -RS_MAXDOUBLE);
   for(int i=0; i<io.numberofpoints; ++i)
   {
-    double z   = _pm->profile(io.pointlist[2*i], io.pointlist[2*i+1]);
+    double z   = profile(io.pointlist[2*i], io.pointlist[2*i+1]);
     bbox_min.x = bbox_min.x > io.pointlist[2*i  ] ? io.pointlist[2*i  ] : bbox_min.x;
     bbox_min.y = bbox_min.y > io.pointlist[2*i+1] ? io.pointlist[2*i+1] : bbox_min.y;
     bbox_min.z = bbox_min.z > z ? z : bbox_min.z;
@@ -175,28 +207,41 @@ void RS_Mesh::update()
 
   RS_Vector bbox = bbox_max - bbox_min;
 
-  int    NumContour = 20;
-  double contLen = (bbox.z) / (NumContour + 1);
+
+  //draw outline
+  if(_draw_outline)
+  {
+    for(int i=0; i<io.numberofsegments; ++i)
+    {
+      RS_Vector a(io.pointlist[2*io.segmentlist[2*i+0]], io.pointlist[2*io.segmentlist[2*i+0]+1]);
+      RS_Vector b(io.pointlist[2*io.segmentlist[2*i+1]], io.pointlist[2*io.segmentlist[2*i+1]+1]);
+      this->addEntity(new RS_Line(this, RS_LineData(a,b)));
+    }
+  }
+
+  int    NumContour = _contour_number;
+  double contLen = (bbox.z) / (NumContour-1);
 
   for(int i=0; i<io.numberoftriangles; ++i)
   {
-
-    // mesh triangle
     RS_Vector a(io.pointlist[2*io.trianglelist[3*i+0]], io.pointlist[2*io.trianglelist[3*i+0]+1]);
     RS_Vector b(io.pointlist[2*io.trianglelist[3*i+1]], io.pointlist[2*io.trianglelist[3*i+1]+1]);
     RS_Vector c(io.pointlist[2*io.trianglelist[3*i+2]], io.pointlist[2*io.trianglelist[3*i+2]+1]);
 
-    this->addEntity(new RS_Line(this, RS_LineData(a,b)));
-    this->addEntity(new RS_Line(this, RS_LineData(b,c)));
-    this->addEntity(new RS_Line(this, RS_LineData(c,a)));
-
-    //contour
-
-    if(fabs(contLen)>1e-14)
+    //draw mesh
+    if(_draw_mesh)
     {
-      a.z = _pm->profile(a.x, a.y);
-      b.z = _pm->profile(b.x, b.y);
-      c.z = _pm->profile(c.x, c.y);
+      this->addEntity(new RS_Line(this, RS_LineData(a,b)));
+      this->addEntity(new RS_Line(this, RS_LineData(b,c)));
+      this->addEntity(new RS_Line(this, RS_LineData(c,a)));
+    }
+
+    //draw contour
+    if(_draw_contour && fabs(contLen)>1e-14)
+    {
+      a.z = profile(a.x, a.y);
+      b.z = profile(b.x, b.y);
+      c.z = profile(c.x, c.y);
 
       // a
       // |\
@@ -218,15 +263,15 @@ void RS_Mesh::update()
       }
 
       // Loop though all the levels
-      for (double level = bbox_min.z; level <= bbox_max.z; level += contLen)
+      double level = bbox_min.z;
+
+      for (int level_index = 0; level_index < NumContour; level += contLen, ++level_index)
       {
         // Check if the step size is in range: 1 < level < MaxContour
+        // get zero point
 
         if ((level == tempa.z) && (level == tempc.z))
         {
-          this->addEntity(new RS_Line(this, RS_LineData(tempa, tempb)));
-          this->addEntity(new RS_Line(this, RS_LineData(tempb, tempc)));
-          this->addEntity(new RS_Line(this, RS_LineData(tempc, tempa)));
           break;
         }
         else if ((level >= tempa.z) && (level <= tempc.z))
@@ -260,11 +305,70 @@ void RS_Mesh::update()
             temp2 = linear_interpolation(tempb, tempc, level);
           }
 
-          this->addEntity(new RS_Line(this, RS_LineData(temp1, temp2)));
+          RS_Line * contour_line = new RS_Line(this, RS_LineData(temp1, temp2));
+          RS_Pen pen;
+          pen.setColor(RS_Color(rainbow_color_table[level_index][0],
+                                rainbow_color_table[level_index][1],
+                                rainbow_color_table[level_index][2]));
+          contour_line->setPen(pen);
+
+          this->addEntity(contour_line);
         }
       }
+
     }
   }
+
+  // draw contour legend
+  if(_draw_contour && fabs(contLen)>1e-14)
+  {
+    double legend_start_x = bbox_max.x + 0.05*(bbox_max.x - bbox_min.x);
+    double legend_end_x   = bbox_max.x + 0.10*(bbox_max.x - bbox_min.x);
+    double legend_text_x  = bbox_max.x + 0.11*(bbox_max.x - bbox_min.x);
+    double legend_start_y = bbox_max.y - 0.05*(bbox_max.y - bbox_min.y);
+    double legend_end_y   = bbox_min.y + 0.05*(bbox_max.y - bbox_min.y);
+    double legend_dist_y  = (legend_start_y - legend_end_y)/(NumContour-1);
+
+    double level = bbox_min.z;
+    for (int level_index = 0; level_index < NumContour; level += contLen, ++level_index)
+    {
+      RS_Vector start(legend_start_x, legend_start_y);
+      RS_Vector end  (legend_end_x, legend_start_y);
+      RS_Line * legend_line = new RS_Line(this, RS_LineData(start, end));
+      RS_Pen pen;
+      pen.setColor(RS_Color(rainbow_color_table[level_index][0],
+                            rainbow_color_table[level_index][1],
+                            rainbow_color_table[level_index][2]));
+      legend_line->setPen(pen);
+      this->addEntity(legend_line);
+
+
+      if(level_index%4 == 0 || level_index==NumContour-1)
+      {
+        RS_Vector insertionPoint(legend_text_x, legend_start_y);
+        RS_String value;
+        value.setNum(level);
+        RS_TextData text( insertionPoint,
+                          legend_dist_y/2,
+                          10*legend_dist_y,
+                          RS2::VAlignMiddle,
+                          RS2::HAlignLeft,
+                          RS2::LeftToRight,
+                          RS2::Exact,
+                          1.0,
+                          value,
+                          "standard",
+                          0
+                        );
+        RS_Text *legend_value = new RS_Text(this, text);
+        this->addEntity(legend_value);
+      }
+
+      legend_start_y -= legend_dist_y;
+    }
+
+  }
+
 }
 
 
@@ -291,15 +395,26 @@ RS_Vector RS_Mesh::linear_interpolation(RS_Vector a, RS_Vector b, double level)
   do
   {
     RS_Vector mid = (a+b)/2;
-    mid.z = _pm->profile(mid.x, mid.y);
+    mid.z = profile(mid.x, mid.y);
     if(mid.z < level)
       a = mid;
     else
       b = mid;
-  }while ( sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)) > 1e-4);
+  }
+  while ( sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)) > 1e-4);
 
   return a;
 }
+
+
+double RS_Mesh::profile(double x, double y)
+{
+  double z = _pm->profile(x,y);
+  if(_use_signed_log)
+    z = (z > 0 ? 1.0 : -1.0) * log(1.0+fabs(z));
+  return z;
+}
+
 
 
 void RS_Mesh::export_mesh(const RS_String & file)

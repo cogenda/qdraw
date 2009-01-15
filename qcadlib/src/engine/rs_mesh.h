@@ -59,6 +59,36 @@ public:
 
   virtual void draw(RS_Painter*, RS_GraphicView*,  double );
 
+  bool draw_outline() const
+  { return _draw_outline;}
+
+  bool & draw_outline()
+  { return _draw_outline;}
+
+  bool draw_contour() const
+  { return _draw_contour; }
+
+  bool & draw_contour()
+  { return _draw_contour; }
+
+  bool draw_mesh() const
+  { return _draw_mesh; }
+
+  bool & draw_mesh()
+  { return _draw_mesh; }
+
+  int contour_number() const
+  { return _contour_number; }
+
+  int & contour_number()
+  { return _contour_number; }
+
+  bool contour_with_signed_log() const
+  { return _use_signed_log; }
+
+  bool & contour_with_signed_log()
+  { return _use_signed_log; }
+
   triangulateio & get_triangulateio()
   { return io; }
 
@@ -109,6 +139,10 @@ private:
    */
   std::map<int, std::pair<RS_String, RS_String> > _region_mark_to_label_material;
 
+  bool is_semiconductor();
+  bool is_conductor();
+  bool is_insulator();
+
   /**
    * Triangle command line switch
    */
@@ -121,11 +155,19 @@ private:
 
   RS_Vector linear_interpolation(RS_Vector a, RS_Vector b, double level);
 
-  bool _draw_segment;
+  double profile(double x, double y);
+
+  static const int rainbow_color_table[20][3];
+
+  bool _draw_outline;
 
   bool _draw_mesh;
 
   bool _draw_contour;
+
+  bool _use_signed_log;
+
+  int  _contour_number;
 
 };
 
