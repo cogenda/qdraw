@@ -23,9 +23,15 @@ INCDIR = $(DESTDIR)/$(PREFIX)/include/fparser
 #------------------------ do not edit ------------------------
 #
 SHELL = /bin/sh
+SYSTEM         = @SYSTEM@
+
+static_libext := a
+ifeq ($(SYSTEM),CYGWIN)
+  static_libext := lib
+endif
 
 CC           = @CC@
-CXX          = gcc
+CXX          = @CXX@
 CFLAGS       = -I./src @CFLAGS@ @DEFS@
 INSTALL      = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -51,7 +57,7 @@ INS =  $(BASE_INS)
 	$(CXX) $(CFLAGS) -c $< -o $@
 
 
-all: prepare ./lib/libfparser.a
+all: prepare ./lib/libfparser.$(static_libext)
 
 prepare:
 	test -d ./include || mkdir -p ./include
@@ -67,20 +73,19 @@ prepare:
 shared: ./lib/libfparser.so.$(VERSION)
 	@echo
 
-./lib/libfparser.a: $(OBJ) 
+./lib/libfparser.$(static_libext): $(OBJ) 
 	test -d ./lib || mkdir ./lib
-	$(AR) $(ARFLAGS) ./lib/libfparser.a $(OBJ)
+	$(AR) $(ARFLAGS) ./lib/libfparser.$(static_libext) $(OBJ)
 
 ./lib/libfparser.so.$(VERSION): $(OBJ)
 	test -d ./lib || mkdir ./lib
 	$(CC) -p -shared -o ./lib/libfparser.so.$(VERSION) $(OBJ) -lc -lm
 	-(cd ./lib ; ln -s libfparser.so.$(VERSION) libfparser.so)
 
-install: ./lib/libfparser.a
+install: ./lib/libfparser.$(static_libext)
 	test -d $(LIBDIR) || mkdir -p $(LIBDIR)
 	test -d $(INCDIR) || mkdir -p $(INCDIR)
-	$(INSTALL_DATA) ./lib/libfparser.a $(LIBDIR)
-	#-(ln -s $(LIBDIR)/libfparser.a $(LIBDIR)/libfparser.a)
+	$(INSTALL_DATA) ./lib/libfparser.$(static_libext) $(LIBDIR)
 	for IFILE in $(INS); do \
 		$(INSTALL_DATA) $$IFILE  $(INCDIR); \
 	done
@@ -99,7 +104,7 @@ clean:
 	-rm -f ./lib/lib* Makefile.bak
 	-rm -f ./include/fparser/*.h
 	-$(FIND) . -name "*~" -exec rm -f {} \;
-	-rm -f ./lib/libfparser.$(VERSION).a
+	-rm -f ./lib/libfparser.$(VERSION).$(static_libext)
   
 distclean: clean
 	-rm -f Makefile configure

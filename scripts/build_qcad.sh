@@ -4,11 +4,6 @@
 echo "build_qcad.sh"
 echo "Usage: ./build_qcad.sh [options]"
 echo "options:"
-echo "  demo        build demo version"
-echo "  debug       add debug menu"
-echo "  cam         build CAM support if available"
-echo "  scripting   build scripting support if available"
-echo "  prof        build professional version"
 echo "  noclean     don't clean (speeds up building if the options don't change)"
 echo "  noconfig    don't run configure (speeds up building if the options don't change)"
 echo "  noprepare   don't run prepare (speeds up building if the options don't change)"
@@ -19,7 +14,7 @@ echo
 echo "QTDIR is: $QTDIR"
 echo "QMAKESPEC is: $QMAKESPEC"
 
-# lib file extersion 
+# lib file extersion
 libext=a
 
 # detect system:
@@ -29,6 +24,7 @@ then
     echo "Platform is Windows"
     platform=win32
     libext=lib
+    targetpostfix=.exe
 elif [ `uname` == "SunOS" ]
 then
     export MAKE=gmake
@@ -64,26 +60,6 @@ modules="qcadlib qcadcmd qcadactions qcadguiqt"
 
 for arg in $@
 do
-    if [ "$arg" == "demo" ] ; then
-        QMAKE_OPT="$QMAKE_OPT CONFIG+=rs_demo"
-        rs_demo="true"
-    fi
-    if [ "$arg" == "debug" ] ; then
-        QMAKE_OPT="$QMAKE_OPT DEFINES+=RS_DEBUGGING"
-    fi
-    if [ "$arg" == "cam" ] ; then
-        QMAKE_OPT="$QMAKE_OPT CONFIG+=rs_cam"
-        modules="$modules qcadcam"
-        rs_cam="true"
-    fi
-    if [ "$arg" == "scripting" ] ; then
-        QMAKE_OPT="$QMAKE_OPT CONFIG+=rs_scripting"
-        modules="$modules qcadscripting"
-    fi
-    if [ "$arg" == "prof" ] ; then
-        QMAKE_OPT="$QMAKE_OPT CONFIG+=rs_prof"
-        modules="$modules qcadprof"
-    fi
     if [ "$arg" == "noclean" ] ; then
         noclean="true"
     fi
@@ -107,32 +83,13 @@ do
 done
 
 
-if [ "x$rs_cam" == "xtrue" ]
-then
-    if [ "x$platform" == "xosx" ]
+if [ "x$platform" == "xosx" ]
     then
-        targetname="CAMExpert"
+        targetname="QDraw"
     else
-        targetname="camexpert"
-    fi    
-else
-    if [ "x$platform" == "xosx" ]
-    then
-        targetname="QCad"
-    else
-        targetname="qcad"
-    fi    
+        targetname="qdraw"
 fi
-    
-if [ "x$rs_demo" == "xtrue" ]
-then
-    if [ "x$platform" == "xosx" ]
-    then
-        targetpostfix="Demo"
-    else
-        targetpostfix="_demo"
-    fi    
-fi
+
 
 target=$targetname$targetpostfix
 
@@ -222,7 +179,7 @@ do
         eval $MAKE
         cd ..
 
-        if [ ! -f $p/lib/*.a ]
+        if [ ! -f $p/lib/*.$libext ]
         then
             echo "Building $p failed"
             exit;
@@ -248,24 +205,17 @@ cd ..
 eval $MAKE
 cd ..
 
-if [ -z $notrans ]
-then
-     echo "-------- Building Translations --------"
-#    cd scripts
-#    sh ./release_translations.sh
-fi
-
 if [ "x$platform" == "xosx" ]
 then
     if [ ! -d qcad/$target.app ]
     then
-        echo "Building qcad binary failed"
+        echo "Building qdraw binary failed"
         exit;
     fi
 else
     if [ ! -f qcad/$target ]
     then
-        echo "Building qcad binary failed"
+        echo "Building qdraw binary failed"
         exit;
     fi
 fi
@@ -279,15 +229,8 @@ then
         echo Preparing Application Folder for $target
     fi
 
-    if [ "x$rs_cam" == "true" ]
-    then
-        echo "Copying machine configuration files"
-        mkdir $target.app/Contents/Resources/machines
-        cp machines/*.cxm $target.app/Contents/Resources/machines/
-    fi
-
     strip $target.app/Contents/MacOS/$target
-    
+
     #mkdir $target.app/Contents/Resources/doc
     #cp doc/*.html doc/*.css doc/*.adp $target.app/Contents/Resources/doc/
     #mkdir $target.app/Contents/Resources/doc/img

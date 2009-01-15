@@ -7,3 +7,4 @@ clean:
 	cd ../qcadcmd;      make clean;
 	cd ../qcadguiqt;    make clean;
 	cd ../qcadlib;      make clean;
+# DO NOT DELETE

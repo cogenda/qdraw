@@ -24,9 +24,15 @@ INCDIR = @prefix@/include/dxflib
 #------------------------ do not edit ------------------------
 #
 SHELL = /bin/sh
+SYSTEM         = @SYSTEM@
+
+static_libext := a
+ifeq ($(SYSTEM),CYGWIN)
+  static_libext := lib
+endif
 
 CC           = @CC@
-CXX          = gcc
+CXX          = @CXX@
 CFLAGS       = -I./src @CFLAGS@ @DEFS@
 INSTALL      = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
@@ -62,7 +68,7 @@ INS =  $(BASE_INS)
 	$(CXX) $(CFLAGS) -c $< -o $@
 
 
-all: prepare ./lib/libdxf.a
+all: prepare ./lib/libdxf.$(static_libext)
 
 prepare:
 	test -d ./include || mkdir -p ./include
@@ -78,20 +84,19 @@ prepare:
 shared: ./lib/libdxf.so.$(VERSION)
 	@echo
 
-./lib/libdxf.a: $(OBJ) 
+./lib/libdxf.$(static_libext): $(OBJ) 
 	test -d ./lib || mkdir ./lib
-	$(AR) $(ARFLAGS) ./lib/libdxf.a $(OBJ)
+	$(AR) $(ARFLAGS) ./lib/libdxf.$(static_libext) $(OBJ)
 
 ./lib/libdxf.so.$(VERSION): $(OBJ)
 	test -d ./lib || mkdir ./lib
 	$(CC) -p -shared -o ./lib/libdxf.so.$(VERSION) $(OBJ) -lc -lm
 	-(cd ./lib ; ln -s libdxf.so.$(VERSION) libdxf.so)
 
-install: ./lib/libdxf.a
+install: ./lib/libdxf.$(static_libext)
 	test -d $(LIBDIR) || mkdir -p $(LIBDIR)
 	test -d $(INCDIR) || mkdir -p $(INCDIR)
-	$(INSTALL_DATA) ./lib/libdxf.a $(LIBDIR)
-	#-(ln -s $(LIBDIR)/libdxf.a $(LIBDIR)/libdxf.a)
+	$(INSTALL_DATA) ./lib/libdxf.$(static_libext) $(LIBDIR)
 	for IFILE in $(INS); do \
 		$(INSTALL_DATA) $$IFILE  $(INCDIR); \
 	done
@@ -99,7 +104,6 @@ install: ./lib/libdxf.a
 install-shared: ./lib/libdxf.so.$(VERSION)
 	test -d $(LIBDIR) || mkdir -p $(LIBDIR)
 	test -d $(INCDIR) || mkdir -p $(INCDIR)
-	#$(INSTALL_DATA) ./lib/libdxf.so.$(VERSION) $(LIBDIR)
 	-(ln -s $(LIBDIR)/libdxf.so.$(VERSION) $(LIBDIR)/libdxf.so)
 	for IFILE in $(INS); do \
 		$(INSTALL_DATA) $$IFILE  $(INCDIR); \
@@ -111,12 +115,12 @@ clean:
 	-rm -f ./lib/lib* Makefile.bak
 	-rm -f ./include/dxflib/*.h
 	-$(FIND) . -name "*~" -exec rm -f {} \;
-	-rm -f ./lib/libdxf.a
+	-rm -f ./lib/libdxf.$(static_libext)
   
 distclean: clean
 	-rm -f Makefile configure
 
-testing:	./lib/libdxf.a
+testing:	./lib/libdxf.$(static_libext)
 	(cd ./test ; make)
 
 docu:

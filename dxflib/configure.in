@@ -11,16 +11,18 @@ PRODUCT=dxflib
 #
 AC_CANONICAL_HOST
 case "$host" in
-*-linux-gnu )  AC_DEFINE(LINUX) ;;
-     *-aix* )  AC_DEFINE(AIX) ;;
-          * )  AC_DEFINE(UNIX) ;;
+*-linux-gnu )  SYSTEM=LINUX;  AC_DEFINE(LINUX) ;;
+     *-aix* )  SYSTEM=AIX;    AC_DEFINE(AIX)   ;;
+    *cygwin*)  SYSTEM=CYGWIN; AC_DEFINE(CYGWIN);;   
+    *darwin*)  SYSTEM=DARWIN; AC_DEFINE(DARWIN);;
+          * )  SYSTEM=UNIX;   AC_DEFINE(UNIX)  ;;
 esac
 
 #
 # check C compiler, preprocesor, etc.
 #
 AC_PROG_CC
-AC_PROG_CPP
+AC_PROG_CXX
 AC_PROG_INSTALL
 AC_CHECK_PROG(FIND, find, find, :)
 AC_CHECK_PROG(MAKEDEPEND, makedepend, makedepend, :)
@@ -29,9 +31,8 @@ AC_CHECK_PROG(MAKEDEPEND, makedepend, makedepend, :)
 # Try to locate the X Window System include files and libraries
 # and add /usr/local to include and lib path and add -lm (for testing)
 #
-AC_PATH_XTRA
-CFLAGS="$CFLAGS $X_CFLAGS"
-LDFLAGS="$LDFLAGS $X_LIBS -L/usr/local/lib"
+CFLAGS="$CFLAGS "
+LDFLAGS="$LDFLAGS -L/usr/local/lib"
 
 
 #
@@ -46,6 +47,8 @@ AC_CHECK_HEADERS(limits.h)
 #
 # finally create makefiles using Makefile.in
 #
+AC_SUBST(SYSTEM)
+
 echo
 AC_OUTPUT(Makefile test/Makefile)
 
