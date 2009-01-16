@@ -145,26 +145,6 @@ private:
    */
   std::map<int, std::pair<RS_String, RS_String> > _region_mark_to_label_material;
 
-
-
-  enum  MaterialType
-  {
-    Vacuum                      = 0,
-    Semiconductor                  ,
-    SingleCompoundSemiconductor    ,
-    ComplexCompoundSemiconductor   ,
-    Conductor                      ,
-    Insulator                      ,
-    PML                            ,
-    INVALID_MATERIAL_TYPE            // should always be last
-  };
-
-  std::map<RS_String, MaterialType> material_name_to_material_type;
-
-  bool IsSemiconductor(const RS_String & mat_name);
-  bool IsInsulator(const RS_String & mat_name);
-  bool IsConductor(const RS_String & mat_name);
-
   /**
    * Triangle command line switch
    */

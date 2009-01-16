@@ -10,6 +10,7 @@
 #include "qg_colorbox.h"
 #include "qg_widthbox.h"
 #include "qg_dlghatch.h"
+#include "rs_material.h"
 
 void QG_DlgHatch::init()
 {
@@ -27,39 +28,9 @@ void QG_DlgHatch::init()
   connect(this->wPen->cbLineType, SIGNAL(lineTypeChanged()), this, SLOT(updatePreview()));
   connect(this->wPen->cbWidth, SIGNAL(widthChanged()), this, SLOT(updatePreview()));
 
-  MaterialBox->insertItem(tr("Invalid"));
-  MaterialBox->insertItem(tr("Si"));
-  MaterialBox->insertItem(tr("Ge"));
-  MaterialBox->insertItem(tr("GaAs"));
-  MaterialBox->insertItem(tr("InAs"));
-  MaterialBox->insertItem(tr("InSb"));
-  MaterialBox->insertItem(tr("InP"));
-  MaterialBox->insertItem(tr("InN"));
-  MaterialBox->insertItem(tr("SiGe"));
-  MaterialBox->insertItem(tr("AlGaAs"));
-  MaterialBox->insertItem(tr("AlInAs"));
-  MaterialBox->insertItem(tr("InGaAs"));
-  MaterialBox->insertItem(tr("GaAsP"));
-  MaterialBox->insertItem(tr("InGaP"));
-  MaterialBox->insertItem(tr("InAsP"));
-  MaterialBox->insertItem(tr("3C-SiC"));
-  MaterialBox->insertItem(tr("HgCdTe"));
-
-  MaterialBox->insertItem(tr("SiO2"));
-  MaterialBox->insertItem(tr("Nitride"));
-
-  MaterialBox->insertItem(tr("Elec"));
-  MaterialBox->insertItem(tr("Al"));
-  MaterialBox->insertItem(tr("Ag"));
-  MaterialBox->insertItem(tr("Au"));
-  MaterialBox->insertItem(tr("Cu"));
-  MaterialBox->insertItem(tr("PolySi"));
-  MaterialBox->insertItem(tr("TiSi2"));
-
-  MaterialBox->insertItem(tr("Air"));
-  MaterialBox->insertItem(tr("Vacuum"));
-  MaterialBox->insertItem(tr("PML"));
-
+  std::vector<RS_String> materials = RS_Material::get_materials();
+  for(unsigned int n=0; n<materials.size(); ++n)
+    MaterialBox->insertItem(tr(materials[n]));
 }
 
 void QG_DlgHatch::polish()

@@ -26,6 +26,7 @@
 
 #include "rs_settings.h"
 #include "rs_units.h"
+#include "rs_material.h"
 #include "rs_mesh.h"
 #include "rs_text.h"
 #include "rs_graphic.h"
@@ -70,48 +71,6 @@ RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
   _draw_junction = false;
   _use_signed_log = false;
   _contour_number = 19;
-
-  material_name_to_material_type["Si"     ]  = Semiconductor;
-  material_name_to_material_type["Silicon"]  = Semiconductor;
-  material_name_to_material_type["Ge"     ]  = Semiconductor;
-  material_name_to_material_type["GaAs"   ]  = Semiconductor;
-  material_name_to_material_type["InAs"   ]  = Semiconductor;
-  material_name_to_material_type["InSb"   ]  = Semiconductor;
-  material_name_to_material_type["InP"    ]  = Semiconductor;
-  material_name_to_material_type["InN"    ]  = Semiconductor;
-  material_name_to_material_type["SiGe"   ]  = SingleCompoundSemiconductor;
-  material_name_to_material_type["AlGaAs" ]  = SingleCompoundSemiconductor;
-  material_name_to_material_type["InGaAs" ]  = SingleCompoundSemiconductor;
-  material_name_to_material_type["HgCdTe" ]  = SingleCompoundSemiconductor;
-  material_name_to_material_type["AlInAs" ]  = SingleCompoundSemiconductor;
-  material_name_to_material_type["GaAsP"  ]  = SingleCompoundSemiconductor;
-  material_name_to_material_type["InGaP"  ]  = SingleCompoundSemiconductor;
-  material_name_to_material_type["InAsP"  ]  = SingleCompoundSemiconductor;
-  material_name_to_material_type["3C-SiC" ]  = Semiconductor;
-  material_name_to_material_type["S-SiO2" ]  = Semiconductor;
-
-  material_name_to_material_type["Ox"     ]  = Insulator;
-  material_name_to_material_type["SiO2"   ]  = Insulator;
-  material_name_to_material_type["Nitride"]  = Insulator;
-  material_name_to_material_type["Si3N4"  ]  = Insulator;
-  material_name_to_material_type["Nit"    ]  = Insulator;
-
-  material_name_to_material_type["Air"    ]  = Insulator;
-
-  material_name_to_material_type["Elec"   ]  = Conductor;
-  material_name_to_material_type["Al"     ]  = Conductor;
-  material_name_to_material_type["Ag"     ]  = Conductor;
-  material_name_to_material_type["Silver" ]  = Conductor;
-  material_name_to_material_type["Au"     ]  = Conductor;
-  material_name_to_material_type["Gold"   ]  = Conductor;
-  material_name_to_material_type["Cu"     ]  = Conductor;
-  material_name_to_material_type["Copper" ]  = Conductor;
-  material_name_to_material_type["PolySi" ]  = Conductor;
-  material_name_to_material_type["TiSi2"  ]  = Conductor;
-
-  material_name_to_material_type["Vacuum" ]  = Vacuum;
-
-  material_name_to_material_type["PML"    ]  = PML;
 }
 
 
@@ -300,7 +259,7 @@ void RS_Mesh::update()
     {
       int r = int(io.triangleattributelist[i]+0.5);
       RS_String material = _region_mark_to_label_material[r].second;
-      if(!IsSemiconductor(material)) continue;
+      if(!RS_Material::IsSemiconductor(material)) continue;
 
       a.z = profile(a.x, a.y);
       b.z = profile(b.x, b.y);
@@ -491,37 +450,6 @@ double RS_Mesh::profile(double x, double y)
   return z;
 }
 
-
-bool RS_Mesh::IsSemiconductor(const RS_String & mat_name)
-{
-
-  if ( material_name_to_material_type[mat_name] == Semiconductor                  ||
-       material_name_to_material_type[mat_name] == SingleCompoundSemiconductor    ||
-       material_name_to_material_type[mat_name] == ComplexCompoundSemiconductor
-     )
-    return true;
-
-  return false;
-}
-
-
-bool RS_Mesh::IsInsulator(const RS_String & mat_name)
-{
-
-  if ( material_name_to_material_type[mat_name] == Insulator )
-    return true;
-
-  return false;
-}
-
-bool RS_Mesh::IsConductor(const RS_String & mat_name)
-{
-
-  if ( material_name_to_material_type[mat_name] == Conductor )
-    return true;
-
-  return false;
-}
 
 
 void RS_Mesh::export_mesh(const RS_String & file)
