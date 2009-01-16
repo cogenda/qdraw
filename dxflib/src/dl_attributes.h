@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid dxflib Professional Edition licenses may use 
+** Licensees holding valid dxflib Professional Edition licenses may use
 ** this file in accordance with the dxflib Commercial License
 ** Agreement provided with the Software.
 **
@@ -50,6 +50,7 @@ public:
         setColor(0);
         setWidth(0);
         setLineType("BYLAYER");
+        setComment("ext: None");
     }
 
 
@@ -60,18 +61,21 @@ public:
      * @param layer Layer name for this entity or NULL for no layer
      *              (every entity should be on a named layer!).
      * @param color Color number (0..256). 0 = BYBLOCK, 256 = BYLAYER.
-     * @param width Line thickness. Defaults to zero. -1 = BYLAYER, 
+     * @param width Line thickness. Defaults to zero. -1 = BYLAYER,
      *               -2 = BYBLOCK, -3 = default width
      * @param lineType Line type name or "BYLAYER" or "BYBLOCK". Defaults
      *              to "BYLAYER"
      */
     DL_Attributes(const string& layer,
                   int color, int width,
-                  const string& lineType) {
+                  const string& lineType,
+                  const string& comment="ext: None"
+                  ) {
         setLayer(layer);
         setColor(color);
         setWidth(width);
         setLineType(lineType);
+        setComment(comment);
     }
 
 
@@ -137,7 +141,7 @@ public:
 
     /**
      * Sets the line type. This can be any string and is not
-     *  checked to be a valid line type. 
+     *  checked to be a valid line type.
      */
     void setLineType(const string& lineType) {
         this->lineType = lineType;
@@ -157,6 +161,22 @@ public:
     }
 
 
+    /**
+     * Sets the comment, which may contains extra entity informations
+     */
+    void setComment(const string& comment) {
+      this->comment = comment;
+    }
+
+
+
+    /**
+     * @return comment.
+     */
+    string getComment() const {
+      return comment;
+    }
+
 
     /**
      * Copies attributes (deep copies) from another attribute object.
@@ -166,7 +186,7 @@ public:
         setColor(attrib.color);
         setWidth(attrib.width);
         setLineType(attrib.lineType);
-
+        setComment(attrib.comment);
         return *this;
     }
 
@@ -175,6 +195,7 @@ private:
     int color;
     int width;
     string lineType;
+    string comment;
 };
 
 #endif

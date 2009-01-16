@@ -80,7 +80,6 @@ std::vector<RS_String> RS_Material::get_materials()
   std::vector<RS_String> materials;
   materials.push_back("Invalid");
   materials.push_back("Si"     );
-  materials.push_back("Silicon");
   materials.push_back("Ge"     );
   materials.push_back("GaAs"   );
   materials.push_back("InAs"   );
@@ -98,22 +97,16 @@ std::vector<RS_String> RS_Material::get_materials()
   materials.push_back("3C-SiC" );
   materials.push_back("S-SiO2" );
 
-  materials.push_back("Ox"     );
   materials.push_back("SiO2"   );
-  materials.push_back("Nitride");
   materials.push_back("Si3N4"  );
-  materials.push_back("Nit"    );
 
   materials.push_back("Air"    );
 
   materials.push_back("Elec"   );
   materials.push_back("Al"     );
   materials.push_back("Ag"     );
-  materials.push_back("Silver" );
   materials.push_back("Au"     );
-  materials.push_back("Gold"   );
   materials.push_back("Cu"     );
-  materials.push_back("Copper" );
   materials.push_back("PolySi" );
   materials.push_back("TiSi2"  );
 

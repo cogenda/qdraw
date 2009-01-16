@@ -21,11 +21,11 @@ void ProfileEditorErf::init()
   _pm = NULL;
   _profile = NULL;
 
-  profile_property_combobox->insertItem("Na");
-  profile_property_combobox->insertItem("Nd");
+  profile_property_combobox->insertItem(tr("Na"));
+  profile_property_combobox->insertItem(tr("Nd"));
 
-  concentration_type->insertItem("Peak Concentration");
-  concentration_type->insertItem("Dose");
+  concentration_type->insertItem(tr("Peak Concentration"));
+  concentration_type->insertItem(tr("Dose"));
 }
 
 
@@ -110,9 +110,9 @@ void ProfileEditorErf::add_profile_to_profilemanager()
   p.set<double>( "x.max" )  = RS_Math::eval(x1_edit->text()) ;
   p.set<double>( "y.max" )  = RS_Math::eval(y1_edit->text()) ;
 
-  if(concentration_type->currentText() == "Peak Concentration")
+  if(concentration_type->currentText() == tr("Peak Concentration") )
     p.set<double>( "n.peak" ) = RS_Math::eval(concentration_edit->text()) ;
-  if(concentration_type->currentText() == "Dose")
+  if(concentration_type->currentText() == tr("Dose"))
     p.set<double>( "dose" ) = RS_Math::eval(concentration_edit->text()) ;
 
   if(YcharRadioButton->isChecked())
@@ -123,8 +123,8 @@ void ProfileEditorErf::add_profile_to_profilemanager()
 
   p.set<double>( "xy.ratio" ) = RS_Math::eval(LateralDiffusionEdit->text()) ;
 
-  p.set<std::string>( "label" )    = profile_label_edit->text().ascii() ;
-  p.set<std::string>( "property" ) = profile_property_combobox->currentText().ascii() ;
+  p.set<std::string>( "label" )    = profile_label_edit->text().latin1() ;
+  p.set<std::string>( "property" ) = profile_property_combobox->currentText().latin1() ;
 
   //remove old profile from pm if exist
   if(_profile) _pm->remove_profile(_profile->label());
@@ -134,13 +134,13 @@ void ProfileEditorErf::add_profile_to_profilemanager()
   if( _pm->add_profile(p, error_msg) )
   {
     // create new profile failed
-    QMessageBox::critical( 0, "Set Erf Profile", error_msg.c_str());
+    QMessageBox::critical( 0, tr("Set Erf Profile"), error_msg.c_str());
     if(_profile) _pm->insert_profile(_profile);
   }
   else
   {
     if(_profile) delete _profile;
-    _profile = _pm->get_profile(profile_label_edit->text().ascii());
+    _profile = _pm->get_profile(profile_label_edit->text().latin1());
     assert(_profile);
     this->accept();
   }

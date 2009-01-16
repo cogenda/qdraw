@@ -23,7 +23,7 @@
 
 void ProfileEditor::SlotAdd( const QString & type )
 {
-  if(type == "Add Uniform")
+  if(type == tr("Add Uniform"))
   {
     ProfileEditorUniform  profile_uniform;
     profile_uniform.set_profile(_pm, NULL);
@@ -32,7 +32,7 @@ void ProfileEditor::SlotAdd( const QString & type )
     return;
   }
 
-  if(type == "Add Gauss")
+  if(type == tr("Add Gauss"))
   {
     ProfileEditorGauss  profile_gauss;
     profile_gauss.set_profile(_pm, NULL);
@@ -41,7 +41,7 @@ void ProfileEditor::SlotAdd( const QString & type )
     return;
   }
 
-  if(type == "Add Erf")
+  if(type == tr("Add Erf"))
   {
     ProfileEditorErf  profile_erf;
     profile_erf.set_profile(_pm, NULL);
@@ -172,7 +172,7 @@ QString ProfileEditor::getLoadFileName()
   RS_String fn = "";
   bool cancel = false;
 
-  QFileDialog* fileDlg = new QFileDialog(this, "File Dialog", true);
+  QFileDialog* fileDlg = new QFileDialog(this, tr("File Dialog"), true);
 
   QStringList filters;
   filters.append("Profile Data (*.pf)");
@@ -220,7 +220,7 @@ QString ProfileEditor::getSaveFileName()
   RS_SETTINGS->endGroup();
 
   // prepare file save as dialog:
-  QFileDialog* fileDlg = new QFileDialog(this,"Save as",true);
+  QFileDialog* fileDlg = new QFileDialog(this,tr("Save as"),true);
   QStringList filters;
   bool done = false;
   bool cancel = false;

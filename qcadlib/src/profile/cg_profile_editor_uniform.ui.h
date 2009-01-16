@@ -20,8 +20,8 @@ void ProfileEditorUniform::init()
   _pm = NULL;
   _profile = NULL;
 
-  profile_property_combobox->insertItem("Na");
-  profile_property_combobox->insertItem("Nd");
+  profile_property_combobox->insertItem(tr("Na"));
+  profile_property_combobox->insertItem(tr("Nd"));
 
 }
 
@@ -69,8 +69,8 @@ void ProfileEditorUniform::add_profile_to_profilemanager()
 
   p.set<double>( "n.peak" ) = RS_Math::eval(concentration_edit->text()) ;
 
-  p.set<std::string>( "label" )    = profile_label_edit->text().ascii() ;
-  p.set<std::string>( "property" ) = profile_property_combobox->currentText().ascii() ;
+  p.set<std::string>( "label" )    = profile_label_edit->text().latin1() ;
+  p.set<std::string>( "property" ) = profile_property_combobox->currentText().latin1() ;
 
   //remove old profile from pm if exist
   if(_profile) _pm->remove_profile(_profile->label());
@@ -80,13 +80,13 @@ void ProfileEditorUniform::add_profile_to_profilemanager()
   if( _pm->add_profile(p, error_msg) )
   {
     // create new profile failed
-    QMessageBox::critical( 0, "Set Uniform Profile", error_msg.c_str());
+    QMessageBox::critical( 0, tr("Set Uniform Profile"), error_msg.c_str());
     if(_profile) _pm->insert_profile(_profile);
   }
   else
   {
     if(_profile) delete _profile;
-    _profile = _pm->get_profile(profile_label_edit->text().ascii());
+    _profile = _pm->get_profile(profile_label_edit->text().latin1());
     assert(_profile);
     this->accept();
   }

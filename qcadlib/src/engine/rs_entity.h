@@ -83,6 +83,20 @@ public:
   virtual void initLabel()
   { label = "Unknown" + RS_String::number(id); }
 
+  /**
+   * @return the extra entity info as RS_String
+   * can be override by each derived entities.
+   */
+  virtual RS_String get_ext_info() const
+  { return "ext: None"; }
+
+  /**
+   * set the extra entity info by RS_String
+   * can be override by each derived entities.
+   */
+  virtual void set_ext_info(RS_String )
+  { /* do nothing */ }
+
   virtual RS_Entity* clone() = 0;
 
   virtual void reparent(RS_EntityContainer* parent)

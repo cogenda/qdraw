@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -41,88 +41,94 @@
  *
  * @author Andrew Mustun
  */
-class RS_FilterDXF1 : public RS_FilterInterface {
+class RS_FilterDXF1 : public RS_FilterInterface
+{
 public:
-    RS_FilterDXF1();
-    ~RS_FilterDXF1() {}
+  RS_FilterDXF1();
+  ~RS_FilterDXF1() {}
 
-	/**
-	 * @return RS2::FormatDXF1.
-	 */
-	//RS2::FormatType rtti() {
-	//	return RS2::FormatDXF1;
-	//}
+  /**
+   * @return RS2::FormatDXF1.
+   */
+  //RS2::FormatType rtti() {
+  //	return RS2::FormatDXF1;
+  //}
 
-	/*
-    virtual bool canImport(RS2::FormatType t) {
-		return (t==RS2::FormatDXF1);
-	}
-	
-    virtual bool canExport(RS2::FormatType t) {
-		return false;
-	}*/
+  /*
+     virtual bool canImport(RS2::FormatType t) {
+  	return (t==RS2::FormatDXF1);
+  }
 
-    virtual bool fileImport(RS_Graphic& g, const RS_String& file, RS2::FormatType /*type*/);
+     virtual bool canExport(RS2::FormatType t) {
+  	return false;
+  }*/
 
-    virtual bool fileExport(RS_Graphic& /*g*/, const RS_String& /*file*/, 
-		RS2::FormatType /*type*/) {
-        RS_DEBUG->print(RS_Debug::D_WARNING,
-                        "Exporting of QCad 1.x file not implemented");
-		return false;
-    }
+  virtual bool fileImport(RS_Graphic& g, const RS_String& file, RS2::FormatType /*type*/);
 
-    bool readFromBuffer();
+  virtual bool fileExport(RS_Graphic& /*g*/, const RS_String& /*file*/,
+                          RS2::FormatType /*type*/)
+  {
+    RS_DEBUG->print(RS_Debug::D_WARNING,
+                    "Exporting of QCad 1.x file not implemented");
+    return false;
+  }
 
-    void    reset();
-    void    resetBufP();
+  bool readFromBuffer();
 
-    void    setBufP(int _fBufP);
-    int     getBufP() {
-        return fBufP;
-    }
-    void    delBuffer();
-    void    dos2unix();
+  void    reset();
+  void    resetBufP();
 
-    RS_String getBufLine();
-    char*   getBufLineCh();
-    char*   getBuf() {
-        return fBuf;
-    }
-    void    setBuf(char* _buf) {
-        fBuf=_buf;
-    }
-    void    setFSize(uint _s) {
-        fSize=_s;
-    }
-    void    copyBufFrom(const char* _buf);
-    bool    gotoBufLine(char* _lstr);
-    bool    gotoBufLineString(char* _lstr);
+  void    setBufP(int _fBufP);
+  int     getBufP()
+  {
+    return fBufP;
+  }
+  void    delBuffer();
+  void    dos2unix();
 
-    void    replaceBinaryBytesBy(char _c);
-    void    separateBuf(char _c1=13,
-                        char _c2=10,
-                        char _c3=0,
-                        char _c4=0);
-    void    removeComment(char _fc='(',
-                          char _lc=')');
+  RS_String getBufLine();
+  char*   getBufLineCh();
+  char*   getBuf()
+  {
+    return fBuf;
+  }
+  void    setBuf(char* _buf)
+  {
+    fBuf=_buf;
+  }
+  void    setFSize(uint _s)
+  {
+    fSize=_s;
+  }
+  void    copyBufFrom(const char* _buf);
+  bool    gotoBufLine(char* _lstr);
+  bool    gotoBufLineString(char* _lstr);
 
-    bool    readFileInBuffer(char* _name, int _bNum=-1);
-    bool    readFileInBuffer(int _bNum=-1);
+  void    replaceBinaryBytesBy(char _c);
+  void    separateBuf(char _c1=13,
+                      char _c2=10,
+                      char _c3=0,
+                      char _c4=0);
+  void    removeComment(char _fc='(',
+                        char _lc=')');
 
-    void     strDecodeDxfString(RS_String& str);
-    bool     mtCompFloat(double _v1, double _v2, double _tol=1.0e-6);
+  bool    readFileInBuffer(char* _name, int _bNum=-1);
+  bool    readFileInBuffer(int _bNum=-1);
+
+  void     strDecodeDxfString(RS_String& str);
+  bool     mtCompFloat(double _v1, double _v2, double _tol=1.0e-6);
 
 protected:
-    /** Pointer to the graphic we currently operate on. */
-    RS_Graphic* graphic;
-    FILE*   fPointer;         // File pointer
-    char*   fBuf;             // Filebuffer
-    int     fBufP;            // Filebuffer-Pointer (walks through 'fBuf')
-    uint    fSize;            // Filesize
-    bool    dosFile;          // File is in DOS-format
-    int       numElements;
-    RS_String name;
-    RS_File  file;
+  /** Pointer to the graphic we currently operate on. */
+  RS_Graphic* graphic;
+  FILE*   fPointer;         // File pointer
+  char*   fBuf;             // Filebuffer
+  int     fBufP;            // Filebuffer-Pointer (walks through 'fBuf')
+  uint    fSize;            // Filesize
+  bool    dosFile;          // File is in DOS-format
+  int       numElements;
+  RS_String name;
+  RS_File  file;
 }
 ;
 

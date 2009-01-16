@@ -160,8 +160,6 @@ private:
 
   double profile(double x, double y);
 
-
-
   static const int rainbow_color_table[19][3];
 
   bool _draw_outline;

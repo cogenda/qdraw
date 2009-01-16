@@ -107,6 +107,32 @@ public:
     label = "Ellipse" + RS_String::number(idCounter++);
   }
 
+  /**
+   * @return the extra entity info as RS_String
+   * can be override by each derived entities.
+   */
+  virtual RS_String get_ext_info() const
+  {
+    RS_String ext_info = "ext: "
+        + label + ' '
+        + RS_String::number(division);
+    return ext_info;
+  }
+
+  /**
+   * set the extra entity info by RS_String
+   * can be override by each derived entities.
+   */
+  virtual void set_ext_info(RS_String ext_info)
+  {
+    if(ext_info=="") return;
+    RS_String  sec;
+    sec   = ext_info.section(' ', 1, 1);
+    label = sec;
+    sec   = ext_info.section(' ', 2);
+    division = sec.toUInt();
+  }
+
   /**	@return RS2::EntityEllipse */
   virtual RS2::EntityType rtti() const
   {
