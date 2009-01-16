@@ -124,7 +124,7 @@ public:
     sec   = ext_info.section(' ', 1, 1);
     label = sec;
     sec   = ext_info.section(' ', 2);
-    division = sec.toUInt();
+    division = sec.toUInt() < 3 ? 3 : sec.toUInt();
   }
 
   /**	@return RS2::EntityCircle */

@@ -135,7 +135,7 @@ public:
     sec   = ext_info.section(' ', 1, 1);
     label = sec;
     sec   = ext_info.section(' ', 2);
-    division = sec.toUInt();
+    division = sec.toUInt() < 1 ? 1 : sec.toUInt();
   }
 
   /**	@return RS2::EntityArc */

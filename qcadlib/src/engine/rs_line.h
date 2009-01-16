@@ -115,7 +115,7 @@ public:
     sec   = ext_info.section(' ', 1, 1);
     label = sec;
     sec   = ext_info.section(' ', 2, 2);
-    division = sec.toUInt();
+    division = sec.toUInt() < 1 ? 1 : sec.toUInt();
     sec   = ext_info.section(' ', 3);
     point_set = bool(sec.toInt());
   }

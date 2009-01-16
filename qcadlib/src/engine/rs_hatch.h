@@ -127,6 +127,39 @@ public:
     label = "Hatch" + RS_String::number(idCounter++);
   }
 
+  /**
+   * @return the extra entity info as RS_String
+   * can be override by each derived entities.
+   */
+  virtual RS_String get_ext_info() const
+  {
+    RS_String ext_info = "ext: "
+        + label + ' '
+        + data.material + ' '
+        + RS_String::number(data.hole) + ' '
+        + RS_String::number(data.area_control);
+    return ext_info;
+  }
+
+  /**
+   * set the extra entity info by RS_String
+   * can be override by each derived entities.
+   */
+  virtual void set_ext_info(RS_String ext_info)
+  {
+    if(ext_info=="") return;
+    RS_String  sec;
+    sec   = ext_info.section(' ', 1, 1);
+    label = sec;
+    data.label = sec;
+    sec   = ext_info.section(' ', 2, 2);
+    data.material = sec;
+    sec   = ext_info.section(' ', 3, 3);
+    data.hole = bool(sec.toInt());
+    sec   = ext_info.section(' ', 4);
+    data.area_control = sec.toDouble();
+  }
+
   /**	@return RS2::EntityHatch */
   virtual RS2::EntityType rtti() const
   {
@@ -201,7 +234,7 @@ public:
   {
     data.angle = angle;
   }
-  
+
   virtual void calculateBorders();
   void update();
   void activateContour(bool on);
