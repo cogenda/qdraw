@@ -21,9 +21,11 @@
 #ifndef __cg_profile_h__
 #define __cg_profile_h__
 
-#include <cmath>
+
 #include <string>
 #include <sstream>
+
+#include "rs_math.h"
 
 /**
  * the base class for profile function
@@ -408,7 +410,7 @@ public:
   double profile(double x,double y) const
   {
     double dx,dy;
-    dx = (erfc((x-_xmax)/_XCHAR)-erfc((x-_xmin)/_XCHAR))/2;
+    dx = (RS_Math::erfc((x-_xmax)/_XCHAR)-RS_Math::erfc((x-_xmin)/_XCHAR))/2;
     if(y<_ymin)
       dy = exp(-(y-_ymin)*(y-_ymin)/(_YCHAR*_YCHAR));
     else if(y>=_ymin&&y<=_ymax)

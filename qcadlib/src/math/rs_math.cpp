@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -30,7 +30,7 @@
 
 
 /**
- * Rounds the given double to the next int. 
+ * Rounds the given double to the next int.
  */
 int RS_Math::round(double v) {
     return (v-floor(v)<0.5 ? (int)floor(v) : (int)ceil(v));
@@ -58,6 +58,34 @@ double RS_Math::pow(double x, double y) {
 	return ret;
 }
 
+
+double RS_Math::erfc(double x)
+{
+   // Compute the complementary error function erfc(x).
+   // Erfc(x) = (2/sqrt(pi)) Integral(exp(-t^2))dt between x and infinity
+  //
+   //--- Nve 14-nov-1998 UU-SAP Utrecht
+
+   // The parameters of the Chebyshev fit
+  const double a1 = -1.26551223,   a2 = 1.00002368,
+  a3 =  0.37409196,   a4 = 0.09678418,
+  a5 = -0.18628806,   a6 = 0.27886807,
+  a7 = -1.13520398,   a8 = 1.48851587,
+  a9 = -0.82215223,  a10 = 0.17087277;
+
+  double v = 1; // The return value
+  double z = fabs(x);
+
+  if (z <= 0) return v; // erfc(0)=1
+
+  double t = 1/(1+0.5*z);
+
+  v = t*exp((-z*z) +a1+t*(a2+t*(a3+t*(a4+t*(a5+t*(a6+t*(a7+t*(a8+t*(a9+t*a10)))))))));
+
+  if (x < 0) v = 2-v; // erfc(-x)=2-erfc(x)
+
+  return v;
+}
 
 
 /**
@@ -105,7 +133,7 @@ int RS_Math::findGCD(int a, int b) {
 
 
 /**
- * Tests if angle a is between a1 and a2. a, a1 and a2 must be in the 
+ * Tests if angle a is between a1 and a2. a, a1 and a2 must be in the
  * range between 0 and 2*PI.
  * All angles in rad.
  *
@@ -180,7 +208,7 @@ double RS_Math::getAngleDifference(double a1, double a2) {
 * @param readable true: make angle readable, false: unreadable
 * @param corrected Will point to true if the given angle was
 *   corrected, false otherwise.
-* 
+*
  * @return The given angle or the given angle+PI, depending which on
  * is readable from the bottom or right.
  */
@@ -209,7 +237,7 @@ double RS_Math::makeAngleReadable(double angle, bool readable,
 
 
 /**
- * @return true: if the given angle is in a range that is readable 
+ * @return true: if the given angle is in a range that is readable
  * for texts created with that angle.
  */
 bool RS_Math::isAngleReadable(double angle) {
@@ -230,12 +258,12 @@ bool RS_Math::isAngleReadable(double angle) {
 bool RS_Math::isSameDirection(double dir1, double dir2, double tol) {
 	double diff = fabs(dir1-dir2);
 	if (diff<tol || diff>2*M_PI-tol) {
-		//std::cout << "RS_Math::isSameDirection: " << dir1 << " and " << dir2 
+		//std::cout << "RS_Math::isSameDirection: " << dir1 << " and " << dir2
 		//	<< " point in the same direction" << "\n";
 		return true;
 	}
 	else {
-		//std::cout << "RS_Math::isSameDirection: " << dir1 << " and " << dir2 
+		//std::cout << "RS_Math::isSameDirection: " << dir1 << " and " << dir2
 		//	<< " don't point in the same direction" << "\n";
 		return false;
 	}
@@ -281,7 +309,7 @@ double RS_Math::eval(const RS_String& expr, double def) {
  * Converts a double into a string which is as short as possible
  *
  * @param value The double value
- * @param prec Precision e.g. a precision of 1 would mean that a 
+ * @param prec Precision e.g. a precision of 1 would mean that a
  *     value of 2.12030 will be converted to "2.1". 2.000 is always just "2").
  */
 RS_String RS_Math::doubleToString(double value, double prec) {

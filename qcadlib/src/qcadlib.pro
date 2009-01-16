@@ -106,7 +106,6 @@ HEADERS     = \
               profile/cg_profile.h\
               profile/cg_profile_manager.h\
               profile/cg_parameters.h\
-              profile/cg_profile_editor.h\
               grid/cg_meshgen.h\
               grid/cg_export_mesh.h\
               grid/triangle.h\

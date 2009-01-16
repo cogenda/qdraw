@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -30,6 +30,10 @@
 // no idea why, but doesn't link without that under win32 / bcc55:
 #ifndef _MT
 #define _MT
+#endif
+
+#ifndef M_PI
+#define M_PI		3.14159265358979323846
 #endif
 
 #include <math.h>
@@ -61,7 +65,8 @@ typedef unsigned int uint;
 class RS_Math {
 public:
     static int round(double v);
-	static double pow(double x, double y);
+    static double pow(double x, double y);
+    static double erfc(double x);
 
     //static double abs(double v);
     //static int abs(int v);
@@ -81,7 +86,7 @@ public:
     static double eval(const RS_String& expr, double def=0.0);
 
     static bool cmpDouble(double v1, double v2, double tol=0.001);
-  	
+
     /**
      * Evaluates a mathematical expression and returns the result.
      * If an error occured, ok will be set to false (if ok isn't NULL).
