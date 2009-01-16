@@ -148,7 +148,10 @@ public:
   virtual void set_ext_info(RS_String ext_info)
   {
     if(ext_info=="") return;
+
     RS_String  sec;
+    sec   = ext_info.section(' ', 0, 0);
+    if(sec != "ext:") return;
     sec   = ext_info.section(' ', 1, 1);
     label = sec;
     data.label = sec;

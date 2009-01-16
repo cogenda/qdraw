@@ -28,8 +28,7 @@
 
 #include <fstream>
 #include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
+
 
 #include <qaccel.h>
 #include <qaction.h>
@@ -3161,7 +3160,7 @@ void QC_ApplicationWindow::slotHelpAbout()
 void QC_ApplicationWindow::slotHelpManual()
 {
   RS_DEBUG->print("QC_ApplicationWindow::slotHelpManual()");
-
+#ifdef LINUX
   if (assistant==NULL)
   {
     RS_DEBUG->print("QC_ApplicationWindow::slotHelpManual(): appdir: %s",
@@ -3183,10 +3182,18 @@ void QC_ApplicationWindow::slotHelpManual()
   }
   assistant->openAssistant();
   //assistant->showPage("index.html");
+#endif
+
 }
+
+#ifdef LINUX
+  #include <sys/wait.h>
+  #include <unistd.h>
+#endif
 
 void QC_ApplicationWindow::slotAssistantError(const QString&)
 {
+#ifdef LINUX
   if ( !assistant->isOpen() )
   {
     pid_t pid;
@@ -3222,6 +3229,7 @@ void QC_ApplicationWindow::slotAssistantError(const QString&)
     int status;
     waitpid( pid, &status, 0 );
   }
+#endif
 }
 
 

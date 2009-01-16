@@ -1,11 +1,17 @@
 # $Id: defs.pro 606 2004-12-25 03:08:40Z andrew $
-#QMAKE_CXXFLAGS_DEBUG += -pedantic
-#QMAKE_CXXFLAGS += -pedantic
+#QMAKE_CXXFLAGS_DEBUG += -DLINUX
+#QMAKE_CXXFLAGS += -DLINUX
 
 win32 {
   QMAKE_CFLAGS_THREAD -= -mthreads
   QMAKE_LFLAGS_THREAD -= -mthreads
 }
+
+linux{
+  QMAKE_CXXFLAGS += -DLINUX
+  QMAKE_CXXFLAGS += -DLINUX
+}
+
 
 # detect prof version
 rs_prof {
@@ -15,10 +21,6 @@ rs_prof {
   }
 }
 
-# detect demo version
-rs_demo {
-	DEFINES += RS_DEMO
-}
 
 # detect fparser
 !exists(../fparser) {
@@ -30,13 +32,6 @@ rs_demo {
     DEFINES += RS_NO_QCADCMD
 }
 
-# detect cam support
-rs_cam {
-  exists(../qcadcam) {
-    DEFINES += RS_CAM
-    INCLUDEPATH += ../../qcadcam/include
-  }
-}
 
 # detect scripting support:
 rs_scripting {

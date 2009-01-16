@@ -2678,7 +2678,7 @@ void RS_FilterDXF::setEntityAttributes(RS_Entity* entity,
 
   entity->setPen(pen);
 
-  entity->set_ext_info(attrib.getComment());
+  entity->set_ext_info(attrib.getComment().c_str());
 
   RS_DEBUG->print("RS_FilterDXF::setEntityAttributes: OK");
 }

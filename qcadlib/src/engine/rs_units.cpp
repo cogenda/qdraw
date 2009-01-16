@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -119,7 +119,7 @@ RS_String RS_Units::unitToSign(RS2::Unit u) {
         ret = "km";
         break;
     case RS2::Microinch:
-        ret = "µ\"";
+        ret = "u\"";
         break;
     case RS2::Mil:
         ret = "mil";
@@ -134,7 +134,7 @@ RS_String RS_Units::unitToSign(RS2::Unit u) {
         ret = "nm";
         break;
     case RS2::Micron:
-        ret = "µm";
+        ret = "um";
         break;
     case RS2::Decimeter:
         ret = "dm";
@@ -1340,29 +1340,29 @@ void RS_Units::test() {
        v = 0.0261799;
        s = RS_Units::formatAngle(v, RS2::DegreesDecimal, 2);
        std::cout << "s: " << s << "\n";
-       assert(s=="1.5°");
+       assert(s=="1.5");
 
        v = 0;
        s = RS_Units::formatAngle(v, RS2::DegreesDecimal, 2);
        std::cout << "s: " << s << "\n";
-       assert(s=="0°");
+       assert(s=="0");
 
        v = 1.5707963;
        s = RS_Units::formatAngle(v, RS2::DegreesDecimal, 2);
        std::cout << "s: " << s << "\n";
-       assert(s=="90°");
+       assert(s=="90");
 
        std::cout << "RS_Units::test: formatAngle (deg / d/m/s):\n";
 
        v = 0.0260926;
        s = RS_Units::formatAngle(v, RS2::DegreesMinutesSeconds, 1);
        std::cout << "s: " << s << "\n";
-       assert(s=="1° 29' 42\"");
+       assert(s=="1 29' 42\"");
 
        v = 0.0261799;
        s = RS_Units::formatAngle(v, RS2::DegreesMinutesSeconds, 1);
        std::cout << "s: " << s << "\n";
-       assert(s=="1° 30' 0\"");
+       assert(s=="1 30' 0\"");
     */
 }
 

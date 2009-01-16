@@ -43,6 +43,14 @@
 #define QC_COMPANYKEY "/Cogenda"
 #endif
 
+#ifndef QC_APPKEY
+#define QC_APPKEY "/QDraw"
+#endif
+
+#ifndef QC_APPDIR
+#define QC_APPDIR "qdraw"
+#endif
+
 QStringList handleArgs(int argc, char** argv);
 
 #endif

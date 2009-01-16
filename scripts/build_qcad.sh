@@ -20,7 +20,7 @@ libext=a
 # detect system:
 if [ "x$OS" == "xWindows_NT" ]
 then
-    export MAKE=make
+    export MAKE=nmake
     echo "Platform is Windows"
     platform=win32
     libext=lib
