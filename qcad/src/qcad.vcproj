@@ -20,6 +20,7 @@
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC70.vsprops"
 			UseOfMFC="0"
+			UseOfATL="0"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			>
 			<Tool
@@ -48,7 +49,7 @@
 				PreprocessorDefinitions="QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;WIN32;QT_DLL;QT_THREAD_SUPPORT;_USE_MATH_DEFINES"
 				GeneratePreprocessedFile="0"
 				ExceptionHandling="1"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				BufferSecurityCheck="false"
 				AssemblerListingLocation="obj\"
 				ObjectFile="obj\"
@@ -242,6 +243,10 @@
 			Filter="cpp;ico;png;jpg;jpeg;gif;xpm;bmp;rc;ts"
 			ParseFiles="false"
 			>
+			<File
+				RelativePath=".\qcad.rc"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
