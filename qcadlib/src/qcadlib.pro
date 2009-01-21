@@ -107,8 +107,11 @@ HEADERS     = \
               profile/cg_profile.h\
               profile/cg_profile_manager.h\
               profile/cg_parameters.h\
+              grid/cg_pslg.h\
               grid/cg_meshgen.h\
               grid/cg_export_mesh.h\
+              grid/cg_quadtree.h\
+              grid/tree.h\
               grid/triangle.h\
               scripting/rs_python.h \
               scripting/rs_simplepython.h \
@@ -186,6 +189,8 @@ SOURCES     = \
               profile/cg_profile_manager.cpp\
               grid/cg_meshgen.cpp\
               grid/cg_export_mesh.cpp\
+              grid/cg_pslg.cpp\
+              grid/cg_quadtree.cpp\
               grid/triangle.c\
               scripting/rs_python.cpp \
               scripting/rs_simplepython.cpp \

@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -184,7 +184,7 @@ double RS_Vector::magnitude() const
 
 
 /**
- * 
+ *
  */
 RS_Vector RS_Vector::lerp(const RS_Vector& v, double t) const
 {
@@ -300,7 +300,7 @@ RS_Vector RS_Vector::scale(RS_Vector center, RS_Vector factor)
 RS_Vector RS_Vector::mirror(RS_Vector axisPoint1, RS_Vector axisPoint2)
 {
   /*
-  RS_ConstructionLine axis(NULL, 
+  RS_ConstructionLine axis(NULL,
   	RS_ConstructionLineData(axisPoint1, axisPoint2));
 
   RS_Vector xp = axis.getNearestPointOnEntity(*this);
@@ -448,6 +448,11 @@ bool RS_Vector::operator == (const RS_Vector& v) const
   return (x==v.x && y==v.y && z==v.z && valid==v.valid);
 }
 
+
+bool RS_Vector::absolute_fuzzy_equals(const RS_Vector & v, double tol) const
+{
+  return (fabs(x - v.x) + fabs(y - v.y) + fabs(z - v.z) <= tol);
+}
 
 
 /**

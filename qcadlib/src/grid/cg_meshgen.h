@@ -21,10 +21,11 @@
 #ifndef __cg_meshgen_h__
 #define __cg_meshgen_h__
 
-#include <vector>
-#include <map>
+
 #include <string>
 #include "triangle.h"
+#include "cg_pslg.h"
+
 
 class RS_String;
 class RS_Vector;
@@ -76,14 +77,9 @@ private:
   RS_GraphicView * _gv;
 
   /**
-   * build PSLG from visitable Entities in current layer
+   * PSLG for mesh
    */
-  void convert_cad_to_pslg();
-
-  /**
-   * function to add point into PSLG, drop any overlaped points
-   */
-  unsigned int add_point(const RS_Vector &v);
+  CG_PSLG * _pslg;
 
   /**
    * create a new layer to hold the mesh
@@ -91,55 +87,14 @@ private:
   void create_new_mesh_layer();
 
   /**
-   * find existing mesh
+   * find existing mesh object
    */
   RS_Mesh* find_mesh();
 
   /**
-   * PSLG points
+   * use quadtree method to create aux mesh points
    */
-  std::vector<RS_Vector> _points;
-
-  struct CG_Segment
-  {
-     unsigned int p1, p2;
-     int mark;
-  };
-
-  /**
-   * PSLG segments
-   */
-  std::vector<CG_Segment> _segments;
-
-  /**
-   * map mark to segment label
-   */
-  std::map<RS_String, int> _label_to_mark;
-
-  struct CG_Region
-  {
-    double x;
-    double y;
-    double area_control;
-    RS_String label;
-    RS_String material;
-  };
-
-  /**
-   * PSLG region
-   */
-  std::vector<CG_Region> _regions;
-
-  struct CG_Hole
-  {
-    double x;
-    double y;
-  };
-
-  /**
-   * PSLG hole
-   */
-  std::vector<CG_Hole> _holes;
+  void build_quadtree_points();
 
   /**
    * triangle data structure

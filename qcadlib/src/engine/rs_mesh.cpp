@@ -61,7 +61,7 @@ const int RS_Mesh::rainbow_color_table[19][3] =
 
 
 RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
-    :RS_EntityContainer(parent, owner), _pm(0)
+  :RS_EntityContainer(parent, owner), _pslg(0), _pm(0)
 {
   memset(&io, 0, sizeof(triangulateio));
 
@@ -76,6 +76,7 @@ RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
 
 RS_Mesh::~RS_Mesh()
 {
+  delete _pslg;
   clear_triangulateio();
 }
 
@@ -258,7 +259,7 @@ void RS_Mesh::update()
     if((_draw_contour || _draw_junction) && fabs(bbox.z)>1e-14)
     {
       int r = int(io.triangleattributelist[i]+0.5);
-      RS_String material = _region_mark_to_label_material[r].second;
+      RS_String material = _pslg->get_region_material(r);
       if(!RS_Material::IsSemiconductor(material)) continue;
 
       a.z = profile(a.x, a.y);
@@ -501,23 +502,24 @@ void RS_Mesh::export_mesh(const RS_String & file)
   fout<<'\n';
 
   // write region information
-  std::map<int, std::pair<RS_String, RS_String> >::iterator region_it = _region_mark_to_label_material.begin();
-  for(; region_it!=_region_mark_to_label_material.end(); ++region_it)
+  std::vector<CG_Region> & regions = _pslg->get_regions();
+  for(unsigned int r=0; r<regions.size(); ++r)
     fout<< 'r' << '\t'
-    << region_it->first+1 << '\t'
-    << (region_it->second).second << '\t'
-    << (region_it->second).first << '\n';
+        << r+1 << '\t'
+        << regions[r].material << '\t'
+        << regions[r].label << '\n';
   fout<<'\n';
 
   // write segment
-  std::map<int , RS_String>::iterator segment_it = _segment_mark_to_label.begin();
-  for(; segment_it != _segment_mark_to_label.end(); ++segment_it)
+  std::map<int, RS_String> & segment_info = _pslg->get_segments_info();
+  std::map<int, RS_String>::iterator segment_it = segment_info.begin();
+  for(; segment_it != segment_info.end(); ++segment_it)
   {
     fout<< 'i' << '\t'
-    << segment_it->first + 1 << '\t'
-    << "ANY" << '\t'
-    << segment_it->second << '\t'
-    << 0 << '\n';
+        << segment_it->first << '\t'
+        << "ANY" << '\t'
+        << segment_it->second << '\t'
+        << 0 << '\n';
     for(int i=0; i<io.numberofsegments; ++i)
       if(io.segmentmarkerlist[i] == segment_it->first)
         fout<< " j" << '\t'
@@ -568,7 +570,7 @@ void RS_Mesh::export_mesh(const RS_String & file)
 
     fout<< 'n' << '\t'
     << pm_it->first+1 << '\t'
-    << _region_mark_to_label_material[pm_it->second].second << '\t'
+    << _pslg->get_region_material(pm_it->second) << '\t'
     << 0.5*(Nd-Na) << '\t'
     << 0.5*(Nd+Na) << '\t'
     << Nd << '\t'

@@ -25,6 +25,7 @@
 #include <map>
 
 #include "triangle.h"
+#include "cg_pslg.h"
 #include "rs_entitycontainer.h"
 
 class ProfileManager;
@@ -101,12 +102,6 @@ public:
   const triangulateio & get_triangulateio() const
   { return io; }
 
-  void add_segment_info(int mark, RS_String label)
-  { _segment_mark_to_label[mark] = label;  }
-
-  void add_region_info(int mark, RS_String label, RS_String material)
-  { _region_mark_to_label_material[mark] = std::make_pair(label, material); }
-
   const RS_String & tri_cmd() const
   {return _tri_cmd;}
 
@@ -115,6 +110,12 @@ public:
 
   void set_profile_manager(ProfileManager *pm)
   { _pm = pm; }
+
+  void set_pslg(CG_PSLG * pslg)
+  { _pslg = pslg; }
+
+  CG_PSLG * get_pslg()
+  { return _pslg; }
 
   void set_refine_flag(double d, bool signed_log);
 
@@ -136,29 +137,23 @@ private:
   double triangle_area(int a, int b, int c);
 
   /**
-   * segment mark to segment label (in QString)
+   * the PSLG of this mesh
    */
-  std::map<int , RS_String> _segment_mark_to_label;
-
-  /**
-   * segment mark to region label and material
-   */
-  std::map<int, std::pair<RS_String, RS_String> > _region_mark_to_label_material;
+  CG_PSLG * _pslg;
 
   /**
    * Triangle command line switch
    */
   RS_String _tri_cmd;
 
-
   /**
    * hold a pointer to ProfileManager
    */
   ProfileManager *_pm;
 
-  RS_Vector linear_interpolation(RS_Vector a, RS_Vector b, double level);
-
   double profile(double x, double y);
+
+  RS_Vector linear_interpolation(RS_Vector a, RS_Vector b, double level);
 
   static const int rainbow_color_table[19][3];
 

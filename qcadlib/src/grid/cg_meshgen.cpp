@@ -24,10 +24,9 @@
 #include "rs_string.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
-#include "rs_spline.h"
-#include "rs_hatch.h"
 #include "rs_mesh.h"
 #include "cg_meshgen.h"
+#include "cg_quadtree.h"
 #include "cg_profile_manager.h"
 
 MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv, ProfileManager *pm)
@@ -37,264 +36,32 @@ MeshGenerator::MeshGenerator(RS_Document * doc, RS_GraphicView * gv, ProfileMana
 }
 
 
-void MeshGenerator::convert_cad_to_pslg()
-{
-  RS_Graphic * g = _gv->getGraphic();
-  if(g==NULL) return;
-
-  //mesh all the entity on active layer
-  for (RS_Entity* e=g->firstEntity(); e!=NULL; e=g->nextEntity())
-    if(e->isOnActiveLayer() && e->isVisible())
-    {
-      switch (e->rtti())
-      {
-      case RS2::EntityPoint :
-        {
-          const RS_Point * p = (const RS_Point *)e;
-          add_point(p->getData().pos);
-          break;
-        }
-
-      case RS2::EntityLine :
-        {
-          const RS_Line * line = (const RS_Line *)e;
-          int mark;
-          if(_label_to_mark.find(line->getLabel())!=_label_to_mark.end())
-            mark = _label_to_mark[line->getLabel()];
-          else
-          {
-            mark = _label_to_mark.size()+1;
-            _label_to_mark[line->getLabel()] = mark;
-          }
-
-          unsigned int division = line->getDivision();
-          RS_Vector  start = line->getStartpoint();
-          RS_Vector  end = line->getEndpoint();
-          RS_Vector  p1 = start;
-          RS_Vector  p2 = p1 + (end - start)/division;
-
-          for(unsigned int n=0; n<division; ++n)
-          {
-            if(!line->isPointSet())
-            {
-              CG_Segment segment;
-              segment.p1 = add_point(p1);
-              segment.p2 = add_point(p2);
-              segment.mark = mark;
-              _segments.push_back(segment);
-            }
-            else
-            {
-              add_point(p1);
-              add_point(p2);
-            }
-            p1 = p2;
-            p2 = p1 + (end - start)/division;
-          }
-          break;
-        }
-
-      case RS2::EntityArc:
-        {
-          const RS_Arc * arc = (const RS_Arc *)e;
-          int mark;
-          if(_label_to_mark.find(arc->getLabel())!=_label_to_mark.end())
-            mark = _label_to_mark[arc->getLabel()];
-          else
-          {
-            mark = _label_to_mark.size()+1;
-            _label_to_mark[arc->getLabel()] = mark;
-          }
-
-          unsigned int division = arc->getDivision();
-          RS_Vector  center = arc->getCenter();
-          double     r = arc->getRadius();
-          double     a1, a2;
-          if(arc->isReversed())
-          {
-            // Arc Clockwise:
-            a2 = arc->getAngle1();
-            a1 = arc->getAngle2();
-          }
-          else
-          {
-            // Arc Counterclockwise:
-            a1 = arc->getAngle1();
-            a2 = arc->getAngle2();
-          }
-          if (a1>a2-0.01)  a2+=2*M_PI;
-
-          RS_Vector  p1 = center + RS_Vector(r*cos(a1), r*sin(a1));
-          RS_Vector  p2 = center + RS_Vector(r*cos(a1+(a2-a1)/division), r*sin(a1+(a2-a1)/division));
-          for(unsigned int n=1; n<=division; ++n)
-          {
-            CG_Segment segment;
-            segment.p1 = add_point(p1);
-            segment.p2 = add_point(p2);
-            segment.mark = mark;
-            _segments.push_back(segment);
-            p1 = p2;
-            p2 = center + RS_Vector(r*cos(a1+(n+1)*(a2-a1)/division), r*sin(a1+(n+1)*(a2-a1)/division));
-          }
-
-          break;
-        }
-
-      case RS2::EntityCircle:
-        {
-          const RS_Circle * circle = (const RS_Circle *)e;
-          int mark;
-          if(_label_to_mark.find(circle->getLabel())!=_label_to_mark.end())
-            mark = _label_to_mark[circle->getLabel()];
-          else
-          {
-            mark = _label_to_mark.size()+1;
-            _label_to_mark[circle->getLabel()] = mark;
-          }
-
-          unsigned int division = circle->getDivision();
-          RS_Vector  center = circle->getCenter();
-          RS_Vector  start = circle->getStartpoint();
-          double     r = circle->getRadius();
-          RS_Vector  p1 = start;
-          RS_Vector  p2 = center + RS_Vector(r*cos(2*M_PI/division), r*sin(2*M_PI/division));
-          for(unsigned int n=1; n<=division; ++n)
-          {
-            CG_Segment segment;
-            segment.p1 = add_point(p1);
-            segment.p2 = add_point(p2);
-            segment.mark = mark;
-            _segments.push_back(segment);
-            p1 = p2;
-            p2 = center + RS_Vector(r*cos((n+1)*2*M_PI/division), r*sin((n+1)*2*M_PI/division));
-            if(n==division) p2 = start;
-          }
-          break;
-        }
-
-      case RS2::EntityEllipse :
-        {
-          const RS_Ellipse * ellipse = (const RS_Ellipse *)e;
-          int mark;
-          if(_label_to_mark.find(ellipse->getLabel())!=_label_to_mark.end())
-            mark = _label_to_mark[ellipse->getLabel()];
-          else
-          {
-            mark = _label_to_mark.size()+1;
-            _label_to_mark[ellipse->getLabel()] = mark;
-          }
-
-          unsigned int division = ellipse->getDivision();
-          RS_Vector  center = ellipse->getCenter();
-          double     a = ellipse->getMajorRadius();
-          double     b = ellipse->getMinorRadius();
-          double     angel = ellipse->getAngle1();
-          RS_Vector  start = center + RS_Vector(a*cos(angel), b*sin(angel));
-          start.rotate(center, ellipse->getAngle());
-
-          RS_Vector  p1 = start;
-          RS_Vector  p2 = center + RS_Vector(a*cos(angel+2*M_PI/division), b*sin(angel+2*M_PI/division));
-          p2.rotate(center, ellipse->getAngle());
-
-          for(unsigned int n=1; n<=division; ++n)
-          {
-            CG_Segment segment;
-            segment.p1 = add_point(p1);
-            segment.p2 = add_point(p2);
-            segment.mark = mark;
-            _segments.push_back(segment);
-            p1 = p2;
-            p2 = center + RS_Vector(a*cos(angel+(n+1)*2*M_PI/division), b*sin(angel+(n+1)*2*M_PI/division));
-            p2.rotate(center, ellipse->getAngle());
-            if(n==division) p2 = start;
-          }
-          break;
-        }
-
-      case RS2::EntitySpline :
-        {
-          RS_Spline * spline = (RS_Spline *)e;
-          int mark;
-          if(_label_to_mark.find(spline->getLabel())!=_label_to_mark.end())
-            mark = _label_to_mark[spline->getLabel()];
-          else
-          {
-            mark = _label_to_mark.size()+1;
-            _label_to_mark[spline->getLabel()] = mark;
-          }
-
-          for (RS_Entity* l=spline->firstEntity(); l!=NULL; l=spline->nextEntity())
-            if(l->rtti() == RS2::EntityLine )
-            {
-              const RS_Line * line = (const RS_Line *)l;
-              CG_Segment segment;
-              segment.p1 = add_point(line->getStartpoint());
-              segment.p2 = add_point(line->getEndpoint());
-              segment.mark = mark;
-              _segments.push_back(segment);
-            }
-
-          break;
-        }
-
-      case RS2::EntityHatch :
-        {
-          const RS_Hatch * hatch = (const RS_Hatch *)e;
-          RS_HatchData data = hatch->getData();
-
-          if(data.hole)
-          {
-            CG_Hole hole;
-            hole.x    = data.internal_point.x;
-            hole.y    = data.internal_point.y;
-            _holes.push_back(hole);
-          }
-          else
-          {
-            CG_Region region;
-            region.x    = data.internal_point.x;
-            region.y    = data.internal_point.y;
-            region.area_control = data.area_control > 0? data.area_control : RS_MAXDOUBLE;
-            region.label = data.label;
-            region.material = data.material;
-            _regions.push_back(region);
-          }
-          break;
-        }
-
-      default: break;
-      }
-    }
-}
-
-
 MeshGenerator::~MeshGenerator()
 {
   triangulateio_finalize();
 }
 
 
-unsigned int MeshGenerator::add_point(const RS_Vector &v)
-{
-  for(unsigned int n=0; n<_points.size(); ++n)
-    if( v.distanceTo(_points[n])<1e-4 ) return n;
-  _points.push_back(v);
-  return _points.size()-1;
-}
-
 
 void MeshGenerator::do_mesh(const QString &cmd )
 {
   triangulateio_init();
 
-  // we only mesh cad entity on current layer, and visitable
-  convert_cad_to_pslg();
+  //create PSLG
+  _pslg = new CG_PSLG(_gv->getGraphic());
+
+  std::vector<RS_Vector> &  _points   = _pslg->get_points();
+  std::vector<CG_Segment> & _segments = _pslg->get_segments();
+  std::vector<CG_Region> &  _regions  = _pslg->get_regions();
+  std::vector<CG_Hole> &    _holes    = _pslg->get_holes();
 
   if(_points.size() < 3)
   {
     QMessageBox::critical( 0, "Mesh Generation", "No Mesh generated due to invalid geometry");
     return;
   }
+
+  build_quadtree_points();
 
   //set point
   in.numberofpoints = _points.size();
@@ -364,10 +131,7 @@ void MeshGenerator::do_mesh(const QString &cmd )
   RS_Mesh* mesh =  new RS_Mesh(_doc);
 
   triangulateio_copy(out, mesh->get_triangulateio());
-  for(std::map<RS_String, int>::iterator it=_label_to_mark.begin(); it!=_label_to_mark.end(); ++it)
-    mesh->add_segment_info(it->second, it->first);
-  for(unsigned int i=0;i<_regions.size();i++)
-    mesh->add_region_info(i, _regions[i].label, _regions[i].material);
+  mesh->set_pslg(_pslg);
   mesh->tri_cmd() = cmd;
   mesh->set_profile_manager(_pm);
 
@@ -380,6 +144,39 @@ void MeshGenerator::do_mesh(const QString &cmd )
 }
 
 
+
+void MeshGenerator::build_quadtree_points()
+{
+  std::vector<RS_Vector> &  _points   = _pslg->get_points();
+
+  // create quad bound box
+  RS_Vector bl(RS_MAXDOUBLE, RS_MAXDOUBLE), tr(-RS_MAXDOUBLE, -RS_MAXDOUBLE);
+  for(unsigned int n=0; n<_points.size(); ++n)
+  {
+    bl.x = bl.x > _points[n].x ? _points[n].x : bl.x;
+    bl.y = bl.y > _points[n].y ? _points[n].y : bl.y;
+
+    tr.x = tr.x < _points[n].x ? _points[n].x : tr.x;
+    tr.y = tr.y < _points[n].y ? _points[n].y : tr.y;
+  }
+  if(tr.x - bl.x > tr.y - bl.y)
+    tr.y = bl.y + (tr.x - bl.x);
+  else
+    tr.x = bl.x + (tr.y - bl.y);
+
+  // create root quadtree
+  //QuadTree quadtree(QuadTreeNodeData(bl, tr));
+
+  // loop. until area constrain satisfied
+
+  // add quadtree mesh to PSLG points
+
+  // free quadtree
+
+}
+
+
+
 void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_log)
 {
   triangulateio_init();
@@ -390,6 +187,8 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
 
   RS_Mesh* mesh = find_mesh();
   if(mesh==NULL) return;
+
+  _pslg = mesh->get_pslg();
 
   mesh->set_refine_flag(max_d, signed_log);
 
@@ -407,6 +206,10 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
 
   triangulateio_finalize();
 }
+
+
+
+
 
 
 
