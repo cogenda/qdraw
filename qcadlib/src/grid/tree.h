@@ -120,7 +120,7 @@ class tree {
       tree(const T&);
       tree(const iterator_base&);
       tree(const tree<T, tree_node_allocator>&);
-      ~tree();
+      virtual ~tree();
       void operator=(const tree<T, tree_node_allocator>&);
 
       /// Base class for iterators, only pointers stored, no traversal logic.
@@ -425,7 +425,7 @@ class tree {
       /// Determine whether the iterator is an 'end' iterator and thus not actually pointing to a node.
       bool     is_valid(const iterator_base&) const;
 
-      bool     is_top_parent(const iterator_base&) const;
+      bool     is_root(const iterator_base&) const;
       bool     is_child(const iterator_base&) const;
       /// Determine the index of a node in the range of siblings to which it belongs.
       unsigned int index(sibling_iterator it) const;
@@ -1876,13 +1876,13 @@ unsigned int tree<T, tree_node_allocator>::index(sibling_iterator it) const
    }
 
 template <class T, class tree_node_allocator>
-bool     tree<T, tree_node_allocator>::is_top_parent(const iterator_base& it) const
-{ return  it.node==0; }
+bool     tree<T, tree_node_allocator>::is_root(const iterator_base& it) const
+{ return  it.node->parent==0; }
 
 
 template <class T, class tree_node_allocator>
 bool     tree<T, tree_node_allocator>::is_child(const iterator_base& it) const
-{ return it.node->first_child==0; }
+{ return (it.node->first_child==0 && it.node->last_child==0); }
 
 template <class T, class tree_node_allocator>
 typename tree<T, tree_node_allocator>::sibling_iterator tree<T, tree_node_allocator>::child(const iterator_base& it, unsigned int num)

@@ -18,11 +18,27 @@
 **
 **********************************************************************/
 
+#include <fstream>
 #include <stack>
 
 #include "cg_quadtree.h"
 
+std::ostream& operator << (std::ostream& os, const QuadTreeNodeData& data)
+{
+   data.get_location().print(os);	
+   os << " "<< data.area() <<std::endl;
+   return os;	
+}	
 
+
+QuadTree::~QuadTree()
+{
+  for(unsigned int n=0; n<_points.size(); ++n)	
+    delete _points[n];
+}
+
+
+	
 void QuadTree::subdivide(iterator_base & leaf_it)
 {
   QuadTreeNodeData leaf_data = *leaf_it;
@@ -48,59 +64,94 @@ void QuadTree::subdivide(iterator_base & leaf_it)
   this->append_child(leaf_it, QuadTreeNodeData(_p_top, _p_tr, _p_right, _p_center, QuadTreeLocation(R,T))); //tr
   this->append_child(leaf_it, QuadTreeNodeData(_p_center, _p_right, _p_br, _p_bot, QuadTreeLocation(R,B))); //br
   this->append_child(leaf_it, QuadTreeNodeData(_p_left, _p_center, _p_bot, _p_bl, QuadTreeLocation(L,B)));  //bl
-
 }
+
 
 
 void QuadTree::balance()
 {
+  unsigned int flag;
 
+  do
+  {
+    flag = 0;	
+    leaf_iterator leaf_it = begin_leaf();
+    for(; leaf_it != end_leaf(); ++leaf_it)	
+    {
+      	iterator_base leaf = leaf_it; 
+      	int leaf_depth = depth(leaf);
+      	
+      	std::vector<iterator_base> neighbors; 
+      	neighbors.push_back(find_neighbor(leaf, L));
+      	neighbors.push_back(find_neighbor(leaf, R));
+      	neighbors.push_back(find_neighbor(leaf, T));
+      	neighbors.push_back(find_neighbor(leaf, B));
+      	for(unsigned int n=0; n<neighbors.size(); ++n)
+      	{
+      	  if(!neighbors[n].node) continue;	
+      	  int neighbor_depth = depth(neighbors[n]);
+      	  if(leaf_depth-neighbor_depth>1)
+      	  {
+      	    print_path(leaf);
+      	    print_path(neighbors[n]);
+      	    neighbors[n]->divide_flag() = true;
+      	  }  
+      	}
+    }	
 
+    for(leaf_it = begin_leaf(); leaf_it != end_leaf(); )	
+    {
+    	iterator_base this_leaf = leaf_it++;	
+	if(this_leaf->divide_flag())
+	{
+	  subdivide(this_leaf);
+	  flag++;
+	  this_leaf->divide_flag() = false;
+	}  
+    }    	
 
-
-
-
-
+  } while(flag); 
 
 }
 
 
-QuadTree::iterator_base QuadTree::find_neighbor(iterator_base & q, Location x)
+QuadTree::iterator_base QuadTree::find_neighbor(const iterator_base & it, Location x)
 {
-  QuadTreeLocation loc = q->get_location();
-
   std::stack<QuadTreeLocation> path;
-  iterator_base p = parent(q);
+  iterator_base q = it;	
 
-  while( is_top_parent(p) && loc.has_location(x) )
+  while( !is_root(q) )
   {
+    QuadTreeLocation loc = q->get_location();	
     path.push(loc);
-    q=p;
-    p=parent(q);
-  }
+    q=parent(q);
+    if( !loc.has_location(x) ) break; 
+    if( is_root(q) && loc.has_location(x) ) return iterator_base(0); 
+  };
 
   while(!path.empty())
   {
     QuadTreeLocation loc = path.top();
     path.pop();
-    if(is_child(p)) return p;
-
     if(x==L || x==R)
-      p = to_quadtree_child(p, QuadTreeLocation::x_symmetry(loc));
+      q = goto_quadtree_child(q, QuadTreeLocation::x_symmetry(loc));
     if(x==T || x==B)
-      p = to_quadtree_child(p, QuadTreeLocation::y_symmetry(loc));
+      q = goto_quadtree_child(q, QuadTreeLocation::y_symmetry(loc));
+    if(q.node==0 || is_child(q)) return q;
   }
 
-  return p;
+  return q;
 }
 
 
 
-QuadTree::iterator_base QuadTree::to_quadtree_child(const iterator_base & it, const QuadTreeLocation & location)
+QuadTree::iterator_base QuadTree::goto_quadtree_child(const iterator_base & it, const QuadTreeLocation & location)
 {
+  if(it.node==0) return  iterator_base(0);	
   for( sibling_iterator child_it= begin(it); child_it!=end(it); ++child_it)
     if( child_it->get_location()==location)
       return iterator_base(child_it);
+  return  iterator_base(0);
 }
 
 
@@ -111,9 +162,97 @@ const RS_Vector * QuadTree::add_point(const RS_Vector & point)
       return _points[n];
 
   RS_Vector * new_point = new RS_Vector(point);
+  _point_to_id[new_point] = _points.size();
   _points.push_back(new_point);
   return _points[_points.size()-1];
 }
 
 
+void QuadTree::print_path(const iterator_base & it) const
+{
+  std::stack<QuadTreeLocation> path;
+  iterator_base q = it;	
 
+  if(q.node==0) return;
+  
+  while( !is_root(q) )
+  {
+    QuadTreeLocation loc = q->get_location();	
+    path.push(loc);
+    q=parent(q);
+  };
+
+  std::cout<<'/';
+  	
+  while(!path.empty())
+  {
+    QuadTreeLocation loc = path.top();
+    path.pop();
+    loc.print(std::cout);
+    std::cout<<'/';	
+  }    
+  
+  std::cout<<std::endl;
+}	
+
+
+
+void QuadTree::export_quadtree(char * filename)
+{
+
+  std::ofstream fout;
+  fout.open(filename, std::ofstream::trunc);
+
+  fout << "# vtk DataFile Version 3.0" <<'\n';
+  fout << "Date calculated by CTRI"    <<'\n';
+  fout << "ASCII"                      <<'\n';
+  fout << "DATASET UNSTRUCTURED_GRID"  <<'\n';
+  fout << "POINTS " << _points.size()  << " float" << '\n';
+
+  for (unsigned int i=0; i<_points.size(); ++i)
+  {
+    fout << _points[i]->x << " \t" << _points[i]->y  << " \t " << 0.0 << '\n';
+  }
+
+  fout << std::endl;
+
+  unsigned int n_leafs=0;
+  leaf_iterator leaf_it = begin_leaf();
+  for(; leaf_it != end_leaf(); ++leaf_it)
+    n_leafs++;
+    
+  fout<<"CELLS "<<n_leafs<<" "<<5*n_leafs<<'\n';
+
+  for(leaf_it = begin_leaf(); leaf_it != end_leaf(); ++leaf_it)
+  {
+    fout << 4 << " "
+    << _point_to_id[leaf_it->tl()] << " "
+    << _point_to_id[leaf_it->tr()] << " "
+    << _point_to_id[leaf_it->br()] << " "
+    << _point_to_id[leaf_it->bl()] << "\n";
+  }
+
+  fout << std::endl;
+
+  fout << "CELL_TYPES " << n_leafs << '\n';
+
+  for(unsigned int i=0; i<n_leafs; ++i)
+    fout << 9 << std::endl;
+
+  fout << std::endl;
+  
+  
+  fout << "CELL_DATA "<<n_leafs     <<'\n';
+  fout << "SCALARS region float 1"  <<'\n';
+  fout << "LOOKUP_TABLE default"    <<'\n';
+  for(leaf_it = begin_leaf(); leaf_it != end_leaf(); ++leaf_it)
+  {
+    fout << static_cast<int>(leaf_it->divide_flag())<<'\n';
+  }
+  fout<<std::endl;
+  
+  
+  fout.close();
+
+
+}	

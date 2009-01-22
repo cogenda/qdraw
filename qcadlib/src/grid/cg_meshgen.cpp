@@ -165,7 +165,7 @@ void MeshGenerator::build_quadtree_points()
     tr.x = bl.x + (tr.y - bl.y);
 
   // create root quadtree
-  //QuadTree quadtree(QuadTreeNodeData(bl, tr));
+  QuadTree quadtree;
 
   // loop. until area constrain satisfied
 

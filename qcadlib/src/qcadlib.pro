@@ -113,6 +113,16 @@ HEADERS     = \
               grid/cg_quadtree.h\
               grid/tree.h\
               grid/triangle.h\
+              clippoly/err.h\
+              clippoly/graphadd.h\
+              clippoly/graphmat.h\
+              clippoly/graphmat++.h\
+              clippoly/nclip.h\
+              clippoly/poly.h\
+              clippoly/poly_io.h\
+              clippoly/posadder.h\
+              clippoly/primitives.h\
+              clippoly/set.h\
               scripting/rs_python.h \
               scripting/rs_simplepython.h \
               scripting/rs_python_wrappers.h \
@@ -192,6 +202,15 @@ SOURCES     = \
               grid/cg_pslg.cpp\
               grid/cg_quadtree.cpp\
               grid/triangle.c\
+              clippoly/err.c\
+              clippoly/graphadd.cc\
+              clippoly/graphmat++.cc\
+              clippoly/nclip.cc\
+              clippoly/poly.cc\
+              clippoly/poly_io.cc\
+              clippoly/posadder.cc\
+              clippoly/primitives.cc\
+              clippoly/templates.cc\
               scripting/rs_python.cpp \
               scripting/rs_simplepython.cpp \
               scripting/rs_python_wrappers.cpp \

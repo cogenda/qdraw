@@ -1,0 +1,47 @@
+.TH GRAPHMAT++ 3 "20 October 1992"
+.SH NAME
+-, +, len \- Syntatic simple interface to graphmat.
+.nf
+.SH SYNOPSIS
+.nf
+.B #include <graphmat++.h>
+.LP
+.B hvec2_t	operator-(const hvec2_t &)
+
+.B hvec2_t	operator-(const hvec2_t &, const hvec2_t &)
+
+.B hvec2_t	operator+(const hvec2_t &, const hvec2_t &)
+
+.B hvec2_t	operator*(const hmat2_t &, const hvec2_t &)
+
+.B hvec2_t	operator*(double, const hvec2_t &)
+
+.B hvec2_t	operator/(const hvec2_t &, double)
+
+.B const hvec2_t &operator+=(hvec2_t &, const hvec2_t &)
+
+.B const hvec2_t &operator-=(hvec2_t &, const hvec2_t &)
+
+.B const hvec2_t &operator*=(hvec2_t &, double)
+
+.B const hvec2_t &operator/=(hvec2_t &, double)
+
+.B double	len(const hvec2_t &)
+
+.SH DESCRIPTION
+These routines ar an addition to grapmat(3). 
+Actually, it are just some inline calls to the graphmat(3) equivalents.
+
+.SH SEE ALSO
+graphmat(3), graphadd(3), Graphics and matrix routines.
+
+.SH NOTE
+Only available in C++
+.br
+Code is in the C++ util files.
+
+A lot more should be implemented! (It's easy, any volunteers? :-)
+Also the hvec3_t and hmat* versions should exsist.
+
+.SH AUTHOR
+Klamer Schutte
