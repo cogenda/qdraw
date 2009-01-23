@@ -21,24 +21,26 @@
 #include <fstream>
 #include <stack>
 
-#include "cg_quadtree.h"
+#include  "poly.h"
+#include  "nclip.h"
+#include  "cg_quadtree.h"
 
 std::ostream& operator << (std::ostream& os, const QuadTreeNodeData& data)
 {
-   data.get_location().print(os);	
-   os << " "<< data.area() <<std::endl;
-   return os;	
-}	
+  data.get_location().print(os);
+  os << " "<< data.area() <<std::endl;
+  return os;
+}
 
 
 QuadTree::~QuadTree()
 {
-  for(unsigned int n=0; n<_points.size(); ++n)	
+  for(unsigned int n=0; n<_points.size(); ++n)
     delete _points[n];
 }
 
 
-	
+
 void QuadTree::subdivide(iterator_base & leaf_it)
 {
   QuadTreeNodeData leaf_data = *leaf_it;
@@ -74,43 +76,44 @@ void QuadTree::balance()
 
   do
   {
-    flag = 0;	
+    flag = 0;
     leaf_iterator leaf_it = begin_leaf();
-    for(; leaf_it != end_leaf(); ++leaf_it)	
+    for(; leaf_it != end_leaf(); ++leaf_it)
     {
-      	iterator_base leaf = leaf_it; 
-      	int leaf_depth = depth(leaf);
-      	
-      	std::vector<iterator_base> neighbors; 
-      	neighbors.push_back(find_neighbor(leaf, L));
-      	neighbors.push_back(find_neighbor(leaf, R));
-      	neighbors.push_back(find_neighbor(leaf, T));
-      	neighbors.push_back(find_neighbor(leaf, B));
-      	for(unsigned int n=0; n<neighbors.size(); ++n)
-      	{
-      	  if(!neighbors[n].node) continue;	
-      	  int neighbor_depth = depth(neighbors[n]);
-      	  if(leaf_depth-neighbor_depth>1)
-      	  {
-      	    print_path(leaf);
-      	    print_path(neighbors[n]);
-      	    neighbors[n]->divide_flag() = true;
-      	  }  
-      	}
-    }	
+      iterator_base leaf = leaf_it;
+      int leaf_depth = depth(leaf);
 
-    for(leaf_it = begin_leaf(); leaf_it != end_leaf(); )	
+      std::vector<iterator_base> neighbors;
+      neighbors.push_back(find_neighbor(leaf, L));
+      neighbors.push_back(find_neighbor(leaf, R));
+      neighbors.push_back(find_neighbor(leaf, T));
+      neighbors.push_back(find_neighbor(leaf, B));
+      for(unsigned int n=0; n<neighbors.size(); ++n)
+      {
+        if(!neighbors[n].node) continue;
+        int neighbor_depth = depth(neighbors[n]);
+        if(leaf_depth-neighbor_depth>1)
+        {
+          print_path(leaf);
+          print_path(neighbors[n]);
+          neighbors[n]->divide_flag() = true;
+        }
+      }
+    }
+
+    for(leaf_it = begin_leaf(); leaf_it != end_leaf(); )
     {
-    	iterator_base this_leaf = leaf_it++;	
-	if(this_leaf->divide_flag())
-	{
-	  subdivide(this_leaf);
-	  flag++;
-	  this_leaf->divide_flag() = false;
-	}  
-    }    	
+      iterator_base this_leaf = leaf_it++;
+      if(this_leaf->divide_flag())
+      {
+        subdivide(this_leaf);
+        flag++;
+        this_leaf->divide_flag() = false;
+      }
+    }
 
-  } while(flag); 
+  }
+  while(flag);
 
 }
 
@@ -118,15 +121,15 @@ void QuadTree::balance()
 QuadTree::iterator_base QuadTree::find_neighbor(const iterator_base & it, Location x)
 {
   std::stack<QuadTreeLocation> path;
-  iterator_base q = it;	
+  iterator_base q = it;
 
   while( !is_root(q) )
   {
-    QuadTreeLocation loc = q->get_location();	
+    QuadTreeLocation loc = q->get_location();
     path.push(loc);
     q=parent(q);
-    if( !loc.has_location(x) ) break; 
-    if( is_root(q) && loc.has_location(x) ) return iterator_base(0); 
+    if( !loc.has_location(x) ) break;
+    if( is_root(q) && loc.has_location(x) ) return iterator_base(0);
   };
 
   while(!path.empty())
@@ -147,7 +150,7 @@ QuadTree::iterator_base QuadTree::find_neighbor(const iterator_base & it, Locati
 
 QuadTree::iterator_base QuadTree::goto_quadtree_child(const iterator_base & it, const QuadTreeLocation & location)
 {
-  if(it.node==0) return  iterator_base(0);	
+  if(it.node==0) return  iterator_base(0);
   for( sibling_iterator child_it= begin(it); child_it!=end(it); ++child_it)
     if( child_it->get_location()==location)
       return iterator_base(child_it);
@@ -168,32 +171,65 @@ const RS_Vector * QuadTree::add_point(const RS_Vector & point)
 }
 
 
+
+bool QuadTree::is_line_intersection(const iterator_base & it, const RS_Vector &p1, const RS_Vector &p2 )
+{
+  const RS_Vector * _p_tr = it->tr();
+  const RS_Vector * _p_tl = it->tl();
+  const RS_Vector * _p_br = it->br();
+  const RS_Vector * _p_bl = it->bl();
+
+  Poly leaf(Point(_p_bl->x, _p_bl->y));
+  leaf.add(Point(_p_br->x, _p_br->y));
+  leaf.add(Point(_p_tr->x, _p_tr->y));
+  leaf.add(Point(_p_tl->x, _p_tl->y));
+
+  if(leaf.has_point(Point(p1.x, p1.y))) return true;
+  if(leaf.has_point(Point(p2.x, p2.y))) return true;
+
+  Poly line(Point(p1.x, p1.y));
+  line.add(Point(p2.x, p2.y));
+
+  return intersect(leaf, line)>0;
+}
+
+
+
+bool QuadTree::is_region_intersection(const iterator_base & it, const std::vector<RS_Vector > &region )
+{
+
+
+
+}
+
+
+
 void QuadTree::print_path(const iterator_base & it) const
 {
   std::stack<QuadTreeLocation> path;
-  iterator_base q = it;	
+  iterator_base q = it;
 
   if(q.node==0) return;
-  
+
   while( !is_root(q) )
   {
-    QuadTreeLocation loc = q->get_location();	
+    QuadTreeLocation loc = q->get_location();
     path.push(loc);
     q=parent(q);
   };
 
   std::cout<<'/';
-  	
+
   while(!path.empty())
   {
     QuadTreeLocation loc = path.top();
     path.pop();
     loc.print(std::cout);
-    std::cout<<'/';	
-  }    
-  
+    std::cout<<'/';
+  }
+
   std::cout<<std::endl;
-}	
+}
 
 
 
@@ -220,7 +256,7 @@ void QuadTree::export_quadtree(char * filename)
   leaf_iterator leaf_it = begin_leaf();
   for(; leaf_it != end_leaf(); ++leaf_it)
     n_leafs++;
-    
+
   fout<<"CELLS "<<n_leafs<<" "<<5*n_leafs<<'\n';
 
   for(leaf_it = begin_leaf(); leaf_it != end_leaf(); ++leaf_it)
@@ -240,8 +276,8 @@ void QuadTree::export_quadtree(char * filename)
     fout << 9 << std::endl;
 
   fout << std::endl;
-  
-  
+
+
   fout << "CELL_DATA "<<n_leafs     <<'\n';
   fout << "SCALARS region float 1"  <<'\n';
   fout << "LOOKUP_TABLE default"    <<'\n';
@@ -250,9 +286,9 @@ void QuadTree::export_quadtree(char * filename)
     fout << static_cast<int>(leaf_it->divide_flag())<<'\n';
   }
   fout<<std::endl;
-  
-  
+
+
   fout.close();
 
 
-}	
+}

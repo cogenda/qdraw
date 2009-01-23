@@ -29,6 +29,7 @@
 #include "rs_entitycontainer.h"
 
 class ProfileManager;
+class QuadTree;
 
 /**
  * Class representing a mesh.
@@ -117,6 +118,12 @@ public:
   CG_PSLG * get_pslg()
   { return _pslg; }
 
+  void set_quadtree(QuadTree * qt)
+  { _quadtree = qt; }
+
+  QuadTree * get_quadtree()
+  { return _quadtree; }
+
   void set_refine_flag(double d, bool signed_log);
 
   void export_mesh(const RS_String & file);
@@ -140,6 +147,11 @@ private:
    * the PSLG of this mesh
    */
   CG_PSLG * _pslg;
+
+  /**
+   * the quadtree struct
+   */
+  QuadTree * _quadtree;
 
   /**
    * Triangle command line switch

@@ -204,6 +204,7 @@ SOURCES     = \
               grid/triangle.c\
               clippoly/err.c\
               clippoly/graphadd.cc\
+              clippoly/graphmat.c\
               clippoly/graphmat++.cc\
               clippoly/nclip.cc\
               clippoly/poly.cc\

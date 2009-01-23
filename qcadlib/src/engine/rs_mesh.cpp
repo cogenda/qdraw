@@ -31,6 +31,7 @@
 #include "rs_text.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
+#include "cg_quadtree.h"
 #include "cg_profile.h"
 #include "cg_profile_manager.h"
 
@@ -61,7 +62,7 @@ const int RS_Mesh::rainbow_color_table[19][3] =
 
 
 RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
-  :RS_EntityContainer(parent, owner), _pslg(0), _pm(0)
+  :RS_EntityContainer(parent, owner), _pslg(0), _quadtree(0), _pm(0)
 {
   memset(&io, 0, sizeof(triangulateio));
 
@@ -77,6 +78,7 @@ RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
 RS_Mesh::~RS_Mesh()
 {
   delete _pslg;
+  delete _quadtree;
   clear_triangulateio();
 }
 

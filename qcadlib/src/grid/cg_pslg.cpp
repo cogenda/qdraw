@@ -37,226 +37,231 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
   //mesh all the entity on active layer
   for (RS_Entity* e=g->firstEntity(); e!=NULL; e=g->nextEntity())
     if(e->isOnActiveLayer() && e->isVisible())
-  {
-    switch (e->rtti())
     {
+      switch (e->rtti())
+      {
       case RS2::EntityPoint :
-      {
-        const RS_Point * p = (const RS_Point *)e;
-        add_point(p->getData().pos);
-        break;
-      }
-
-      case RS2::EntityLine :
-      {
-        const RS_Line * line = (const RS_Line *)e;
-        int mark;
-        if(_label_to_mark.find(line->getLabel())!=_label_to_mark.end())
-          mark = _label_to_mark[line->getLabel()];
-        else
         {
-          mark = _label_to_mark.size()+1;
-          _label_to_mark[line->getLabel()] = mark;
+          const RS_Point * p = (const RS_Point *)e;
+          add_point(p->getData().pos);
+          break;
         }
 
-        unsigned int division = line->getDivision();
-        RS_Vector  start = line->getStartpoint();
-        RS_Vector  end = line->getEndpoint();
-        RS_Vector  p1 = start;
-        RS_Vector  p2 = p1 + (end - start)/division;
-
-        for(unsigned int n=0; n<division; ++n)
+      case RS2::EntityLine :
         {
-          if(!line->isPointSet())
+          const RS_Line * line = (const RS_Line *)e;
+          int mark;
+          if(_label_to_mark.find(line->getLabel())!=_label_to_mark.end())
+            mark = _label_to_mark[line->getLabel()];
+          else
+          {
+            mark = _label_to_mark.size()+1;
+            _label_to_mark[line->getLabel()] = mark;
+          }
+
+          unsigned int division = line->getDivision();
+          RS_Vector  start = line->getStartpoint();
+          RS_Vector  end = line->getEndpoint();
+          RS_Vector  p1 = start;
+          RS_Vector  p2 = p1 + (end - start)/division;
+
+          if(line->isPointSet())
+          {
+            CG_Constrain constrain;
+            constrain.p1 = p1;
+            constrain.p2 = p2;
+            constrain.char_length = (p1-p2).magnitude()/division;
+            _constrains.push_back(constrain);
+          }
+          else
+          {
+            for(unsigned int n=0; n<division; ++n)
+            {
+
+              CG_Segment segment;
+              segment.p1 = add_point(p1);
+              segment.p2 = add_point(p2);
+              segment.mark = mark;
+              _segments.push_back(segment);
+
+              p1 = p2;
+              p2 = p1 + (end - start)/division;
+            }
+          }
+          break;
+        }
+
+      case RS2::EntityArc:
+        {
+          const RS_Arc * arc = (const RS_Arc *)e;
+          int mark;
+          if(_label_to_mark.find(arc->getLabel())!=_label_to_mark.end())
+            mark = _label_to_mark[arc->getLabel()];
+          else
+          {
+            mark = _label_to_mark.size()+1;
+            _label_to_mark[arc->getLabel()] = mark;
+          }
+
+          unsigned int division = arc->getDivision();
+          RS_Vector  center = arc->getCenter();
+          double     r = arc->getRadius();
+          double     a1, a2;
+          if(arc->isReversed())
+          {
+            // Arc Clockwise:
+            a2 = arc->getAngle1();
+            a1 = arc->getAngle2();
+          }
+          else
+          {
+            // Arc Counterclockwise:
+            a1 = arc->getAngle1();
+            a2 = arc->getAngle2();
+          }
+          if (a1>a2-0.01)  a2+=2*M_PI;
+
+          RS_Vector  p1 = center + RS_Vector(r*cos(a1), r*sin(a1));
+          RS_Vector  p2 = center + RS_Vector(r*cos(a1+(a2-a1)/division), r*sin(a1+(a2-a1)/division));
+          for(unsigned int n=1; n<=division; ++n)
           {
             CG_Segment segment;
             segment.p1 = add_point(p1);
             segment.p2 = add_point(p2);
             segment.mark = mark;
             _segments.push_back(segment);
+            p1 = p2;
+            p2 = center + RS_Vector(r*cos(a1+(n+1)*(a2-a1)/division), r*sin(a1+(n+1)*(a2-a1)/division));
+          }
+
+          break;
+        }
+
+      case RS2::EntityCircle:
+        {
+          const RS_Circle * circle = (const RS_Circle *)e;
+          int mark;
+          if(_label_to_mark.find(circle->getLabel())!=_label_to_mark.end())
+            mark = _label_to_mark[circle->getLabel()];
+          else
+          {
+            mark = _label_to_mark.size()+1;
+            _label_to_mark[circle->getLabel()] = mark;
+          }
+
+          unsigned int division = circle->getDivision();
+          RS_Vector  center = circle->getCenter();
+          RS_Vector  start = circle->getStartpoint();
+          double     r = circle->getRadius();
+          RS_Vector  p1 = start;
+          RS_Vector  p2 = center + RS_Vector(r*cos(2*M_PI/division), r*sin(2*M_PI/division));
+          for(unsigned int n=1; n<=division; ++n)
+          {
+            CG_Segment segment;
+            segment.p1 = add_point(p1);
+            segment.p2 = add_point(p2);
+            segment.mark = mark;
+            _segments.push_back(segment);
+            p1 = p2;
+            p2 = center + RS_Vector(r*cos((n+1)*2*M_PI/division), r*sin((n+1)*2*M_PI/division));
+            if(n==division) p2 = start;
+          }
+          break;
+        }
+
+      case RS2::EntityEllipse :
+        {
+          const RS_Ellipse * ellipse = (const RS_Ellipse *)e;
+          int mark;
+          if(_label_to_mark.find(ellipse->getLabel())!=_label_to_mark.end())
+            mark = _label_to_mark[ellipse->getLabel()];
+          else
+          {
+            mark = _label_to_mark.size()+1;
+            _label_to_mark[ellipse->getLabel()] = mark;
+          }
+
+          unsigned int division = ellipse->getDivision();
+          RS_Vector  center = ellipse->getCenter();
+          double     a = ellipse->getMajorRadius();
+          double     b = ellipse->getMinorRadius();
+          double     angel = ellipse->getAngle1();
+          RS_Vector  start = center + RS_Vector(a*cos(angel), b*sin(angel));
+          start.rotate(center, ellipse->getAngle());
+
+          RS_Vector  p1 = start;
+          RS_Vector  p2 = center + RS_Vector(a*cos(angel+2*M_PI/division), b*sin(angel+2*M_PI/division));
+          p2.rotate(center, ellipse->getAngle());
+
+          for(unsigned int n=1; n<=division; ++n)
+          {
+            CG_Segment segment;
+            segment.p1 = add_point(p1);
+            segment.p2 = add_point(p2);
+            segment.mark = mark;
+            _segments.push_back(segment);
+            p1 = p2;
+            p2 = center + RS_Vector(a*cos(angel+(n+1)*2*M_PI/division), b*sin(angel+(n+1)*2*M_PI/division));
+            p2.rotate(center, ellipse->getAngle());
+            if(n==division) p2 = start;
+          }
+          break;
+        }
+
+      case RS2::EntitySpline :
+        {
+          RS_Spline * spline = (RS_Spline *)e;
+          int mark;
+          if(_label_to_mark.find(spline->getLabel())!=_label_to_mark.end())
+            mark = _label_to_mark[spline->getLabel()];
+          else
+          {
+            mark = _label_to_mark.size()+1;
+            _label_to_mark[spline->getLabel()] = mark;
+          }
+
+          for (RS_Entity* l=spline->firstEntity(); l!=NULL; l=spline->nextEntity())
+            if(l->rtti() == RS2::EntityLine )
+            {
+              const RS_Line * line = (const RS_Line *)l;
+              CG_Segment segment;
+              segment.p1 = add_point(line->getStartpoint());
+              segment.p2 = add_point(line->getEndpoint());
+              segment.mark = mark;
+              _segments.push_back(segment);
+            }
+
+          break;
+        }
+
+      case RS2::EntityHatch :
+        {
+          const RS_Hatch * hatch = (const RS_Hatch *)e;
+          RS_HatchData data = hatch->getData();
+
+          if(data.hole)
+          {
+            CG_Hole hole;
+            hole.x    = data.internal_point.x;
+            hole.y    = data.internal_point.y;
+            _holes.push_back(hole);
           }
           else
           {
-            add_point(p1);
-            add_point(p2);
+            CG_Region region;
+            region.x    = data.internal_point.x;
+            region.y    = data.internal_point.y;
+            region.area_control = data.area_control > 0? data.area_control : RS_MAXDOUBLE;
+            region.label = data.label;
+            region.material = data.material;
+            _regions.push_back(region);
           }
-          p1 = p2;
-          p2 = p1 + (end - start)/division;
+          break;
         }
-        break;
-      }
-
-      case RS2::EntityArc:
-      {
-        const RS_Arc * arc = (const RS_Arc *)e;
-        int mark;
-        if(_label_to_mark.find(arc->getLabel())!=_label_to_mark.end())
-          mark = _label_to_mark[arc->getLabel()];
-        else
-        {
-          mark = _label_to_mark.size()+1;
-          _label_to_mark[arc->getLabel()] = mark;
-        }
-
-        unsigned int division = arc->getDivision();
-        RS_Vector  center = arc->getCenter();
-        double     r = arc->getRadius();
-        double     a1, a2;
-        if(arc->isReversed())
-        {
-            // Arc Clockwise:
-          a2 = arc->getAngle1();
-          a1 = arc->getAngle2();
-        }
-        else
-        {
-            // Arc Counterclockwise:
-          a1 = arc->getAngle1();
-          a2 = arc->getAngle2();
-        }
-        if (a1>a2-0.01)  a2+=2*M_PI;
-
-        RS_Vector  p1 = center + RS_Vector(r*cos(a1), r*sin(a1));
-        RS_Vector  p2 = center + RS_Vector(r*cos(a1+(a2-a1)/division), r*sin(a1+(a2-a1)/division));
-        for(unsigned int n=1; n<=division; ++n)
-        {
-          CG_Segment segment;
-          segment.p1 = add_point(p1);
-          segment.p2 = add_point(p2);
-          segment.mark = mark;
-          _segments.push_back(segment);
-          p1 = p2;
-          p2 = center + RS_Vector(r*cos(a1+(n+1)*(a2-a1)/division), r*sin(a1+(n+1)*(a2-a1)/division));
-        }
-
-        break;
-      }
-
-      case RS2::EntityCircle:
-      {
-        const RS_Circle * circle = (const RS_Circle *)e;
-        int mark;
-        if(_label_to_mark.find(circle->getLabel())!=_label_to_mark.end())
-          mark = _label_to_mark[circle->getLabel()];
-        else
-        {
-          mark = _label_to_mark.size()+1;
-          _label_to_mark[circle->getLabel()] = mark;
-        }
-
-        unsigned int division = circle->getDivision();
-        RS_Vector  center = circle->getCenter();
-        RS_Vector  start = circle->getStartpoint();
-        double     r = circle->getRadius();
-        RS_Vector  p1 = start;
-        RS_Vector  p2 = center + RS_Vector(r*cos(2*M_PI/division), r*sin(2*M_PI/division));
-        for(unsigned int n=1; n<=division; ++n)
-        {
-          CG_Segment segment;
-          segment.p1 = add_point(p1);
-          segment.p2 = add_point(p2);
-          segment.mark = mark;
-          _segments.push_back(segment);
-          p1 = p2;
-          p2 = center + RS_Vector(r*cos((n+1)*2*M_PI/division), r*sin((n+1)*2*M_PI/division));
-          if(n==division) p2 = start;
-        }
-        break;
-      }
-
-      case RS2::EntityEllipse :
-      {
-        const RS_Ellipse * ellipse = (const RS_Ellipse *)e;
-        int mark;
-        if(_label_to_mark.find(ellipse->getLabel())!=_label_to_mark.end())
-          mark = _label_to_mark[ellipse->getLabel()];
-        else
-        {
-          mark = _label_to_mark.size()+1;
-          _label_to_mark[ellipse->getLabel()] = mark;
-        }
-
-        unsigned int division = ellipse->getDivision();
-        RS_Vector  center = ellipse->getCenter();
-        double     a = ellipse->getMajorRadius();
-        double     b = ellipse->getMinorRadius();
-        double     angel = ellipse->getAngle1();
-        RS_Vector  start = center + RS_Vector(a*cos(angel), b*sin(angel));
-        start.rotate(center, ellipse->getAngle());
-
-        RS_Vector  p1 = start;
-        RS_Vector  p2 = center + RS_Vector(a*cos(angel+2*M_PI/division), b*sin(angel+2*M_PI/division));
-        p2.rotate(center, ellipse->getAngle());
-
-        for(unsigned int n=1; n<=division; ++n)
-        {
-          CG_Segment segment;
-          segment.p1 = add_point(p1);
-          segment.p2 = add_point(p2);
-          segment.mark = mark;
-          _segments.push_back(segment);
-          p1 = p2;
-          p2 = center + RS_Vector(a*cos(angel+(n+1)*2*M_PI/division), b*sin(angel+(n+1)*2*M_PI/division));
-          p2.rotate(center, ellipse->getAngle());
-          if(n==division) p2 = start;
-        }
-        break;
-      }
-
-      case RS2::EntitySpline :
-      {
-        RS_Spline * spline = (RS_Spline *)e;
-        int mark;
-        if(_label_to_mark.find(spline->getLabel())!=_label_to_mark.end())
-          mark = _label_to_mark[spline->getLabel()];
-        else
-        {
-          mark = _label_to_mark.size()+1;
-          _label_to_mark[spline->getLabel()] = mark;
-        }
-
-        for (RS_Entity* l=spline->firstEntity(); l!=NULL; l=spline->nextEntity())
-          if(l->rtti() == RS2::EntityLine )
-        {
-          const RS_Line * line = (const RS_Line *)l;
-          CG_Segment segment;
-          segment.p1 = add_point(line->getStartpoint());
-          segment.p2 = add_point(line->getEndpoint());
-          segment.mark = mark;
-          _segments.push_back(segment);
-        }
-
-        break;
-      }
-
-      case RS2::EntityHatch :
-      {
-        const RS_Hatch * hatch = (const RS_Hatch *)e;
-        RS_HatchData data = hatch->getData();
-
-        if(data.hole)
-        {
-          CG_Hole hole;
-          hole.x    = data.internal_point.x;
-          hole.y    = data.internal_point.y;
-          _holes.push_back(hole);
-        }
-        else
-        {
-          CG_Region region;
-          region.x    = data.internal_point.x;
-          region.y    = data.internal_point.y;
-          region.area_control = data.area_control > 0? data.area_control : RS_MAXDOUBLE;
-          region.label = data.label;
-          region.material = data.material;
-          _regions.push_back(region);
-        }
-        break;
-      }
 
       default: break;
+      }
     }
-  }
 
   std::map<RS_String, int>::iterator it = _label_to_mark.begin();
   for(; it != _label_to_mark.end(); ++it)
@@ -266,10 +271,30 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
 
 unsigned int CG_PSLG::add_point(const RS_Vector &v)
 {
+  //this point already exist
   for(unsigned int n=0; n<_points.size(); ++n)
     if( v.distanceTo(_points[n])<1e-4 ) return n;
+
   _points.push_back(v);
   return _points.size()-1;
 }
 
+bool CG_PSLG::add_aux_point(const RS_Vector &v, double tol)
+{
+  //this point already exist
+  for(unsigned int n=0; n<_points.size(); ++n)
+    if( v.distanceTo(_points[n])<tol ) return false;
+
+  //the aux point lies on any segment?
+  for(unsigned int n=0; n<_segments.size(); ++n)
+  {
+    RS_Vector p1 = _points[_segments[n].p1];
+    RS_Vector p2 = _points[_segments[n].p2];
+    double del = fabs((p1-v).magnitude() + (p2-v).magnitude() - (p1-p2).magnitude());
+    if(del<tol) return false;
+  }
+
+  _aux_points.push_back(v);
+  return true;
+}
 

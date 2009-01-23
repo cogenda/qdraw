@@ -8,8 +8,8 @@
         <rect>
             <x>0</x>
             <y>0</y>
-            <width>531</width>
-            <height>369</height>
+            <width>518</width>
+            <height>360</height>
         </rect>
     </property>
     <property name="caption">
@@ -43,26 +43,23 @@
                                 <cstring>AreaConstraint</cstring>
                             </property>
                             <property name="text">
-                                <string>Enable Triangle Area Constraint</string>
+                                <string>Ena&amp;ble Triangle Area Constraint</string>
+                            </property>
+                            <property name="accel">
+                                <string>Alt+B</string>
                             </property>
                         </widget>
-                        <spacer row="0" column="1">
+                        <widget class="QCheckBox" row="0" column="1">
                             <property name="name">
-                                <cstring>spacer1</cstring>
+                                <cstring>Quadtree</cstring>
                             </property>
-                            <property name="orientation">
-                                <enum>Horizontal</enum>
+                            <property name="text">
+                                <string>Enable Quadtree Mesh</string>
                             </property>
-                            <property name="sizeType">
-                                <enum>Expanding</enum>
+                            <property name="accel">
+                                <string></string>
                             </property>
-                            <property name="sizeHint">
-                                <size>
-                                    <width>40</width>
-                                    <height>20</height>
-                                </size>
-                            </property>
-                        </spacer>
+                        </widget>
                     </grid>
                 </widget>
                 <widget class="QGroupBox">
@@ -76,27 +73,6 @@
                         <property name="name">
                             <cstring>unnamed</cstring>
                         </property>
-                        <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>ConformingDelaunay</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Generate Conforming Delaunay Mesh</string>
-                            </property>
-                        </widget>
-                        <widget class="QCheckBox" row="0" column="0">
-                            <property name="name">
-                                <cstring>QualityControl</cstring>
-                            </property>
-                            <property name="text">
-                                <string>Generate Quality Mesh</string>
-                            </property>
-                        </widget>
-                        <widget class="QLineEdit" row="0" column="3">
-                            <property name="name">
-                                <cstring>MinimalAngleEdit</cstring>
-                            </property>
-                        </widget>
                         <spacer row="0" column="1">
                             <property name="name">
                                 <cstring>spacer5</cstring>
@@ -114,12 +90,36 @@
                                 </size>
                             </property>
                         </spacer>
+                        <widget class="QCheckBox" row="1" column="0" rowspan="1" colspan="2">
+                            <property name="name">
+                                <cstring>ConformingDelaunay</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Generate Conforming Delaunay Mesh</string>
+                            </property>
+                        </widget>
                         <widget class="QLabel" row="0" column="2">
                             <property name="name">
                                 <cstring>textLabel1</cstring>
                             </property>
                             <property name="text">
                                 <string>Minimal Angle:</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit" row="0" column="3">
+                            <property name="name">
+                                <cstring>MinimalAngleEdit</cstring>
+                            </property>
+                        </widget>
+                        <widget class="QCheckBox" row="0" column="0">
+                            <property name="name">
+                                <cstring>QualityControl</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Generate Qualit&amp;y Mesh</string>
+                            </property>
+                            <property name="accel">
+                                <string>Alt+Y</string>
                             </property>
                         </widget>
                     </grid>
@@ -157,7 +157,7 @@
                                 <cstring>NoPointInsert</cstring>
                             </property>
                             <property name="text">
-                                <string>No Point insertion on Boundary</string>
+                                <string>&amp;No Point insertion on Boundary</string>
                             </property>
                         </widget>
                         <widget class="QCheckBox" row="0" column="2">
@@ -293,7 +293,7 @@
                                 <cstring>BOK</cstring>
                             </property>
                             <property name="text">
-                                <string>OK</string>
+                                <string>O&amp;K</string>
                             </property>
                         </widget>
                         <spacer>
@@ -366,6 +366,7 @@
     <variable access="private">bool _signed_log;</variable>
     <variable access="private">double _max_dispersion;</variable>
     <variable access="private">bool _refine;</variable>
+    <variable access="private">bool _quadtree;</variable>
 </variables>
 <slots>
     <slot specifier="non virtual">SlotCmdString()</slot>
@@ -378,6 +379,7 @@
     <function specifier="non virtual" returnType="double">get_dispersion()</function>
     <function specifier="non virtual">init_mesh( const QString &amp; cmd )</function>
     <function specifier="non virtual">init_refine( const QString &amp; cmd )</function>
+    <function specifier="non virtual" returnType="bool">enable_quadtree()</function>
 </functions>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

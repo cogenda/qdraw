@@ -43,17 +43,18 @@ MeshGenerator::~MeshGenerator()
 
 
 
-void MeshGenerator::do_mesh(const QString &cmd )
+void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
 {
   triangulateio_init();
 
   //create PSLG
   _pslg = new CG_PSLG(_gv->getGraphic());
 
-  std::vector<RS_Vector> &  _points   = _pslg->get_points();
-  std::vector<CG_Segment> & _segments = _pslg->get_segments();
-  std::vector<CG_Region> &  _regions  = _pslg->get_regions();
-  std::vector<CG_Hole> &    _holes    = _pslg->get_holes();
+  std::vector<RS_Vector> &  _points       = _pslg->get_points();
+  std::vector<RS_Vector> &  _aux_points   = _pslg->get_aux_points();
+  std::vector<CG_Segment> & _segments     = _pslg->get_segments();
+  std::vector<CG_Region> &  _regions      = _pslg->get_regions();
+  std::vector<CG_Hole> &    _holes        = _pslg->get_holes();
 
   if(_points.size() < 3)
   {
@@ -61,10 +62,12 @@ void MeshGenerator::do_mesh(const QString &cmd )
     return;
   }
 
-  build_quadtree_points();
+  QuadTree * quadtree = NULL;
+  if(enable_quadtree)
+    quadtree = build_quadtree();
 
   //set point
-  in.numberofpoints = _points.size();
+  in.numberofpoints = _points.size() + _aux_points.size();
   in.numberofpointattributes = 0;
   in.pointattributelist = (double *)NULL;
   in.pointlist = (double *) calloc(in.numberofpoints*2, sizeof(double));
@@ -77,6 +80,12 @@ void MeshGenerator::do_mesh(const QString &cmd )
   {
     *ppointlist++ = _points[i].x;
     *ppointlist++ = _points[i].y;
+    *ppointmarkerlist++ = 0;
+  }
+  for(unsigned int i=0; i<_aux_points.size(); i++)
+  {
+    *ppointlist++ = _aux_points[i].x;
+    *ppointlist++ = _aux_points[i].y;
     *ppointmarkerlist++ = 0;
   }
 
@@ -134,7 +143,7 @@ void MeshGenerator::do_mesh(const QString &cmd )
   mesh->set_pslg(_pslg);
   mesh->tri_cmd() = cmd;
   mesh->set_profile_manager(_pm);
-
+  mesh->set_quadtree(quadtree);
   mesh->update();
 
   _doc->addEntity(mesh);
@@ -145,7 +154,7 @@ void MeshGenerator::do_mesh(const QString &cmd )
 
 
 
-void MeshGenerator::build_quadtree_points()
+QuadTree * MeshGenerator::build_quadtree()
 {
   std::vector<RS_Vector> &  _points   = _pslg->get_points();
 
@@ -164,15 +173,47 @@ void MeshGenerator::build_quadtree_points()
   else
     tr.x = bl.x + (tr.y - bl.y);
 
+  RS_Vector br(tr.x, bl.y);
+  RS_Vector tl(bl.x, tr.y);
+
   // create root quadtree
-  QuadTree quadtree;
+  QuadTree * quadtree = new QuadTree;
+
+  const RS_Vector * p_bl = quadtree->add_point(bl);
+  const RS_Vector * p_br = quadtree->add_point(br);
+  const RS_Vector * p_tr = quadtree->add_point(tr);
+  const RS_Vector * p_tl = quadtree->add_point(tl);
+  quadtree->set_head(QuadTreeNodeData(p_tl, p_tr, p_br, p_bl, QuadTreeLocation()));
 
   // loop. until area constrain satisfied
+  bool area_constrain;
+  do
+  {
+    area_constrain=false;
+    QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
+    for(; leaf_it != quadtree->end_leaf(); )
+    {
+      QuadTree::iterator this_leaf = leaf_it++;
+
+      // check line constrain
+      //quadtree->is_line_intersection(quadtree->begin_leaf(), *p_tl, *p_br );
+      if(this_leaf->area()>0.02)
+      {
+        quadtree->subdivide(this_leaf);
+        area_constrain = true;
+      }
+    }
+  }
+  while(area_constrain);
 
   // add quadtree mesh to PSLG points
+  const std::vector<const RS_Vector *> & quadtree_points = quadtree->get_points();
+  for(unsigned int n=0; n<quadtree_points.size(); ++n)
+    _pslg->add_aux_point(*quadtree_points[n]);
 
-  // free quadtree
+  // quadtree
 
+  return quadtree;
 }
 
 

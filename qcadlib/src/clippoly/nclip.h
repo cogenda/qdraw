@@ -48,18 +48,18 @@ class	DirPolyIter;
 class	Point;
 // class	NodePEdgeList;
 
-void	clip_poly( const Poly &a, const Poly &b, 
-			PolyPList &a_min_b, PolyPList &b_min_a, PolyPList &a_and_b );
-int		intersect( const Edge &a, const Edge &b, Point &p1, Point &p2 );
-int		intersect( Poly &a, Poly &b );
+void	clip_poly( const Poly &a, const Poly &b,
+                PolyPList &a_min_b, PolyPList &b_min_a, PolyPList &a_and_b );
+int	intersect( const Edge &a, const Edge &b, Point &p1, Point &p2 );
+int	intersect( Poly &a, Poly &b );
 void	label_shared( Poly & a, const Poly & b );
-void	make_poly( const Point &point, DirPolyIter &follow, 
-			PolyPList &polylist, NodePEdgeList &done );
-int 	make_poly( const Point &start_point, const Point &point, 
-			DirPolyIter &follow, NodePEdgeList &done, 
-			Poly * new_poly );
-void	assign_polys( const Poly &a, const Poly &b, const PolyPList &in_list, 
-			PolyPList &a_min_b, PolyPList &b_min_a, PolyPList &a_and_b );
+void	make_poly( const Point &point, DirPolyIter &follow,
+                PolyPList &polylist, NodePEdgeList &done );
+int 	make_poly( const Point &start_point, const Point &point,
+                DirPolyIter &follow, NodePEdgeList &done,
+                Poly * new_poly );
+void	assign_polys( const Poly &a, const Poly &b, const PolyPList &in_list,
+                   PolyPList &a_min_b, PolyPList &b_min_a, PolyPList &a_and_b );
 void	poly_min_poly( const Poly &a, const Poly &b, PolyPList &a_min_b );
 void	add_until( Poly *, const Point &, DirPolyIter & );
 

@@ -4282,7 +4282,7 @@ void QC_ApplicationWindow::slotDoMesh()
   if(tri_setting.exec() == QDialog::Accepted)
   {
     MeshGenerator mesher(getDocument(), getGraphicView(), getProfileManager());
-    mesher.do_mesh(tri_setting.get_cmd_string());
+    mesher.do_mesh(tri_setting.get_cmd_string(), tri_setting.enable_quadtree());
   }
 }
 

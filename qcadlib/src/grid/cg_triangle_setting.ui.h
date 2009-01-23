@@ -50,6 +50,7 @@ void TriangleSetting::SlotCmdString()
   RS_SETTINGS->beginGroup("/Mesh");
   if(!_refine)
     RS_SETTINGS->writeEntry("/AreaConstraint", AreaConstraint->isChecked());
+  RS_SETTINGS->writeEntry("/Quadtree", Quadtree->isChecked());
   RS_SETTINGS->writeEntry("/Quality", QualityControl->isChecked());
   RS_SETTINGS->writeEntry("/Delaunay", ConformingDelaunay->isChecked());
   RS_SETTINGS->writeEntry("/MinimalAngle", MinimalAngleEdit->text());
@@ -92,6 +93,7 @@ void TriangleSetting::init_mesh( const QString & cmd )
 
   RS_SETTINGS->beginGroup("/Mesh");
   QString area = RS_SETTINGS->readEntry("/AreaConstraint", "F");
+  QString quadtree = RS_SETTINGS->readEntry("/Quadtree", "T");
   QString quality = RS_SETTINGS->readEntry("/Quality", "T");
   QString delaunay = RS_SETTINGS->readEntry("/Delaunay", "T");
   QString minimal_angle = RS_SETTINGS->readEntry("/MinimalAngle", "20");
@@ -100,6 +102,7 @@ void TriangleSetting::init_mesh( const QString & cmd )
   RS_SETTINGS->endGroup();
 
   AreaConstraint->setChecked(area=="T");
+  Quadtree->setChecked(quadtree=="T");
   ConformingDelaunay->setChecked(delaunay=="T");
   QualityControl->setChecked(quality=="T");
   MinimalAngleEdit->setText(minimal_angle);
@@ -113,11 +116,12 @@ void TriangleSetting::init_refine( const QString & cmd )
   _refine = true;
   _cmd_string = "pzraQ";
   AreaConstraint->setChecked(true);
-  groupBox1->setEnabled(false);
+  AreaConstraint->setEnabled(false);
   MeshRefinement->setChecked(true);
   MeshRefinement->setEnabled(false);
 
   RS_SETTINGS->beginGroup("/Mesh");
+  QString quadtree = RS_SETTINGS->readEntry("/Quadtree", "T");
   QString quality = RS_SETTINGS->readEntry("/Quality", "T");
   QString delaunay = RS_SETTINGS->readEntry("/Delaunay", "T");
   QString minimal_angle = RS_SETTINGS->readEntry("/MinimalAngle", "20");
@@ -126,7 +130,8 @@ void TriangleSetting::init_refine( const QString & cmd )
   QString max_dispersion = RS_SETTINGS->readEntry("/MaxDispersion", "3");
   QString signed_log = RS_SETTINGS->readEntry("/DispersionWithSignedLog", "T");
   RS_SETTINGS->endGroup();
-
+  
+  Quadtree->setChecked(quadtree=="T");
   ConformingDelaunay->setChecked(delaunay=="T");
   QualityControl->setChecked(quality=="T");
   MinimalAngleEdit->setText(minimal_angle);
@@ -135,4 +140,10 @@ void TriangleSetting::init_refine( const QString & cmd )
   MaxDispersion->setText(max_dispersion);
   SignedLog->setChecked(signed_log=="T");
 
+}
+
+
+bool TriangleSetting::enable_quadtree()
+{
+ return Quadtree->isChecked();
 }

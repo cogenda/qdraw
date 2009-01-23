@@ -74,7 +74,7 @@ public:
     if(_x == R) os << "R";
     if(_x == L) os << "L";
   }
-  	
+
 private:
   Location _x;
   Location _y;
@@ -84,12 +84,12 @@ private:
 class QuadTreeNodeData
 {
 public:
-	
+
   QuadTreeNodeData(const RS_Vector *tl, const RS_Vector *tr,
                    const RS_Vector *br, const RS_Vector *bl,
                    QuadTreeLocation location)
-  :_p_tl(tl), _p_tr(tr), _p_br(br), _p_bl(bl), 
-   _location(location), _divide_flag(false), 
+  :_p_tl(tl), _p_tr(tr), _p_br(br), _p_bl(bl),
+   _location(location), _divide_flag(false),
    _area_constrain_ok(false), _region(-1)
   {}
 
@@ -121,53 +121,53 @@ public:
 
   double area() const
   {
-    RS_Vector X = (*_p_tr - *_p_tl); 
-    RS_Vector Y = (*_p_tr - *_p_br); 
+    RS_Vector X = (*_p_tr - *_p_tl);
+    RS_Vector Y = (*_p_tr - *_p_br);
     return X.x * Y.y;
   }
-  
-  bool & divide_flag() 
+
+  bool & divide_flag()
   { return _divide_flag; }
-    
+
   const bool & divide_flag() const
   { return _divide_flag; }
 
   void set_in()
   { _flag = IN; }
-  
+
   bool is_in() const
   { return _flag == IN; }
-  
+
   void set_out()
   { _flag = OUT; }
 
   bool is_out() const
   { return _flag == OUT; }
-  
+
   void set_mix()
   { _flag = MIX; }
-  
+
   bool is_mix() const
   { return _flag == MIX; }
-  
+
   void toggle_area_constrain_satisfied()
   { _area_constrain_ok = true; }
-  
+
   bool is_area_constrain_satisfied() const
   { return _area_constrain_ok; }
-  
+
   /**
    * read/write region info
    */
   int & region()
   { return _region; }
-  
+
   friend std::ostream& operator << (std::ostream&, const QuadTreeNodeData& data);
 
 private:
-  
-  enum CLIPFLAG{IN, OUT, MIX};	
-  
+
+  enum CLIPFLAG{IN, OUT, MIX};
+
   /**
    * top left point;
    */
@@ -202,15 +202,15 @@ private:
    * indicate that area constrain has been satisfied
    */
   bool _area_constrain_ok;
-  
+
   /**
-   * when CLIPFLAG _flag is IN, 
+   * when CLIPFLAG _flag is IN,
    * indicate this quadtree leaf in which region
    */
   int _region;
-  
+
   /**
-   * region (as polygon) and quadtree leaf clip result 
+   * region (as polygon) and quadtree leaf clip result
    */
   CLIPFLAG _flag;
 
@@ -225,18 +225,18 @@ public:
   /**
    * construct empty quadtree
    */
-  QuadTree() {}	
+  QuadTree() {}
 
 
   QuadTree(const QuadTreeNodeData & data)
       :tree<QuadTreeNodeData>(data)
   {}
-  
+
   /**
    * free _points array
    */
   ~QuadTree();
-  
+
   /**
    * divide leaf into 4 child leaf
    */
@@ -248,33 +248,48 @@ public:
   void balance();
 
   /**
-   * add point to quadtree. 
-   * we will first search _points array to see if \p point already exist 
+   * add point to quadtree.
+   * we will first search _points array to see if \p point already exist
    * or we will create new RS_Vector by the \p point and strore the new created point in _points
    * for both situation, return the pointer point to  _points
    */
   const RS_Vector * add_point(const RS_Vector & point);
 
   /**
+   * get quadtree internal points
+   */
+  const std::vector<const RS_Vector *> & get_points() const
+  { return _points; }
+
+  /**
+   * @return true if a line(p1, p2) intersection with tree node
+   */
+  bool is_line_intersection(const iterator_base & it, const RS_Vector &p1, const RS_Vector &p2 );
+
+  /**
+   * @return true if a region intersection with tree node
+   */
+  bool is_region_intersection(const iterator_base & it, const std::vector<RS_Vector > &region );
+
+  /**
+   * write quadtree mesh in vtk format
+   */
+  void export_quadtree(char * file);
+
+  /**
+   * print the absolute path of an iterator
+   */
+  void print_path(const iterator_base & it) const;
+
+private:
+  /**
    * find the neighbor of leaf in the direction  x
    * return empty iterator if no find
    */
   iterator_base find_neighbor(const iterator_base & it, Location x);
 
-  /**
-   * write quadtree mesh in vtk format 
-   */
-  void export_quadtree(char * file);
-  
-  /**
-   * print the absolute path of an iterator 
-   */ 
-  void print_path(const iterator_base & it) const;
-
-private:  
-	
   iterator_base goto_quadtree_child(const iterator_base & it, const QuadTreeLocation & location);
-  
+
   std::vector<const RS_Vector *> _points;
 
   std::map<const RS_Vector *, unsigned int> _point_to_id;

@@ -33,6 +33,7 @@ class RS_Document;
 class RS_Document;
 class RS_GraphicView;
 class RS_Mesh;
+class QuadTree;
 class ProfileManager;
 
 class MeshGenerator
@@ -51,7 +52,7 @@ public:
   /**
    * generate mesh with PSLG
    */
-  virtual void do_mesh(const QString &cmd);
+  virtual void do_mesh(const QString &cmd, bool enable_quadtree);
 
   /**
    * refine existing mesh
@@ -94,7 +95,7 @@ private:
   /**
    * use quadtree method to create aux mesh points
    */
-  void build_quadtree_points();
+  QuadTree * build_quadtree();
 
   /**
    * triangle data structure
