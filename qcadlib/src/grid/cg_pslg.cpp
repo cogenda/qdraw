@@ -68,9 +68,9 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
           if(line->isPointSet())
           {
             CG_Constrain constrain;
-            constrain.p1 = p1;
-            constrain.p2 = p2;
-            constrain.char_length = (p1-p2).magnitude()/division;
+            constrain.p1 = start;
+            constrain.p2 = end;
+            constrain.char_length = (end - start).magnitude()/division;
             _constrains.push_back(constrain);
           }
           else
@@ -254,6 +254,8 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
             region.area_control = data.area_control > 0? data.area_control : RS_MAXDOUBLE;
             region.label = data.label;
             region.material = data.material;
+
+
             _regions.push_back(region);
           }
           break;

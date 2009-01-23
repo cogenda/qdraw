@@ -34,11 +34,11 @@ class QuadTreeLocation
 {
 public:
   QuadTreeLocation()
-  :_x(ROOT), _y(ROOT)
+      :_x(ROOT), _y(ROOT)
   {}
 
   QuadTreeLocation(Location x, Location y)
-  :_x(x), _y(y)
+      :_x(x), _y(y)
   {}
 
   static QuadTreeLocation x_symmetry(const QuadTreeLocation & location)
@@ -65,7 +65,7 @@ public:
   { return ( _x==loc || _y==loc ); }
 
   bool operator == (const QuadTreeLocation & other) const
-  { return (_x == other._x && _y == other._y); }
+    { return (_x == other._x && _y == other._y); }
 
   void print(std::ostream& os) const
   {
@@ -84,14 +84,19 @@ private:
 class QuadTreeNodeData
 {
 public:
+  enum REGION_INTERSECTION_FLAG{IN_REGION, OUT_REGION, INTERSECTION_REGION, REGION_INTERSECTION_UNKNOW };
+  enum LINE_INTERSECTION_FLAG{HAS_INTERSECTION, NO_INTERSECTION, LINE_INTERSECTION_UNKNOW};
 
   QuadTreeNodeData(const RS_Vector *tl, const RS_Vector *tr,
                    const RS_Vector *br, const RS_Vector *bl,
                    QuadTreeLocation location)
-  :_p_tl(tl), _p_tr(tr), _p_br(br), _p_bl(bl),
-   _location(location), _divide_flag(false),
-   _area_constrain_ok(false), _region(-1)
-  {}
+      :_p_tl(tl), _p_tr(tr), _p_br(br), _p_bl(bl),
+      _location(location), _divide_flag(false),
+      _area_constrain_ok(false), _region(-1)
+  {
+    _region_intersection_flag = REGION_INTERSECTION_UNKNOW;
+    _line_intersection_flag = LINE_INTERSECTION_UNKNOW;
+  }
 
   QuadTreeNodeData(const QuadTreeNodeData & other)
   {
@@ -102,6 +107,8 @@ public:
     _location = other._location;
     _divide_flag = other._divide_flag;
     _area_constrain_ok = other._area_constrain_ok;
+    _region_intersection_flag = other._region_intersection_flag;
+    _line_intersection_flag = other._line_intersection_flag;
   }
 
   const RS_Vector * tl() const
@@ -117,7 +124,7 @@ public:
     { return _p_bl; }
 
   const QuadTreeLocation & get_location() const
-  { return _location; }
+    { return _location; }
 
   double area() const
   {
@@ -130,31 +137,25 @@ public:
   { return _divide_flag; }
 
   const bool & divide_flag() const
-  { return _divide_flag; }
+    { return _divide_flag; }
 
-  void set_in()
-  { _flag = IN; }
+  REGION_INTERSECTION_FLAG region_intersection_flag() const
+    { return _region_intersection_flag; }
 
-  bool is_in() const
-  { return _flag == IN; }
+  REGION_INTERSECTION_FLAG & region_intersection_flag()
+  { return _region_intersection_flag; }
 
-  void set_out()
-  { _flag = OUT; }
+  LINE_INTERSECTION_FLAG line_intersection_flag() const
+    { return _line_intersection_flag; }
 
-  bool is_out() const
-  { return _flag == OUT; }
-
-  void set_mix()
-  { _flag = MIX; }
-
-  bool is_mix() const
-  { return _flag == MIX; }
+  LINE_INTERSECTION_FLAG & line_intersection_flag()
+  { return _line_intersection_flag; }
 
   void toggle_area_constrain_satisfied()
   { _area_constrain_ok = true; }
 
   bool is_area_constrain_satisfied() const
-  { return _area_constrain_ok; }
+    { return _area_constrain_ok; }
 
   /**
    * read/write region info
@@ -165,8 +166,6 @@ public:
   friend std::ostream& operator << (std::ostream&, const QuadTreeNodeData& data);
 
 private:
-
-  enum CLIPFLAG{IN, OUT, MIX};
 
   /**
    * top left point;
@@ -210,10 +209,14 @@ private:
   int _region;
 
   /**
-   * region (as polygon) and quadtree leaf clip result
+   * region (as polygon) and quadtree leaf intersection result
    */
-  CLIPFLAG _flag;
+  REGION_INTERSECTION_FLAG  _region_intersection_flag;
 
+  /**
+   * line and quadtree leaf intersection result
+   */
+  LINE_INTERSECTION_FLAG    _line_intersection_flag;
 };
 
 
@@ -259,7 +262,7 @@ public:
    * get quadtree internal points
    */
   const std::vector<const RS_Vector *> & get_points() const
-  { return _points; }
+    { return _points; }
 
   /**
    * @return true if a line(p1, p2) intersection with tree node
@@ -282,6 +285,7 @@ public:
   void print_path(const iterator_base & it) const;
 
 private:
+
   /**
    * find the neighbor of leaf in the direction  x
    * return empty iterator if no find

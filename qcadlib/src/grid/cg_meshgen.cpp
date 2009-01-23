@@ -157,6 +157,7 @@ void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
 QuadTree * MeshGenerator::build_quadtree()
 {
   std::vector<RS_Vector> &  _points   = _pslg->get_points();
+  std::vector<CG_Constrain> & _constrains = _pslg->get_constrain();
 
   // create quad bound box
   RS_Vector bl(RS_MAXDOUBLE, RS_MAXDOUBLE), tr(-RS_MAXDOUBLE, -RS_MAXDOUBLE);
@@ -196,13 +197,31 @@ QuadTree * MeshGenerator::build_quadtree()
       QuadTree::iterator this_leaf = leaf_it++;
 
       // check line constrain
-      //quadtree->is_line_intersection(quadtree->begin_leaf(), *p_tl, *p_br );
-      if(this_leaf->area()>0.02)
+      if(this_leaf->line_intersection_flag()!=QuadTreeNodeData::NO_INTERSECTION)
       {
-        quadtree->subdivide(this_leaf);
-        area_constrain = true;
+        for(unsigned int n=0; n<_constrains.size(); ++n)
+        {
+          if(quadtree->is_line_intersection(this_leaf, _constrains[n].p1, _constrains[n].p2 ))
+          {
+            this_leaf->line_intersection_flag()=QuadTreeNodeData::HAS_INTERSECTION;
+            if(this_leaf->area()>_constrains[n].char_length*_constrains[n].char_length)
+            {
+              quadtree->subdivide(this_leaf);
+              area_constrain = true;
+            }
+          }
+          else
+            this_leaf->line_intersection_flag()=QuadTreeNodeData::NO_INTERSECTION;
+        }
       }
+
+      // check region constrain
+
+
     }
+
+    if(area_constrain)
+      quadtree->balance();
   }
   while(area_constrain);
 

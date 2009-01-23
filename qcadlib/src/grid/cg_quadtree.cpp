@@ -94,8 +94,6 @@ void QuadTree::balance()
         int neighbor_depth = depth(neighbors[n]);
         if(leaf_depth-neighbor_depth>1)
         {
-          print_path(leaf);
-          print_path(neighbors[n]);
           neighbors[n]->divide_flag() = true;
         }
       }
