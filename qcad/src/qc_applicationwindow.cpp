@@ -89,6 +89,7 @@
 #include "qg_cadtoolbarmain.h"
 #include "qg_dlgimageoptions.h"
 #include "qg_mousewidget.h"
+#include "qg_dlgabout.h"
 
 #include "qc_mdiwindow.h"
 #include "qc_dialogfactory.h"
@@ -3091,42 +3092,10 @@ void QC_ApplicationWindow::slotHelpAbout()
 {
   RS_DEBUG->print("QC_ApplicationWindow::slotHelpAbout()");
 
-  QString edition;
+  QString edition= " [Open Source Edition]";
 
-#ifdef RS_DEMO
-  //demo; // = " [Demo]";
-#else
-#ifdef RS_PROF
-  edition = " [Professional]";
-#else
-  edition = " [Community Edition]";
-#endif
-#endif
-
-  QStringList modules;
-
-#ifdef RS_CAM
-  modules += "CAM";
-#endif
-
-#ifdef RS_SCRIPTING
-  modules += "Scripting";
-#endif
-
-  QString modulesString;
-
-  if (modules.empty()==false)
-  {
-    modulesString = modules.join(", ");
-  }
-  else
-  {
-    modulesString = tr("None");
-  }
-
-  QMessageBox box(this);
-  box.setCaption(tr("About..."));
-  box.setText(       QString("<qt>") +  // no center for main stream QCad
+  QG_DlgAbout about;
+  about.setText(     QString("<qt>") +  // no center for main stream QCad
 #ifdef QC_ABOUT_HEADER
                      QString("<center>") +
                      QString(QC_ABOUT_HEADER) +
@@ -3135,21 +3104,15 @@ void QC_ApplicationWindow::slotHelpAbout()
 #endif
                      tr("Version: %1 %2").arg(QC_VERSION).arg(edition) + "<br>" +
                      tr("Date: %1").arg(__DATE__) + "<br>" +
-                     QString("(c) 2001-2005 by RibbonSoft,<br> Andrew Mustun") +
-                     "<br>" +
-                     tr("Modules: %1").arg(modulesString) + "<br>" +
-                     QString("http://www.ribbonsoft.com")
+                     tr("License: GNU General Public License") + "<br>" +
+                     QString("Copyright (C) 2007-2008 by Cogenda EDA") + "<br>" +
+                     QString("http://www.cogenda.com")
 #ifdef QC_ABOUT_ADD_COMPANY
                      + QString("<br>") + QC_ABOUT_ADD_COMPANY
                      + QString("</center>")
 #endif
              );
-#ifndef QC_ABOUT_HEADER
-  box.setIcon( QPixmap::fromMimeSource(QC_APP_ICON) );
-  box.setFixedWidth(340);
-  box.setFixedHeight(250);
-#endif
-  box.exec();
+  about.exec();
 }
 
 

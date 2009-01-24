@@ -69,6 +69,7 @@ FORMS       = \
               ui/qg_dimensionlabeleditor.ui \
               ui/qg_dimlinearoptions.ui \
               ui/qg_dimoptions.ui \
+              ui/qg_dlgabout.ui \
               ui/qg_dlgattributes.ui \
               ui/qg_dlghatch.ui \
               ui/qg_dlginitial.ui \

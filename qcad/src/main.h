@@ -29,7 +29,7 @@
 
 #include <qstringlist.h>
 
-#define QC_VERSION "2.0.5.0"
+#define QC_VERSION "1.0.5"
 
 #ifndef QC_APPNAME
 #  define QC_APPNAME "QDraw"
