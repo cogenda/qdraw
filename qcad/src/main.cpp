@@ -64,7 +64,7 @@ QSplashScreen *splash = 0;
 # include "rs_camdialog.h"
 #endif
 
-# include "xpm/intro_qcad.xpm"
+# include "xpm/intro_qdraw.xpm"
 # include "xpm/splash_qdraw.xpm"
 
 
@@ -155,7 +155,7 @@ int main(int argc, char** argv)
                "preferred language.<br>"
                "You can changes these settings later in the "
                "Options Dialog of " QC_APPNAME ".");
-    QPixmap pxm(intro_xpm);
+    QPixmap pxm(intro_qdraw_xpm);
     di.setPixmap(pxm);
     if (di.exec())
     {

@@ -113,7 +113,6 @@ void RS_Mesh::clear_triangulateio()
 
 void RS_Mesh::set_refine_flag(double dmax, bool signed_log)
 {
-
   io.numberofcorners = 3;
   io.trianglearealist = (double *) calloc(io.numberoftriangles, sizeof(double));
   for(int i=0; i<io.numberoftriangles; i++)
@@ -187,6 +186,32 @@ double RS_Mesh::triangle_area_constraint(int a, int b, int c, double dmax, bool 
   return area*Scale;
 }
 
+bool RS_Mesh::is_refine_required(const std::vector<RS_Vector> & poly, double dmax, bool signed_log)
+{
+
+  double pa = fabs(_pm->profile("Nd", poly[0].x, poly[0].y)) - fabs(_pm->profile("Na", poly[0].x, poly[0].y));
+  double pb = fabs(_pm->profile("Nd", poly[1].x, poly[1].y)) - fabs(_pm->profile("Na", poly[1].x, poly[1].y));
+  double pc = fabs(_pm->profile("Nd", poly[2].x, poly[2].y)) - fabs(_pm->profile("Na", poly[2].x, poly[2].y));
+  double pd = fabs(_pm->profile("Nd", poly[3].x, poly[3].y)) - fabs(_pm->profile("Na", poly[3].x, poly[3].y));
+
+  if(signed_log)
+  {
+    pa = (pa > 0 ? 1.0 : -1.0) * log(fabs(pa) + 1);
+    pb = (pb > 0 ? 1.0 : -1.0) * log(fabs(pb) + 1);
+    pc = (pc > 0 ? 1.0 : -1.0) * log(fabs(pc) + 1);
+    pd = (pd > 0 ? 1.0 : -1.0) * log(fabs(pd) + 1);
+  }
+
+  double dp_max = std::max( std::max(pa, pb), std::max(pc, pd) );
+  double dp_min = std::min( std::min(pa, pb), std::min(pc, pd) );
+
+  double dispersion =  dp_max - dp_min + 1e-6;
+
+  if(dispersion>dmax)
+    return true;
+
+  return false;
+}
 
 void RS_Mesh::update()
 {

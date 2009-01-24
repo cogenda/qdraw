@@ -17,6 +17,7 @@
 ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 **
 **********************************************************************/
+#include <set>
 #include <fstream>
 
 #include <qmessagebox.h>
@@ -270,11 +271,22 @@ QuadTree * MeshGenerator::build_quadtree()
   while(area_constrain);
 
   // add quadtree mesh to PSLG points
-  const std::vector<const RS_Vector *> & quadtree_points = quadtree->get_points();
-  for(unsigned int n=0; n<quadtree_points.size(); ++n)
-    _pslg->add_aux_point(*quadtree_points[n]);
+  {
+    std::set<const RS_Vector *> quadtree_points;
+    QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
+    for(; leaf_it != quadtree->end_leaf(); ++leaf_it)
+      if(leaf_it->region_intersection_flag()==QuadTreeNodeData::IN_REGION)
+      {
+        quadtree_points.insert(leaf_it->tl());
+        quadtree_points.insert(leaf_it->tr());
+        quadtree_points.insert(leaf_it->br());
+        quadtree_points.insert(leaf_it->bl());
+      }
 
-  // quadtree
+    std::set<const RS_Vector *>::iterator it=quadtree_points.begin();
+    for(; it!=quadtree_points.end(); ++it)
+      _pslg->add_aux_point(*(*it));
+  }
 
   return quadtree;
 }
@@ -295,17 +307,133 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
   _pslg = mesh->get_pslg();
 
   // refine by quadtree
-  if(enable_quadtree)
+  if(enable_quadtree && mesh->get_quadtree())
   {
+    QuadTree * quadtree = mesh->get_quadtree();
 
+    bool area_constrain;
+    //do
+    {
+      area_constrain=false;
+
+      QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
+      for(; leaf_it != quadtree->end_leaf(); )
+      {
+        QuadTree::iterator this_leaf = leaf_it++;
+        std::vector<RS_Vector> leaf_points;
+        leaf_points.push_back(*this_leaf->tl());
+        leaf_points.push_back(*this_leaf->tr());
+        leaf_points.push_back(*this_leaf->br());
+        leaf_points.push_back(*this_leaf->bl());
+        if( mesh->is_refine_required(leaf_points, max_d, signed_log) )
+        {
+          quadtree->subdivide(this_leaf);
+          area_constrain = true;
+        }
+      }
+      if(area_constrain) quadtree->balance();
+    }
+    //while(area_constrain);
+
+    // add quadtree mesh to PSLG points
+    std::vector<RS_Vector> &  _aux_points   = _pslg->get_aux_points();
+    _aux_points.clear();
+    {
+      std::set<const RS_Vector *> quadtree_points;
+      QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
+      for(; leaf_it != quadtree->end_leaf(); ++leaf_it)
+        if(leaf_it->region_intersection_flag()==QuadTreeNodeData::IN_REGION)
+      {
+        quadtree_points.insert(leaf_it->tl());
+        quadtree_points.insert(leaf_it->tr());
+        quadtree_points.insert(leaf_it->br());
+        quadtree_points.insert(leaf_it->bl());
+      }
+
+      std::set<const RS_Vector *>::iterator it=quadtree_points.begin();
+      for(; it!=quadtree_points.end(); ++it)
+        _pslg->add_aux_point(*(*it));
+    }
+
+    std::vector<RS_Vector> &  _points       = _pslg->get_points();
+    std::vector<CG_Segment> & _segments     = _pslg->get_segments();
+    std::vector<CG_Region> &  _regions      = _pslg->get_regions();
+    std::vector<CG_Hole> &    _holes        = _pslg->get_holes();
+
+    //set point
+    in.numberofpoints = _points.size() + _aux_points.size();
+    in.numberofpointattributes = 0;
+    in.pointattributelist = (double *)NULL;
+    in.pointlist = (double *) calloc(in.numberofpoints*2, sizeof(double));
+    in.pointmarkerlist = (int *) calloc(in.numberofpoints, sizeof(int));
+
+    double *ppointlist=in.pointlist;
+    int *ppointmarkerlist=in.pointmarkerlist;
+    //the points belongs to rectangle region
+    for(unsigned int i=0; i<_points.size(); i++)
+    {
+      *ppointlist++ = _points[i].x;
+      *ppointlist++ = _points[i].y;
+      *ppointmarkerlist++ = 0;
+    }
+    for(unsigned int i=0; i<_aux_points.size(); i++)
+    {
+      *ppointlist++ = _aux_points[i].x;
+      *ppointlist++ = _aux_points[i].y;
+      *ppointmarkerlist++ = 0;
+    }
+
+    //do necessarily prepare for call triangulate
+    in.numberoftriangles = 0;
+    in.numberofcorners = 3;
+    in.numberoftriangleattributes = 0;
+    in.trianglelist =  (int *) NULL;
+    in.trianglearealist = (double *) NULL;
+    in.triangleattributelist = NULL;
+
+    // set segment information
+    in.numberofsegments = _segments.size();
+
+    in.segmentlist =  (int *) calloc(in.numberofsegments*2,  sizeof(int));
+    in.segmentmarkerlist = (int *) calloc(in.numberofsegments, sizeof(int));
+
+    int *psegmentlist =  in.segmentlist;
+    int *psegmentmarkerlist = in.segmentmarkerlist;
+    for(unsigned int i=0;i<_segments.size();i++)
+    {
+      *psegmentlist++ = _segments[i].p1;
+      *psegmentlist++ = _segments[i].p2;
+      *psegmentmarkerlist++ = _segments[i].mark;
+    }
+
+    //set region/hole information
+    in.numberofregions = _regions.size();
+    in.regionlist = (double *) calloc(in.numberofregions*4, sizeof(double));
+    double *pregionlist = in.regionlist;
+    for(unsigned int i=0;i<_regions.size();i++)
+    {
+      *pregionlist++ = _regions[i].x;
+      *pregionlist++ = _regions[i].y;
+      *pregionlist++ = double(i);
+      *pregionlist++ = _regions[i].area_control;
+    }
+
+    in.numberofholes = _holes.size();
+    in.holelist   = (double *) calloc(in.numberofholes*2, sizeof(double));
+    double *pholelist = in.holelist;
+    for(unsigned int i=0;i<_holes.size();i++)
+    {
+      *pholelist++ = _holes[i].x;
+      *pholelist++ = _holes[i].y;
+    }
+
+    // call Triangle here
+    triangulate(mesh->tri_cmd(), &in, &out, (struct triangulateio *) NULL);
   }
   else // refine by delaunay
   {
-
     mesh->set_refine_flag(max_d, signed_log);
-
     triangulateio & mesh_in = mesh->get_triangulateio();
-
     triangulate(cmd.ascii(), &mesh_in, &out, (struct triangulateio *) NULL);
   }
 

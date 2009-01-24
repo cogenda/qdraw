@@ -22,6 +22,7 @@
 #ifndef RS_MESH_H
 #define RS_MESH_H
 
+#include <vector>
 #include <map>
 
 #include "triangle.h"
@@ -125,6 +126,8 @@ public:
   { return _quadtree; }
 
   void set_refine_flag(double d, bool signed_log);
+
+  bool is_refine_required(const std::vector<RS_Vector> & poly, double d, bool signed_log);
 
   void export_mesh(const RS_String & file);
 
