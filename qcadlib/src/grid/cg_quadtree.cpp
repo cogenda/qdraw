@@ -193,13 +193,36 @@ bool QuadTree::is_line_intersection(const iterator_base & it, const RS_Vector &p
 
 
 
-bool QuadTree::is_region_intersection(const iterator_base & it, const std::vector<RS_Vector > &region )
+QuadTreeNodeData::REGION_INTERSECTION_FLAG QuadTree::region_intersection(const iterator_base & it,
+    const std::vector<RS_Vector > & region_contour )
 {
 
+  if(region_contour.size()<2) return QuadTreeNodeData::OUT_REGION;
 
+  const RS_Vector * _p_tr = it->tr();
+  const RS_Vector * _p_tl = it->tl();
+  const RS_Vector * _p_br = it->br();
+  const RS_Vector * _p_bl = it->bl();
 
+  Poly leaf(Point(_p_bl->x, _p_bl->y));
+  leaf.add(Point(_p_br->x, _p_br->y));
+  leaf.add(Point(_p_tr->x, _p_tr->y));
+  leaf.add(Point(_p_tl->x, _p_tl->y));
+
+  RS_Vector leaf_center = (*_p_bl + *_p_tr)/2;
+
+  Poly contour(Point(region_contour[0].x, region_contour[0].y));
+  for(unsigned int n=1; n<region_contour.size(); ++n)
+    contour.add(Point(region_contour[n].x, region_contour[n].y));
+
+  int intersect_num = intersect( leaf, contour );
+
+  if(intersect_num) return QuadTreeNodeData::INTERSECTION_REGION;
+
+  if(contour.has_point(Point(leaf_center.x, leaf_center.y)))
+    return QuadTreeNodeData::IN_REGION;
+  return QuadTreeNodeData::OUT_REGION;
 }
-
 
 
 void QuadTree::print_path(const iterator_base & it) const

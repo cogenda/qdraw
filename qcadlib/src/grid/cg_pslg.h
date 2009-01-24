@@ -23,9 +23,11 @@
 #include <vector>
 #include <map>
 
-class RS_Vector;
+#include "rs_vector.h"
+#include "rs_string.h"
+
 class RS_Graphic;
-class RS_String;
+
 
 struct CG_Constrain
 {
@@ -48,6 +50,12 @@ struct CG_Region
   RS_String label;
   RS_String material;
   std::vector<RS_Vector> contour_points;
+  void add_point(const RS_Vector &p)
+  {
+    for(unsigned int n=0; n<contour_points.size(); ++n)
+      if((contour_points[n]-p).magnitude()<1e-4) return;
+    contour_points.push_back(p);
+  }
 };
 
 struct CG_Hole

@@ -236,7 +236,7 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
 
       case RS2::EntityHatch :
         {
-          const RS_Hatch * hatch = (const RS_Hatch *)e;
+          RS_Hatch * hatch = (RS_Hatch *)e;
           RS_HatchData data = hatch->getData();
 
           if(data.hole)
@@ -255,7 +255,94 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
             region.label = data.label;
             region.material = data.material;
 
+            for (RS_Entity* c = hatch->firstEntity(RS2::ResolveAll);
+                 c!=NULL;
+                 c = hatch->nextEntity(RS2::ResolveAll))
+            {
+              if (c->rtti()==RS2::EntityLine)
+              {
+                RS_Line* line = (RS_Line*)c;
+                region.add_point(line->getStartpoint());
+                region.add_point(line->getEndpoint());
+              }
 
+              if (c->rtti()==RS2::EntityArc)
+              {
+                RS_Arc* arc = (RS_Arc*)c;
+                unsigned int division = arc->getDivision();
+                RS_Vector  center = arc->getCenter();
+                double     r = arc->getRadius();
+                double     a1, a2;
+                if(arc->isReversed())
+                {
+                  // Arc Clockwise:
+                  a2 = arc->getAngle1();
+                  a1 = arc->getAngle2();
+                }
+                else
+                {
+                  // Arc Counterclockwise:
+                  a1 = arc->getAngle1();
+                  a2 = arc->getAngle2();
+                }
+                if (a1>a2-0.01)  a2+=2*M_PI;
+
+                RS_Vector  p1 = center + RS_Vector(r*cos(a1), r*sin(a1));
+                RS_Vector  p2 = center + RS_Vector(r*cos(a1+(a2-a1)/division), r*sin(a1+(a2-a1)/division));
+                for(unsigned int n=1; n<=division; ++n)
+                {
+                  region.add_point(p1);
+                  region.add_point(p2);
+                  p1 = p2;
+                  p2 = center + RS_Vector(r*cos(a1+(n+1)*(a2-a1)/division), r*sin(a1+(n+1)*(a2-a1)/division));
+                }
+              }
+
+              if (c->rtti()==RS2::EntityCircle)
+              {
+                RS_Circle * circle = (RS_Circle *)c;
+                unsigned int division = circle->getDivision();
+                RS_Vector  center = circle->getCenter();
+                RS_Vector  start = circle->getStartpoint();
+                double     r = circle->getRadius();
+                RS_Vector  p1 = start;
+                RS_Vector  p2 = center + RS_Vector(r*cos(2*M_PI/division), r*sin(2*M_PI/division));
+                for(unsigned int n=1; n<=division; ++n)
+                {
+                  region.add_point(p1);
+                  region.add_point(p2);
+                  p1 = p2;
+                  p2 = center + RS_Vector(r*cos((n+1)*2*M_PI/division), r*sin((n+1)*2*M_PI/division));
+                  if(n==division) p2 = start;
+                }
+              }
+
+              if (c->rtti()==RS2::EntityEllipse)
+              {
+                RS_Ellipse * ellipse = (RS_Ellipse *)c;
+                unsigned int division = ellipse->getDivision();
+                RS_Vector  center = ellipse->getCenter();
+                double     a = ellipse->getMajorRadius();
+                double     b = ellipse->getMinorRadius();
+                double     angel = ellipse->getAngle1();
+                RS_Vector  start = center + RS_Vector(a*cos(angel), b*sin(angel));
+                start.rotate(center, ellipse->getAngle());
+
+                RS_Vector  p1 = start;
+                RS_Vector  p2 = center + RS_Vector(a*cos(angel+2*M_PI/division), b*sin(angel+2*M_PI/division));
+                p2.rotate(center, ellipse->getAngle());
+
+                for(unsigned int n=1; n<=division; ++n)
+                {
+                  region.add_point(p1);
+                  region.add_point(p2);
+                  p1 = p2;
+                  p2 = center + RS_Vector(a*cos(angel+(n+1)*2*M_PI/division), b*sin(angel+(n+1)*2*M_PI/division));
+                  p2.rotate(center, ellipse->getAngle());
+                  if(n==division) p2 = start;
+                }
+              }
+            }
             _regions.push_back(region);
           }
           break;

@@ -158,6 +158,7 @@ QuadTree * MeshGenerator::build_quadtree()
 {
   std::vector<RS_Vector> &  _points   = _pslg->get_points();
   std::vector<CG_Constrain> & _constrains = _pslg->get_constrain();
+  std::vector<CG_Region> & _regions = _pslg->get_regions();
 
   // create quad bound box
   RS_Vector bl(RS_MAXDOUBLE, RS_MAXDOUBLE), tr(-RS_MAXDOUBLE, -RS_MAXDOUBLE);
@@ -191,10 +192,12 @@ QuadTree * MeshGenerator::build_quadtree()
   do
   {
     area_constrain=false;
+
     QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
     for(; leaf_it != quadtree->end_leaf(); )
     {
       QuadTree::iterator this_leaf = leaf_it++;
+      bool this_leaf_should_be_divide = false;
 
       // check line constrain
       if(this_leaf->line_intersection_flag()!=QuadTreeNodeData::NO_INTERSECTION)
@@ -205,10 +208,7 @@ QuadTree * MeshGenerator::build_quadtree()
           {
             this_leaf->line_intersection_flag()=QuadTreeNodeData::HAS_INTERSECTION;
             if(this_leaf->area()>_constrains[n].char_length*_constrains[n].char_length)
-            {
-              quadtree->subdivide(this_leaf);
-              area_constrain = true;
-            }
+              this_leaf_should_be_divide = true;
           }
           else
             this_leaf->line_intersection_flag()=QuadTreeNodeData::NO_INTERSECTION;
@@ -216,8 +216,50 @@ QuadTree * MeshGenerator::build_quadtree()
       }
 
       // check region constrain
+      switch(this_leaf->region_intersection_flag())
+      {
+      case QuadTreeNodeData::IN_REGION  :
+        if(this_leaf->area()>_regions[this_leaf->region()].area_control)
+          this_leaf_should_be_divide = true;
+        break;
+      case QuadTreeNodeData::OUT_REGION :
+        break;
+      case QuadTreeNodeData::INTERSECTION_REGION :
+      case QuadTreeNodeData::REGION_INTERSECTION_UNKNOW :
+        {
 
+          for(unsigned int n=0; n<_regions.size(); ++n)
+          {
+            switch(quadtree->region_intersection(this_leaf, _regions[n].contour_points))
+            {
+            case QuadTreeNodeData::OUT_REGION : break;
+            case QuadTreeNodeData::IN_REGION  :
+              {
+                this_leaf->region_intersection_flag() = QuadTreeNodeData::IN_REGION;
+                this_leaf->region()=n;
+                if(this_leaf->area()>_regions[n].area_control)
+                  this_leaf_should_be_divide = true;
+                break;
+              }
+            case QuadTreeNodeData::INTERSECTION_REGION :
+              {
+                this_leaf->region_intersection_flag() = QuadTreeNodeData::INTERSECTION_REGION;
+                if(this_leaf->area()>_regions[n].area_control)
+                  this_leaf_should_be_divide = true;
+                break;
+              }
+            default: break;
+            }
+          }
+        }
+        break;
+      }
 
+      if(this_leaf_should_be_divide)
+      {
+        quadtree->subdivide(this_leaf);
+        area_constrain = true;
+      }
     }
 
     if(area_constrain)

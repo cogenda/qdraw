@@ -64,15 +64,9 @@ QSplashScreen *splash = 0;
 # include "rs_camdialog.h"
 #endif
 
-#ifdef RS_CAM
-# include "xpm/intro_camexpert.xpm"
-# include "xpm/splash_camexpert.xpm"
-#else
 # include "xpm/intro_qcad.xpm"
-# ifndef QC_CUSTOM_SPLASH
-#  include "xpm/splash_qcad.xpm"
-# endif
-#endif
+# include "xpm/splash_qdraw.xpm"
+
 
 #ifndef QC_SPLASH_TXTCOL
 # define QC_SPLASH_TXTCOL Qt::black
@@ -175,19 +169,9 @@ int main(int argc, char** argv)
 #ifdef QSPLASHSCREEN_H
   RS_DEBUG->print("main: splashscreen..");
 
-# ifdef QC_CUSTOM_SPLASH
-  QPixmap* pixmap = new QPixmap(QPixmap::fromMimeSource(QC_CUSTOM_SPLASH));
-# else
-  QPixmap* pixmap = new QPixmap(splash_xpm);
-# endif
+  QPixmap* pixmap = new QPixmap(splash_qdraw_xpm);
 
-  /*
-  	splash = new QSplashScreen(*pixmap);
-  	splash->show();
-  	splash->message(app.tr("Loading.."),
-  		Qt::AlignRight|Qt::AlignBottom, QC_SPLASH_TXTCOL);
-  	RS_DEBUG->print("main: splashscreen: OK");
-  */
+
 #endif
 
   RS_DEBUG->print("main: init fontlist..");

@@ -272,7 +272,8 @@ public:
   /**
    * @return true if a region intersection with tree node
    */
-  bool is_region_intersection(const iterator_base & it, const std::vector<RS_Vector > &region );
+  QuadTreeNodeData::REGION_INTERSECTION_FLAG region_intersection(const iterator_base & it,
+      const std::vector<RS_Vector > & region_contour );
 
   /**
    * write quadtree mesh in vtk format
