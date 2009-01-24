@@ -282,10 +282,10 @@
                                         <cstring>PointSet</cstring>
                                     </property>
                                     <property name="text">
-                                        <string>Consider the line as point set</string>
+                                        <string>Use this line to control mesh si&amp;ze</string>
                                     </property>
                                     <property name="accel">
-                                        <string></string>
+                                        <string>Alt+Z</string>
                                     </property>
                                 </widget>
                             </grid>

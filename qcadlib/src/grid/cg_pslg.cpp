@@ -72,12 +72,19 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
             constrain.p2 = end;
             constrain.char_length = (end - start).magnitude()/division;
             _constrains.push_back(constrain);
+
+            for(unsigned int n=0; n<division; ++n)
+            {
+              add_aux_point(p1);
+              add_aux_point(p2);
+              p1 = p2;
+              p2 = p1 + (end - start)/division;
+            }
           }
           else
           {
             for(unsigned int n=0; n<division; ++n)
             {
-
               CG_Segment segment;
               segment.p1 = add_point(p1);
               segment.p2 = add_point(p2);

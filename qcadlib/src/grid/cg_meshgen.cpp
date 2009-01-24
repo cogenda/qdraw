@@ -158,6 +158,7 @@ void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
 QuadTree * MeshGenerator::build_quadtree()
 {
   std::vector<RS_Vector> &  _points   = _pslg->get_points();
+  std::vector<RS_Vector> &  _aux_points   = _pslg->get_aux_points();
   std::vector<CG_Constrain> & _constrains = _pslg->get_constrain();
   std::vector<CG_Region> & _regions = _pslg->get_regions();
 
@@ -272,6 +273,8 @@ QuadTree * MeshGenerator::build_quadtree()
 
   // add quadtree mesh to PSLG points
   {
+    _aux_points.clear();
+
     std::set<const RS_Vector *> quadtree_points;
     QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
     for(; leaf_it != quadtree->end_leaf(); ++leaf_it)
@@ -335,10 +338,15 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
     }
     //while(area_constrain);
 
-    // add quadtree mesh to PSLG points
+    std::vector<RS_Vector> &  _points       = _pslg->get_points();
     std::vector<RS_Vector> &  _aux_points   = _pslg->get_aux_points();
-    _aux_points.clear();
+    std::vector<CG_Segment> & _segments     = _pslg->get_segments();
+    std::vector<CG_Region> &  _regions      = _pslg->get_regions();
+    std::vector<CG_Hole> &    _holes        = _pslg->get_holes();
+
+     // add quadtree mesh to PSLG points
     {
+      _aux_points.clear();
       std::set<const RS_Vector *> quadtree_points;
       QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
       for(; leaf_it != quadtree->end_leaf(); ++leaf_it)
@@ -354,11 +362,6 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
       for(; it!=quadtree_points.end(); ++it)
         _pslg->add_aux_point(*(*it));
     }
-
-    std::vector<RS_Vector> &  _points       = _pslg->get_points();
-    std::vector<CG_Segment> & _segments     = _pslg->get_segments();
-    std::vector<CG_Region> &  _regions      = _pslg->get_regions();
-    std::vector<CG_Hole> &    _holes        = _pslg->get_holes();
 
     //set point
     in.numberofpoints = _points.size() + _aux_points.size();
