@@ -62,10 +62,26 @@ void QuadTree::subdivide(iterator_base & leaf_it)
   const RS_Vector * _p_left  = this->add_point(left);
   const RS_Vector * _p_right = this->add_point(right);
 
-  this->append_child(leaf_it, QuadTreeNodeData(_p_tl, _p_top, _p_center, _p_left, QuadTreeLocation(L,T)));  //tl
-  this->append_child(leaf_it, QuadTreeNodeData(_p_top, _p_tr, _p_right, _p_center, QuadTreeLocation(R,T))); //tr
-  this->append_child(leaf_it, QuadTreeNodeData(_p_center, _p_right, _p_br, _p_bot, QuadTreeLocation(R,B))); //br
-  this->append_child(leaf_it, QuadTreeNodeData(_p_left, _p_center, _p_bot, _p_bl, QuadTreeLocation(L,B)));  //bl
+  iterator_base tl_child = append_child(leaf_it, QuadTreeNodeData(_p_tl, _p_top, _p_center, _p_left, QuadTreeLocation(L,T)));  //tl
+  iterator_base tr_child = append_child(leaf_it, QuadTreeNodeData(_p_top, _p_tr, _p_right, _p_center, QuadTreeLocation(R,T))); //tr
+  iterator_base br_child = append_child(leaf_it, QuadTreeNodeData(_p_center, _p_right, _p_br, _p_bot, QuadTreeLocation(R,B))); //br
+  iterator_base bl_child = append_child(leaf_it, QuadTreeNodeData(_p_left, _p_center, _p_bot, _p_bl, QuadTreeLocation(L,B)));  //bl
+
+  tl_child->region()                   = leaf_it->region();
+  tl_child->region_intersection_flag() = leaf_it->region_intersection_flag();
+  tl_child->line_intersection_flag()   = leaf_it->line_intersection_flag();
+
+  tr_child->region()                   = leaf_it->region();
+  tr_child->region_intersection_flag() = leaf_it->region_intersection_flag();
+  tr_child->line_intersection_flag()   = leaf_it->line_intersection_flag();
+
+  br_child->region()                   = leaf_it->region();
+  br_child->region_intersection_flag() = leaf_it->region_intersection_flag();
+  br_child->line_intersection_flag()   = leaf_it->line_intersection_flag();
+
+  bl_child->region()                   = leaf_it->region();
+  bl_child->region_intersection_flag() = leaf_it->region_intersection_flag();
+  bl_child->line_intersection_flag()   = leaf_it->line_intersection_flag();
 }
 
 

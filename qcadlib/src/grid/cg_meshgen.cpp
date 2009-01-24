@@ -202,17 +202,19 @@ QuadTree * MeshGenerator::build_quadtree()
       // check line constrain
       if(this_leaf->line_intersection_flag()!=QuadTreeNodeData::NO_INTERSECTION)
       {
+        bool line_intersection = false;
         for(unsigned int n=0; n<_constrains.size(); ++n)
         {
           if(quadtree->is_line_intersection(this_leaf, _constrains[n].p1, _constrains[n].p2 ))
           {
+            line_intersection = true;
             this_leaf->line_intersection_flag()=QuadTreeNodeData::HAS_INTERSECTION;
             if(this_leaf->area()>_constrains[n].char_length*_constrains[n].char_length)
               this_leaf_should_be_divide = true;
           }
-          else
-            this_leaf->line_intersection_flag()=QuadTreeNodeData::NO_INTERSECTION;
         }
+        if(!line_intersection)
+          this_leaf->line_intersection_flag()=QuadTreeNodeData::NO_INTERSECTION;
       }
 
       // check region constrain
@@ -279,7 +281,7 @@ QuadTree * MeshGenerator::build_quadtree()
 
 
 
-void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_log)
+void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_log, bool enable_quadtree)
 {
   triangulateio_init();
 
@@ -292,11 +294,20 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
 
   _pslg = mesh->get_pslg();
 
-  mesh->set_refine_flag(max_d, signed_log);
+  // refine by quadtree
+  if(enable_quadtree)
+  {
 
-  triangulateio & mesh_in = mesh->get_triangulateio();
+  }
+  else // refine by delaunay
+  {
 
-  triangulate(cmd.ascii(), &mesh_in, &out, (struct triangulateio *) NULL);
+    mesh->set_refine_flag(max_d, signed_log);
+
+    triangulateio & mesh_in = mesh->get_triangulateio();
+
+    triangulate(cmd.ascii(), &mesh_in, &out, (struct triangulateio *) NULL);
+  }
 
   _gv->deleteEntity(mesh);
 

@@ -57,7 +57,7 @@ public:
   /**
    * refine existing mesh
    */
-  virtual void refine_mesh(const QString &cmd, double max_d, bool signed_log);
+  virtual void refine_mesh(const QString &cmd, double max_d, bool signed_log, bool enable_quadtree);
 
   /**
    * export mesh as vtk ascii file format, debug only
