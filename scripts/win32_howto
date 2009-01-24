@@ -1,0 +1,13 @@
+compile qdraw under win32
+
+1. compile 2 external libraries dxflib and fparser
+There are vc project file under the src directory. You can use these project files.
+Or with cygwin configure/make tools, with CXX=win32fe cl -MT
+please make sure /MD is used instead of /MT !
+
+2. compile qcadlib qcadactions qcadguiqt 
+the build_qcad.sh can do it for you
+
+3. enter qcad dir, here please use the qcad.vcproj!
+the command line tool have some strange problems
+some explain: http://www.itwriting.com/blog/?postid=261
