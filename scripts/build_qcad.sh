@@ -200,7 +200,7 @@ cd src
 qmake qcad.pro $QMAKE_OPT
 if [ "x$platform" == "xwin32" ]
 then
-    evel $NMAKE
+    eval $NMAKE
     cd ..
 else
     cd ..
