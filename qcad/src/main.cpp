@@ -170,8 +170,6 @@ int main(int argc, char** argv)
   RS_DEBUG->print("main: splashscreen..");
 
   QPixmap* pixmap = new QPixmap(splash_qdraw_xpm);
-
-
 #endif
 
   RS_DEBUG->print("main: init fontlist..");
@@ -272,9 +270,6 @@ int main(int argc, char** argv)
   }
   RS_DEBUG->print("main: loading files: OK");
 
-#ifdef RS_DEMO
-  QTimer::singleShot(10 * 60 * 1000, appWin, SLOT(slotFileDemoQuit()));
-#endif
 
 #ifdef QSPLASHSCREEN_H
 # ifndef QC_DELAYED_SPLASH_SCREEN

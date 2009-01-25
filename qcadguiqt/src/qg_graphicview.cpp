@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -148,11 +148,11 @@ QG_GraphicView::QG_GraphicView(QWidget* parent, const char* name, WFlags f)
     layout->addMultiCellWidget(gridStatus, 1, 1, 1, 2);
     layout->addColSpacing(1, 50);
 
-	
+
     setMouseTracking(true);
 	// flickering under win:
     //setFocusPolicy(WheelFocus);
-	
+
     setFocusPolicy(NoFocus);
 }
 
@@ -170,7 +170,32 @@ QG_GraphicView::~QG_GraphicView() {
 		delete buffer;
 		buffer = NULL;
 	}
-    cleanUp();
+        if(curCad!=NULL)
+        {
+          delete curCad;
+          curCad = NULL;
+        }
+        if(curMagnifier!=NULL)
+        {
+          delete curMagnifier;
+          curMagnifier = NULL;
+        }
+        if(curDel!=NULL)
+        {
+          delete curDel;
+          curDel = NULL;
+        }
+        if(curSelect!=NULL)
+        {
+          delete curSelect;
+          curSelect = NULL;
+        }
+        if(curHand!=NULL)
+        {
+          delete curHand;
+          curHand = NULL;
+        }
+     cleanUp();
 }
 
 
@@ -194,7 +219,7 @@ int QG_GraphicView::getHeight() {
 
 
 /**
- * Creates a new painter for the buffer of this widget and returns a 
+ * Creates a new painter for the buffer of this widget and returns a
  * pointer to it. The class variable 'painter' also
  * points to that object.
  */
@@ -217,14 +242,14 @@ RS_Painter* QG_GraphicView::createPainter() {
         buffer = new QPixmap(getWidth(), getHeight());
         RS_DEBUG->print("ok");
 	}
-	
+
     if (painter==NULL) {
 		painter = new RS_PainterQt(buffer);
 		painter->setDrawingMode(drawingMode);
 		((RS_PainterQt*)painter)->setBackgroundMode(Qt::OpaqueMode);
 		((RS_PainterQt*)painter)->setBackgroundColor(background);
 		((RS_PainterQt*)painter)->eraseRect(0,0,getWidth(), getHeight());
-		
+
         //RS_DEBUG->timestamp();
     }
     //if (painter!=NULL) {
@@ -239,7 +264,7 @@ RS_Painter* QG_GraphicView::createPainter() {
 
 
 /**
- * Creates a new painter for this widget and returns a 
+ * Creates a new painter for this widget and returns a
  * pointer to it. The class variable 'painter' also
  * automatically points to that object.
  */
@@ -484,7 +509,7 @@ void QG_GraphicView::mouseMoveEvent(QMouseEvent* e) {
 		((QWidget*)parent())->setFocus();
 	}
 #endif
-	
+
     //RS_DEBUG->print("QG_GraphicView::mouseMoveEvent end");
 }
 
@@ -540,16 +565,16 @@ void QG_GraphicView::tabletEvent(QTabletEvent* e) {
 
     // a 'mouse' click:
     /*if (e->pressure()>10 && lastPressure<10) {
-    	QMouseEvent e(QEvent::MouseButtonPress, e->pos(), 
+    	QMouseEvent e(QEvent::MouseButtonPress, e->pos(),
     	   Qt::LeftButton, Qt::LeftButton);
     	mousePressEvent(&e);
 }
     else if (e->pressure()<10 && lastPressure>10) {
-    	QMouseEvent e(QEvent::MouseButtonRelease, e->pos(), 
+    	QMouseEvent e(QEvent::MouseButtonRelease, e->pos(),
     	   Qt::LeftButton, Qt::LeftButton);
     	mouseReleaseEvent(&e);
 }	else if (lastPos!=e->pos()) {
-    	QMouseEvent e(QEvent::MouseMove, e->pos(), 
+    	QMouseEvent e(QEvent::MouseMove, e->pos(),
     	   Qt::NoButton, 0);
     	mouseMoveEvent(&e);
 }
@@ -718,28 +743,28 @@ void QG_GraphicView::adjustOffsetControls() {
     disableUpdate();
     int ox = getOffsetX();
     int oy = getOffsetY();
-	
+
     RS_Vector min = container->getMin();
     RS_Vector max = container->getMax();
 
     // no drawing yet - still allow to scroll
-    if (max.x < min.x+1.0e-6 || 
+    if (max.x < min.x+1.0e-6 ||
 	    max.y < min.y+1.0e-6 ||
-		max.x > RS_MAXDOUBLE || 
-		max.x < RS_MINDOUBLE || 
-		min.x > RS_MAXDOUBLE || 
+		max.x > RS_MAXDOUBLE ||
+		max.x < RS_MINDOUBLE ||
+		min.x > RS_MAXDOUBLE ||
 		min.x < RS_MINDOUBLE ||
-		max.y > RS_MAXDOUBLE || 
-		max.y < RS_MINDOUBLE || 
-		min.y > RS_MAXDOUBLE || 
+		max.y > RS_MAXDOUBLE ||
+		max.y < RS_MINDOUBLE ||
+		min.y > RS_MAXDOUBLE ||
 		min.y < RS_MINDOUBLE ) {
         min = RS_Vector(-10,-10);
         max = RS_Vector(100,100);
     }
-	
-	int minVal = (int)(min.x * getFactor().x 
+
+	int minVal = (int)(min.x * getFactor().x
 			- QG_SCROLLMARGIN - getBorderLeft());
-	int maxVal = (int)(max.x * getFactor().x 
+	int maxVal = (int)(max.x * getFactor().x
 			- getWidth() + QG_SCROLLMARGIN + getBorderRight());
 
 	hScrollBar->setValue(0);
@@ -747,12 +772,12 @@ void QG_GraphicView::adjustOffsetControls() {
 		hScrollBar->setRange(minVal, maxVal);
 	}
     //hScrollBar->setMinValue(minVal);
-    
+
 	//hScrollBar->setMaxValue(maxVal);
 
-	minVal = (int)(getHeight() - max.y * getFactor().y 
+	minVal = (int)(getHeight() - max.y * getFactor().y
 			- QG_SCROLLMARGIN - getBorderTop());
-	maxVal = (int)(QG_SCROLLMARGIN + getBorderBottom() 
+	maxVal = (int)(QG_SCROLLMARGIN + getBorderBottom()
 			- (min.y * getFactor().y));
 
 	if (minVal<=maxVal) {
@@ -760,23 +785,23 @@ void QG_GraphicView::adjustOffsetControls() {
 	}
     //vScrollBar->setMaxValue((int)(QG_SCROLLMARGIN + getBorderBottom()
      //                             - (min.y * getFactor().y)));
-								  
-	
+
+
     //vScrollBar->setMinValue((int)(getHeight() -
      //                             max.y * getFactor().y
      //                             - QG_SCROLLMARGIN - getBorderTop()));
-								  
+
 
     hScrollBar->setPageStep((int)(getWidth()));
     vScrollBar->setPageStep((int)(getHeight()));
 
     hScrollBar->setValue(-ox);
     vScrollBar->setValue(oy);
-	
+
 
     slotHScrolled(-ox);
     slotVScrolled(oy);
-	
+
 
     RS_DEBUG->print("H min: %d / max: %d / step: %d / value: %d\n",
                     hScrollBar->minValue(), hScrollBar->maxValue(),
@@ -885,15 +910,15 @@ void QG_GraphicView::paintEvent(QPaintEvent *) {
  */
 void QG_GraphicView::previewUrl(const QUrl &u) {
 	//static RS_Graphic* gr = new RS_Graphic();
-	
+
 	RS_DEBUG->print("QG_GraphicView::previewUrl");
-	
+
 	if (container!=NULL && container->rtti()==RS2::EntityGraphic) {
 		((RS_Graphic*)container)->open(u.path(), RS2::FormatUnknown);
 		zoomAuto();
 	}
 	//setContainer(gr);
-	
+
 	RS_DEBUG->print("QG_GraphicView::previewUrl: OK");
 }
 

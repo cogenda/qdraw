@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -50,29 +50,9 @@ void RS_ActionLayersRemove::trigger() {
         RS_Layer* layer =
             RS_DIALOGFACTORY->requestLayerRemovalDialog(graphic->getLayerList());
 
-        /*
-              if (layer!=NULL && layer->getName()!="0") {
-
-                  graphic->startUndoCycle();
-                  for (RS_Entity* e=graphic->firstEntity(RS2::ResolveNone);
-                          e!=NULL;
-                          e=graphic->nextEntity(RS2::ResolveNone)) {
-
-                      if (e->getLayer()!=NULL &&
-                              e->getLayer()->getName()==layer->getName()) {
-
-                          e->setUndoState(true);
-                          e->setLayer("0");
-                          graphic->addUndoable(e);
-                      }
-                  }
-
-
-                  graphic->endUndoCycle();
-        */
-
-        // Now remove the layer from the layer list:
+         // Now remove the layer from the layer list:
         graphic->removeLayer(layer);
+
     }
     finish();
     RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected());

@@ -20,13 +20,9 @@ libext=a
 # detect system:
 if [ "x$OS" == "xWindows_NT" ]
 then
-# cygin make
-    export MAKE=make
-# msvc nmake    
-    export NMAKE=nmake
+    export MAKE=nmake
     echo "Platform is Windows"
     platform=win32
-    QMAKE_OPT="$QMAKE_OPT CONFIG+=win32"
     libext=lib
     targetpostfix=.exe
 elif [ `uname` == "SunOS" ]
@@ -34,7 +30,6 @@ then
     export MAKE=gmake
     echo "Platform is Solaris"
     platform=solaris
-    QMAKE_OPT="$QMAKE_OPT CONFIG+=solaris"
 elif [ "x$OSTYPE" == "xdarwin8.0" ]
 then
     export MAKE=make
@@ -46,12 +41,10 @@ then
     export MAKE=gmake
     echo "Platform is FreeBSD"
     platform=freebsd
-    QMAKE_OPT="$QMAKE_OPT CONFIG+=freebsd"
 else
     export MAKE=make
     echo "Platform is Linux"
     platform=linux
-    QMAKE_OPT="$QMAKE_OPT CONFIG+=linux"
 fi
 
 
@@ -175,15 +168,15 @@ do
         echo "-------- Building $p --------"
         cd $p
         cd src
-        qmake $QMAKE_OPT $p.pro 
+        qmake $p.pro $QMAKE_OPT
         if [ "x$platform" == "xwin32" ]
         then
-            eval $NMAKE
-            cd ..
-        else
-            cd ..
-            eval $MAKE
+            sed "s/\\\\/\//g" Makefile > tmp2
+            sed "s/ \// \\\\/g" tmp2 > tmp3
+            mv tmp3 Makefile
         fi
+        cd ..
+        eval $MAKE
         cd ..
 
         if [ ! -f $p/lib/*.$libext ]
@@ -200,13 +193,16 @@ cd src
 qmake qcad.pro $QMAKE_OPT
 if [ "x$platform" == "xwin32" ]
 then
-    eval $NMAKE
-    cd ..
-else
-    cd ..
-    eval $MAKE  
+    sed "s/\\\\/\//g" Makefile > tmp2
+    sed "s/ \// \\\\/g" tmp2 > tmp3
+    sed "s/\"\/\"/\"\\\\\"/g" tmp3 > tmp2
+    sed "s/\/\"\"/\\\\\"\"/g" tmp2 > tmp3
+    mv tmp3 Makefile
 fi
+cd ..
 
+
+eval $MAKE
 cd ..
 
 if [ "x$platform" == "xosx" ]

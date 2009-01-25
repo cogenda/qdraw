@@ -314,10 +314,15 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
   {
     QuadTree * quadtree = mesh->get_quadtree();
 
-    bool area_constrain;
-    //do
+    std::vector<RS_Vector> &  _points       = _pslg->get_points();
+    std::vector<RS_Vector> &  _aux_points   = _pslg->get_aux_points();
+    std::vector<CG_Segment> & _segments     = _pslg->get_segments();
+    std::vector<CG_Region> &  _regions      = _pslg->get_regions();
+    std::vector<CG_Hole> &    _holes        = _pslg->get_holes();
+
+    // refine only once!
     {
-      area_constrain=false;
+      bool area_constrain=false;
 
       QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
       for(; leaf_it != quadtree->end_leaf(); )
@@ -336,27 +341,57 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
       }
       if(area_constrain) quadtree->balance();
     }
-    //while(area_constrain);
 
-    std::vector<RS_Vector> &  _points       = _pslg->get_points();
-    std::vector<RS_Vector> &  _aux_points   = _pslg->get_aux_points();
-    std::vector<CG_Segment> & _segments     = _pslg->get_segments();
-    std::vector<CG_Region> &  _regions      = _pslg->get_regions();
-    std::vector<CG_Hole> &    _holes        = _pslg->get_holes();
+    // set region intersection flag to all new generated leaf which has INTERSECTION_REGION flag
+    {
+      QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
+      for(; leaf_it != quadtree->end_leaf(); ++leaf_it)
+      {
+        // check region constrain
+        if(leaf_it->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION ||
+           leaf_it->region_intersection_flag()==QuadTreeNodeData::REGION_INTERSECTION_UNKNOW)
+        {
+          for(unsigned int n=0; n<_regions.size(); ++n)
+          {
+            switch(quadtree->region_intersection(leaf_it, _regions[n].contour_points))
+            {
+            case QuadTreeNodeData::OUT_REGION :
+              {
+                leaf_it->region_intersection_flag() = QuadTreeNodeData::OUT_REGION;
+                break;
+              }
+            case QuadTreeNodeData::IN_REGION  :
+              {
+                leaf_it->region_intersection_flag() = QuadTreeNodeData::IN_REGION;
+                leaf_it->region()=n;
+                break;
+              }
+            case QuadTreeNodeData::INTERSECTION_REGION :
+              {
+                leaf_it->region_intersection_flag() = QuadTreeNodeData::INTERSECTION_REGION;
+                break;
+              }
+            default: break;
+            }
+          }
+        }
+      }
 
-     // add quadtree mesh to PSLG points
+    }
+
+    // add quadtree mesh to PSLG points
     {
       _aux_points.clear();
       std::set<const RS_Vector *> quadtree_points;
       QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
       for(; leaf_it != quadtree->end_leaf(); ++leaf_it)
         if(leaf_it->region_intersection_flag()==QuadTreeNodeData::IN_REGION)
-      {
-        quadtree_points.insert(leaf_it->tl());
-        quadtree_points.insert(leaf_it->tr());
-        quadtree_points.insert(leaf_it->br());
-        quadtree_points.insert(leaf_it->bl());
-      }
+        {
+          quadtree_points.insert(leaf_it->tl());
+          quadtree_points.insert(leaf_it->tr());
+          quadtree_points.insert(leaf_it->br());
+          quadtree_points.insert(leaf_it->bl());
+        }
 
       std::set<const RS_Vector *>::iterator it=quadtree_points.begin();
       for(; it!=quadtree_points.end(); ++it)
