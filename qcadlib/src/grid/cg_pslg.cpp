@@ -375,19 +375,24 @@ unsigned int CG_PSLG::add_point(const RS_Vector &v)
   return _points.size()-1;
 }
 
-bool CG_PSLG::add_aux_point(const RS_Vector &v, double tol)
+bool CG_PSLG::add_aux_point(const RS_Vector &v, double point_dist, double segment_dist)
 {
   //this point already exist
   for(unsigned int n=0; n<_points.size(); ++n)
-    if( v.distanceTo(_points[n])<tol ) return false;
+    if( v.distanceTo(_points[n])<point_dist ) return false;
 
   //the aux point lies on any segment?
   for(unsigned int n=0; n<_segments.size(); ++n)
   {
     RS_Vector p1 = _points[_segments[n].p1];
     RS_Vector p2 = _points[_segments[n].p2];
-    double del = fabs((p1-v).magnitude() + (p2-v).magnitude() - (p1-p2).magnitude());
-    if(del<tol) return false;
+    double d1 = (p1-v).magnitude();
+    double d2 = (p2-v).magnitude();
+    double d3 = (p1-p2).magnitude();
+    double d=0.5*(d1+d2+d3);
+    double area = sqrt(d*(d-d1)*(d-d2)*(d-d3));
+    double dist = 2*area/d3;
+    if(dist<segment_dist) return false;
   }
 
   _aux_points.push_back(v);

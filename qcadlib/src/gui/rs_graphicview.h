@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -62,12 +62,12 @@ class RS_Hatch;
 
 
 /**
- * This class is a common GUI interface for the graphic viewer 
- * widget which has to be implementet by real GUI classes such 
+ * This class is a common GUI interface for the graphic viewer
+ * widget which has to be implementet by real GUI classes such
  * as the Qt graphical view.
  *
- * Note that this is just an interface used as a slot to 
- * communicate with the qcadlib from a GUI level. 
+ * Note that this is just an interface used as a slot to
+ * communicate with the qcadlib from a GUI level.
  */
 class RS_GraphicView
 {
@@ -154,14 +154,14 @@ public:
   virtual RS_Painter* createPainter() = 0;
   /**
    * This virtual method must be overwritten and must return
-   *  the direct painter device for this widget 
+   *  the direct painter device for this widget
    */
   virtual RS_Painter* createDirectPainter() = 0;
   /**
    * This virtual method must be overwritten and must destroy
-   * the painter device and point 'painter' to NULL. If the painter 
-   * is static during the whole life of the application, it might 
-   * just do nothing. 
+   * the painter device and point 'painter' to NULL. If the painter
+   * is static during the whole life of the application, it might
+   * just do nothing.
    */
   virtual void destroyPainter() = 0;
 
@@ -382,8 +382,7 @@ public:
   virtual void zoomPrevious();
   virtual void saveView();
   virtual void restoreView();
-  virtual void zoomWindow(RS_Vector v1, RS_Vector v2,
-                          bool keepAspectRatio=true);
+  virtual void zoomWindow(RS_Vector v1, RS_Vector v2, bool keepAspectRatio=true);
   //virtual void zoomPan(RS_Vector v1);
   virtual void zoomPan(int dx, int dy);
   virtual void zoomScroll(RS2::Direction direction);

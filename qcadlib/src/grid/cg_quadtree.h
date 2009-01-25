@@ -133,6 +133,13 @@ public:
     return X.x * Y.y;
   }
 
+  double char_length() const
+  {
+    RS_Vector X = (*_p_tr - *_p_tl);
+    RS_Vector Y = (*_p_tr - *_p_br);
+    return 0.5*(X.x + Y.y);
+  }
+
   bool & divide_flag()
   { return _divide_flag; }
 

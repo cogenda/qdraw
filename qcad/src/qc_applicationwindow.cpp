@@ -1776,9 +1776,7 @@ void QC_ApplicationWindow::slotWindowActivated(QWidget*)
 
     bool showByBlock = m->getDocument()->rtti()==RS2::EntityBlock;
 
-    layerWidget->setLayerList(m->getDocument()->getLayerList(),
-                              showByBlock);
-
+    layerWidget->setLayerList(m->getDocument()->getLayerList(), showByBlock);
 
     coordinateWidget->setGraphic(m->getGraphic());
 
@@ -2013,8 +2011,7 @@ QC_MDIWindow* QC_ApplicationWindow::slotFileNew(RS_Document* doc)
   QC_MDIWindow* w = new QC_MDIWindow(doc, workspace,
                                      0, WDestructiveClose);
   //w->setWindowState(WindowMaximized);
-  connect(w, SIGNAL(signalClosing()),
-          this, SLOT(slotFileClosing()));
+  connect(w, SIGNAL(signalClosing()), this, SLOT(slotFileClosing()));
 
   if (w->getDocument()->rtti()==RS2::EntityBlock)
   {
@@ -2064,6 +2061,10 @@ QC_MDIWindow* QC_ApplicationWindow::slotFileNew(RS_Document* doc)
     w->show();
   }
   slotWindowActivated(w);
+
+  // set autoscale
+  w->getGraphicView()->zoomIn(50, RS_Vector(0,0));
+
   statusBar()->message(tr("New Drawing created."), 2000);
 
   RS_DEBUG->print("QC_ApplicationWindow::slotFileNew() OK");

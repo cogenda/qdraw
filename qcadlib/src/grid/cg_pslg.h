@@ -100,7 +100,7 @@ public:
   RS_String get_segment_label(unsigned int s)
   { return _mark_to_label[s]; }
 
-  bool add_aux_point(const RS_Vector &v, double tol=1e-4);
+  bool add_aux_point(const RS_Vector &v, double point_dist=1e-4, double segment_dist=1e-4);
 
 private:
   /**

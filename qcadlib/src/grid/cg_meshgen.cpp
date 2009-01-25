@@ -17,7 +17,7 @@
 ** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 **
 **********************************************************************/
-#include <set>
+#include <map>
 #include <fstream>
 
 #include <qmessagebox.h>
@@ -275,20 +275,20 @@ QuadTree * MeshGenerator::build_quadtree()
   {
     _aux_points.clear();
 
-    std::set<const RS_Vector *> quadtree_points;
+    std::map<const RS_Vector *, double> quadtree_points;
     QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
     for(; leaf_it != quadtree->end_leaf(); ++leaf_it)
       if(leaf_it->region_intersection_flag()==QuadTreeNodeData::IN_REGION)
       {
-        quadtree_points.insert(leaf_it->tl());
-        quadtree_points.insert(leaf_it->tr());
-        quadtree_points.insert(leaf_it->br());
-        quadtree_points.insert(leaf_it->bl());
+        quadtree_points.insert(std::make_pair(leaf_it->tl(), leaf_it->char_length()));
+        quadtree_points.insert(std::make_pair(leaf_it->tr(), leaf_it->char_length()));
+        quadtree_points.insert(std::make_pair(leaf_it->br(), leaf_it->char_length()));
+        quadtree_points.insert(std::make_pair(leaf_it->bl(), leaf_it->char_length()));
       }
 
-    std::set<const RS_Vector *>::iterator it=quadtree_points.begin();
+    std::map<const RS_Vector *, double>::iterator it=quadtree_points.begin();
     for(; it!=quadtree_points.end(); ++it)
-      _pslg->add_aux_point(*(*it));
+      _pslg->add_aux_point(*(*it).first, 1e-4, (*it).second/3.0);
   }
 
   return quadtree;
@@ -382,20 +382,21 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
     // add quadtree mesh to PSLG points
     {
       _aux_points.clear();
-      std::set<const RS_Vector *> quadtree_points;
+
+      std::map<const RS_Vector *, double> quadtree_points;
       QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
       for(; leaf_it != quadtree->end_leaf(); ++leaf_it)
         if(leaf_it->region_intersection_flag()==QuadTreeNodeData::IN_REGION)
-        {
-          quadtree_points.insert(leaf_it->tl());
-          quadtree_points.insert(leaf_it->tr());
-          quadtree_points.insert(leaf_it->br());
-          quadtree_points.insert(leaf_it->bl());
-        }
+      {
+        quadtree_points.insert(std::make_pair(leaf_it->tl(), leaf_it->char_length()));
+        quadtree_points.insert(std::make_pair(leaf_it->tr(), leaf_it->char_length()));
+        quadtree_points.insert(std::make_pair(leaf_it->br(), leaf_it->char_length()));
+        quadtree_points.insert(std::make_pair(leaf_it->bl(), leaf_it->char_length()));
+      }
 
-      std::set<const RS_Vector *>::iterator it=quadtree_points.begin();
+      std::map<const RS_Vector *, double>::iterator it=quadtree_points.begin();
       for(; it!=quadtree_points.end(); ++it)
-        _pslg->add_aux_point(*(*it));
+        _pslg->add_aux_point(*(*it).first, 1e-4, (*it).second/3.0);
     }
 
     //set point

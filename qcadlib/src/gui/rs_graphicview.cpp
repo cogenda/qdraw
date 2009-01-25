@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -349,7 +349,7 @@ void RS_GraphicView::killSelectActions()
 
 
 /**
- * Kills all running actions. 
+ * Kills all running actions.
  */
 void RS_GraphicView::killAllActions()
 {
@@ -395,7 +395,7 @@ void RS_GraphicView::enter()
 
 
 /**
- * Called by the actual GUI class which implements the RS_GraphicView 
+ * Called by the actual GUI class which implements the RS_GraphicView
  * interface to notify qcadlib about mouse events.
  */
 void RS_GraphicView::mousePressEvent(RS_MouseEvent* e)
@@ -819,7 +819,7 @@ void RS_GraphicView::zoomAuto(bool axis, bool keepAspectRatio)
 
 
 /**
- * Shows previous view. 
+ * Shows previous view.
  */
 void RS_GraphicView::zoomPrevious()
 {
@@ -839,8 +839,8 @@ void RS_GraphicView::zoomPrevious()
 
 
 /**
- * Saves the current view as previous view to which we can 
- * switch back later with @see restoreView(). 
+ * Saves the current view as previous view to which we can
+ * switch back later with @see restoreView().
  */
 void RS_GraphicView::saveView()
 {
@@ -852,8 +852,8 @@ void RS_GraphicView::saveView()
 
 
 /**
- * Restores the view previously saved with 
- * @see saveView(). 
+ * Restores the view previously saved with
+ * @see saveView().
  */
 void RS_GraphicView::restoreView()
 {
@@ -964,8 +964,7 @@ void RS_GraphicView::zoomAutoY(bool axis)
  *                        false: zooms exactly the selected range to the
  *                               current graphic view
  */
-void RS_GraphicView::zoomWindow(RS_Vector v1, RS_Vector v2,
-                                bool keepAspectRatio)
+void RS_GraphicView::zoomWindow(RS_Vector v1, RS_Vector v2, bool keepAspectRatio)
 {
 
   if (simulationRunning)
@@ -1011,16 +1010,14 @@ void RS_GraphicView::zoomWindow(RS_Vector v1, RS_Vector v2,
     {
       if(getWidth()!=0)
       {
-        zoomX = zoomY = ((double)(getWidth()-2*zoomBorder)) /
-                        (double)getWidth()*zoomX;
+        zoomX = zoomY = ((double)(getWidth()-2*zoomBorder)) / (double)getWidth()*zoomX;
       }
     }
     else
     {
       if(getHeight()!=0)
       {
-        zoomX = zoomY = ((double)(getHeight()-2*zoomBorder)) /
-                        (double)getHeight()*zoomY;
+        zoomX = zoomY = ((double)(getHeight()-2*zoomBorder)) / (double)getHeight()*zoomY;
       }
     }
   }
@@ -1183,7 +1180,7 @@ void RS_GraphicView::zoomPage()
 
 
 /**
- * Draws the entities within the given range. 
+ * Draws the entities within the given range.
  */
 void RS_GraphicView::drawWindow(RS_Vector v1, RS_Vector v2)
 {
@@ -1210,7 +1207,7 @@ void RS_GraphicView::drawWindow(RS_Vector v1, RS_Vector v2)
 
 
 /**
- * Draws the entities. If painter is NULL a new painter will 
+ * Draws the entities. If painter is NULL a new painter will
  * be created and destroyed.
  */
 void RS_GraphicView::drawIt()
@@ -1389,10 +1386,10 @@ void RS_GraphicView::setPenForEntity(RS_Entity* e)
 
 /**
  * Draws an entity. Might be recusively called e.g. for polylines.
- * If the class wide painter is NULL a new painter will be created 
+ * If the class wide painter is NULL a new painter will be created
  * and destroyed afterwards.
  *
- * @param patternOffset Offset of line pattern (used for connected 
+ * @param patternOffset Offset of line pattern (used for connected
  *        lines e.g. in splines).
  * @param db Double buffering on (recommended) / off
  */
@@ -1541,7 +1538,7 @@ void RS_GraphicView::drawEntity(RS_Entity* e, double patternOffset, bool db)
 
 
 /**
- * Deletes an entity with the background color. 
+ * Deletes an entity with the background color.
  * Might be recusively called e.g. for polylines.
  */
 void RS_GraphicView::deleteEntity(RS_Entity* e)
@@ -1554,7 +1551,7 @@ void RS_GraphicView::deleteEntity(RS_Entity* e)
 
 
 /**
- * Draws an entity. 
+ * Draws an entity.
  * The painter must be initialized and all the attributes (pen) must be set.
  */
 void RS_GraphicView::drawEntityPlain(RS_Entity* e, double patternOffset)
@@ -2106,7 +2103,7 @@ RS_LineTypePattern* RS_GraphicView::getPattern(RS2::LineType t)
 
 
 /**
- * This virtual method can be overwritten to draw the absolute 
+ * This virtual method can be overwritten to draw the absolute
  * zero. It's called from within drawIt(). The default implemetation
  * draws a simple red round zero point.
  *
@@ -2173,7 +2170,7 @@ void RS_GraphicView::drawAbsoluteZero()
 
 
 /**
- * This virtual method can be overwritten to draw the relative 
+ * This virtual method can be overwritten to draw the relative
  * zero point. It's called from within drawIt(). The default implemetation
  * draws a simple red round zero point.
  *
@@ -2403,7 +2400,7 @@ void RS_GraphicView::drawMetaGrid()
 
 
 /**
- * Updates the grid if there is one. 
+ * Updates the grid if there is one.
  */
 void RS_GraphicView::updateGrid()
 {
