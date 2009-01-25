@@ -2385,8 +2385,8 @@ CodeTree::ConstList CodeTree::BuildConstList()
     if(GetOp() == cMul)
     {
         /*
-          Jos joku niistä arvoista on -1 eikä se ole ainoa arvo,
-          niin joku muu niistä arvoista negatoidaan.
+          Jos joku niistarvoista on -1 eika se ole ainoa arvo,
+          niin joku muu niistarvoista negatoidaan.
         */
         for(bool done=false; cp.size() > 1 && !done; )
         {
@@ -2588,24 +2588,6 @@ void CodeTree::Optimize()
             OptimizeLinearExplode();
             OptimizePascal();
 
-            /* Optimization paths:
-
-               doublenegations=
-               redundant= * doublenegations
-               conflict= * redundant
-               addmulflat=
-               constantmath1= addmulflat * conflict
-               linearcombine= conflict * addmulflat¹ redundant¹
-               powmuladd=
-               exponents= linearcombine * powmuladd conflict¹
-               logarithm= exponents *
-               functioncalls= IDLE
-               linearexplode= IDLE
-               pascal= IDLE
-
-               * = actions here
-               ¹ = only if made changes
-            */
         }
     }
 }
