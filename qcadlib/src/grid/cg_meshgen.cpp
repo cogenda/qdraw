@@ -467,7 +467,10 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
     }
 
     // call Triangle here
-    triangulate(mesh->tri_cmd(), &in, &out, (struct triangulateio *) NULL);
+    // replace 'r' to 'A'
+    QString tri_cmd = cmd;
+    tri_cmd.replace(tri_cmd.find('r'),1,'A');
+    triangulate(tri_cmd.ascii(), &in, &out, (struct triangulateio *) NULL);
   }
   else // refine by delaunay
   {
