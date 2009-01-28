@@ -176,7 +176,7 @@
                                                 <cstring>HoleCheckBox</cstring>
                                             </property>
                                             <property name="text">
-                                                <string>&amp;Make it as hole</string>
+                                                <string>&amp;Mark it as a hole</string>
                                             </property>
                                             <property name="accel">
                                                 <string>Alt+M</string>

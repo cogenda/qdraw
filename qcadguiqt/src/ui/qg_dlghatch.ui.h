@@ -217,7 +217,7 @@ void QG_DlgHatch::updatePreview(RS_Pattern* )
                                           RS_Vector(0.0,0.0))));
   prevHatch->addEntity(loop);
   preview->addEntity(prevHatch);
-  if (!isSolid)
+  //if (!isSolid)
   {
     prevHatch->update();
   }

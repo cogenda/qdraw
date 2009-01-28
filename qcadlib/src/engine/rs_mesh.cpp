@@ -62,14 +62,14 @@ const int RS_Mesh::rainbow_color_table[19][3] =
 
 
 RS_Mesh::RS_Mesh(RS_EntityContainer* parent, bool owner)
-  :RS_EntityContainer(parent, owner), _pslg(0), _quadtree(0), _pm(0)
+    :RS_EntityContainer(parent, owner), _pslg(0), _quadtree(0), _pm(0)
 {
   memset(&io, 0, sizeof(triangulateio));
 
   _draw_outline = false;
-  _draw_mesh = true;
+  _draw_mesh = false;
+  _draw_material = true;
   _draw_contour = true;
-  _draw_junction = false;
   _use_signed_log = false;
   _contour_number = 19;
 }
@@ -261,32 +261,148 @@ void RS_Mesh::update()
     contour_level[contour_level.size()-1] = bbox_max.z - 0.001*fabs(bbox_max.z);
   }
 
-  if(_draw_junction)
-  {
-    contour_level.push_back(0.0);
-  }
-
-
 
   for(int i=0; i<io.numberoftriangles; ++i)
   {
+    int r = int(io.triangleattributelist[i]+0.5);
+    RS_String material = _pslg->get_region_material(r);
+
     RS_Vector a(io.pointlist[2*io.trianglelist[3*i+0]], io.pointlist[2*io.trianglelist[3*i+0]+1]);
     RS_Vector b(io.pointlist[2*io.trianglelist[3*i+1]], io.pointlist[2*io.trianglelist[3*i+1]+1]);
     RS_Vector c(io.pointlist[2*io.trianglelist[3*i+2]], io.pointlist[2*io.trianglelist[3*i+2]+1]);
 
-    //draw mesh
-    if(_draw_mesh)
+    //draw mesh as lines
+    if(_draw_mesh || _draw_material)
     {
       this->addEntity(new RS_Line(this, RS_LineData(a,b)));
       this->addEntity(new RS_Line(this, RS_LineData(b,c)));
       this->addEntity(new RS_Line(this, RS_LineData(c,a)));
     }
 
-    //draw contour
-    if((_draw_contour || _draw_junction) && fabs(bbox.z)>1e-14)
+    if(_draw_material)
     {
-      int r = int(io.triangleattributelist[i]+0.5);
-      RS_String material = _pslg->get_region_material(r);
+      RS_Pen pen;
+
+      // insulator and conductor region
+      if(RS_Material::IsInsulator(material) || RS_Material::IsConductor(material))
+      {
+        if(RS_Material::IsConductor(material))
+          pen.setColor(RS_Color(0,0,255));
+
+        if(RS_Material::IsInsulator(material))
+        {
+          if(RS_Material::IsSiO2(material))
+            pen.setColor(RS_Color(2,255,252));
+          else if(RS_Material::IsNitride(material))
+            pen.setColor(RS_Color(255,0,255));
+          else
+            pen.setColor(RS_Color(2,255,252));
+        }
+
+        RS_Hatch *triangle = create_triangle(a,b,c);
+        triangle->setPen(pen);
+        this->addEntity(triangle);
+      }
+
+      // draw semiconductor region, resolve pn junction here
+      if(RS_Material::IsSemiconductor(material))
+      {
+
+        RS_Color p_region_color(255,210,0);
+        RS_Color n_region_color(42,207,51);
+
+        a.z = profile(a.x, a.y);
+        b.z = profile(b.x, b.y);
+        c.z = profile(c.x, c.y);
+
+        // Array to hold the points.
+        RS_Vector temp1, temp2;
+        RS_Vector tempa = a;
+        RS_Vector tempb = b;
+        RS_Vector tempc = c;
+
+        // Sort the three points tempa, tempb, tempc in increasing z components;
+        if (tempa.z > tempb.z) std::swap(tempa, tempb);
+        if (tempb.z > tempc.z)
+        {
+          if(tempc.z < tempa.z) std::swap(tempa, tempc);
+          std::swap(tempb, tempc);
+        }
+
+        if (tempa.z>=0)
+        {
+          pen.setColor(n_region_color);
+          RS_Hatch *triangle = create_triangle(tempa,tempb,tempc);
+          triangle->setPen(pen);
+          this->addEntity(triangle);
+        }
+
+        if (tempc.z<=0)
+        {
+          pen.setColor(p_region_color);
+          RS_Hatch *triangle = create_triangle(tempa,tempb,tempc);
+          triangle->setPen(pen);
+          this->addEntity(triangle);
+        }
+
+        if ((0 > tempa.z) && (0 < tempc.z))
+        {
+          if (0 == tempb.z)
+          {
+            //a<0=b<c
+            temp1 = linear_interpolation(tempa, tempc, 0);
+            temp2 = tempb;
+
+            pen.setColor(p_region_color);
+            RS_Hatch *triangle1 = create_triangle(tempa,tempb,temp1);
+            triangle1->setPen(pen);
+            this->addEntity(triangle1);
+
+            pen.setColor(n_region_color);
+            RS_Hatch *triangle2 = create_triangle(temp1,temp2,tempc);
+            triangle2->setPen(pen);
+            this->addEntity(triangle2);
+          }
+          else if (0 < tempb.z)
+          {
+            // a<0<b<c
+            temp1 = linear_interpolation(tempa, tempb, 0);
+            temp2 = linear_interpolation(tempa, tempc, 0);
+
+            pen.setColor(p_region_color);
+            RS_Hatch *triangle = create_triangle(tempa,temp1,temp2);
+            triangle->setPen(pen);
+            this->addEntity(triangle);
+
+            pen.setColor(n_region_color);
+            RS_Hatch *rectangle = create_rectangle(temp2,temp1,tempb,tempc);
+            rectangle->setPen(pen);
+            this->addEntity(rectangle);
+          }
+          else
+          {
+            // a<b<0<c
+            temp1 = linear_interpolation(tempa, tempc, 0);
+            temp2 = linear_interpolation(tempb, tempc, 0);
+
+            pen.setColor(p_region_color);
+            RS_Hatch *rectangle = create_rectangle(tempa,tempb,temp2,temp1);
+            rectangle->setPen(pen);
+            this->addEntity(rectangle);
+
+            pen.setColor(n_region_color);
+            RS_Hatch *triangle = create_triangle(temp1,temp2,tempc);
+            triangle->setPen(pen);
+            this->addEntity(triangle);
+          }
+        }
+      }
+
+    }
+
+    //draw contour
+    if((_draw_contour) && fabs(bbox.z)>1e-14)
+    {
       if(!RS_Material::IsSemiconductor(material)) continue;
 
       a.z = profile(a.x, a.y);
@@ -325,7 +441,7 @@ void RS_Mesh::update()
 
         if ((level == tempa.z) && (level == tempc.z))
         {
-          break;
+          continue;
         }
         else if ((level >= tempa.z) && (level <= tempc.z))
         { // OK, test each edge, please.
@@ -359,20 +475,12 @@ void RS_Mesh::update()
           }
 
           RS_Line * contour_line = new RS_Line(this, RS_LineData(temp1, temp2));
-          if(_draw_contour)
-          {
-            RS_Pen pen;
-            pen.setColor(RS_Color(rainbow_color_table[n][0],
-                                  rainbow_color_table[n][1],
-                                  rainbow_color_table[n][2]));
-            contour_line->setPen(pen);
-          }
-          if(_draw_junction)
-          {
-            RS_Pen pen;
-            pen.setColor(RS_Color(255, 0, 0));
-            contour_line->setPen(pen);
-          }
+          RS_Pen pen;
+          pen.setColor(RS_Color(rainbow_color_table[n][0],
+                                rainbow_color_table[n][1],
+                                rainbow_color_table[n][2]));
+          contour_line->setPen(pen);
+
           this->addEntity(contour_line);
         }
       }
@@ -464,9 +572,34 @@ RS_Vector RS_Mesh::linear_interpolation(RS_Vector a, RS_Vector b, double level)
     else
       b = mid;
   }
-  while ( sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)) > 1e-4);
+  while ( sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)) > 1e-6);
 
   return a;
+}
+
+
+RS_Hatch * RS_Mesh::create_triangle(RS_Vector a, RS_Vector b, RS_Vector c)
+{
+  RS_Hatch *triangle = new RS_Hatch(this, RS_HatchData(true, 1.0, 0.0, ""));
+  RS_EntityContainer* loop = new RS_EntityContainer(triangle);
+  loop->addEntity(new RS_Line(loop, RS_LineData(a,b)));
+  loop->addEntity(new RS_Line(loop, RS_LineData(b,c)));
+  loop->addEntity(new RS_Line(loop, RS_LineData(c,a)));
+  triangle->addEntity(loop);
+  return triangle;
+}
+
+
+RS_Hatch * RS_Mesh::create_rectangle(RS_Vector a, RS_Vector b, RS_Vector c, RS_Vector d)
+{
+  RS_Hatch *rectangle = new RS_Hatch(this, RS_HatchData(true, 1.0, 0.0, ""));
+  RS_EntityContainer* loop = new RS_EntityContainer(rectangle);
+  loop->addEntity(new RS_Line(loop, RS_LineData(a,b)));
+  loop->addEntity(new RS_Line(loop, RS_LineData(b,c)));
+  loop->addEntity(new RS_Line(loop, RS_LineData(c,d)));
+  loop->addEntity(new RS_Line(loop, RS_LineData(d,a)));
+  rectangle->addEntity(loop);
+  return rectangle;
 }
 
 
@@ -532,9 +665,9 @@ void RS_Mesh::export_mesh(const RS_String & file)
   std::vector<CG_Region> & regions = _pslg->get_regions();
   for(unsigned int r=0; r<regions.size(); ++r)
     fout<< 'r' << '\t'
-        << r+1 << '\t'
-        << regions[r].material << '\t'
-        << regions[r].label << '\n';
+    << r+1 << '\t'
+    << regions[r].material << '\t'
+    << regions[r].label << '\n';
   fout<<'\n';
 
   // write segment
@@ -543,10 +676,10 @@ void RS_Mesh::export_mesh(const RS_String & file)
   for(; segment_it != segment_info.end(); ++segment_it)
   {
     fout<< 'i' << '\t'
-        << segment_it->first << '\t'
-        << "ANY" << '\t'
-        << segment_it->second << '\t'
-        << 0 << '\n';
+    << segment_it->first << '\t'
+    << "ANY" << '\t'
+    << segment_it->second << '\t'
+    << 0 << '\n';
     for(int i=0; i<io.numberofsegments; ++i)
       if(io.segmentmarkerlist[i] == segment_it->first)
         fout<< " j" << '\t'

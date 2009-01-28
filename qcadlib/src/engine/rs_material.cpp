@@ -140,6 +140,16 @@ bool RS_Material::IsInsulator(const RS_String & mat_name)
   return false;
 }
 
+bool RS_Material::IsSiO2(const RS_String & mat_name)
+{
+  return mat_name=="Ox" || mat_name=="SiO2" ;
+}
+
+bool RS_Material::IsNitride(const RS_String & mat_name)
+{
+  return mat_name=="Nitride" || mat_name=="Si3N4" || mat_name=="Nit";
+}
+
 bool RS_Material::IsConductor(const RS_String & mat_name)
 {
   init_material_name_to_material_type();

@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>368</width>
-            <height>202</height>
+            <height>174</height>
         </rect>
     </property>
     <property name="caption">
@@ -46,6 +46,22 @@
                                 <property name="name">
                                     <cstring>unnamed</cstring>
                                 </property>
+                                <widget class="QRadioButton" row="1" column="0">
+                                    <property name="name">
+                                        <cstring>rb_mesh</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>mesh</string>
+                                    </property>
+                                </widget>
+                                <widget class="QRadioButton" row="2" column="0">
+                                    <property name="name">
+                                        <cstring>rb_material</cstring>
+                                    </property>
+                                    <property name="text">
+                                        <string>material</string>
+                                    </property>
+                                </widget>
                                 <widget class="QRadioButton" row="0" column="0">
                                     <property name="name">
                                         <cstring>rb_outline</cstring>
@@ -53,13 +69,8 @@
                                     <property name="text">
                                         <string>&amp;Outline</string>
                                     </property>
-                                </widget>
-                                <widget class="QRadioButton" row="1" column="0">
-                                    <property name="name">
-                                        <cstring>rb_mesh</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>mesh</string>
+                                    <property name="accel">
+                                        <string>Alt+O</string>
                                     </property>
                                 </widget>
                             </grid>
@@ -108,17 +119,6 @@
                                     </property>
                                     <property name="accel">
                                         <string>Alt+N</string>
-                                    </property>
-                                </widget>
-                                <widget class="QCheckBox" row="3" column="0" rowspan="1" colspan="2">
-                                    <property name="name">
-                                        <cstring>Junction</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>Only plot &amp;Junction</string>
-                                    </property>
-                                    <property name="accel">
-                                        <string>Alt+J</string>
                                     </property>
                                 </widget>
                             </grid>
@@ -194,7 +194,7 @@
     <variable access="private">RS_Mesh * mesh;</variable>
 </variables>
 <functions>
-    <function specifier="non virtual">setMesh( RS_Mesh &amp; mesh )</function>
+    <function specifier="non virtual">setMesh( RS_Mesh &amp; e )</function>
     <function specifier="non virtual">updateMesh()</function>
 </functions>
 <layoutdefaults spacing="6" margin="11"/>

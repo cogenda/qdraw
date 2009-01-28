@@ -45,6 +45,8 @@ public:
   static std::vector<RS_String> get_materials();
   static bool IsSemiconductor(const RS_String & mat_name);
   static bool IsInsulator(const RS_String & mat_name);
+  static bool IsSiO2(const RS_String & mat_name);
+  static bool IsNitride(const RS_String & mat_name);
   static bool IsConductor(const RS_String & mat_name);
 
 private:

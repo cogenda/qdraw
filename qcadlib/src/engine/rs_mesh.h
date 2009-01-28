@@ -27,6 +27,7 @@
 
 #include "triangle.h"
 #include "cg_pslg.h"
+#include "rs_hatch.h"
 #include "rs_entitycontainer.h"
 
 class ProfileManager;
@@ -74,11 +75,11 @@ public:
   bool & draw_contour()
   { return _draw_contour; }
 
-  bool  draw_junction() const
-  { return _draw_junction; }
+  bool  draw_material() const
+  { return _draw_material; }
 
-  bool & draw_junction()
-  { return _draw_junction; }
+  bool & draw_material()
+  { return _draw_material; }
 
   bool draw_mesh() const
   { return _draw_mesh; }
@@ -146,6 +147,9 @@ private:
 
   double triangle_area(int a, int b, int c);
 
+  RS_Hatch * create_triangle(RS_Vector a, RS_Vector b, RS_Vector c);
+  RS_Hatch * create_rectangle(RS_Vector a, RS_Vector b, RS_Vector c, RS_Vector d);
+
   /**
    * the PSLG of this mesh
    */
@@ -178,7 +182,7 @@ private:
 
   bool _draw_contour;
 
-  bool _draw_junction;
+  bool _draw_material;
 
   bool _use_signed_log;
 
