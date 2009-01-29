@@ -490,6 +490,26 @@ RS_Vector RS_Vector::crossP(const RS_Vector& v1, const RS_Vector& v2)
                    v1.x*v2.y - v1.y*v2.x);
 }
 
+/**
+ * @return true if v1, v2, v3 in counterclockwise.
+ */
+bool RS_Vector::is_counterclockwise(const RS_Vector& v1, const RS_Vector& v2, const RS_Vector& v3)
+{
+  RS_Vector e1=v2-v1;
+  RS_Vector e2=v3-v2;
+  return crossP(e1,e2).z>0.0;
+}
+
+/**
+ * @return true if v1, v2, v3 in clockwise.
+ */
+bool RS_Vector::is_clockwise(const RS_Vector& v1, const RS_Vector& v2, const RS_Vector& v3)
+{
+  RS_Vector e1=v2-v1;
+  RS_Vector e2=v3-v2;
+  return crossP(e1,e2).z<0.0;
+}
+
 
 /**
  * Constructor for no solution.

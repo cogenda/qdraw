@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -32,55 +32,72 @@
 
 
 RS_ActionSelectContour::RS_ActionSelectContour(RS_EntityContainer& container,
-        RS_GraphicView& graphicView)
-        :RS_ActionInterface("Select Contours", container, graphicView) {
+    RS_GraphicView& graphicView)
+    :RS_ActionInterface("Select Contours", container, graphicView)
+{
 
-    en = NULL;
+  en = NULL;
 }
 
-QAction* RS_ActionSelectContour::createGUIAction(RS2::ActionType /*type*/, QObject* /*parent*/) {
-    QAction* action = new QAction(tr("(De-)Select Contour"), tr("(De-)Select &Contour"),
-                                  QKeySequence(), NULL);
-    action->setStatusTip(tr("(De-)Selects connected entities"));
-    return action;
+QAction* RS_ActionSelectContour::createGUIAction(RS2::ActionType /*type*/, QObject* /*parent*/)
+{
+  QAction* action = new QAction(tr("(De-)Select Contour"), tr("(De-)Select &Contour"),
+                                QKeySequence(), NULL);
+  action->setStatusTip(tr("(De-)Selects connected entities"));
+  return action;
 }
 
 
-void RS_ActionSelectContour::trigger() {
-    if (en!=NULL) {
-        if (en->isAtomic()) {
-            RS_Selection s(*container, graphicView);
-            s.selectContour(en);
+void RS_ActionSelectContour::trigger()
+{
+  if (en!=NULL)
+  {
+    if (en->isAtomic())
+    {
+      RS_Selection s(*container, graphicView);
+      s.selectContour(en, point);
 
-            if (RS_DIALOGFACTORY!=NULL) {
-                RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected());
-            }
-        } else {
-            if (RS_DIALOGFACTORY!=NULL) {
-                RS_DIALOGFACTORY->commandMessage(
-                    tr("Entity must be an Atomic Entity."));
-            }
-        }
-    } else {
-        RS_DEBUG->print("RS_ActionSelectContour::trigger: Entity is NULL\n");
+      if (RS_DIALOGFACTORY!=NULL)
+      {
+        RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected());
+      }
     }
-}
-
-
-
-void RS_ActionSelectContour::mouseReleaseEvent(RS_MouseEvent* e) {
-    if (RS2::qtToRsButtonState(e->button())==RS2::RightButton) {
-        init(getStatus()-1);
-    } else {
-        en = catchEntity(e);
-        trigger();
+    else
+    {
+      if (RS_DIALOGFACTORY!=NULL)
+      {
+        RS_DIALOGFACTORY->commandMessage(
+          tr("Entity must be an Atomic Entity."));
+      }
     }
+  }
+  else
+  {
+    RS_DEBUG->print("RS_ActionSelectContour::trigger: Entity is NULL\n");
+  }
 }
 
 
 
-void RS_ActionSelectContour::updateMouseCursor() {
-    graphicView->setMouseCursor(RS2::SelectCursor);
+void RS_ActionSelectContour::mouseReleaseEvent(RS_MouseEvent* e)
+{
+  if (RS2::qtToRsButtonState(e->button())==RS2::RightButton)
+  {
+    init(getStatus()-1);
+  }
+  else
+  {
+    en = catchEntity(e);
+    point = graphicView->toGraph(e->x(), e->y());
+    trigger();
+  }
+}
+
+
+
+void RS_ActionSelectContour::updateMouseCursor()
+{
+  graphicView->setMouseCursor(RS2::SelectCursor);
 }
 
 // EOF

@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -33,46 +33,50 @@
 
 
 /**
- * API Class for selecting entities. 
+ * API Class for selecting entities.
  * There's no interaction handled in this class.
  * This class is connected to an entity container and
  * can be connected to a graphic view.
  *
  * @author Andrew Mustun
  */
-class RS_Selection {
+class RS_Selection
+{
 public:
-    RS_Selection(RS_EntityContainer& entityContainer,
-                 RS_GraphicView* graphicView=NULL);
+  RS_Selection(RS_EntityContainer& entityContainer,
+               RS_GraphicView* graphicView=NULL);
 
-    void selectSingle(RS_Entity* e);
-    void selectAll(bool select=true);
-    void deselectAll() {
-        selectAll(false);
-    }
-    void invertSelection();
-    void selectWindow(const RS_Vector& v1, const RS_Vector& v2,
-                      bool select=true, bool cross=false);
-    void deselectWindow(const RS_Vector& v1, const RS_Vector& v2) {
-        selectWindow(v1, v2, false);
-    }
-    void selectIntersected(const RS_Vector& v1, const RS_Vector& v2,
-                      bool select=true);
-    void deselectIntersected(const RS_Vector& v1, const RS_Vector& v2) {
-		selectIntersected(v1, v2, false);
-	}
-    void selectContour(RS_Entity* e);
-	
-    void selectLayer(RS_Entity* e);
-    void selectLayer(const RS_String& layerName, bool select=true);
-    void deselectLayer(RS_String& layerName) {
-		selectLayer(layerName, false);
-	}
+  void selectSingle(RS_Entity* e);
+  void selectAll(bool select=true);
+  void deselectAll()
+  {
+    selectAll(false);
+  }
+  void invertSelection();
+  void selectWindow(const RS_Vector& v1, const RS_Vector& v2,
+                    bool select=true, bool cross=false);
+  void deselectWindow(const RS_Vector& v1, const RS_Vector& v2)
+  {
+    selectWindow(v1, v2, false);
+  }
+  void selectIntersected(const RS_Vector& v1, const RS_Vector& v2,
+                         bool select=true);
+  void deselectIntersected(const RS_Vector& v1, const RS_Vector& v2)
+  {
+    selectIntersected(v1, v2, false);
+  }
+  void selectContour(RS_Entity* e, RS_Vector point);
+  void selectLayer(RS_Entity* e);
+  void selectLayer(const RS_String& layerName, bool select=true);
+  void deselectLayer(RS_String& layerName)
+  {
+    selectLayer(layerName, false);
+  }
 
 protected:
-    RS_EntityContainer* container;
-    RS_Graphic* graphic;
-    RS_GraphicView* graphicView;
+  RS_EntityContainer* container;
+  RS_Graphic* graphic;
+  RS_GraphicView* graphicView;
 };
 
 #endif

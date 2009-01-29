@@ -85,7 +85,8 @@ public:
   static RS_Vector maximum(const RS_Vector& v1, const RS_Vector& v2);
   static RS_Vector crossP(const RS_Vector& v1, const RS_Vector& v2);
   static double dotP(const RS_Vector& v1, const RS_Vector& v2);
-
+  static bool   is_counterclockwise(const RS_Vector& v1, const RS_Vector& v2, const RS_Vector& v3);
+  static bool   is_clockwise(const RS_Vector& v1, const RS_Vector& v2, const RS_Vector& v3);
   friend std::ostream& operator << (std::ostream&, const RS_Vector& v);
 
 #ifdef RS_TEST

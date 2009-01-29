@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -23,6 +23,9 @@
 ** not clear to you.
 **
 **********************************************************************/
+
+#include <vector>
+#include <map>
 
 #include "rs_selection.h"
 
@@ -41,10 +44,11 @@
  *        it can also be a polyline, text, ...
  */
 RS_Selection::RS_Selection(RS_EntityContainer& container,
-                           RS_GraphicView* graphicView) {
-    this->container = &container;
-    this->graphicView = graphicView;
-    graphic = container.getGraphic();
+                           RS_GraphicView* graphicView)
+{
+  this->container = &container;
+  this->graphicView = graphicView;
+  graphic = container.getGraphic();
 }
 
 
@@ -52,19 +56,23 @@ RS_Selection::RS_Selection(RS_EntityContainer& container,
 /**
  * Selects or deselects the given entitiy.
  */
-void RS_Selection::selectSingle(RS_Entity* e) {
-    if (e!=NULL && (e->getLayer()==NULL || e->getLayer()->isLocked()==false)) {
+void RS_Selection::selectSingle(RS_Entity* e)
+{
+  if (e!=NULL && (e->getLayer()==NULL || e->getLayer()->isLocked()==false))
+  {
 
-        if (graphicView!=NULL) {
-            graphicView->deleteEntity(e);
-        }
-
-       	e->toggleSelected();
-
-        if (graphicView!=NULL) {
-            graphicView->drawEntity(e);
-        }
+    if (graphicView!=NULL)
+    {
+      graphicView->deleteEntity(e);
     }
+
+    e->toggleSelected();
+
+    if (graphicView!=NULL)
+    {
+      graphicView->drawEntity(e);
+    }
+  }
 }
 
 
@@ -72,27 +80,32 @@ void RS_Selection::selectSingle(RS_Entity* e) {
 /**
  * Selects all entities on visible layers.
  */
-void RS_Selection::selectAll(bool select) {
-    if (graphicView!=NULL) {
-        //graphicView->deleteEntity(container);
-    }
+void RS_Selection::selectAll(bool select)
+{
+  if (graphicView!=NULL)
+  {
+    //graphicView->deleteEntity(container);
+  }
 
-    //container->setSelected(select);
-    for (RS_Entity* e=container->firstEntity();
-             e!=NULL;
-             e=container->nextEntity()) {
+  //container->setSelected(select);
+  for (RS_Entity* e=container->firstEntity();
+       e!=NULL;
+       e=container->nextEntity())
+  {
     //for (uint i=0; i<container->count(); ++i) {
-        //RS_Entity* e = container->entityAt(i);
+    //RS_Entity* e = container->entityAt(i);
 
-        if (e!=NULL && e->isVisible()) {
-            e->setSelected(select);
-        }
+    if (e!=NULL && e->isVisible())
+    {
+      e->setSelected(select);
     }
+  }
 
-    if (graphicView!=NULL) {
-        //graphicView->drawEntity(container);
-		graphicView->redraw();
-    }
+  if (graphicView!=NULL)
+  {
+    //graphicView->drawEntity(container);
+    graphicView->redraw();
+  }
 }
 
 
@@ -100,25 +113,30 @@ void RS_Selection::selectAll(bool select) {
 /**
  * Selects all entities on visible layers.
  */
-void RS_Selection::invertSelection() {
-    if (graphicView!=NULL) {
-        //graphicView->deleteEntity(container);
-    }
+void RS_Selection::invertSelection()
+{
+  if (graphicView!=NULL)
+  {
+    //graphicView->deleteEntity(container);
+  }
 
-    for (RS_Entity* e=container->firstEntity(); e!=NULL;
-            e=container->nextEntity()) {
+  for (RS_Entity* e=container->firstEntity(); e!=NULL;
+       e=container->nextEntity())
+  {
     //for (uint i=0; i<container->count(); ++i) {
-        //RS_Entity* e = container->entityAt(i);
+    //RS_Entity* e = container->entityAt(i);
 
-        if (e!=NULL && e->isVisible()) {
-            e->toggleSelected();
-        }
+    if (e!=NULL && e->isVisible())
+    {
+      e->toggleSelected();
     }
+  }
 
-    if (graphicView!=NULL) {
-        //graphicView->drawEntity(container);
-		graphicView->redraw();
-    }
+  if (graphicView!=NULL)
+  {
+    //graphicView->drawEntity(container);
+    graphicView->redraw();
+  }
 }
 
 
@@ -131,18 +149,20 @@ void RS_Selection::invertSelection() {
  * @param select true: select, false: deselect
  */
 void RS_Selection::selectWindow(const RS_Vector& v1, const RS_Vector& v2,
-                                bool select, bool cross) {
+                                bool select, bool cross)
+{
 
-    //if (graphicView!=NULL) {
-    //    graphicView->drawWindow(v1, v2, true);
-    //}
+  //if (graphicView!=NULL) {
+  //    graphicView->drawWindow(v1, v2, true);
+  //}
 
-    container->selectWindow(v1, v2, select, cross);
+  container->selectWindow(v1, v2, select, cross);
 
-    if (graphicView!=NULL) {
-        //graphicView->drawWindow(v1, v2);
-		graphicView->redraw();
-    }
+  if (graphicView!=NULL)
+  {
+    //graphicView->drawWindow(v1, v2);
+    graphicView->redraw();
+  }
 }
 
 
@@ -155,57 +175,69 @@ void RS_Selection::selectWindow(const RS_Vector& v1, const RS_Vector& v2,
  * @param select true: select, false: deselect
  */
 void RS_Selection::selectIntersected(const RS_Vector& v1, const RS_Vector& v2,
-                                     bool select) {
+                                     bool select)
+{
 
-    RS_Line line(NULL, RS_LineData(v1, v2));
-    bool inters;
+  RS_Line line(NULL, RS_LineData(v1, v2));
+  bool inters;
 
-    for (RS_Entity* e=container->firstEntity(); e!=NULL;
-            e=container->nextEntity()) {
+  for (RS_Entity* e=container->firstEntity(); e!=NULL;
+       e=container->nextEntity())
+  {
     //for (uint i=0; i<container->count(); ++i) {
-        //RS_Entity* e = container->entityAt(i);
+    //RS_Entity* e = container->entityAt(i);
 
-        if (e!=NULL && e->isVisible()) {
+    if (e!=NULL && e->isVisible())
+    {
 
-            inters = false;
+      inters = false;
 
-            // select containers / groups:
-            if (e->isContainer()) {
-                RS_EntityContainer* ec = (RS_EntityContainer*)e;
+      // select containers / groups:
+      if (e->isContainer())
+      {
+        RS_EntityContainer* ec = (RS_EntityContainer*)e;
 
-                for (RS_Entity* e2=ec->firstEntity(RS2::ResolveAll); e2!=NULL;
-                        e2=ec->nextEntity(RS2::ResolveAll)) {
+        for (RS_Entity* e2=ec->firstEntity(RS2::ResolveAll); e2!=NULL;
+             e2=ec->nextEntity(RS2::ResolveAll))
+        {
 
-                    RS_VectorSolutions sol =
-                        RS_Information::getIntersection(&line, e2, true);
+          RS_VectorSolutions sol =
+            RS_Information::getIntersection(&line, e2, true);
 
-                    if (sol.hasValid()) {
-                        inters = true;
-                    }
-                }
-            } else {
-
-                RS_VectorSolutions sol =
-                    RS_Information::getIntersection(&line, e, true);
-
-                if (sol.hasValid()) {
-                    inters = true;
-                }
-            }
-
-            if (inters) {
-                if (graphicView!=NULL) {
-                    graphicView->deleteEntity(e);
-                }
-
-                e->setSelected(select);
-
-                if (graphicView!=NULL) {
-                    graphicView->drawEntity(e);
-                }
-            }
+          if (sol.hasValid())
+          {
+            inters = true;
+          }
         }
+      }
+      else
+      {
+
+        RS_VectorSolutions sol =
+          RS_Information::getIntersection(&line, e, true);
+
+        if (sol.hasValid())
+        {
+          inters = true;
+        }
+      }
+
+      if (inters)
+      {
+        if (graphicView!=NULL)
+        {
+          graphicView->deleteEntity(e);
+        }
+
+        e->setSelected(select);
+
+        if (graphicView!=NULL)
+        {
+          graphicView->drawEntity(e);
+        }
+      }
     }
+  }
 
 }
 
@@ -216,83 +248,103 @@ void RS_Selection::selectIntersected(const RS_Vector& v1, const RS_Vector& v2,
  *
  * @param e The entity where the algorithm starts. Must be an atomic entity.
  */
-void RS_Selection::selectContour(RS_Entity* e) {
+void RS_Selection::selectContour(RS_Entity* e, RS_Vector point)
+{
 
-    if (e==NULL) {
-        return;
-    }
+  if (e==NULL)
+  {
+    return;
+  }
 
-    if (!e->isAtomic()) {
-        return;
-    }
+  if (!e->isAtomic())
+  {
+    return;
+  }
 
-    bool select = !e->isSelected();
-    RS_AtomicEntity* ae = (RS_AtomicEntity*)e;
-    RS_Vector p1 = ae->getStartpoint();
-    RS_Vector p2 = ae->getEndpoint();
-    bool found = false;
+  bool select = !e->isSelected();
+  e->setSelected(select);
+  RS_AtomicEntity* ae = (RS_AtomicEntity*)e;
+  RS_Vector p1 = ae->getStartpoint();
+  RS_Vector p2 = ae->getEndpoint();
 
-    // (de)select 1st entity:
-    if (graphicView!=NULL) {
-        graphicView->deleteEntity(e);
-    }
-    e->setSelected(select);
-    if (graphicView!=NULL) {
-        graphicView->drawEntity(e);
-    }
+  // make sure point, p1, p2 in counterclockwise
+  if(!RS_Vector::is_counterclockwise(point, p1, p2))
+  {
+    p1 = ae->getEndpoint();
+    p2 = ae->getStartpoint();
+  }
 
-    do {
-        found = false;
 
-        for (RS_Entity* en=container->firstEntity(); en!=NULL;
-                en=container->nextEntity()) {
-        //for (uint i=0; i<container->count(); ++i) {
-            //RS_Entity* en = container->entityAt(i);
+  bool find_contour = false;
+  std::vector<RS_Entity *> contour_entities;
+  contour_entities.push_back(ae);
 
-            if (en!=NULL && en->isVisible() && 
-				en->isAtomic() && en->isSelected()!=select && 
-				(en->getLayer()==NULL || en->getLayer()->isLocked()==false)) {
+  do
+  {
+    std::map<double, RS_Entity *> adj_entities;
 
-                ae = (RS_AtomicEntity*)en;
-                bool doit = false;
+    for (RS_Entity* en=container->firstEntity(); en!=NULL; en=container->nextEntity())
+    {
+      if (en!=NULL && en->isVisible() &&
+          en->isAtomic() && en->isSelected()!=select &&
+          (en->getLayer()==NULL || en->getLayer()->isLocked()==false))
+      {
 
-                // startpoint connects to 1st point
-                if (ae->getStartpoint().distanceTo(p1)<1.0e-4) {
-                    doit = true;
-                    p1 = ae->getEndpoint();
-                }
+        ae = (RS_AtomicEntity*)en;
+        RS_Vector ae_start = ae->getStartpoint();
+        RS_Vector ae_end = ae->getEndpoint();
 
-                // endpoint connects to 1st point
-                else if (ae->getEndpoint().distanceTo(p1)<1.0e-4) {
-                    doit = true;
-                    p1 = ae->getStartpoint();
-                }
-
-                // startpoint connects to 2nd point
-                else if (ae->getStartpoint().distanceTo(p2)<1.0e-4) {
-                    doit = true;
-                    p2 = ae->getEndpoint();
-                }
-
-                // endpoint connects to 1st point
-                else if (ae->getEndpoint().distanceTo(p2)<1.0e-4) {
-                    doit = true;
-                    p2 = ae->getStartpoint();
-                }
-
-                if (doit) {
-                    if (graphicView!=NULL) {
-                        graphicView->deleteEntity(ae);
-                    }
-                    ae->setSelected(select);
-                    if (graphicView!=NULL) {
-                        graphicView->drawEntity(ae);
-                    }
-                    found = true;
-                }
-            }
+        //record all the entities connect to p2
+        if (ae_start.distanceTo(p2)<1.0e-4)
+        {
+          adj_entities.insert(std::make_pair(ae_end.angleTo(p2), ae));
         }
-    } while(found);
+        else if (ae_end.distanceTo(p2)<1.0e-4)
+        {
+          adj_entities.insert(std::make_pair(ae_start.angleTo(p2), ae));
+        }
+      }
+    }
+
+    // we can not find adjucent entities?
+    if(!adj_entities.size()) break;
+
+    // find the right entity from adj_entities, which has larget angle
+    {
+      RS_Entity* e = adj_entities.rbegin()->second;
+      e->setSelected(select);
+      ae = (RS_AtomicEntity*)e;
+      if (ae->getStartpoint().distanceTo(p2)<1.0e-4)
+        p2 = ae->getEndpoint();
+      else if (ae->getEndpoint().distanceTo(p2)<1.0e-4)
+        p2 = ae->getStartpoint();
+    }
+
+    // determine if we had already resolve the contour
+    if(p1.distanceTo(p2)<1.0e-4)
+    {
+      find_contour = true;
+      break;
+    }
+  }
+  while(1);
+
+  // does point in the couter?
+  if(find_contour)
+  {}
+
+
+  // draw selected entities
+  for(unsigned int n=0; n<contour_entities.size(); ++n)
+  {
+    RS_Entity* e = contour_entities[n];
+    if (graphicView!=NULL)
+    {
+      graphicView->deleteEntity(e);
+      graphicView->drawEntity(e);
+    }
+  }
+
 }
 
 
@@ -300,21 +352,24 @@ void RS_Selection::selectContour(RS_Entity* e) {
 /**
  * Selects all entities on the given layer.
  */
-void RS_Selection::selectLayer(RS_Entity* e) {
+void RS_Selection::selectLayer(RS_Entity* e)
+{
 
-    if (e==NULL) {
-        return;
-    }
+  if (e==NULL)
+  {
+    return;
+  }
 
-    bool select = !e->isSelected();
+  bool select = !e->isSelected();
 
-    RS_Layer* layer = e->getLayer(true);
-    if (layer==NULL) {
-        return;
-    }
+  RS_Layer* layer = e->getLayer(true);
+  if (layer==NULL)
+  {
+    return;
+  }
 
-    RS_String layerName = layer->getName();
-	selectLayer(layerName, select);
+  RS_String layerName = layer->getName();
+  selectLayer(layerName, select);
 }
 
 
@@ -322,28 +377,34 @@ void RS_Selection::selectLayer(RS_Entity* e) {
 /**
  * Selects all entities on the given layer.
  */
-void RS_Selection::selectLayer(const RS_String& layerName, bool select) {
+void RS_Selection::selectLayer(const RS_String& layerName, bool select)
+{
 
-    for (RS_Entity* en=container->firstEntity(); en!=NULL;
-            en=container->nextEntity()) {
+  for (RS_Entity* en=container->firstEntity(); en!=NULL;
+       en=container->nextEntity())
+  {
 
-        if (en!=NULL && en->isVisible() && 
-				en->isSelected()!=select && 
-				(en->getLayer()==NULL || en->getLayer()->isLocked()==false)) {
+    if (en!=NULL && en->isVisible() &&
+        en->isSelected()!=select &&
+        (en->getLayer()==NULL || en->getLayer()->isLocked()==false))
+    {
 
-            RS_Layer* l = en->getLayer(true);
+      RS_Layer* l = en->getLayer(true);
 
-            if (l!=NULL && l->getName()==layerName) {
-                if (graphicView!=NULL) {
-                    graphicView->deleteEntity(en);
-                }
-                en->setSelected(select);
-                if (graphicView!=NULL) {
-                    graphicView->drawEntity(en);
-                }
-            }
+      if (l!=NULL && l->getName()==layerName)
+      {
+        if (graphicView!=NULL)
+        {
+          graphicView->deleteEntity(en);
         }
+        en->setSelected(select);
+        if (graphicView!=NULL)
+        {
+          graphicView->drawEntity(en);
+        }
+      }
     }
+  }
 }
 
 // EOF

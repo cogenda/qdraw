@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -54,6 +54,7 @@ public:
 
 private:
     RS_Entity* en;
+    RS_Vector  point;
 };
 
 #endif
