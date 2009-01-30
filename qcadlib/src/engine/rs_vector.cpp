@@ -143,7 +143,27 @@ double RS_Vector::angle() const
   return ret;
 }
 
+/**
+ * angle between the vectors
+ * @return counter-clockwise angle of two vector
+ * the input order of 2 vectors is not important
+ */
+double RS_Vector::angle(const RS_Vector& p) const
+{
+  double len1 = this->magnitude( );
+  double len2 = p.magnitude( );
+  double denom = len1 * len2;
 
+  double cosa = dotP(*this, p) / denom;
+  RS_Vector c = crossP(*this, p);
+  double sina = c.z / denom;
+  if ( cosa > 1.0 ) cosa = 1.0;
+  if ( cosa < -1.0 ) cosa = -1.0;
+
+  double alph = acos( cosa );
+  if (sina < 0.0) alph = 2*M_PI-alph;
+  return alph;
+}
 
 /**
  * @return The angle from this and the given coordinate (in rad).

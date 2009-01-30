@@ -267,13 +267,13 @@ void RS_Selection::selectContour(RS_Entity* e, RS_Vector point)
   RS_Vector p1 = ae->getStartpoint();
   RS_Vector p2 = ae->getEndpoint();
 
-  // make sure point, p1, p2 in counterclockwise
+  // make sure point, p1, p2 in clockwise
   if(!RS_Vector::is_counterclockwise(point, p1, p2))
   {
     p1 = ae->getEndpoint();
     p2 = ae->getStartpoint();
   }
-
+  RS_Vector p_start = p1;
 
   bool find_contour = false;
   std::vector<RS_Entity *> contour_entities;
@@ -297,11 +297,11 @@ void RS_Selection::selectContour(RS_Entity* e, RS_Vector point)
         //record all the entities connect to p2
         if (ae_start.distanceTo(p2)<1.0e-4)
         {
-          adj_entities.insert(std::make_pair(ae_end.angleTo(p2), ae));
+          adj_entities.insert(std::make_pair((ae_end-ae_start).angle(p1-p2), ae));
         }
         else if (ae_end.distanceTo(p2)<1.0e-4)
         {
-          adj_entities.insert(std::make_pair(ae_start.angleTo(p2), ae));
+          adj_entities.insert(std::make_pair((ae_start-ae_end).angle(p1-p2), ae));
         }
       }
     }
@@ -311,17 +311,23 @@ void RS_Selection::selectContour(RS_Entity* e, RS_Vector point)
 
     // find the right entity from adj_entities, which has larget angle
     {
-      RS_Entity* e = adj_entities.rbegin()->second;
+      RS_Entity* e = adj_entities.begin()->second;
       e->setSelected(select);
       ae = (RS_AtomicEntity*)e;
       if (ae->getStartpoint().distanceTo(p2)<1.0e-4)
+      {
+        p1 = ae->getStartpoint();
         p2 = ae->getEndpoint();
+      }
       else if (ae->getEndpoint().distanceTo(p2)<1.0e-4)
+      {
+        p1 = ae->getEndpoint();
         p2 = ae->getStartpoint();
+      }
     }
 
     // determine if we had already resolve the contour
-    if(p1.distanceTo(p2)<1.0e-4)
+    if(p_start.distanceTo(p2)<1.0e-4)
     {
       find_contour = true;
       break;
@@ -334,7 +340,8 @@ void RS_Selection::selectContour(RS_Entity* e, RS_Vector point)
   {}
 
 
-  // draw selected entities
+  // redraw selected entities
+  /*
   for(unsigned int n=0; n<contour_entities.size(); ++n)
   {
     RS_Entity* e = contour_entities[n];
@@ -344,7 +351,8 @@ void RS_Selection::selectContour(RS_Entity* e, RS_Vector point)
       graphicView->drawEntity(e);
     }
   }
-
+  */
+  graphicView->redraw();
 }
 
 
