@@ -37,5 +37,4 @@ void QG_DlgMesh::updateMesh()
   mesh->draw_contour() = Contour->isChecked();
   mesh->contour_number() = RS_Math::eval(ContourLine->text());
   mesh->contour_with_signed_log() = ContorWithSignedLog->isChecked();
-  mesh->update();
 }

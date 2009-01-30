@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -96,7 +96,7 @@ void RS_ActionModifyEntity::trigger()
     {
       en->setSelected(false);
 
-      graphicView->drawEntity(en);
+      graphicView->redraw();
 
       RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected());
     }

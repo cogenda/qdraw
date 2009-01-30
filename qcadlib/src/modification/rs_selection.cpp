@@ -30,6 +30,7 @@
 #include "rs_selection.h"
 
 #include "rs_information.h"
+#include "rs_spline.h"
 #include "rs_polyline.h"
 #include "rs_entity.h"
 #include "rs_graphic.h"
@@ -250,34 +251,63 @@ void RS_Selection::selectIntersected(const RS_Vector& v1, const RS_Vector& v2,
  */
 void RS_Selection::selectContour(RS_Entity* e, RS_Vector point)
 {
-
-  if (e==NULL)
-  {
-    return;
-  }
-
-  if (!e->isAtomic())
-  {
-    return;
-  }
+  if (e==NULL) return;
 
   bool select = !e->isSelected();
   e->setSelected(select);
-  RS_AtomicEntity* ae = (RS_AtomicEntity*)e;
-  RS_Vector p1 = ae->getStartpoint();
-  RS_Vector p2 = ae->getEndpoint();
 
-  // make sure point, p1, p2 in clockwise
-  if(!RS_Vector::is_counterclockwise(point, p1, p2))
+  // circle and ellipse has contour!
+  if(e->rtti()==RS2::EntityCircle || e->rtti()==RS2::EntityEllipse )
   {
-    p1 = ae->getEndpoint();
-    p2 = ae->getStartpoint();
+    graphicView->redraw();
+    return;
   }
+
+  // then we should process line, arc, and spline
+
+  RS_Vector p1, p2; // end points
+
+  if (e->rtti()==RS2::EntityLine)
+  {
+    RS_Line* line = (RS_Line*)e;
+    p1 = line->getStartpoint();
+    p2 = line->getEndpoint();
+    // make sure point, p1, p2 in clockwise
+    if(!RS_Vector::is_counterclockwise(point, p1, p2))
+      std::swap(p1,p2);
+  }
+  else if(e->rtti()==RS2::EntitySpline)
+  {
+    RS_Spline* spline = (RS_Spline*)e;
+    p1 = spline->getStartpoint();
+    p2 = spline->getEndpoint();
+    double dist = graphicView->toGraphDX(20)*0.9;
+    RS_Line * ne = (RS_Line*)spline->getNearestEntity(point, &dist, RS2::ResolveNone);
+    if(ne==NULL) return;
+    // make sure point, p1, p2 in clockwise
+    if(!RS_Vector::is_counterclockwise(point, ne->getStartpoint(), ne->getEndpoint()))
+      std::swap(p1,p2);
+  }
+  else if(e->rtti()==RS2::EntityArc)
+  {
+    RS_Arc* arc = (RS_Arc*)e;
+    p1 = arc->getStartpoint();
+    p2 = arc->getEndpoint();
+    if(arc->isReversed())
+      std::swap(p1,p2);
+  }
+  else
+  {
+    return;
+  }
+
+
+
   RS_Vector p_start = p1;
 
   bool find_contour = false;
   std::vector<RS_Entity *> contour_entities;
-  contour_entities.push_back(ae);
+  contour_entities.push_back(e);
 
   do
   {
@@ -286,22 +316,41 @@ void RS_Selection::selectContour(RS_Entity* e, RS_Vector point)
     for (RS_Entity* en=container->firstEntity(); en!=NULL; en=container->nextEntity())
     {
       if (en!=NULL && en->isVisible() &&
-          en->isAtomic() && en->isSelected()!=select &&
+          en->isSelected()!=select &&
           (en->getLayer()==NULL || en->getLayer()->isLocked()==false))
       {
-
-        ae = (RS_AtomicEntity*)en;
-        RS_Vector ae_start = ae->getStartpoint();
-        RS_Vector ae_end = ae->getEndpoint();
-
-        //record all the entities connect to p2
-        if (ae_start.distanceTo(p2)<1.0e-4)
+        if(en->isAtomic()) // line and arc
         {
-          adj_entities.insert(std::make_pair((ae_end-ae_start).angle(p1-p2), ae));
+          RS_AtomicEntity *ae = (RS_AtomicEntity*)en;
+          RS_Vector ae_start = ae->getStartpoint();
+          RS_Vector ae_end = ae->getEndpoint();
+
+          //record all the entities connect to p2
+          if (ae_start.distanceTo(p2)<1.0e-4)
+          {
+            adj_entities.insert(std::make_pair((ae_end-ae_start).angle(p1-p2), en));
+          }
+          else if (ae_end.distanceTo(p2)<1.0e-4)
+          {
+            adj_entities.insert(std::make_pair((ae_start-ae_end).angle(p1-p2), en));
+          }
         }
-        else if (ae_end.distanceTo(p2)<1.0e-4)
+
+        if(en->rtti()==RS2::EntitySpline) //special process to spline
         {
-          adj_entities.insert(std::make_pair((ae_start-ae_end).angle(p1-p2), ae));
+          RS_Spline* spline = (RS_Spline*)en;
+          RS_Vector spline_start = spline->getStartpoint();
+          RS_Vector spline_end = spline->getEndpoint();
+
+          //record all the entities connect to p2
+          if (spline_start.distanceTo(p2)<1.0e-4)
+          {
+            adj_entities.insert(std::make_pair((spline_end-spline_start).angle(p1-p2), en));
+          }
+          else if (spline_end.distanceTo(p2)<1.0e-4)
+          {
+            adj_entities.insert(std::make_pair((spline_start-spline_end).angle(p1-p2), en));
+          }
         }
       }
     }
@@ -313,16 +362,35 @@ void RS_Selection::selectContour(RS_Entity* e, RS_Vector point)
     {
       RS_Entity* e = adj_entities.begin()->second;
       e->setSelected(select);
-      ae = (RS_AtomicEntity*)e;
-      if (ae->getStartpoint().distanceTo(p2)<1.0e-4)
+
+      if(e->isAtomic())
       {
-        p1 = ae->getStartpoint();
-        p2 = ae->getEndpoint();
+        RS_AtomicEntity *ae = (RS_AtomicEntity*)e;
+        if (ae->getStartpoint().distanceTo(p2)<1.0e-4)
+        {
+          p1 = ae->getStartpoint();
+          p2 = ae->getEndpoint();
+        }
+        else if (ae->getEndpoint().distanceTo(p2)<1.0e-4)
+        {
+          p1 = ae->getEndpoint();
+          p2 = ae->getStartpoint();
+        }
       }
-      else if (ae->getEndpoint().distanceTo(p2)<1.0e-4)
+
+      if(e->rtti()==RS2::EntitySpline)
       {
-        p1 = ae->getEndpoint();
-        p2 = ae->getStartpoint();
+        RS_Spline* spline = (RS_Spline*)e;
+        if (spline->getStartpoint().distanceTo(p2)<1.0e-4)
+        {
+          p1 = spline->getStartpoint();
+          p2 = spline->getEndpoint();
+        }
+        else if (spline->getEndpoint().distanceTo(p2)<1.0e-4)
+        {
+          p1 = spline->getEndpoint();
+          p2 = spline->getStartpoint();
+        }
       }
     }
 
@@ -336,22 +404,11 @@ void RS_Selection::selectContour(RS_Entity* e, RS_Vector point)
   while(1);
 
   // does point in the couter?
-  if(find_contour)
-  {}
+  //if(find_contour) {}
 
 
   // redraw selected entities
-  /*
-  for(unsigned int n=0; n<contour_entities.size(); ++n)
-  {
-    RS_Entity* e = contour_entities[n];
-    if (graphicView!=NULL)
-    {
-      graphicView->deleteEntity(e);
-      graphicView->drawEntity(e);
-    }
-  }
-  */
+
   graphicView->redraw();
 }
 

@@ -217,6 +217,9 @@ void RS_Spline::update()
     maxV = RS_Vector::maximum(prev, maxV);
   }
 
+  setStartpoint(RS_Vector(p[1], p[2]));
+  setEndpoint(RS_Vector(p[3*p1-2], p[3*p1-1]));
+
   delete[] b;
   delete[] h;
   delete[] p;
@@ -420,7 +423,7 @@ void RS_Spline::draw(RS_Painter* painter, RS_GraphicView* view) {
    if (painter==NULL || view==NULL) {
        return;
    }
- 
+
    / *
       if (data.controlPoints.count()>0) {
           RS_Vector prev(false);
@@ -434,41 +437,41 @@ void RS_Spline::draw(RS_Painter* painter, RS_GraphicView* view) {
           }
       }
    * /
- 
+
    int i;
    int npts = data.controlPoints.count();
    // order:
    int k = 4;
    // resolution:
    int p1 = 100;
- 
+
    double* b = new double[npts*3+1];
    double* h = new double[npts+1];
    double* p = new double[p1*3+1];
- 
+
    RS_ValueList<RS_Vector>::iterator it;
    i = 1;
    for (it = data.controlPoints.begin(); it!=data.controlPoints.end(); ++it) {
        b[i] = (*it).x;
        b[i+1] = (*it).y;
        b[i+2] = 0.0;
- 
+
     RS_DEBUG->print("RS_Spline::draw: b[%d]: %f/%f", i, b[i], b[i+1]);
     i+=3;
    }
- 
+
    // set all homogeneous weighting factors to 1.0
    for (i=1; i <= npts; i++) {
        h[i] = 1.0;
    }
- 
+
    //
    for (i = 1; i <= 3*p1; i++) {
        p[i] = 0.0;
    }
- 
+
    rbspline(npts,k,p1,b,h,p);
- 
+
    RS_Vector prev(false);
    for (i = 1; i <= 3*p1; i=i+3) {
        if (prev.valid) {

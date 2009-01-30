@@ -52,8 +52,6 @@ void RS_ActionSelectContour::trigger()
 {
   if (en!=NULL)
   {
-    if (en->isAtomic())
-    {
       RS_Selection s(*container, graphicView);
       s.selectContour(en, point);
 
@@ -61,15 +59,6 @@ void RS_ActionSelectContour::trigger()
       {
         RS_DIALOGFACTORY->updateSelectionWidget(container->countSelected());
       }
-    }
-    else
-    {
-      if (RS_DIALOGFACTORY!=NULL)
-      {
-        RS_DIALOGFACTORY->commandMessage(
-          tr("Entity must be an Atomic Entity."));
-      }
-    }
   }
   else
   {

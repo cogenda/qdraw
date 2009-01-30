@@ -63,6 +63,8 @@ public:
   bool closed;
   /** Control points of the spline. */
   RS_ValueList<RS_Vector> controlPoints;
+  RS_Vector startpoint;
+  RS_Vector endpoint;
 };
 
 
@@ -193,23 +195,23 @@ public:
                                           double* dist = NULL);
 
   /** @return Start point of the entity */
-  //virtual RS_Vector getStartpoint() const {
-  //    return data.startpoint;
-  //}
+  virtual RS_Vector getStartpoint() const {
+      return data.startpoint;
+  }
   /** @return End point of the entity */
-  //virtual RS_Vector getEndpoint() const {
-  //    return data.endpoint;
-  //}
+  virtual RS_Vector getEndpoint() const {
+      return data.endpoint;
+  }
   /** Sets the startpoint */
-  //void setStartpoint(RS_Vector s) {
-  //    data.startpoint = s;
-  //    calculateBorders();
-  //}
+  void setStartpoint(RS_Vector s) {
+      data.startpoint = s;
+      calculateBorders();
+  }
   /** Sets the endpoint */
-  //void setEndpoint(RS_Vector e) {
-  //    data.endpoint = e;
-  //    calculateBorders();
-  //}
+  void setEndpoint(RS_Vector e) {
+      data.endpoint = e;
+      calculateBorders();
+  }
 
   void update();
 
