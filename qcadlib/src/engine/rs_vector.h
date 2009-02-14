@@ -58,6 +58,8 @@ public:
 
   bool isInWindow(const RS_Vector& firstCorner, const RS_Vector& secondCorner);
 
+  RS_Vector unit();
+
   RS_Vector move(RS_Vector offset);
   RS_Vector rotate(double ang);
   RS_Vector rotate(RS_Vector center, double ang);

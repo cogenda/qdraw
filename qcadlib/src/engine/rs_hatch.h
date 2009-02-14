@@ -51,7 +51,7 @@ public:
                double scale,
                double angle,
                const RS_String& pattern
-	       )
+           )
   :hole(false),  area_control(-1), material("")
   {
     this->solid = solid;
@@ -71,10 +71,10 @@ public:
                double scale,
                double angle,
                const RS_String& pattern,
-	       const RS_String& label,
+           const RS_String& label,
                const RS_String& material,
-	       double area_control
-	       )
+           double area_control
+           )
   :hole(false)
   {
     this->solid = solid;
@@ -88,7 +88,7 @@ public:
 
   friend std::ostream& operator << (std::ostream& os, const RS_HatchData& hatch_data)
   {
-    os << "(material:" << hatch_data.material << ")" << std::endl;
+    os << "(material:" << hatch_data.material.ascii() << ")" << std::endl;
     return os;
   }
 
@@ -163,7 +163,7 @@ public:
     data.area_control = sec.toDouble();
   }
 
-  /**	@return RS2::EntityHatch */
+  /**   @return RS2::EntityHatch */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityHatch;

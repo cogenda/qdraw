@@ -288,7 +288,7 @@ QuadTree * MeshGenerator::build_quadtree()
 
     std::map<const RS_Vector *, double>::iterator it=quadtree_points.begin();
     for(; it!=quadtree_points.end(); ++it)
-      _pslg->add_aux_point(*(*it).first, 1e-4, (*it).second/3.0);
+      _pslg->add_aux_point(*(*it).first, (*it).second/3.0, (*it).second/3.0);
   }
 
   return quadtree;

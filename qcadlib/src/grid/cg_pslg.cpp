@@ -386,13 +386,15 @@ bool CG_PSLG::add_aux_point(const RS_Vector &v, double point_dist, double segmen
   {
     RS_Vector p1 = _points[_segments[n].p1];
     RS_Vector p2 = _points[_segments[n].p2];
-    double d1 = (p1-v).magnitude();
-    double d2 = (p2-v).magnitude();
-    double d3 = (p1-p2).magnitude();
-    double d=0.5*(d1+d2+d3);
-    double area = sqrt(d*(d-d1)*(d-d2)*(d-d3));
-    double dist = 2*area/d3;
-    if(dist<segment_dist) return false;
+
+    double dist = fabs(RS_Vector::crossP((p2-p1).unit(), v-p1).z);
+    RS_Vector project = p1+(p2-p1).unit()*RS_Vector::dotP((p2-p1).unit(), v-p1);
+    bool in_p1p2 = ((project-p1).magnitude() + (project-p2).magnitude() - (p1-p2).magnitude()) < 1e-4;
+
+    if(dist<segment_dist && in_p1p2)
+    {
+      return false;
+    }
   }
 
   _aux_points.push_back(v);

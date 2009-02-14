@@ -245,6 +245,9 @@ bool RS_Vector::isInWindow(const RS_Vector& firstCorner,
 }
 
 
+RS_Vector RS_Vector::unit()
+{ return *this/magnitude(); }
+
 
 /**
  * Moves this vector by the given offset. Equal to the operator +=.
@@ -321,7 +324,7 @@ RS_Vector RS_Vector::mirror(RS_Vector axisPoint1, RS_Vector axisPoint2)
 {
   /*
   RS_ConstructionLine axis(NULL,
-  	RS_ConstructionLineData(axisPoint1, axisPoint2));
+    RS_ConstructionLineData(axisPoint1, axisPoint2));
 
   RS_Vector xp = axis.getNearestPointOnEntity(*this);
   xp = xp - (*this);
