@@ -25,6 +25,7 @@
 #include "rs_string.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
+#include "rs_dialogfactory.h"
 #include "rs_mesh.h"
 #include "cg_meshgen.h"
 #include "cg_quadtree.h"
@@ -49,6 +50,7 @@ void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
   triangulateio_init();
 
   //create PSLG
+  RS_DIALOGFACTORY->commandMessage(("Create Planar Straight Line Graph (PSLG) by meshable entities on current layer..."));
   _pslg = new CG_PSLG(_gv->getGraphic());
 
   std::vector<RS_Vector> &  _points       = _pslg->get_points();
@@ -65,7 +67,10 @@ void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
 
   QuadTree * quadtree = NULL;
   if(enable_quadtree)
+  {
+    RS_DIALOGFACTORY->commandMessage(("Create QuadTree on PSLG..."));
     quadtree = build_quadtree();
+  }
 
   //set point
   in.numberofpoints = _points.size() + _aux_points.size();
@@ -135,8 +140,11 @@ void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
   }
 
   // call Triangle here
+  RS_DIALOGFACTORY->commandMessage(("Do Delaunay Triangulation..."));
   triangulate(cmd.ascii(), &in, &out, (struct triangulateio *) NULL);
 
+
+  RS_DIALOGFACTORY->commandMessage(("Draw mesh entity on new layer..."));
   create_new_mesh_layer();
   RS_Mesh* mesh =  new RS_Mesh(_doc);
 
@@ -151,6 +159,8 @@ void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
   _gv->drawEntity(mesh);
 
   triangulateio_finalize();
+
+  RS_DIALOGFACTORY->commandMessage(("Mesh generation finished."));
 }
 
 
@@ -312,6 +322,8 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
   // refine by quadtree
   if(enable_quadtree && mesh->get_quadtree())
   {
+    RS_DIALOGFACTORY->commandMessage(("Refine existing mesh by QuadTree method..."));
+
     QuadTree * quadtree = mesh->get_quadtree();
 
     std::vector<RS_Vector> &  _points       = _pslg->get_points();
@@ -470,10 +482,13 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
     // replace 'r' to 'A'
     QString tri_cmd = cmd;
     tri_cmd.replace(tri_cmd.find('r'),1,'A');
+
+    RS_DIALOGFACTORY->commandMessage(("Create refined mesh..."));
     triangulate(tri_cmd.ascii(), &in, &out, (struct triangulateio *) NULL);
   }
   else // refine by delaunay
   {
+    RS_DIALOGFACTORY->commandMessage(("Refine existing mesh by Delaunay method..."));
     mesh->set_refine_flag(max_d, signed_log);
     triangulateio & mesh_in = mesh->get_triangulateio();
     triangulate(cmd.ascii(), &mesh_in, &out, (struct triangulateio *) NULL);
@@ -484,10 +499,13 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
   mesh->clear();
   triangulateio_copy(out, mesh->get_triangulateio());
 
+  RS_DIALOGFACTORY->commandMessage(("Draw mesh entity..."));
   mesh->update();
   _gv->drawEntity(mesh);
 
   triangulateio_finalize();
+
+  RS_DIALOGFACTORY->commandMessage(("Mesh refinement finished."));
 }
 
 
