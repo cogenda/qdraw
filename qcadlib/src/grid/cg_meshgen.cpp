@@ -70,6 +70,7 @@ void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
   {
     RS_DIALOGFACTORY->commandMessage(("Create QuadTree on PSLG..."));
     quadtree = build_quadtree();
+    quadtree->export_quadtree("aa.vtk"); 
   }
 
   //set point
