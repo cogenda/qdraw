@@ -70,7 +70,7 @@ void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
   {
     RS_DIALOGFACTORY->commandMessage(("Create QuadTree on PSLG..."));
     quadtree = build_quadtree();
-    quadtree->export_quadtree("aa.vtk"); 
+    //quadtree->export_quadtree("aa.vtk");
   }
 
   //set point
@@ -237,17 +237,19 @@ QuadTree * MeshGenerator::build_quadtree()
         if(this_leaf->area()>_regions[this_leaf->region()].area_control)
           this_leaf_should_be_divide = true;
         break;
-      case QuadTreeNodeData::OUT_REGION :
-        break;
+      case QuadTreeNodeData::OUT_REGION :  break;
+      case QuadTreeNodeData::COVER_REGION :
       case QuadTreeNodeData::INTERSECTION_REGION :
       case QuadTreeNodeData::REGION_INTERSECTION_UNKNOW :
         {
-
+          //set initial flag to unknow
+          this_leaf->region_intersection_flag() = QuadTreeNodeData::REGION_INTERSECTION_UNKNOW;
           for(unsigned int n=0; n<_regions.size(); ++n)
           {
             switch(quadtree->region_intersection(this_leaf, _regions[n].contour_points))
             {
-            case QuadTreeNodeData::OUT_REGION : break;
+            case QuadTreeNodeData::OUT_REGION :
+              break;
             case QuadTreeNodeData::IN_REGION  :
               {
                 this_leaf->region_intersection_flag() = QuadTreeNodeData::IN_REGION;
@@ -263,9 +265,23 @@ QuadTree * MeshGenerator::build_quadtree()
                   this_leaf_should_be_divide = true;
                 break;
               }
+            case QuadTreeNodeData::COVER_REGION  :
+              {
+                this_leaf->region_intersection_flag() = QuadTreeNodeData::COVER_REGION;
+                this_leaf_should_be_divide = true;
+                break;
+              }
             default: break;
             }
+
+            if(this_leaf->region_intersection_flag() == QuadTreeNodeData::IN_REGION) break;
+            if(this_leaf->region_intersection_flag() == QuadTreeNodeData::COVER_REGION) break;
           }
+
+          // if still REGION_INTERSECTION_UNKNOW, mark it to OUT_REGION
+          if(this_leaf->region_intersection_flag() == QuadTreeNodeData::REGION_INTERSECTION_UNKNOW)
+            this_leaf->region_intersection_flag() = QuadTreeNodeData::OUT_REGION;
+
         }
         break;
       }
@@ -362,15 +378,17 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
       {
         // check region constrain
         if(leaf_it->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION ||
-           leaf_it->region_intersection_flag()==QuadTreeNodeData::REGION_INTERSECTION_UNKNOW)
+            leaf_it->region_intersection_flag()==QuadTreeNodeData::REGION_INTERSECTION_UNKNOW)
         {
+
+          leaf_it->region_intersection_flag()=QuadTreeNodeData::REGION_INTERSECTION_UNKNOW;
+
           for(unsigned int n=0; n<_regions.size(); ++n)
           {
             switch(quadtree->region_intersection(leaf_it, _regions[n].contour_points))
             {
             case QuadTreeNodeData::OUT_REGION :
               {
-                leaf_it->region_intersection_flag() = QuadTreeNodeData::OUT_REGION;
                 break;
               }
             case QuadTreeNodeData::IN_REGION  :
@@ -386,7 +404,13 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
               }
             default: break;
             }
+
+            if(leaf_it->region_intersection_flag() == QuadTreeNodeData::IN_REGION) break;
           }
+
+          // if still REGION_INTERSECTION_UNKNOW, mark it to OUT_REGION
+          if(leaf_it->region_intersection_flag() == QuadTreeNodeData::REGION_INTERSECTION_UNKNOW)
+            leaf_it->region_intersection_flag() = QuadTreeNodeData::OUT_REGION;
         }
       }
 
@@ -400,12 +424,12 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
       QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
       for(; leaf_it != quadtree->end_leaf(); ++leaf_it)
         if(leaf_it->region_intersection_flag()==QuadTreeNodeData::IN_REGION)
-      {
-        quadtree_points.insert(std::make_pair(leaf_it->tl(), leaf_it->char_length()));
-        quadtree_points.insert(std::make_pair(leaf_it->tr(), leaf_it->char_length()));
-        quadtree_points.insert(std::make_pair(leaf_it->br(), leaf_it->char_length()));
-        quadtree_points.insert(std::make_pair(leaf_it->bl(), leaf_it->char_length()));
-      }
+        {
+          quadtree_points.insert(std::make_pair(leaf_it->tl(), leaf_it->char_length()));
+          quadtree_points.insert(std::make_pair(leaf_it->tr(), leaf_it->char_length()));
+          quadtree_points.insert(std::make_pair(leaf_it->br(), leaf_it->char_length()));
+          quadtree_points.insert(std::make_pair(leaf_it->bl(), leaf_it->char_length()));
+        }
 
       std::map<const RS_Vector *, double>::iterator it=quadtree_points.begin();
       for(; it!=quadtree_points.end(); ++it)

@@ -84,7 +84,7 @@ private:
 class QuadTreeNodeData
 {
 public:
-  enum REGION_INTERSECTION_FLAG{IN_REGION, OUT_REGION, INTERSECTION_REGION, REGION_INTERSECTION_UNKNOW };
+  enum REGION_INTERSECTION_FLAG{IN_REGION, OUT_REGION, COVER_REGION, INTERSECTION_REGION, REGION_INTERSECTION_UNKNOW };
   enum LINE_INTERSECTION_FLAG{HAS_INTERSECTION, NO_INTERSECTION, LINE_INTERSECTION_UNKNOW};
 
   QuadTreeNodeData(const RS_Vector *tl, const RS_Vector *tr,
@@ -107,6 +107,7 @@ public:
     _location = other._location;
     _divide_flag = other._divide_flag;
     _area_constrain_ok = other._area_constrain_ok;
+    _region = other._region;
     _region_intersection_flag = other._region_intersection_flag;
     _line_intersection_flag = other._line_intersection_flag;
   }

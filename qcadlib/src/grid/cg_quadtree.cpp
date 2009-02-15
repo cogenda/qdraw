@@ -235,8 +235,13 @@ QuadTreeNodeData::REGION_INTERSECTION_FLAG QuadTree::region_intersection(const i
 
   if(intersect_num) return QuadTreeNodeData::INTERSECTION_REGION;
 
-  if(contour.has_point(Point(leaf_center.x, leaf_center.y)))
+  // no intersection point?
+  if(contour.has_point(Point(_p_bl->x, _p_bl->y)))
     return QuadTreeNodeData::IN_REGION;
+
+  if(leaf.has_point(Point(region_contour[0].x, region_contour[0].y)))
+    return QuadTreeNodeData::COVER_REGION;
+
   return QuadTreeNodeData::OUT_REGION;
 }
 
@@ -320,10 +325,17 @@ void QuadTree::export_quadtree(char * filename)
   fout << "LOOKUP_TABLE default"    <<'\n';
   for(leaf_it = begin_leaf(); leaf_it != end_leaf(); ++leaf_it)
   {
-    fout << static_cast<int>(leaf_it->divide_flag())<<'\n';
+    fout << static_cast<int>(leaf_it->region())<<'\n';
   }
   fout<<std::endl;
 
+  fout << "SCALARS region_flag float 1"  <<'\n';
+  fout << "LOOKUP_TABLE default"    <<'\n';
+  for(leaf_it = begin_leaf(); leaf_it != end_leaf(); ++leaf_it)
+  {
+	  fout << static_cast<int>(leaf_it->region_intersection_flag())<<'\n';
+  }
+  fout<<std::endl;
 
   fout.close();
 
