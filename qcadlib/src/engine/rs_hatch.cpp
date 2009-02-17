@@ -136,6 +136,7 @@ void RS_Hatch::update()
   RS_DEBUG->print("RS_Hatch::update: contour has %d loops", count());
 
   findInternalPoint();
+  detectHole();
 
 #if QT_VERSION>=0x030000
   if (updateRunning)
@@ -570,6 +571,8 @@ bool RS_Hatch::hasIntersectionWithLine(RS_Entity* line)
 }
 
 
+
+
 void RS_Hatch::findInternalPoint()
 {
   if(!isVisible()) return;
@@ -870,6 +873,32 @@ void RS_Hatch::draw(RS_Painter* painter, RS_GraphicView* view,
   painter->drawPolygon(pa);
 #endif
 
+}
+
+
+
+
+bool RS_Hatch::detectHole()
+{
+  unsigned int n_contours=0;
+  unsigned int n_contours_in_loop=0;
+
+  for (RS_Entity* l=firstEntity(RS2::ResolveNone);
+       l!=NULL;
+       l=nextEntity(RS2::ResolveNone))
+  {
+
+    if (l->rtti()==RS2::EntityContainer)
+    {
+      RS_EntityContainer* loop = (RS_EntityContainer*)l;
+      loop->optimizeContours(&n_contours_in_loop);
+      n_contours += n_contours_in_loop;
+    }
+  }
+  needOptimization = false;
+
+  hasHoleInHatch = n_contours>1;
+  return hasHoleInHatch;
 }
 
 

@@ -27,6 +27,9 @@
 #include "tree.h"
 #include "rs_vector.h"
 
+
+class CG_Region;
+
 enum Location{T, B, R, L, ROOT};
 
 
@@ -165,6 +168,11 @@ public:
   bool is_area_constrain_satisfied() const
     { return _area_constrain_ok; }
 
+  bool has_point(const RS_Vector & point) const
+  {
+    return (point.x>=_p_tl->x  && point.x<=_p_tr->x && point.y>=_p_bl->y  && point.y<=_p_tl->y);
+  }
+
   /**
    * read/write region info
    */
@@ -278,10 +286,15 @@ public:
   bool is_line_intersection(const iterator_base & it, const RS_Vector &p1, const RS_Vector &p2 );
 
   /**
-   * @return true if a region intersection with tree node
+   * @return true if a region intersection with tree node. if the region has no hole in it,
+   * call next function can be faster
    */
-  QuadTreeNodeData::REGION_INTERSECTION_FLAG region_intersection(const iterator_base & it,
-      const std::vector<RS_Vector > & region_contour );
+  QuadTreeNodeData::REGION_INTERSECTION_FLAG region_intersection(const iterator_base & it,  const CG_Region & region_contour );
+
+  /**
+   * @return true if a region intersection with tree node. the region should be a polygon without hole.
+   */
+  QuadTreeNodeData::REGION_INTERSECTION_FLAG region_intersection(const iterator_base & it,  const std::vector<RS_Vector > & region_contour );
 
   /**
    * write quadtree mesh in vtk format

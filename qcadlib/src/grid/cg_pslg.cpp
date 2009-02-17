@@ -261,6 +261,7 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
             region.area_control = data.area_control > 0? data.area_control : RS_MAXDOUBLE;
             region.label = data.label;
             region.material = data.material;
+            region.hatch = hatch;
 
             for (RS_Entity* c = hatch->firstEntity(RS2::ResolveAll);
                  c!=NULL;

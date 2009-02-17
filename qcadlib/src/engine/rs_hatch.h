@@ -199,6 +199,8 @@ public:
 
   bool validate();
 
+  bool detectHole();
+
   int countLoops();
 
   /** @return true if this is a solid fill. false if it is a pattern hatch. */
@@ -243,6 +245,7 @@ public:
   void activateContour(bool on);
   void findInternalPoint();
   bool hasIntersectionWithLine(RS_Entity* line);
+  bool hasHole() {return hasHoleInHatch;}
 
   virtual void draw(RS_Painter* painter, RS_GraphicView* view,
                     double patternOffset=0.0);
@@ -272,6 +275,7 @@ protected:
   RS_EntityContainer* hatch;
   bool updateRunning;
   bool needOptimization;
+  bool hasHoleInHatch;
 };
 
 #endif

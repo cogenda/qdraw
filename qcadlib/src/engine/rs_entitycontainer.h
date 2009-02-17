@@ -114,7 +114,7 @@ public:
   RS_PtrListIterator<RS_Entity> createIterator();
 
   //virtual unsigned long int count() {
-  //	return count(false);
+  //    return count(false);
   //}
   virtual bool isEmpty()
   {
@@ -175,7 +175,7 @@ public:
                                     RS2::ResolveLevel level=RS2::ResolveNone,
                                     double solidDist = RS_MAXDOUBLE);
 
-  virtual bool optimizeContours();
+  virtual bool optimizeContours(unsigned int * n_loops=NULL);
 
   virtual bool hasEndpointsWithinWindow(RS_Vector v1, RS_Vector v2);
 

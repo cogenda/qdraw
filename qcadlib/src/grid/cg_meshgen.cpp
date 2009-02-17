@@ -70,7 +70,7 @@ void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
   {
     RS_DIALOGFACTORY->commandMessage(("Create QuadTree on PSLG..."));
     quadtree = build_quadtree();
-    //quadtree->export_quadtree("aa.vtk");
+    quadtree->export_quadtree("aa.vtk");
   }
 
   //set point
@@ -246,7 +246,7 @@ QuadTree * MeshGenerator::build_quadtree()
           this_leaf->region_intersection_flag() = QuadTreeNodeData::REGION_INTERSECTION_UNKNOW;
           for(unsigned int n=0; n<_regions.size(); ++n)
           {
-            switch(quadtree->region_intersection(this_leaf, _regions[n].contour_points))
+            switch(quadtree->region_intersection(this_leaf, _regions[n]))
             {
             case QuadTreeNodeData::OUT_REGION :
               break;

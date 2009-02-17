@@ -26,6 +26,7 @@
 
 #include "rs_vector.h"
 #include "rs_string.h"
+#include "rs_hatch.h"
 
 class RS_Graphic;
 
@@ -50,6 +51,7 @@ struct CG_Region
   double area_control;
   RS_String label;
   RS_String material;
+  RS_Hatch * hatch;
   std::vector<RS_Vector> contour_points;
   void add_point(const RS_Vector &p)
   {

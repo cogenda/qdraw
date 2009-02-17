@@ -174,7 +174,7 @@ void RS_EntityContainer::undoStateChanged(bool undone)
   /*for (RS_Entity* e=firstEntity(RS2::ResolveNone);
           e!=NULL;
           e=nextEntity(RS2::ResolveNone)) {
-  	e->setUndoState(undone);
+    e->setUndoState(undone);
   }*/
 }
 
@@ -1491,7 +1491,7 @@ RS_Entity* RS_EntityContainer::getNearestEntity(const RS_Vector& coord,
  * @retval true all contours were closed
  * @retval false at least one contour is not closed
  */
-bool RS_EntityContainer::optimizeContours()
+bool RS_EntityContainer::optimizeContours(unsigned int * n_loops)
 {
 
   RS_DEBUG->print("RS_EntityContainer::optimizeContours");
@@ -1502,6 +1502,8 @@ bool RS_EntityContainer::optimizeContours()
 
   bool changed = false;
   bool closed = true;
+
+  if(n_loops) *n_loops = 0;
 
   for (uint ci=0; ci<count(); ++ci)
   {
@@ -1572,6 +1574,13 @@ bool RS_EntityContainer::optimizeContours()
       if (current.distanceTo(start)>1.0e-4)
       {
         closed = false;
+      }
+      else
+      {
+
+        if(n_loops) *n_loops++;
+
+        std::cout<<*n_loops<<std::endl;
       }
     }
   }

@@ -23,7 +23,10 @@
 
 #include  "poly.h"
 #include  "nclip.h"
+#include  "cg_pslg.h"
 #include  "cg_quadtree.h"
+#include  "rs_information.h"
+
 
 std::ostream& operator << (std::ostream& os, const QuadTreeNodeData& data)
 {
@@ -220,30 +223,94 @@ QuadTreeNodeData::REGION_INTERSECTION_FLAG QuadTree::region_intersection(const i
   const RS_Vector * _p_br = it->br();
   const RS_Vector * _p_bl = it->bl();
 
-  Poly leaf(Point(_p_bl->x, _p_bl->y));
-  leaf.add(Point(_p_br->x, _p_br->y));
-  leaf.add(Point(_p_tr->x, _p_tr->y));
-  leaf.add(Point(_p_tl->x, _p_tl->y));
+  //for rubset reasion
+  double eps = (*_p_tr - * _p_tl).x/100;
 
-  RS_Vector leaf_center = (*_p_bl + *_p_tr)/2;
+  Poly leaf(Point(_p_bl->x, _p_bl->y));
+  leaf.add (Point(_p_br->x, _p_br->y));
+  leaf.add (Point(_p_tr->x, _p_tr->y));
+  leaf.add (Point(_p_tl->x, _p_tl->y));
+
+  Poly leaf_large(Point(_p_bl->x-eps, _p_bl->y-eps));
+  leaf_large.add (Point(_p_br->x+eps, _p_br->y-eps));
+  leaf_large.add (Point(_p_tr->x+eps, _p_tr->y+eps));
+  leaf_large.add (Point(_p_tl->x-eps, _p_tl->y+eps));
 
   Poly contour(Point(region_contour[0].x, region_contour[0].y));
   for(unsigned int n=1; n<region_contour.size(); ++n)
     contour.add(Point(region_contour[n].x, region_contour[n].y));
 
-  int intersect_num = intersect( leaf, contour );
-
-  if(intersect_num) return QuadTreeNodeData::INTERSECTION_REGION;
+  if(intersect(leaf_large, contour))
+  {
+    return QuadTreeNodeData::INTERSECTION_REGION;
+  }
 
   // no intersection point?
-  if(contour.has_point(Point(_p_bl->x, _p_bl->y)))
+  if(contour.has_point(Point(_p_bl->x, _p_bl->y)) && contour.has_point(Point(_p_tr->x, _p_tr->y)))
+  {
+    assert(fabs(contour.area()) >= leaf.area());
     return QuadTreeNodeData::IN_REGION;
+  }
 
-  if(leaf.has_point(Point(region_contour[0].x, region_contour[0].y)))
+  if(leaf_large.has_point(Point(region_contour[0].x, region_contour[0].y)))
+  {
+    assert(leaf.area() >= fabs(contour.area()));
     return QuadTreeNodeData::COVER_REGION;
+  }
 
   return QuadTreeNodeData::OUT_REGION;
 }
+
+
+QuadTreeNodeData::REGION_INTERSECTION_FLAG QuadTree::region_intersection(const iterator_base & it,  const CG_Region & region )
+{
+  RS_Hatch * hatch = region.hatch;
+  if(!hatch->hasHole()) return region_intersection(it,  region.contour_points );
+
+  const RS_Vector * _p_tr = it->tr();
+  const RS_Vector * _p_tl = it->tl();
+  const RS_Vector * _p_br = it->br();
+  const RS_Vector * _p_bl = it->bl();
+
+  unsigned int n_point_in_region = 0;
+  bool has_point_on_region=false;
+
+  {
+    bool this_point_on_hatch;
+
+    n_point_in_region += RS_Information::isPointInsideContour(*_p_tr,  hatch, &this_point_on_hatch);
+    if(this_point_on_hatch) has_point_on_region=true;
+
+    n_point_in_region += RS_Information::isPointInsideContour(*_p_tl,  hatch, &this_point_on_hatch);
+    if(this_point_on_hatch) has_point_on_region=true;
+
+    n_point_in_region += RS_Information::isPointInsideContour(*_p_br,  hatch, &this_point_on_hatch);
+    if(this_point_on_hatch) has_point_on_region=true;
+
+    n_point_in_region += RS_Information::isPointInsideContour(*_p_bl,  hatch, &this_point_on_hatch);
+    if(this_point_on_hatch) has_point_on_region=true;
+  }
+
+  if(n_point_in_region==4)
+  {
+    if(has_point_on_region==false)
+      return QuadTreeNodeData::IN_REGION;
+    else return QuadTreeNodeData::INTERSECTION_REGION;
+  }
+
+  if(n_point_in_region>0 && n_point_in_region<4)
+    return QuadTreeNodeData::INTERSECTION_REGION;
+
+  if(n_point_in_region==0)
+  {
+    if(it->has_point(hatch->getData().internal_point))
+      return  QuadTreeNodeData::COVER_REGION;
+    else return QuadTreeNodeData::OUT_REGION;
+  }
+
+  return QuadTreeNodeData::OUT_REGION;
+}
+
 
 
 void QuadTree::print_path(const iterator_base & it) const
@@ -333,7 +400,7 @@ void QuadTree::export_quadtree(char * filename)
   fout << "LOOKUP_TABLE default"    <<'\n';
   for(leaf_it = begin_leaf(); leaf_it != end_leaf(); ++leaf_it)
   {
-	  fout << static_cast<int>(leaf_it->region_intersection_flag())<<'\n';
+    fout << static_cast<int>(leaf_it->region_intersection_flag())<<'\n';
   }
   fout<<std::endl;
 
