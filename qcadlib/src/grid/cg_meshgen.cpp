@@ -385,7 +385,7 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
 
           for(unsigned int n=0; n<_regions.size(); ++n)
           {
-            switch(quadtree->region_intersection(leaf_it, _regions[n].contour_points))
+            switch(quadtree->region_intersection(leaf_it, _regions[n]))
             {
             case QuadTreeNodeData::OUT_REGION :
               {
