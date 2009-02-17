@@ -40,7 +40,7 @@ public:
   /**
    * Default constructor. Leaves the data object uninitialized.
    */
-  RS_HatchData():area_control(-1), material("")  {}
+  RS_HatchData():hole(false), area_control(-1), material("")  {}
 
   /**
    * @param solid true: solid fill, false: pattern.
@@ -51,8 +51,8 @@ public:
                double scale,
                double angle,
                const RS_String& pattern
-           )
-  :hole(false),  area_control(-1), material("")
+              )
+      :hole(false),  area_control(-1), material("")
   {
     this->solid = solid;
     this->scale = scale;
@@ -71,11 +71,11 @@ public:
                double scale,
                double angle,
                const RS_String& pattern,
-           const RS_String& label,
+               const RS_String& label,
                const RS_String& material,
-           double area_control
-           )
-  :hole(false)
+               double area_control
+              )
+      :hole(false)
   {
     this->solid = solid;
     this->scale = scale;
@@ -134,10 +134,10 @@ public:
   virtual RS_String get_ext_info() const
   {
     RS_String ext_info = "ext: "
-        + label + ' '
-        + data.material + ' '
-        + RS_String::number(data.hole) + ' '
-        + RS_String::number(data.area_control);
+                         + label + ' '
+                         + data.material + ' '
+                         + RS_String::number(data.hole) + ' '
+                         + RS_String::number(data.area_control);
     return ext_info;
   }
 
@@ -244,7 +244,17 @@ public:
   void update();
   void activateContour(bool on);
   void findInternalPoint();
+
+  /**
+   * @return true if edge intersect with at least one contour element of the hatch
+   */
+  bool hasIntersectionWithEdge(RS_Entity* line);
+
+  /**
+   * @return true if line intersect with the hatch
+   */
   bool hasIntersectionWithLine(RS_Entity* line);
+
   bool hasHole() {return hasHoleInHatch;}
 
   virtual void draw(RS_Painter* painter, RS_GraphicView* view,

@@ -1577,10 +1577,7 @@ bool RS_EntityContainer::optimizeContours(unsigned int * n_loops)
       }
       else
       {
-
-        if(n_loops) *n_loops++;
-
-        std::cout<<*n_loops<<std::endl;
+        if(n_loops) (*n_loops)++;
       }
     }
   }

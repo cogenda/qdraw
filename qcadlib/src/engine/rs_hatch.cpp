@@ -557,9 +557,21 @@ void RS_Hatch::activateContour(bool on)
 }
 
 
+bool RS_Hatch::hasIntersectionWithEdge(RS_Entity* line)
+{
+  for (RS_Entity* e=firstEntity(RS2::ResolveAll); e!=NULL; e = nextEntity(RS2::ResolveAll))
+  {
+    RS_VectorSolutions sol = RS_Information::getIntersection(line, e, true);
+    if(sol.getValidNumber()) return true;
+  }
+  return false;
+}
+
+
 bool RS_Hatch::hasIntersectionWithLine(RS_Entity* line)
 {
   unsigned int intersection_point = 0;
+
   for (RS_Entity* e = firstEntity(RS2::ResolveAll); e!=NULL; e = nextEntity(RS2::ResolveAll))
   {
     // intersection(s) from ray with contour entity:
@@ -876,8 +888,6 @@ void RS_Hatch::draw(RS_Painter* painter, RS_GraphicView* view,
 }
 
 
-
-
 bool RS_Hatch::detectHole()
 {
   unsigned int n_contours=0;
@@ -900,6 +910,7 @@ bool RS_Hatch::detectHole()
   hasHoleInHatch = n_contours>1;
   return hasHoleInHatch;
 }
+
 
 
 double RS_Hatch::getDistanceToPoint(

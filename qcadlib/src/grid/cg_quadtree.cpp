@@ -272,43 +272,70 @@ QuadTreeNodeData::REGION_INTERSECTION_FLAG QuadTree::region_intersection(const i
   const RS_Vector * _p_br = it->br();
   const RS_Vector * _p_bl = it->bl();
 
-  unsigned int n_point_in_region = 0;
-  bool has_point_on_region=false;
+  RS_Line line1(0, RS_LineData(*_p_bl, *_p_br));
+  if(hatch->hasIntersectionWithEdge(&line1)) return QuadTreeNodeData::INTERSECTION_REGION;
 
-  {
-    bool this_point_on_hatch;
+  RS_Line line2(0, RS_LineData(*_p_br, *_p_tr));
+  if(hatch->hasIntersectionWithEdge(&line2)) return QuadTreeNodeData::INTERSECTION_REGION;
 
-    n_point_in_region += RS_Information::isPointInsideContour(*_p_tr,  hatch, &this_point_on_hatch);
-    if(this_point_on_hatch) has_point_on_region=true;
+  RS_Line line3(0, RS_LineData(*_p_tl, *_p_tr));
+  if(hatch->hasIntersectionWithEdge(&line3)) return QuadTreeNodeData::INTERSECTION_REGION;
 
-    n_point_in_region += RS_Information::isPointInsideContour(*_p_tl,  hatch, &this_point_on_hatch);
-    if(this_point_on_hatch) has_point_on_region=true;
+  RS_Line line4(0, RS_LineData(*_p_bl, *_p_tl));
+  if(hatch->hasIntersectionWithEdge(&line4)) return QuadTreeNodeData::INTERSECTION_REGION;
 
-    n_point_in_region += RS_Information::isPointInsideContour(*_p_br,  hatch, &this_point_on_hatch);
-    if(this_point_on_hatch) has_point_on_region=true;
+  bool this_point_on_hatch;
+  if(RS_Information::isPointInsideContour(*_p_bl,  hatch, &this_point_on_hatch))
+    return QuadTreeNodeData::IN_REGION;
 
-    n_point_in_region += RS_Information::isPointInsideContour(*_p_bl,  hatch, &this_point_on_hatch);
-    if(this_point_on_hatch) has_point_on_region=true;
-  }
-
-  if(n_point_in_region==4)
-  {
-    if(has_point_on_region==false)
-      return QuadTreeNodeData::IN_REGION;
-    else return QuadTreeNodeData::INTERSECTION_REGION;
-  }
-
-  if(n_point_in_region>0 && n_point_in_region<4)
-    return QuadTreeNodeData::INTERSECTION_REGION;
-
-  if(n_point_in_region==0)
-  {
-    if(it->has_point(hatch->getData().internal_point))
-      return  QuadTreeNodeData::COVER_REGION;
-    else return QuadTreeNodeData::OUT_REGION;
-  }
-
+  if(it->has_point(hatch->getData().internal_point))
+    return  QuadTreeNodeData::COVER_REGION;
+  
   return QuadTreeNodeData::OUT_REGION;
+
+  /*
+    unsigned int n_point_in_region = 0;
+    bool has_point_on_region=false;
+   
+    {
+      bool this_point_on_hatch;
+   
+      n_point_in_region += RS_Information::isPointInsideContour(*_p_tr,  hatch, &this_point_on_hatch);
+      if(this_point_on_hatch) has_point_on_region=true;
+   
+      n_point_in_region += RS_Information::isPointInsideContour(*_p_tl,  hatch, &this_point_on_hatch);
+      if(this_point_on_hatch) has_point_on_region=true;
+   
+      n_point_in_region += RS_Information::isPointInsideContour(*_p_br,  hatch, &this_point_on_hatch);
+      if(this_point_on_hatch) has_point_on_region=true;
+   
+      n_point_in_region += RS_Information::isPointInsideContour(*_p_bl,  hatch, &this_point_on_hatch);
+      if(this_point_on_hatch) has_point_on_region=true;
+    }
+   
+  std::cout<<n_point_in_region<<std::endl;
+    if(has_point_on_region) 
+    {
+      std::cout<<"INTERSECTION_REGION"<<std::endl;
+      return QuadTreeNodeData::INTERSECTION_REGION;
+    }
+   
+    if(n_point_in_region==4)
+    {
+      return QuadTreeNodeData::IN_REGION;
+    }
+   
+    if(n_point_in_region==0)
+    {
+      if(it->has_point(hatch->getData().internal_point))
+        return  QuadTreeNodeData::COVER_REGION;
+      else return QuadTreeNodeData::OUT_REGION;
+    }
+   
+    if(n_point_in_region>0 && n_point_in_region<4)
+      return QuadTreeNodeData::INTERSECTION_REGION;
+  */
+
 }
 
 
