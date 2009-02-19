@@ -45,7 +45,7 @@ MeshGenerator::~MeshGenerator()
 
 
 
-void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
+void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree, bool fit_cv_boundary)
 {
   triangulateio_init();
 
@@ -144,6 +144,9 @@ void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree)
   RS_DIALOGFACTORY->commandMessage(("Do Delaunay Triangulation..."));
   triangulate(cmd.ascii(), &in, &out, (struct triangulateio *) NULL);
 
+  //try to fit curved boundary
+  if(fit_cv_boundary)
+    repair_mesh(out);
 
   RS_DIALOGFACTORY->commandMessage(("Draw mesh entity on new layer..."));
   create_new_mesh_layer();
@@ -323,7 +326,8 @@ QuadTree * MeshGenerator::build_quadtree()
 
 
 
-void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_log, bool enable_quadtree)
+void MeshGenerator::refine_mesh(const QString &cmd, double max_d,
+                                bool signed_log, bool enable_quadtree, bool fit_cv_boundary)
 {
   triangulateio_init();
 
@@ -519,6 +523,10 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
     triangulate(cmd.ascii(), &mesh_in, &out, (struct triangulateio *) NULL);
   }
 
+  //try to fit curved boundary
+  if(fit_cv_boundary)
+    repair_mesh(out);
+
   _gv->deleteEntity(mesh);
 
   mesh->clear();
@@ -535,8 +543,126 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d, bool signed_lo
 
 
 
+void MeshGenerator::repair_mesh(triangulateio &t)
+{
+  for(int i=0; i<t.numberofsegments; ++i)
+  {
+    int mark = t.segmentmarkerlist[i];
+    int ep1 = t.segmentlist[2*i];
+    int ep2 = t.segmentlist[2*i+1];
+    RS_Vector p1(t.pointlist[2*ep1], t.pointlist[2*ep1+1]);
+    RS_Vector p2(t.pointlist[2*ep2], t.pointlist[2*ep2+1]);
+    std::vector<RS_Entity *> entities = _pslg->get_entities_by_mark(mark);
+    for(unsigned int n=0; n<entities.size(); ++n)
+    {
+      RS_Entity * e = entities[n];
+      switch (e->rtti())
+      {
+      case RS2::EntityCircle :
+        {
+          RS_Circle * circle = (RS_Circle *)e;
+          double dist1, dist2;
+          RS_Vector mp1 = circle->getNearestPointOnEntity(p1, true, &dist1);
+          RS_Vector mp2 = circle->getNearestPointOnEntity(p2, true, &dist2);
+          //move p1, p2 to on entity point mp1, mp2
+          if(dist1<0.5*(p2-p1).magnitude() && dist2<0.5*(p2-p1).magnitude())
+          {
+            p1 = mp1;
+            p2 = mp2;
+          }
+        }
+        break;
+      case RS2::EntityEllipse :
+        {
+          RS_Ellipse * ellipse = (RS_Ellipse *)e;
+          double dist1, dist2;
+          RS_Vector mp1 = ellipse->getNearestPointOnEntity(p1, true, &dist1);
+          RS_Vector mp2 = ellipse->getNearestPointOnEntity(p2, true, &dist2);
+          //move p1, p2 to on entity point mp1, mp2
+          if(dist1<0.5*(p2-p1).magnitude() && dist2<0.5*(p2-p1).magnitude())
+          {
+            p1 = mp1;
+            p2 = mp2;
+          }
+        }
+        break;
+      case RS2::EntityArc:
+        {
+          RS_Arc * arc = (RS_Arc *)e;
+          double dist1, dist2;
+          RS_Vector mp1 = arc->getNearestPointOnEntity(p1, true, &dist1);
+          RS_Vector mp2 = arc->getNearestPointOnEntity(p2, true, &dist2);
+          //move p1, p2 to on entity point mp1, mp2
+          if(dist1<0.5*(p2-p1).magnitude() && dist2<0.5*(p2-p1).magnitude())
+          {
+            p1 = mp1;
+            p2 = mp2;
+          }
+        }
+        break;
+      case RS2::EntitySpline :
+        {
+          RS_Spline * spline = (RS_Spline *)e;
+          double dist1, dist2;
+          RS_Vector mp1 = spline->getNearestPointOnEntity(p1, true, &dist1);
+          RS_Vector mp2 = spline->getNearestPointOnEntity(p2, true, &dist2);
+          //move p1, p2 to on entity point mp1, mp2
+          if(dist1<0.5*(p2-p1).magnitude() && dist2<0.5*(p2-p1).magnitude())
+          {
+            p1 = mp1;
+            p2 = mp2;
+          }
+        }
+        break;
+      default: break;
+      }
+    }
+
+    //update mesh point location
+    t.pointlist[2*ep1] = p1.x;
+    t.pointlist[2*ep1+1]=p1.y;
+    t.pointlist[2*ep2]=p2.x;
+    t.pointlist[2*ep2+1]=p2.y;
+  }
 
 
+  //check if all the boundary points on entities
+  bool all_on_entity=true;
+  for(int i=0; i<t.numberofsegments; ++i)
+  {
+    int mark = t.segmentmarkerlist[i];
+    int ep1 = t.segmentlist[2*i];
+    int ep2 = t.segmentlist[2*i+1];
+    bool this_edge_on_entity=false;
+    RS_Vector p1(t.pointlist[2*ep1], t.pointlist[2*ep1+1]);
+    RS_Vector p2(t.pointlist[2*ep2], t.pointlist[2*ep2+1]);
+    std::vector<RS_Entity *> entities = _pslg->get_entities_by_mark(mark);
+    for(unsigned int n=0; n<entities.size(); ++n)
+    {
+      double dist1, dist2;
+      RS_Vector mp1 = entities[n]->getNearestPointOnEntity(p1, true, &dist1);
+      RS_Vector mp2 = entities[n]->getNearestPointOnEntity(p2, true, &dist2);
+      if(dist1<1e-6*(p2-p1).magnitude() && dist2<1e-6*(p2-p1).magnitude())
+      {
+        this_edge_on_entity = true;
+        break;
+      }
+    }
+    all_on_entity &= this_edge_on_entity;
+  }
+
+  if(!all_on_entity)
+  QMessageBox::warning(NULL, QObject::tr("Curved Boundary Fit"),
+                       QObject::tr("Still some boundary edges lie on the approximate "
+                           "polygon instead of curved boundary. <br>"
+                           "This usually won't affect later numerical simulation. <br>"
+                           "However, to get a perfet matched curved boundary, "
+                           "you may try to divide curved entities into more "
+                           "initial segments, and mesh again.<br>"
+                                  )
+                      );
+
+}
 
 
 

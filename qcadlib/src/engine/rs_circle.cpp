@@ -226,7 +226,7 @@ RS_Vector RS_Circle::getNearestPointOnEntity(const RS_Vector& coord,
 
   if (dist!=NULL)
   {
-    *dist = fabs((vec-data.center).magnitude()-data.radius);
+    *dist = fabs((coord-data.center).magnitude()-data.radius);
   }
 
   return vec;

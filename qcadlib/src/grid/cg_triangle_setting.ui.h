@@ -61,6 +61,7 @@ void TriangleSetting::SlotCmdString()
     RS_SETTINGS->writeEntry("/MaxDispersion", MaxDispersion->text());
     RS_SETTINGS->writeEntry("/DispersionWithSignedLog", SignedLog->isChecked());
   }
+  RS_SETTINGS->writeEntry("/CurvedBoundary", FitCurvedBoundary->isChecked());
   RS_SETTINGS->endGroup();
 
   this->accept();
@@ -99,6 +100,7 @@ void TriangleSetting::init_mesh( const QString & cmd )
   QString minimal_angle = RS_SETTINGS->readEntry("/MinimalAngle", "20");
   QString no_point_insert1 = RS_SETTINGS->readEntry("/NoPointInsert", "F");
   QString no_point_insert2 = RS_SETTINGS->readEntry("/NoPointInsertMore", "F");
+  QString curved_boundary = RS_SETTINGS->readEntry("/CurvedBoundary", "F");
   RS_SETTINGS->endGroup();
 
   AreaConstraint->setChecked(area=="T");
@@ -108,6 +110,7 @@ void TriangleSetting::init_mesh( const QString & cmd )
   MinimalAngleEdit->setText(minimal_angle);
   NoPointInsert->setChecked(no_point_insert1=="T");
   NoPointInsertMore->setChecked(no_point_insert2=="T");
+  FitCurvedBoundary->setChecked(curved_boundary =="T");
 }
 
 
@@ -129,6 +132,7 @@ void TriangleSetting::init_refine( const QString & cmd )
   QString no_point_insert2 = RS_SETTINGS->readEntry("/NoPointInsertMore", "F");
   QString max_dispersion = RS_SETTINGS->readEntry("/MaxDispersion", "3");
   QString signed_log = RS_SETTINGS->readEntry("/DispersionWithSignedLog", "T");
+  QString curved_boundary = RS_SETTINGS->readEntry("/CurvedBoundary", "F");
   RS_SETTINGS->endGroup();
   
   Quadtree->setChecked(quadtree=="T");
@@ -139,11 +143,17 @@ void TriangleSetting::init_refine( const QString & cmd )
   NoPointInsertMore->setChecked(no_point_insert2=="T");
   MaxDispersion->setText(max_dispersion);
   SignedLog->setChecked(signed_log=="T");
-
+  FitCurvedBoundary->setChecked(curved_boundary =="T");
 }
 
 
 bool TriangleSetting::enable_quadtree()
 {
  return Quadtree->isChecked();
+}
+
+
+bool TriangleSetting::enable_curved_boundary()
+{
+  return FitCurvedBoundary->isChecked();
 }

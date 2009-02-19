@@ -9,7 +9,7 @@
             <x>0</x>
             <y>0</y>
             <width>518</width>
-            <height>360</height>
+            <height>430</height>
         </rect>
     </property>
     <property name="caption">
@@ -263,6 +263,44 @@
                         </widget>
                     </grid>
                 </widget>
+                <widget class="QGroupBox">
+                    <property name="name">
+                        <cstring>groupBox5</cstring>
+                    </property>
+                    <property name="title">
+                        <string>Curved Boundary</string>
+                    </property>
+                    <grid>
+                        <property name="name">
+                            <cstring>unnamed</cstring>
+                        </property>
+                        <widget class="QCheckBox" row="0" column="0">
+                            <property name="name">
+                                <cstring>FitCurvedBoundary</cstring>
+                            </property>
+                            <property name="text">
+                                <string>Force to Fit Curved Boundary</string>
+                            </property>
+                        </widget>
+                        <spacer row="0" column="1">
+                            <property name="name">
+                                <cstring>spacer9_2</cstring>
+                            </property>
+                            <property name="orientation">
+                                <enum>Horizontal</enum>
+                            </property>
+                            <property name="sizeType">
+                                <enum>Expanding</enum>
+                            </property>
+                            <property name="sizeHint">
+                                <size>
+                                    <width>40</width>
+                                    <height>20</height>
+                                </size>
+                            </property>
+                        </spacer>
+                    </grid>
+                </widget>
                 <widget class="QLayoutWidget">
                     <property name="name">
                         <cstring>layout1</cstring>
@@ -294,6 +332,9 @@
                             </property>
                             <property name="text">
                                 <string>O&amp;K</string>
+                            </property>
+                            <property name="accel">
+                                <string>Alt+K</string>
                             </property>
                         </widget>
                         <spacer>
@@ -369,17 +410,18 @@
     <variable access="private">bool _quadtree;</variable>
 </variables>
 <slots>
-    <slot specifier="non virtual">SlotCmdString()</slot>
+    <slot>set_cmd_string( const QString &amp; cmd )</slot>
+    <slot>SlotCmdString()</slot>
+    <slot>init_mesh( const QString &amp; cmd )</slot>
+    <slot>init_refine( const QString &amp; cmd )</slot>
 </slots>
 <functions>
-    <function specifier="non virtual" returnType="const QString &amp;">get_cmd_string()</function>
-    <function specifier="non virtual">set_cmd_string( const QString &amp; cmd )</function>
+    <function returnType="const QString &amp;">get_cmd_string()</function>
     <function access="private" specifier="non virtual">init()</function>
-    <function specifier="non virtual" returnType="bool">measure_with_signed_log()</function>
-    <function specifier="non virtual" returnType="double">get_dispersion()</function>
-    <function specifier="non virtual">init_mesh( const QString &amp; cmd )</function>
-    <function specifier="non virtual">init_refine( const QString &amp; cmd )</function>
-    <function specifier="non virtual" returnType="bool">enable_quadtree()</function>
+    <function returnType="bool">measure_with_signed_log()</function>
+    <function returnType="double">get_dispersion()</function>
+    <function returnType="bool">enable_quadtree()</function>
+    <function returnType="bool">enable_curved_boundary()</function>
 </functions>
 <layoutdefaults spacing="6" margin="11"/>
 </UI>

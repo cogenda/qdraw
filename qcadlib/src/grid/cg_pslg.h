@@ -26,6 +26,7 @@
 
 #include "rs_vector.h"
 #include "rs_string.h"
+#include "rs_spline.h"
 #include "rs_hatch.h"
 
 class RS_Graphic;
@@ -102,6 +103,16 @@ public:
   RS_String get_segment_label(unsigned int s)
   { return _mark_to_label[s]; }
 
+  std::vector<RS_Entity *> get_entities_by_mark(int mark)
+  {
+    std::vector<RS_Entity *> entities;
+    typedef std::multimap<int, RS_Entity *>::iterator It;
+    std::pair<It, It> pos = _mark_to_entity.equal_range(mark);
+    for(It it=pos.first; it!=pos.second; ++it)
+      entities.push_back(it->second);
+    return entities;
+  }
+
   bool add_aux_point(const RS_Vector &v, double point_dist=1e-4, double segment_dist=1e-4);
 
 private:
@@ -131,14 +142,20 @@ private:
   std::vector<CG_Segment> _segments;
 
   /**
-   * map mark to segment label
+   * map segment label to mark
    */
   std::map<RS_String, int> _label_to_mark;
 
   /**
-   * map segment label to mark
+   * map mark to segment label
    */
   std::map<int, RS_String> _mark_to_label;
+
+  /**
+   * map mark to RS_Entity,
+   * since several entities may have the same label, we have to use multimap here.
+   */
+  std::multimap<int, RS_Entity *> _mark_to_entity;
 
   /**
    * PSLG region

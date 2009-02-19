@@ -52,12 +52,20 @@ public:
   /**
    * generate mesh with PSLG
    */
-  virtual void do_mesh(const QString &cmd, bool enable_quadtree);
+  virtual void do_mesh(const QString &cmd, bool enable_quadtree, bool fit_cv_boundary);
 
   /**
    * refine existing mesh
    */
-  virtual void refine_mesh(const QString &cmd, double max_d, bool signed_log, bool enable_quadtree);
+  virtual void refine_mesh(const QString &cmd, double max_d,
+                           bool signed_log, bool enable_quadtree, bool fit_cv_boundary);
+
+  /**
+   * since the mesh is built from PSLG, we convered curved boundary to polygon.
+   * As a result, the boundary point is always lie on polygon instead of curved boundary
+   * this function move the boundary point from polygon to origin curved boundary
+   */
+  virtual void repair_mesh(triangulateio &t);
 
   /**
    * export mesh as vtk ascii file format, debug only

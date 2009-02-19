@@ -19,8 +19,6 @@
 **********************************************************************/
 
 #include "rs_graphic.h"
-#include "rs_spline.h"
-#include "rs_hatch.h"
 #include "cg_pslg.h"
 
 
@@ -58,6 +56,7 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
             mark = _label_to_mark.size()+1;
             _label_to_mark[line->getLabel()] = mark;
           }
+          _mark_to_entity.insert(std::make_pair(mark, e));
 
           unsigned int division = line->getDivision();
           RS_Vector  start = line->getStartpoint();
@@ -109,6 +108,7 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
             mark = _label_to_mark.size()+1;
             _label_to_mark[arc->getLabel()] = mark;
           }
+          _mark_to_entity.insert(std::make_pair(mark, e));
 
           unsigned int division = arc->getDivision();
           RS_Vector  center = arc->getCenter();
@@ -155,6 +155,7 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
             mark = _label_to_mark.size()+1;
             _label_to_mark[circle->getLabel()] = mark;
           }
+          _mark_to_entity.insert(std::make_pair(mark, e));
 
           unsigned int division = circle->getDivision();
           RS_Vector  center = circle->getCenter();
@@ -187,6 +188,7 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
             mark = _label_to_mark.size()+1;
             _label_to_mark[ellipse->getLabel()] = mark;
           }
+          _mark_to_entity.insert(std::make_pair(mark, e));
 
           unsigned int division = ellipse->getDivision();
           RS_Vector  center = ellipse->getCenter();
@@ -226,6 +228,7 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
             mark = _label_to_mark.size()+1;
             _label_to_mark[spline->getLabel()] = mark;
           }
+          _mark_to_entity.insert(std::make_pair(mark, e));
 
           for (RS_Entity* l=spline->firstEntity(); l!=NULL; l=spline->nextEntity())
             if(l->rtti() == RS2::EntityLine )

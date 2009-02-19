@@ -4246,7 +4246,10 @@ void QC_ApplicationWindow::slotDoMesh()
   if(tri_setting.exec() == QDialog::Accepted)
   {
     MeshGenerator mesher(getDocument(), getGraphicView(), getProfileManager());
-    mesher.do_mesh(tri_setting.get_cmd_string(), tri_setting.enable_quadtree());
+    mesher.do_mesh(tri_setting.get_cmd_string(),
+                   tri_setting.enable_quadtree(),
+                   tri_setting.enable_curved_boundary()
+                  );
   }
 }
 
@@ -4261,7 +4264,9 @@ void QC_ApplicationWindow::slotRefineMesh()
     mesher.refine_mesh(tri_setting.get_cmd_string(),
                        tri_setting.get_dispersion(),
                        tri_setting.measure_with_signed_log(),
-                       tri_setting.enable_quadtree());
+                       tri_setting.enable_quadtree(),
+                       tri_setting.enable_curved_boundary()
+                      );
   }
 }
 
