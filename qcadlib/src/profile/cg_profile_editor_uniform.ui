@@ -160,7 +160,7 @@
                                 </sizepolicy>
                             </property>
                             <property name="text">
-                                <string>X0:</string>
+                                <string>Xmin:</string>
                             </property>
                         </widget>
                         <widget class="QLineEdit" row="1" column="1">
@@ -181,7 +181,7 @@
                                 <cstring>textLabel5</cstring>
                             </property>
                             <property name="text">
-                                <string>Y0:</string>
+                                <string>Ymin:</string>
                             </property>
                         </widget>
                         <widget class="QLineEdit" row="0" column="3">
@@ -202,7 +202,7 @@
                                 <cstring>textLabel6</cstring>
                             </property>
                             <property name="text">
-                                <string>X1:</string>
+                                <string>Xmax:</string>
                             </property>
                             <property name="buddy" stdset="0">
                                 <cstring>x1_edit</cstring>
@@ -213,7 +213,7 @@
                                 <cstring>textLabel7</cstring>
                             </property>
                             <property name="text">
-                                <string>Y1:</string>
+                                <string>Ymax:</string>
                             </property>
                         </widget>
                         <widget class="QLineEdit" row="1" column="3">

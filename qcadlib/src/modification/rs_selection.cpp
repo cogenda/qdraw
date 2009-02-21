@@ -358,7 +358,7 @@ void RS_Selection::selectContour(RS_Entity* e, RS_Vector point)
     // we can not find adjucent entities?
     if(!adj_entities.size()) break;
 
-    // find the right entity from adj_entities, which has larget angle
+    // find the right entity from adj_entities, which has largest angle
     {
       RS_Entity* e = adj_entities.begin()->second;
       e->setSelected(select);

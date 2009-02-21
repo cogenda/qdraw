@@ -103,10 +103,16 @@ void QuadTree::balance()
       int leaf_depth = depth(leaf);
 
       std::vector<iterator_base> neighbors;
-      neighbors.push_back(find_neighbor(leaf, L));
-      neighbors.push_back(find_neighbor(leaf, R));
-      neighbors.push_back(find_neighbor(leaf, T));
-      neighbors.push_back(find_neighbor(leaf, B));
+
+      if(leaf_it->get_location().has_location(T))
+        neighbors.push_back(find_neighbor(leaf, B));
+      if(leaf_it->get_location().has_location(B))
+        neighbors.push_back(find_neighbor(leaf, T));
+      if(leaf_it->get_location().has_location(L))
+        neighbors.push_back(find_neighbor(leaf, R));
+      if(leaf_it->get_location().has_location(R))
+        neighbors.push_back(find_neighbor(leaf, L));
+
       for(unsigned int n=0; n<neighbors.size(); ++n)
       {
         if(!neighbors[n].node) continue;
@@ -290,48 +296,48 @@ QuadTreeNodeData::REGION_INTERSECTION_FLAG QuadTree::region_intersection(const i
 
   if(it->has_point(hatch->getData().internal_point))
     return  QuadTreeNodeData::COVER_REGION;
-  
+
   return QuadTreeNodeData::OUT_REGION;
 
   /*
     unsigned int n_point_in_region = 0;
     bool has_point_on_region=false;
-   
+
     {
       bool this_point_on_hatch;
-   
+
       n_point_in_region += RS_Information::isPointInsideContour(*_p_tr,  hatch, &this_point_on_hatch);
       if(this_point_on_hatch) has_point_on_region=true;
-   
+
       n_point_in_region += RS_Information::isPointInsideContour(*_p_tl,  hatch, &this_point_on_hatch);
       if(this_point_on_hatch) has_point_on_region=true;
-   
+
       n_point_in_region += RS_Information::isPointInsideContour(*_p_br,  hatch, &this_point_on_hatch);
       if(this_point_on_hatch) has_point_on_region=true;
-   
+
       n_point_in_region += RS_Information::isPointInsideContour(*_p_bl,  hatch, &this_point_on_hatch);
       if(this_point_on_hatch) has_point_on_region=true;
     }
-   
+
   std::cout<<n_point_in_region<<std::endl;
-    if(has_point_on_region) 
+    if(has_point_on_region)
     {
       std::cout<<"INTERSECTION_REGION"<<std::endl;
       return QuadTreeNodeData::INTERSECTION_REGION;
     }
-   
+
     if(n_point_in_region==4)
     {
       return QuadTreeNodeData::IN_REGION;
     }
-   
+
     if(n_point_in_region==0)
     {
       if(it->has_point(hatch->getData().internal_point))
         return  QuadTreeNodeData::COVER_REGION;
       else return QuadTreeNodeData::OUT_REGION;
     }
-   
+
     if(n_point_in_region>0 && n_point_in_region<4)
       return QuadTreeNodeData::INTERSECTION_REGION;
   */
