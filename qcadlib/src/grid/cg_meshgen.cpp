@@ -264,6 +264,7 @@ QuadTree * MeshGenerator::build_quadtree()
             case QuadTreeNodeData::INTERSECTION_REGION :
               {
                 this_leaf->region_intersection_flag() = QuadTreeNodeData::INTERSECTION_REGION;
+                this_leaf->record_intersection_region(n);	
                 if(this_leaf->area()>_regions[n].area_control)
                   this_leaf_should_be_divide = true;
                 break;
@@ -360,13 +361,8 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d,
       QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
       for(; leaf_it != quadtree->end_leaf(); )
       {
-        QuadTree::iterator this_leaf = leaf_it++;
-        std::vector<RS_Vector> leaf_points;
-        leaf_points.push_back(*this_leaf->tl());
-        leaf_points.push_back(*this_leaf->tr());
-        leaf_points.push_back(*this_leaf->br());
-        leaf_points.push_back(*this_leaf->bl());
-        if( mesh->is_refine_required(leaf_points, max_d, signed_log) )
+      	QuadTree::iterator this_leaf = leaf_it++;
+        if( mesh->is_refine_required(this_leaf, max_d, signed_log) )
         {
           quadtree->subdivide(this_leaf);
           area_constrain = true;
@@ -404,6 +400,7 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d,
             case QuadTreeNodeData::INTERSECTION_REGION :
               {
                 leaf_it->region_intersection_flag() = QuadTreeNodeData::INTERSECTION_REGION;
+                leaf_it->record_intersection_region(n);	
                 break;
               }
             default: break;

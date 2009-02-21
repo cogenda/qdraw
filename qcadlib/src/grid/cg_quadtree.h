@@ -23,12 +23,13 @@
 
 #include <vector>
 #include <map>
+#include <set>
 
 #include "tree.h"
 #include "rs_vector.h"
 
 
-class CG_Region;
+struct CG_Region;
 
 enum Location{T, B, R, L, ROOT};
 
@@ -179,6 +180,15 @@ public:
   int & region()
   { return _region; }
 
+  void record_intersection_region(int r)
+  {_intersection_regions.insert(r);}
+  
+  bool has_intersection_region(int r) const
+  { return _intersection_regions.find(r)!=_intersection_regions.end(); }
+  
+  const std::set<int> & get_intersection_regions() const
+  { return _intersection_regions;}
+  	
   friend std::ostream& operator << (std::ostream&, const QuadTreeNodeData& data);
 
 private:
@@ -223,6 +233,11 @@ private:
    * indicate this quadtree leaf in which region
    */
   int _region;
+  
+  /**
+   * record all the intersection regions
+   */
+  std::set<int> _intersection_regions;
 
   /**
    * region (as polygon) and quadtree leaf intersection result

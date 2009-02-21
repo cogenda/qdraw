@@ -117,10 +117,17 @@ void RS_Mesh::set_refine_flag(double dmax, bool signed_log)
   io.trianglearealist = (double *) calloc(io.numberoftriangles, sizeof(double));
   for(int i=0; i<io.numberoftriangles; i++)
   {
-    int a = io.trianglelist[3*i+0];
-    int b = io.trianglelist[3*i+1];
-    int c = io.trianglelist[3*i+2];
-    io.trianglearealist[i] = triangle_area_constraint(a, b, c, dmax, signed_log);
+    int r = int(io.triangleattributelist[i]+0.5);
+    RS_String material = _pslg->get_region_material(r);
+    if(RS_Material::IsSemiconductor(material))
+    {	
+      int a = io.trianglelist[3*i+0];
+      int b = io.trianglelist[3*i+1];
+      int c = io.trianglelist[3*i+2];
+      io.trianglearealist[i] = triangle_area_constraint(a, b, c, dmax, signed_log);
+    }
+    else
+      io.trianglearealist[i] = RS_MAXDOUBLE; 
   }
 }
 
@@ -186,8 +193,32 @@ double RS_Mesh::triangle_area_constraint(int a, int b, int c, double dmax, bool 
   return area*Scale;
 }
 
-bool RS_Mesh::is_refine_required(const std::vector<RS_Vector> & poly, double dmax, bool signed_log)
+bool RS_Mesh::is_refine_required(const QuadTree::iterator &this_leaf, double dmax, bool signed_log)
 {
+  // check if this leaf at least intersection with a semiconductor region	
+  if(this_leaf->region()<0)
+  {
+     bool intersection_with_semiconductor_region = false;	
+     const std::set<int> & regions = this_leaf->get_intersection_regions();
+     for(std::set<int>::const_iterator it=regions.begin(); it!=regions.end(); ++it )
+     {	
+     	RS_String material = _pslg->get_region_material(*it);
+        if(RS_Material::IsSemiconductor(material)) 
+          intersection_with_semiconductor_region = true;
+     }          
+     if(!intersection_with_semiconductor_region) return false;	
+  }
+  else
+  {	
+    RS_String material = _pslg->get_region_material(this_leaf->region());
+    if(!RS_Material::IsSemiconductor(material)) return false;
+  }    
+
+  std::vector<RS_Vector> poly;
+  poly.push_back(*this_leaf->tl());
+  poly.push_back(*this_leaf->tr());
+  poly.push_back(*this_leaf->br());
+  poly.push_back(*this_leaf->bl());
 
   double pa = fabs(_pm->profile("Nd", poly[0].x, poly[0].y)) - fabs(_pm->profile("Na", poly[0].x, poly[0].y));
   double pb = fabs(_pm->profile("Nd", poly[1].x, poly[1].y)) - fabs(_pm->profile("Na", poly[1].x, poly[1].y));
@@ -212,6 +243,7 @@ bool RS_Mesh::is_refine_required(const std::vector<RS_Vector> & poly, double dma
 
   return false;
 }
+
 
 void RS_Mesh::update()
 {

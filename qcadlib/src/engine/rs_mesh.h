@@ -27,6 +27,7 @@
 
 #include "triangle.h"
 #include "cg_pslg.h"
+#include "cg_quadtree.h"
 #include "rs_hatch.h"
 #include "rs_entitycontainer.h"
 
@@ -128,7 +129,7 @@ public:
 
   void set_refine_flag(double d, bool signed_log);
 
-  bool is_refine_required(const std::vector<RS_Vector> & poly, double d, bool signed_log);
+  bool is_refine_required(const QuadTree::iterator &it, double d, bool signed_log);
 
   void export_mesh(const RS_String & file);
 
