@@ -81,7 +81,7 @@ public:
   RS_Line(RS_EntityContainer* parent,
           const RS_LineData& d);
 
-  virtual RS_Entity* clone();
+  virtual RS_Entity* clone(bool update_label=false);
 
   virtual ~RS_Line();
 
@@ -122,7 +122,7 @@ public:
     point_set = bool(sec.toInt());
   }
 
-  /**	@return RS2::EntityLine */
+  /**   @return RS2::EntityLine */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityLine;

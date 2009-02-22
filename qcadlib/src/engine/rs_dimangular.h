@@ -92,11 +92,12 @@ public:
                 const RS_DimAngularData& ed);
   virtual ~RS_DimAngular() {}
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_DimAngular* d = new RS_DimAngular(*this);
     d->entities.setAutoDelete(entities.autoDelete());
     d->initId();
+    if(update_label) d->initLabel();
     d->detach();
     return d;
   }
@@ -107,7 +108,7 @@ public:
     label = "DimAngular" + RS_String::number(idCounter++);
   }
 
-  /**	@return RS2::EntityDimAngular */
+  /**   @return RS2::EntityDimAngular */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityDimAngular;

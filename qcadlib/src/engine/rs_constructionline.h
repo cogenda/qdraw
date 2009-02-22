@@ -80,7 +80,7 @@ public:
   RS_ConstructionLine(RS_EntityContainer* parent,
                       const RS_ConstructionLineData& d);
 
-  virtual RS_Entity* clone();
+  virtual RS_Entity* clone(bool update_label=false);
 
   virtual ~RS_ConstructionLine();
 
@@ -90,7 +90,7 @@ public:
     label = "ConstructionLine" + RS_String::number(idCounter++);
   }
 
-  /**	@return RS2::EntityConstructionLine */
+  /**   @return RS2::EntityConstructionLine */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityConstructionLine;

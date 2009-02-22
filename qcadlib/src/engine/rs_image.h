@@ -105,7 +105,7 @@ public:
   RS_Image(RS_EntityContainer* parent,
            const RS_ImageData& d);
 
-  virtual RS_Entity* clone();
+  virtual RS_Entity* clone(bool update_label=false);
 
   virtual ~RS_Image();
 
@@ -115,7 +115,7 @@ public:
     label = "Image" + RS_String::number(idCounter++);
   }
 
-  /**	@return RS2::EntityImage */
+  /**   @return RS2::EntityImage */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityImage;

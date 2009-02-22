@@ -141,11 +141,12 @@ public:
           const RS_TextData& d);
   virtual ~RS_Text() {}
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_Text* t = new RS_Text(*this);
     t->entities.setAutoDelete(entities.autoDelete());
     t->initId();
+    if(update_label) t->initLabel();
     t->detach();
     return t;
   }
@@ -156,7 +157,7 @@ public:
     label = "Text" + RS_String::number(idCounter++);
   }
 
-  /**	@return RS2::EntityText */
+  /**   @return RS2::EntityText */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityText;

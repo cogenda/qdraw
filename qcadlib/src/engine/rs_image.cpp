@@ -55,18 +55,19 @@ RS_Image::RS_Image(RS_EntityContainer* parent,
 RS_Image::~RS_Image()
 {
   /*if (img!=NULL) {
-  	delete[] img;
+    delete[] img;
   }*/
 }
 
 
 
 
-RS_Entity* RS_Image::clone()
+RS_Entity* RS_Image::clone(bool update_label)
 {
   RS_Image* i = new RS_Image(*this);
   i->setHandle(getHandle());
   i->initId();
+  if(update_label) i->initLabel();
   i->update();
   return i;
 }
@@ -98,27 +99,27 @@ void RS_Image::update()
   RS_Pixmap pm;
   int w,h;
   for (int x = 0; x<nx; ++x) {
-  	img[x] = new RS_Img[ny];
-  	for (int y = 0; y<ny; ++y) {
-  		if (x<nx-1) {
-  			w = 100;
-  		}
-  		else {
-  			w = image.width()%100;
-  		}
+    img[x] = new RS_Img[ny];
+    for (int y = 0; y<ny; ++y) {
+        if (x<nx-1) {
+            w = 100;
+        }
+        else {
+            w = image.width()%100;
+        }
 
-  		if (y<ny-1) {
-  			h = 100;
-  		}
-  		else {
-  			h = image.height()%100;
-  		}
+        if (y<ny-1) {
+            h = 100;
+        }
+        else {
+            h = image.height()%100;
+        }
 
-  		pm = RS_Pixmap(w, h);
-  		RS_PainterQt painter(&pm);
-  		painter.drawImage(-x*100, -y*100, image);
-  		img[x][y] = pm.convertToImage();
-  	}
+        pm = RS_Pixmap(w, h);
+        RS_PainterQt painter(&pm);
+        painter.drawImage(-x*100, -y*100, image);
+        img[x][y] = pm.convertToImage();
+    }
   }
   */
 }
@@ -313,7 +314,7 @@ void RS_Image::draw(RS_Painter* painter, RS_GraphicView* view, double /*patternO
 
   // erase image:
   //if (painter->getPen().getColor()==view->getBackground()) {
-  //	RS_VectorSolutions sol = getCorners();
+  //    RS_VectorSolutions sol = getCorners();
   //
   //}
 

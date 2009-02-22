@@ -84,7 +84,7 @@ RS_EntityContainer::~RS_EntityContainer()
 
 
 
-RS_Entity* RS_EntityContainer::clone()
+RS_Entity* RS_EntityContainer::clone(bool update_label)
 {
   RS_DEBUG->print("RS_EntityContainer::clone: ori autoDel: %d",
                   entities.autoDelete());
@@ -97,7 +97,7 @@ RS_Entity* RS_EntityContainer::clone()
 
   ec->detach();
   ec->initId();
-
+  if(update_label) ec->initLabel();
   return ec;
 }
 

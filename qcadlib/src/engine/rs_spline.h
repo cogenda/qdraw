@@ -79,7 +79,7 @@ public:
   RS_Spline(RS_EntityContainer* parent,
             const RS_SplineData& d);
 
-  virtual RS_Entity* clone();
+  virtual RS_Entity* clone(bool update_label=false);
 
   virtual ~RS_Spline();
 

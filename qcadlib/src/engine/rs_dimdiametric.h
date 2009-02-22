@@ -86,11 +86,12 @@ public:
                   const RS_DimDiametricData& ed);
   virtual ~RS_DimDiametric() {}
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_DimDiametric* d = new RS_DimDiametric(*this);
     d->entities.setAutoDelete(entities.autoDelete());
     d->initId();
+    if(update_label) d->initLabel();
     d->detach();
     return d;
   }
@@ -101,7 +102,7 @@ public:
     label = "DimDiametric" + RS_String::number(idCounter++);
   }
 
-  /**	@return RS2::EntityDimDiametric */
+  /**   @return RS2::EntityDimDiametric */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityDimDiametric;

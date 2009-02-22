@@ -98,7 +98,7 @@ public:
 
   virtual ~RS_Block();
 
-  virtual RS_Entity* clone();
+  virtual RS_Entity* clone(bool update_label=false);
 
   virtual void initLabel()
   {

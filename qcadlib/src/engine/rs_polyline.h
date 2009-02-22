@@ -87,11 +87,12 @@ public:
               const RS_PolylineData& d);
   virtual ~RS_Polyline();
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_Polyline* p = new RS_Polyline(*this);
     p->entities.setAutoDelete(entities.autoDelete());
     p->initId();
+    if(update_label) p->initLabel();
     p->detach();
     return p;
   }
@@ -102,7 +103,7 @@ public:
     label = "Polyline" + RS_String::number(idCounter++);
   }
 
-  /**	@return RS2::EntityPolyline */
+  /**   @return RS2::EntityPolyline */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityPolyline;

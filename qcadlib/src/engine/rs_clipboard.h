@@ -10,7 +10,7 @@
 ** Foundation and appearing in the file LICENSE.GPL included in the
 ** packaging of this file.
 **
-** Licensees holding valid qcadlib Professional Edition licenses may use 
+** Licensees holding valid qcadlib Professional Edition licenses may use
 ** this file in accordance with the qcadlib Commercial License
 ** Agreement provided with the Software.
 **
@@ -44,68 +44,80 @@ class RS_Entity;
  *
  * @author Andrew Mustun
  */
-class RS_Clipboard {
+class RS_Clipboard
+{
 protected:
-    RS_Clipboard() {
-    }
+  RS_Clipboard()
+  {}
 
 public:
-    /**
-     * @return Instance to the unique clipboard object.
-     */
-    static RS_Clipboard* instance() {
-        if (uniqueInstance==NULL) {
-            uniqueInstance = new RS_Clipboard();
-        }
-        return uniqueInstance;
+  /**
+   * @return Instance to the unique clipboard object.
+   */
+  static RS_Clipboard* instance()
+  {
+    if (uniqueInstance==NULL)
+    {
+      uniqueInstance = new RS_Clipboard();
     }
+    return uniqueInstance;
+  }
 
-	void clear();
+  void clear();
 
-	void addBlock(RS_Block* b);
-	bool hasBlock(const RS_String& name);
-	int  countBlocks() {
-		return graphic.countBlocks();
-	}
-	RS_Block* blockAt(int i) {
-		return graphic.blockAt(i);
-	}
-	
-	void addLayer(RS_Layer* l);
-	bool hasLayer(const RS_String& name);
-	int  countLayers() {
-		return graphic.countLayers();
-	}
-	RS_Layer* layerAt(int i) {
-		return graphic.layerAt(i);
-	}
+  void addBlock(RS_Block* b);
+  bool hasBlock(const RS_String& name);
+  int  countBlocks()
+  {
+    return graphic.countBlocks();
+  }
+  RS_Block* blockAt(int i)
+  {
+    return graphic.blockAt(i);
+  }
 
-	void addEntity(RS_Entity* e);
+  void addLayer(RS_Layer* l);
+  bool hasLayer(const RS_String& name);
+  int  countLayers()
+  {
+    return graphic.countLayers();
+  }
+  RS_Layer* layerAt(int i)
+  {
+    return graphic.layerAt(i);
+  }
 
-	uint count() {
-		return graphic.count();
-	}
-	RS_Entity* entityAt(uint i) {
-		return graphic.entityAt(i);
-	}
-	RS_Entity* firstEntity() {
-		return graphic.firstEntity();
-	}
-	
-	RS_Entity* nextEntity() {
-		return graphic.nextEntity();
-	}
+  void addEntity(RS_Entity* e);
 
-	RS_Graphic* getGraphic() {
-		return &graphic;
-	}
+  uint count()
+  {
+    return graphic.count();
+  }
+  RS_Entity* entityAt(uint i)
+  {
+    return graphic.entityAt(i);
+  }
+  RS_Entity* firstEntity()
+  {
+    return graphic.firstEntity();
+  }
 
-    friend std::ostream& operator << (std::ostream& os, RS_Clipboard& cb);
+  RS_Entity* nextEntity()
+  {
+    return graphic.nextEntity();
+  }
+
+  RS_Graphic* getGraphic()
+  {
+    return &graphic;
+  }
+
+  friend std::ostream& operator << (std::ostream& os, RS_Clipboard& cb);
 
 protected:
-    static RS_Clipboard* uniqueInstance;
+  static RS_Clipboard* uniqueInstance;
 
-	RS_Graphic graphic;
+  RS_Graphic graphic;
 };
 
 #endif

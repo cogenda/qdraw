@@ -99,10 +99,11 @@ public:
 
   virtual ~RS_Arc() {}
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_Arc* a = new RS_Arc(*this);
     a->initId();
+    if(update_label) a->initLabel();
     return a;
   }
 
@@ -140,7 +141,7 @@ public:
     division = sec.toUInt() < 1 ? 1 : sec.toUInt();
   }
 
-  /**	@return RS2::EntityArc */
+  /**   @return RS2::EntityArc */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityArc;

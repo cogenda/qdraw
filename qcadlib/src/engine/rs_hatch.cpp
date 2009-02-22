@@ -79,11 +79,12 @@ bool RS_Hatch::validate()
 
 
 
-RS_Entity* RS_Hatch::clone()
+RS_Entity* RS_Hatch::clone(bool update_label)
 {
   RS_Hatch* t = new RS_Hatch(*this);
   t->entities.setAutoDelete(entities.autoDelete());
   t->initId();
+  if(update_label) t->initLabel();
   t->detach();
   t->hatch = NULL;
   return t;

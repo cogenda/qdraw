@@ -54,10 +54,11 @@ RS_Line::~RS_Line() {}
 
 
 
-RS_Entity* RS_Line::clone()
+RS_Entity* RS_Line::clone(bool update_label)
 {
   RS_Line* l = new RS_Line(*this);
   l->initId();
+  if(update_label) l->initLabel();
   return l;
 }
 
@@ -577,7 +578,7 @@ void RS_Line::draw(RS_Painter* painter, RS_GraphicView* view, double patternOffs
 
     patternOffset -= (m*patternSegmentLength);
     //if (patternOffset<0.0) {
-    //	patternOffset+=patternSegmentLength;
+    //  patternOffset+=patternSegmentLength;
     //}
     //RS_DEBUG->print("pattern. offset: %f", patternOffset);
     RS_Vector patternOffsetVec;

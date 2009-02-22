@@ -88,11 +88,12 @@ public:
                 const RS_DimAlignedData& ed);
   virtual ~RS_DimAligned() {}
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_DimAligned* d = new RS_DimAligned(*this);
     d->entities.setAutoDelete(entities.autoDelete());
     d->initId();
+    if(update_label) d->initLabel();
     d->detach();
     return d;
   }
@@ -103,7 +104,7 @@ public:
     label = "DimAligned" + RS_String::number(idCounter++);
   }
 
-  /**	@return RS2::EntityDimAligned */
+  /**   @return RS2::EntityDimAligned */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityDimAligned;

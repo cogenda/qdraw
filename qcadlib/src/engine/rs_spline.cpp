@@ -55,11 +55,12 @@ RS_Spline::~RS_Spline() {}
 
 
 
-RS_Entity* RS_Spline::clone()
+RS_Entity* RS_Spline::clone(bool update_label)
 {
   RS_Spline* l = new RS_Spline(*this);
   l->entities.setAutoDelete(entities.autoDelete());
   l->initId();
+  if(update_label) l->initLabel();
   l->detach();
   return l;
 }

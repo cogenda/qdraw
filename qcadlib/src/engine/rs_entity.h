@@ -97,7 +97,10 @@ public:
   virtual void set_ext_info(RS_String )
   { /* do nothing */ }
 
-  virtual RS_Entity* clone() = 0;
+  /**
+   * clone an entity, when update_label is true, give the cloned entity a new label
+   */
+  virtual RS_Entity* clone(bool update_label=false) = 0;
 
   virtual void reparent(RS_EntityContainer* parent)
   {

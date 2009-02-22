@@ -109,10 +109,11 @@ public:
   RS_Solid(RS_EntityContainer* parent,
            const RS_SolidData& d);
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_Solid* s = new RS_Solid(*this);
     s->initId();
+    if(update_label) s->initLabel();
     return s;
   }
 
@@ -122,7 +123,7 @@ public:
     label = "Solid" + RS_String::number(idCounter++);
   }
 
-  /**	@return RS_ENTITY_POINT */
+  /**   @return RS_ENTITY_POINT */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntitySolid;

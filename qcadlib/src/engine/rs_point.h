@@ -65,10 +65,11 @@ public:
   RS_Point(RS_EntityContainer* parent,
            const RS_PointData& d);
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_Point* p = new RS_Point(*this);
     p->initId();
+    if(update_label) p->initLabel();
     return p;
   }
 
@@ -99,7 +100,7 @@ public:
     label = sec;
    }
 
-  /**	@return RS_ENTITY_POINT */
+  /**   @return RS_ENTITY_POINT */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityPoint;

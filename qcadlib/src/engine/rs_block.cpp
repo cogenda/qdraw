@@ -48,11 +48,12 @@ RS_Block::~RS_Block() {}
 
 
 
-RS_Entity* RS_Block::clone() {
+RS_Entity* RS_Block::clone(bool update_label) {
     RS_Block* blk = new RS_Block(*this);
-	blk->entities.setAutoDelete(entities.autoDelete());
+    blk->entities.setAutoDelete(entities.autoDelete());
     blk->detach();
     blk->initId();
+    if(update_label) blk->initLabel();
     return blk;
 }
 

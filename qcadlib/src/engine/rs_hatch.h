@@ -119,7 +119,7 @@ public:
            const RS_HatchData& d);
   virtual ~RS_Hatch() {}
 
-  virtual RS_Entity* clone();
+  virtual RS_Entity* clone(bool update_label=false);
 
   virtual void initLabel()
   {

@@ -94,10 +94,11 @@ public:
              const RS_EllipseData& d);
   virtual ~RS_Ellipse() {}
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_Ellipse* e = new RS_Ellipse(*this);
     e->initId();
+    if(update_label) e->initLabel();
     return e;
   }
 
@@ -135,7 +136,7 @@ public:
     division = sec.toUInt() < 3 ? 3 : sec.toUInt();
   }
 
-  /**	@return RS2::EntityEllipse */
+  /**   @return RS2::EntityEllipse */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityEllipse;

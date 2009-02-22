@@ -51,10 +51,11 @@ RS_ConstructionLine::~RS_ConstructionLine() {}
 
 
 
-RS_Entity* RS_ConstructionLine::clone()
+RS_Entity* RS_ConstructionLine::clone(bool update_label)
 {
   RS_ConstructionLine* c = new RS_ConstructionLine(*this);
   c->initId();
+  if(update_label) c->initLabel();
   return c;
 }
 

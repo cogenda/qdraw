@@ -88,10 +88,11 @@ public:
              const RS_CircleData& d);
   virtual ~RS_Circle() {}
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_Circle* c = new RS_Circle(*this);
     c->initId();
+    if(update_label) c->initLabel();
     return c;
   }
 
@@ -129,7 +130,7 @@ public:
     division = sec.toUInt() < 3 ? 3 : sec.toUInt();
   }
 
-  /**	@return RS2::EntityCircle */
+  /**   @return RS2::EntityCircle */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityCircle;

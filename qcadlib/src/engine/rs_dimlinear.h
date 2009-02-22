@@ -95,11 +95,12 @@ public:
                const RS_DimLinearData& ed);
   virtual ~RS_DimLinear() {}
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_DimLinear* d = new RS_DimLinear(*this);
     d->entities.setAutoDelete(entities.autoDelete());
     d->initId();
+    if(update_label) d->initLabel();
     d->detach();
     return d;
   }
@@ -110,7 +111,7 @@ public:
     label = "DimLinear" + RS_String::number(idCounter++);
   }
 
-  /**	@return RS2::EntityDimLinear */
+  /**   @return RS2::EntityDimLinear */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityDimLinear;

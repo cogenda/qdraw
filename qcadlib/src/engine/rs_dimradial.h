@@ -86,11 +86,12 @@ public:
                const RS_DimRadialData& ed);
   virtual ~RS_DimRadial() {}
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_DimRadial* d = new RS_DimRadial(*this);
     d->entities.setAutoDelete(entities.autoDelete());
     d->initId();
+    if(update_label) d->initLabel();
     d->detach();
     return d;
   }
@@ -101,7 +102,7 @@ public:
     label = "DimRadial" + RS_String::number(idCounter++);
   }
 
-  /**	@return RS2::EntityDimRadial */
+  /**   @return RS2::EntityDimRadial */
   virtual RS2::EntityType rtti() const
   {
     return RS2::EntityDimRadial;
