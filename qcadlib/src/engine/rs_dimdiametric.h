@@ -92,7 +92,7 @@ public:
     d->entities.setAutoDelete(entities.autoDelete());
     d->initId();
     if(update_label) d->initLabel();
-    d->detach();
+    d->detach(update_label);
     return d;
   }
 

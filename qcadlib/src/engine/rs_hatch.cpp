@@ -85,7 +85,7 @@ RS_Entity* RS_Hatch::clone(bool update_label)
   t->entities.setAutoDelete(entities.autoDelete());
   t->initId();
   if(update_label) t->initLabel();
-  t->detach();
+  t->detach(update_label);
   t->hatch = NULL;
   return t;
 }

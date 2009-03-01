@@ -61,7 +61,7 @@ RS_Entity* RS_Spline::clone(bool update_label)
   l->entities.setAutoDelete(entities.autoDelete());
   l->initId();
   if(update_label) l->initLabel();
-  l->detach();
+  l->detach(update_label);
   return l;
 }
 

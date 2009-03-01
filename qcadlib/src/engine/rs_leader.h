@@ -71,12 +71,13 @@ public:
             const RS_LeaderData& d);
   virtual ~RS_Leader();
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_Leader* p = new RS_Leader(*this);
     p->entities.setAutoDelete(entities.autoDelete());
     p->initId();
-    p->detach();
+    if(update_label) p->initLabel();
+    p->detach(update_label);
     return p;
   }
 

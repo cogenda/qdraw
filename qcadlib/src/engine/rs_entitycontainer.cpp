@@ -95,7 +95,7 @@ RS_Entity* RS_EntityContainer::clone(bool update_label)
   RS_DEBUG->print("RS_EntityContainer::clone: clone autoDel: %d",
                   ec->entities.autoDelete());
 
-  ec->detach();
+  ec->detach(update_label);
   ec->initId();
   if(update_label) ec->initLabel();
   return ec;
@@ -107,7 +107,7 @@ RS_Entity* RS_EntityContainer::clone(bool update_label)
  * Detaches shallow copies and creates deep copies of all subentities.
  * This is called after cloning entity containers.
  */
-void RS_EntityContainer::detach()
+void RS_EntityContainer::detach(bool update_label)
 {
   RS_PtrList<RS_Entity> tmp;
   bool autoDel = entities.autoDelete();
@@ -122,7 +122,7 @@ void RS_EntityContainer::detach()
   {
     if (!e->getFlag(RS2::FlagTemp))
     {
-      tmp.append(e->clone());
+      tmp.append(e->clone(update_label));
     }
   }
 

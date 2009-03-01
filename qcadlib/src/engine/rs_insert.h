@@ -119,12 +119,13 @@ public:
             const RS_InsertData& d);
   virtual ~RS_Insert();
 
-  virtual RS_Entity* clone()
+  virtual RS_Entity* clone(bool update_label=false)
   {
     RS_Insert* i = new RS_Insert(*this);
     i->entities.setAutoDelete(entities.autoDelete());
     i->initId();
-    i->detach();
+    if(update_label) i->initLabel();
+    i->detach(update_label);
     return i;
   }
 

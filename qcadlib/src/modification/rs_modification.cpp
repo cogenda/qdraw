@@ -280,7 +280,11 @@ void RS_Modification::copyEntity(RS_Entity* e, const RS_Vector& ref,
     }
 
     // add entity to clipboard:
-    RS_Entity* c = e->clone();
+    RS_Entity* c;
+    if (cut)
+      c = e->clone();
+    else
+      c = e->clone(true);
     c->move(-ref);
     RS_CLIPBOARD->addEntity(c);
 
@@ -392,7 +396,7 @@ void RS_Modification::copyBlocks(RS_Entity* e)
       // add block of an insert:
       if (!RS_CLIPBOARD->hasBlock(b->getName()))
       {
-        RS_CLIPBOARD->addBlock((RS_Block*)b->clone());
+        RS_CLIPBOARD->addBlock((RS_Block*)b->clone(true));
       }
 
       for (RS_Entity* e2=b->firstEntity(); e2!=NULL;
@@ -473,7 +477,7 @@ void RS_Modification::paste(const RS_PasteData& data, RS_Graphic* source)
       {
         if (graphic->findBlock(b->getName())==NULL)
         {
-          RS_Block* bc = (RS_Block*)b->clone();
+          RS_Block* bc = (RS_Block*)b->clone(true);
           bc->reparent(container);
           //bc->scale(bc->getBasePoint(), RS_Vector(factor, factor));
           // scale block but don't scale inserts in block
@@ -544,7 +548,7 @@ void RS_Modification::paste(const RS_PasteData& data, RS_Graphic* source)
       {
         layerName = layer->getName();
       }
-      RS_Entity* e2 = e->clone();
+      RS_Entity* e2 = e->clone(true);
       e2->reparent(host);
       if (data.asInsert==false)
       {
@@ -1527,7 +1531,11 @@ bool RS_Modification::move(RS_MoveData& data)
     {
       if (e!=NULL && e->isSelected())
       {
-        RS_Entity* ec = e->clone();
+        RS_Entity* ec;
+        if ( data.number==0 )
+          ec = e->clone();
+        else
+          ec = e->clone(true);
 
         ec->move(data.offset*num);
         if (data.useCurrentLayer)
@@ -1601,7 +1609,11 @@ bool RS_Modification::rotate(RS_RotateData& data)
 
       if (e!=NULL && e->isSelected())
       {
-        RS_Entity* ec = e->clone();
+        RS_Entity* ec;
+        if ( data.number==0 )
+          ec = e->clone();
+        else
+          ec = e->clone(true);
         ec->setSelected(false);
 
         ec->rotate(data.center, data.angle*num);
@@ -1673,7 +1685,11 @@ bool RS_Modification::scale(RS_ScaleData& data)
       //RS_Entity* e = container->entityAt(i);
       if (e!=NULL && e->isSelected())
       {
-        RS_Entity* ec = e->clone();
+        RS_Entity* ec;
+        if ( data.number==0 )
+          ec = e->clone();
+        else
+          ec = e->clone(true);
         ec->setSelected(false);
 
         ec->scale(data.referencePoint, RS_Math::pow(data.factor, num));
@@ -1746,7 +1762,11 @@ bool RS_Modification::mirror(RS_MirrorData& data)
 
       if (e!=NULL && e->isSelected())
       {
-        RS_Entity* ec = e->clone();
+        RS_Entity* ec;
+        if ( !data.copy )
+          ec = e->clone();
+        else
+          ec = e->clone(true);
         ec->setSelected(false);
 
         ec->mirror(data.axisPoint1, data.axisPoint2);
@@ -1819,7 +1839,11 @@ bool RS_Modification::rotate2(RS_Rotate2Data& data)
 
       if (e!=NULL && e->isSelected())
       {
-        RS_Entity* ec = e->clone();
+        RS_Entity* ec;
+        if ( data.number==0 )
+          ec = e->clone();
+        else
+          ec = e->clone(true);
         ec->setSelected(false);
 
         ec->rotate(data.center1, data.angle1*num);
@@ -1895,7 +1919,11 @@ bool RS_Modification::moveRotate(RS_MoveRotateData& data)
 
       if (e!=NULL && e->isSelected())
       {
-        RS_Entity* ec = e->clone();
+        RS_Entity* ec;
+        if ( data.number==0 )
+          ec = e->clone();
+        else
+          ec = e->clone(true);
         ec->setSelected(false);
 
         ec->move(data.offset*num);
@@ -2355,7 +2383,7 @@ bool RS_Modification::cut(const RS_Vector& cutCoord,
   else
   {
     cut1 = (RS_AtomicEntity*)cutEntity->clone();
-    cut2 = (RS_AtomicEntity*)cutEntity->clone();
+    cut2 = (RS_AtomicEntity*)cutEntity->clone(true);
 
     cut1->trimEndpoint(cutCoord);
     cut2->trimStartpoint(cutCoord);
