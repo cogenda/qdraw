@@ -144,16 +144,20 @@ void QuadTree::balance()
 bool QuadTree::has_neighbor_intersection_region(iterator_base & leaf_it)
 {
   iterator_base left_neighbor = find_neighbor(leaf_it, L);
-  if(left_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION) return true;
+  if(left_neighbor.node && left_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION)
+    return true;
 
   iterator_base right_neighbor = find_neighbor(leaf_it, R);
-  if(right_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION) return true;
+  if(right_neighbor.node && right_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION)
+    return true;
 
   iterator_base top_neighbor = find_neighbor(leaf_it, T);
-  if(top_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION) return true;
+  if(top_neighbor.node && top_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION)
+    return true;
 
   iterator_base bot_neighbor = find_neighbor(leaf_it, B);
-  if(bot_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION) return true;
+  if(bot_neighbor.node && bot_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION)
+    return true;
 
   return false;
 }
