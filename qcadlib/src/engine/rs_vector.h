@@ -84,6 +84,7 @@ public:
   }
 
   bool   absolute_fuzzy_equals(const RS_Vector & v, double tol=1e-8) const;
+  bool   absolute_fuzzy_less(const RS_Vector & v, double tol=1e-6) const;
   static RS_Vector minimum(const RS_Vector& v1, const RS_Vector& v2);
   static RS_Vector maximum(const RS_Vector& v1, const RS_Vector& v2);
   static RS_Vector crossP(const RS_Vector& v1, const RS_Vector& v2);

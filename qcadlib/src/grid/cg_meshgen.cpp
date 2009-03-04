@@ -148,6 +148,13 @@ void MeshGenerator::do_mesh(const QString &cmd, bool enable_quadtree, bool fit_c
   if(fit_cv_boundary)
     repair_mesh(out);
 
+  RS_String point_num_to_string;
+  RS_String triangle_num_to_string;
+  point_num_to_string.setNum(out.numberofpoints);
+  triangle_num_to_string.setNum(out.numberoftriangles);
+  RS_String mesh_statistical = "Total " + point_num_to_string + " Points and " + triangle_num_to_string + " Triangles created.";
+  RS_DIALOGFACTORY->commandMessage(mesh_statistical);
+
   RS_DIALOGFACTORY->commandMessage(("Draw mesh entity on new layer..."));
   create_new_mesh_layer();
   RS_Mesh* mesh =  new RS_Mesh(_doc);
@@ -264,7 +271,7 @@ QuadTree * MeshGenerator::build_quadtree()
             case QuadTreeNodeData::INTERSECTION_REGION :
               {
                 this_leaf->region_intersection_flag() = QuadTreeNodeData::INTERSECTION_REGION;
-                this_leaf->record_intersection_region(n);	
+                this_leaf->record_intersection_region(n);
                 if(this_leaf->area()>_regions[n].area_control)
                   this_leaf_should_be_divide = true;
                 break;
@@ -311,15 +318,29 @@ QuadTree * MeshGenerator::build_quadtree()
     for(; leaf_it != quadtree->end_leaf(); ++leaf_it)
       if(leaf_it->region_intersection_flag()==QuadTreeNodeData::IN_REGION)
       {
-        quadtree_points.insert(std::make_pair(leaf_it->tl(), leaf_it->char_length()));
-        quadtree_points.insert(std::make_pair(leaf_it->tr(), leaf_it->char_length()));
-        quadtree_points.insert(std::make_pair(leaf_it->br(), leaf_it->char_length()));
-        quadtree_points.insert(std::make_pair(leaf_it->bl(), leaf_it->char_length()));
+        if(quadtree->has_neighbor_intersection_region(leaf_it))
+        {
+          quadtree_points[leaf_it->tl()] = leaf_it->char_length();
+          quadtree_points[leaf_it->tr()] = leaf_it->char_length();
+          quadtree_points[leaf_it->br()] = leaf_it->char_length();
+          quadtree_points[leaf_it->bl()] = leaf_it->char_length();
+        }
+        else
+        {
+          if(quadtree_points.find(leaf_it->tl())==quadtree_points.end())
+            quadtree_points[leaf_it->tl()] = 0;
+          if(quadtree_points.find(leaf_it->tr())==quadtree_points.end())
+            quadtree_points[leaf_it->tr()] = 0;
+          if(quadtree_points.find(leaf_it->br())==quadtree_points.end())
+            quadtree_points[leaf_it->br()] = 0;
+          if(quadtree_points.find(leaf_it->bl())==quadtree_points.end())
+            quadtree_points[leaf_it->bl()] = 0;
+        }
       }
 
     std::map<const RS_Vector *, double>::iterator it=quadtree_points.begin();
     for(; it!=quadtree_points.end(); ++it)
-      _pslg->add_aux_point(*(*it).first, (*it).second/3.0, (*it).second/3.0);
+      _pslg->add_aux_point(*(*it).first, (*it).second/3.0);
   }
 
   return quadtree;
@@ -361,7 +382,7 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d,
       QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
       for(; leaf_it != quadtree->end_leaf(); )
       {
-      	QuadTree::iterator this_leaf = leaf_it++;
+        QuadTree::iterator this_leaf = leaf_it++;
         if( mesh->is_refine_required(this_leaf, max_d, signed_log) )
         {
           quadtree->subdivide(this_leaf);
@@ -400,7 +421,7 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d,
             case QuadTreeNodeData::INTERSECTION_REGION :
               {
                 leaf_it->region_intersection_flag() = QuadTreeNodeData::INTERSECTION_REGION;
-                leaf_it->record_intersection_region(n);	
+                leaf_it->record_intersection_region(n);
                 break;
               }
             default: break;
@@ -424,17 +445,29 @@ void MeshGenerator::refine_mesh(const QString &cmd, double max_d,
       std::map<const RS_Vector *, double> quadtree_points;
       QuadTree::leaf_iterator leaf_it = quadtree->begin_leaf();
       for(; leaf_it != quadtree->end_leaf(); ++leaf_it)
-        if(leaf_it->region_intersection_flag()==QuadTreeNodeData::IN_REGION)
+      {
+        if(quadtree->has_neighbor_intersection_region(leaf_it))
         {
-          quadtree_points.insert(std::make_pair(leaf_it->tl(), leaf_it->char_length()));
-          quadtree_points.insert(std::make_pair(leaf_it->tr(), leaf_it->char_length()));
-          quadtree_points.insert(std::make_pair(leaf_it->br(), leaf_it->char_length()));
-          quadtree_points.insert(std::make_pair(leaf_it->bl(), leaf_it->char_length()));
+          quadtree_points[leaf_it->tl()] = leaf_it->char_length();
+          quadtree_points[leaf_it->tr()] = leaf_it->char_length();
+          quadtree_points[leaf_it->br()] = leaf_it->char_length();
+          quadtree_points[leaf_it->bl()] = leaf_it->char_length();
         }
-
+        else
+        {
+          if(quadtree_points.find(leaf_it->tl())==quadtree_points.end())
+            quadtree_points[leaf_it->tl()] = 0;
+          if(quadtree_points.find(leaf_it->tr())==quadtree_points.end())
+            quadtree_points[leaf_it->tr()] = 0;
+          if(quadtree_points.find(leaf_it->br())==quadtree_points.end())
+            quadtree_points[leaf_it->br()] = 0;
+          if(quadtree_points.find(leaf_it->bl())==quadtree_points.end())
+            quadtree_points[leaf_it->bl()] = 0;
+        }
+      }
       std::map<const RS_Vector *, double>::iterator it=quadtree_points.begin();
       for(; it!=quadtree_points.end(); ++it)
-        _pslg->add_aux_point(*(*it).first, 1e-4, (*it).second/3.0);
+        _pslg->add_aux_point(*(*it).first, (*it).second/3.0);
     }
 
     //set point
@@ -649,15 +682,15 @@ void MeshGenerator::repair_mesh(triangulateio &t)
   }
 
   if(!all_on_entity)
-  QMessageBox::warning(NULL, QObject::tr("Curved Boundary Fit"),
-                       QObject::tr("Still some boundary edges lie on the approximate "
-                           "polygon instead of curved boundary. <br>"
-                           "This usually won't affect later numerical simulation. <br>"
-                           "However, to get a perfet matched curved boundary, "
-                           "you may try to divide curved entities into more "
-                           "initial segments, and mesh again.<br>"
-                                  )
-                      );
+    QMessageBox::warning(NULL, QObject::tr("Curved Boundary Fit"),
+                         QObject::tr("Still some boundary edges lie on the approximate "
+                                     "polygon instead of curved boundary. <br>"
+                                     "This usually won't affect later numerical simulation. <br>"
+                                     "However, to get a perfet matched curved boundary, "
+                                     "you may try to divide curved entities into more "
+                                     "initial segments, and mesh again.<br>"
+                                    )
+                        );
 
 }
 

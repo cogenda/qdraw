@@ -182,13 +182,13 @@ public:
 
   void record_intersection_region(int r)
   {_intersection_regions.insert(r);}
-  
+
   bool has_intersection_region(int r) const
   { return _intersection_regions.find(r)!=_intersection_regions.end(); }
-  
+
   const std::set<int> & get_intersection_regions() const
   { return _intersection_regions;}
-  	
+
   friend std::ostream& operator << (std::ostream&, const QuadTreeNodeData& data);
 
 private:
@@ -233,7 +233,7 @@ private:
    * indicate this quadtree leaf in which region
    */
   int _region;
-  
+
   /**
    * record all the intersection regions
    */
@@ -248,6 +248,11 @@ private:
    * line and quadtree leaf intersection result
    */
   LINE_INTERSECTION_FLAG    _line_intersection_flag;
+
+  /**
+   * the region and quadtree leaf intersection results of it's neighbor
+   */
+  //REGION_INTERSECTION_FLAG  _neighbor_region_intersection_flag[4];
 };
 
 
@@ -312,6 +317,11 @@ public:
   QuadTreeNodeData::REGION_INTERSECTION_FLAG region_intersection(const iterator_base & it,  const std::vector<RS_Vector > & region_contour );
 
   /**
+   * @return true if this leaf has a neighbor with REGION_INTERSECTION_FLAG == INTERSECTION_REGION
+   */
+  bool has_neighbor_intersection_region(iterator_base & leaf_it);
+
+  /**
    * write quadtree mesh in vtk format
    */
   void export_quadtree(char * file);
@@ -333,7 +343,17 @@ private:
 
   std::vector<const RS_Vector *> _points;
 
-  std::map<const RS_Vector *, unsigned int> _point_to_id;
+  struct RS_Vector_Less
+  {
+     bool operator() (const RS_Vector *v1, const RS_Vector *v2)
+     {
+       return v1->absolute_fuzzy_less(*v2, 1e-6);
+     }
+  };
+
+  std::map<const RS_Vector *, unsigned int, RS_Vector_Less> _point_to_id;
+
+
 };
 
 

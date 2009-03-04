@@ -477,6 +477,35 @@ bool RS_Vector::absolute_fuzzy_equals(const RS_Vector & v, double tol) const
   return (fabs(x - v.x) + fabs(y - v.y) + fabs(z - v.z) <= tol);
 }
 
+bool RS_Vector::absolute_fuzzy_less(const RS_Vector & v, double tol) const
+{
+/*
+  RS_Vector scaled_this  = *this/tol;
+  RS_Vector scaled_other = v/tol;
+  if(int(scaled_this.x)<int(scaled_other.x))
+    return true;
+  if(int(scaled_this.x)>int(scaled_other.x))
+    return false;
+
+  if(int(scaled_this.y)<int(scaled_other.y))
+    return true;
+  if(int(scaled_this.y)>int(scaled_other.y))
+    return false;
+*/
+
+  if( this->x < v.x-tol)
+    return true;
+  if( this->x > v.x+tol)
+    return false;
+
+  if( this->y < v.y-tol)
+    return true;
+  if( this->y > v.y+tol)
+    return false;
+
+  return false;
+}
+
 
 /**
  * @return A vector with the minimum components from the vectors v1 and v2.

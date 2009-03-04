@@ -372,18 +372,37 @@ void CG_PSLG::convert_cad_to_pslg(RS_Graphic * g)
 unsigned int CG_PSLG::add_point(const RS_Vector &v)
 {
   //this point already exist
-  for(unsigned int n=0; n<_points.size(); ++n)
-    if( v.distanceTo(_points[n])<1e-4 ) return n;
+  //for(unsigned int n=0; n<_points.size(); ++n)
+  //  if( v.distanceTo(_points[n])<1e-6 ) return n;
 
+  if(_points_map.find(v) != _points_map.end())
+    return _points_map.find(v)->second;
+
+  _points_map[v] = _points.size();
   _points.push_back(v);
+
   return _points.size()-1;
 }
 
-bool CG_PSLG::add_aux_point(const RS_Vector &v, double point_dist, double segment_dist)
+bool CG_PSLG::add_aux_point(const RS_Vector &v)
 {
   //this point already exist
-  for(unsigned int n=0; n<_points.size(); ++n)
-    if( v.distanceTo(_points[n])<point_dist ) return false;
+  //for(unsigned int n=0; n<_points.size(); ++n)
+  //  if( v.distanceTo(_points[n])<point_dist ) return false;
+  if(_points_map.find(v) != _points_map.end()) return false;
+  _aux_points.push_back(v);
+  return true;
+}
+
+bool CG_PSLG::add_aux_point(const RS_Vector &v, double segment_dist)
+{
+  // skip near segment check
+  if(segment_dist<1e-10) return add_aux_point(v);
+
+  //this point already exist
+  //for(unsigned int n=0; n<_points.size(); ++n)
+  //  if( v.distanceTo(_points[n])<point_dist ) return false;
+  if(_points_map.find(v) != _points_map.end()) return false;
 
   //the aux point lies on any segment?
   for(unsigned int n=0; n<_segments.size(); ++n)

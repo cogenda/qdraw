@@ -141,6 +141,24 @@ void QuadTree::balance()
 }
 
 
+bool QuadTree::has_neighbor_intersection_region(iterator_base & leaf_it)
+{
+  iterator_base left_neighbor = find_neighbor(leaf_it, L);
+  if(left_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION) return true;
+
+  iterator_base right_neighbor = find_neighbor(leaf_it, R);
+  if(right_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION) return true;
+
+  iterator_base top_neighbor = find_neighbor(leaf_it, T);
+  if(top_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION) return true;
+
+  iterator_base bot_neighbor = find_neighbor(leaf_it, B);
+  if(bot_neighbor->region_intersection_flag()==QuadTreeNodeData::INTERSECTION_REGION) return true;
+
+  return false;
+}
+
+
 QuadTree::iterator_base QuadTree::find_neighbor(const iterator_base & it, Location x)
 {
   std::stack<QuadTreeLocation> path;
@@ -183,9 +201,11 @@ QuadTree::iterator_base QuadTree::goto_quadtree_child(const iterator_base & it, 
 
 const RS_Vector * QuadTree::add_point(const RS_Vector & point)
 {
-  for(unsigned int n=0; n<_points.size(); ++n)
-    if( point.absolute_fuzzy_equals(*_points[n]) )
-      return _points[n];
+  //for(unsigned int n=0; n<_points.size(); ++n)
+  //  if( point.absolute_fuzzy_equals(*_points[n]) )
+  //    return _points[n];
+  if(_point_to_id.find(&point) != _point_to_id.end())
+    return _point_to_id.find(&point)->first;
 
   RS_Vector * new_point = new RS_Vector(point);
   _point_to_id[new_point] = _points.size();
@@ -271,7 +291,8 @@ QuadTreeNodeData::REGION_INTERSECTION_FLAG QuadTree::region_intersection(const i
 QuadTreeNodeData::REGION_INTERSECTION_FLAG QuadTree::region_intersection(const iterator_base & it,  const CG_Region & region )
 {
   RS_Hatch * hatch = region.hatch;
-  if(!hatch->hasHole()) return region_intersection(it,  region.contour_points );
+  if(!hatch->hasHole())
+    return region_intersection(it,  region.contour_points );
 
   const RS_Vector * _p_tr = it->tr();
   const RS_Vector * _p_tl = it->tl();
