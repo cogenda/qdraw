@@ -136,7 +136,7 @@ private:
 
   struct RS_Vector_Less
   {
-     bool operator() (const RS_Vector &v1, const RS_Vector &v2)
+     bool operator() (const RS_Vector &v1, const RS_Vector &v2) const
      {
        return v1.absolute_fuzzy_less(v2, 1e-6);
      }
