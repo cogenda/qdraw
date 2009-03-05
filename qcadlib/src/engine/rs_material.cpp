@@ -65,6 +65,7 @@ void RS_Material::init_material_name_to_material_type()
   material_name_to_material_type["Copper" ]  = Conductor;
   material_name_to_material_type["PolySi" ]  = Conductor;
   material_name_to_material_type["TiSi2"  ]  = Conductor;
+  material_name_to_material_type["ITO"    ]  = Conductor;
 
   material_name_to_material_type["Vacuum" ]  = Vacuum;
 
@@ -109,6 +110,7 @@ std::vector<RS_String> RS_Material::get_materials()
   materials.push_back("Cu"     );
   materials.push_back("PolySi" );
   materials.push_back("TiSi2"  );
+  materials.push_back("ITO"    );
 
   materials.push_back("Vacuum" );
 

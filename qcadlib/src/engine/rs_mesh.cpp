@@ -671,10 +671,11 @@ void RS_Mesh::export_mesh(const RS_String & file)
   time_t          _time;
   time(&_time);
 
-  fout << "h TIF V1.2.1 created by QDRAW, Copyright (C) by Cogenda Inc. Date: " << ctime(&_time)  << '\n';
+  fout << "h TIF V1.2.1 created by QDRAW, Copyright (C) by Cogenda Pte. Ltd. Date: " << ctime(&_time)  << '\n';
   fout << "cd GEN          blnk               blnk          blnk        cart2D    1.00000E+00  0.00000E+00"  << '\n';
   fout << "cg   3.00000E+02" << '\n';
 
+  
   //write point
   for(int i=0; i<io.numberofpoints; ++i)
     fout<< 'c' << '\t'

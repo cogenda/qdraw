@@ -278,13 +278,13 @@ QuadTreeNodeData::REGION_INTERSECTION_FLAG QuadTree::region_intersection(const i
   // no intersection point?
   if(contour.has_point(Point(_p_bl->x, _p_bl->y)) && contour.has_point(Point(_p_tr->x, _p_tr->y)))
   {
-    assert(fabs(contour.area()) >= leaf.area());
+    //assert(fabs(contour.area()) >= leaf.area());
     return QuadTreeNodeData::IN_REGION;
   }
 
   if(leaf_large.has_point(Point(region_contour[0].x, region_contour[0].y)))
   {
-    assert(leaf.area() >= fabs(contour.area()));
+    //assert(leaf.area() >= fabs(contour.area()));
     return QuadTreeNodeData::COVER_REGION;
   }
 
