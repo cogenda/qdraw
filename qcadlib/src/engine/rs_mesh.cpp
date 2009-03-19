@@ -31,6 +31,7 @@
 #include "rs_text.h"
 #include "rs_graphic.h"
 #include "rs_graphicview.h"
+#include "rs_painter.h"
 #include "cg_quadtree.h"
 #include "cg_profile.h"
 #include "cg_profile_manager.h"
@@ -120,14 +121,14 @@ void RS_Mesh::set_refine_flag(double dmax, bool signed_log)
     int r = int(io.triangleattributelist[i]+0.5);
     RS_String material = _pslg->get_region_material(r);
     if(RS_Material::IsSemiconductor(material))
-    {	
+    {
       int a = io.trianglelist[3*i+0];
       int b = io.trianglelist[3*i+1];
       int c = io.trianglelist[3*i+2];
       io.trianglearealist[i] = triangle_area_constraint(a, b, c, dmax, signed_log);
     }
     else
-      io.trianglearealist[i] = RS_MAXDOUBLE; 
+      io.trianglearealist[i] = RS_MAXDOUBLE;
   }
 }
 
@@ -195,24 +196,24 @@ double RS_Mesh::triangle_area_constraint(int a, int b, int c, double dmax, bool 
 
 bool RS_Mesh::is_refine_required(const QuadTree::iterator &this_leaf, double dmax, bool signed_log)
 {
-  // check if this leaf at least intersection with a semiconductor region	
+  // check if this leaf at least intersection with a semiconductor region
   if(this_leaf->region()<0)
   {
-     bool intersection_with_semiconductor_region = false;	
-     const std::set<int> & regions = this_leaf->get_intersection_regions();
-     for(std::set<int>::const_iterator it=regions.begin(); it!=regions.end(); ++it )
-     {	
-     	RS_String material = _pslg->get_region_material(*it);
-        if(RS_Material::IsSemiconductor(material)) 
+    bool intersection_with_semiconductor_region = false;
+    const std::set<int> & regions = this_leaf->get_intersection_regions();
+    for(std::set<int>::const_iterator it=regions.begin(); it!=regions.end(); ++it )
+      {
+        RS_String material = _pslg->get_region_material(*it);
+        if(RS_Material::IsSemiconductor(material))
           intersection_with_semiconductor_region = true;
-     }          
-     if(!intersection_with_semiconductor_region) return false;	
+      }
+    if(!intersection_with_semiconductor_region) return false;
   }
   else
-  {	
+  {
     RS_String material = _pslg->get_region_material(this_leaf->region());
     if(!RS_Material::IsSemiconductor(material)) return false;
-  }    
+  }
 
   std::vector<RS_Vector> poly;
   poly.push_back(*this_leaf->tl());
@@ -245,6 +246,8 @@ bool RS_Mesh::is_refine_required(const QuadTree::iterator &this_leaf, double dma
 }
 
 
+
+
 void RS_Mesh::update()
 {
   //clear old entities
@@ -269,19 +272,7 @@ void RS_Mesh::update()
 
   RS_Vector bbox = bbox_max - bbox_min;
 
-
-  //draw outline
-  if(_draw_outline)
-  {
-    for(int i=0; i<io.numberofsegments; ++i)
-    {
-      RS_Vector a(io.pointlist[2*io.segmentlist[2*i+0]], io.pointlist[2*io.segmentlist[2*i+0]+1]);
-      RS_Vector b(io.pointlist[2*io.segmentlist[2*i+1]], io.pointlist[2*io.segmentlist[2*i+1]+1]);
-      this->addEntity(new RS_Line(this, RS_LineData(a,b)));
-    }
-  }
-
-
+  //draw contour
   std::vector<double> contour_level;
 
   if(_draw_contour)
@@ -293,148 +284,19 @@ void RS_Mesh::update()
     contour_level[contour_level.size()-1] = bbox_max.z - 0.001*fabs(bbox_max.z);
   }
 
-
-  for(int i=0; i<io.numberoftriangles; ++i)
+  if((_draw_contour) && fabs(bbox.z)>1e-14)
   {
-    int r = int(io.triangleattributelist[i]+0.5);
-    RS_String material = _pslg->get_region_material(r);
-
-    RS_Vector a(io.pointlist[2*io.trianglelist[3*i+0]], io.pointlist[2*io.trianglelist[3*i+0]+1]);
-    RS_Vector b(io.pointlist[2*io.trianglelist[3*i+1]], io.pointlist[2*io.trianglelist[3*i+1]+1]);
-    RS_Vector c(io.pointlist[2*io.trianglelist[3*i+2]], io.pointlist[2*io.trianglelist[3*i+2]+1]);
-
-    //draw mesh as lines
-    if(_draw_mesh || _draw_material)
+    for(int i=0; i<io.numberoftriangles; ++i)
     {
-      this->addEntity(new RS_Line(this, RS_LineData(a,b)));
-      this->addEntity(new RS_Line(this, RS_LineData(b,c)));
-      this->addEntity(new RS_Line(this, RS_LineData(c,a)));
-    }
+      int r = int(io.triangleattributelist[i]+0.5);
+      RS_String material = _pslg->get_region_material(r);
 
-    if(_draw_material)
-    {
-      RS_Pen pen;
+      RS_Vector a(io.pointlist[2*io.trianglelist[3*i+0]], io.pointlist[2*io.trianglelist[3*i+0]+1]);
+      RS_Vector b(io.pointlist[2*io.trianglelist[3*i+1]], io.pointlist[2*io.trianglelist[3*i+1]+1]);
+      RS_Vector c(io.pointlist[2*io.trianglelist[3*i+2]], io.pointlist[2*io.trianglelist[3*i+2]+1]);
 
-      // insulator and conductor region
-      if(RS_Material::IsInsulator(material) || RS_Material::IsConductor(material))
-      {
-        if(RS_Material::IsConductor(material))
-          pen.setColor(RS_Color(0,0,255));
 
-        if(RS_Material::IsInsulator(material))
-        {
-          if(RS_Material::IsSiO2(material))
-            pen.setColor(RS_Color(2,255,252));
-          else if(RS_Material::IsNitride(material))
-            pen.setColor(RS_Color(255,0,255));
-          else
-            pen.setColor(RS_Color(2,255,252));
-        }
 
-        RS_Hatch *triangle = create_triangle(a,b,c);
-        triangle->setPen(pen);
-        this->addEntity(triangle);
-      }
-
-      // draw semiconductor region, resolve pn junction here
-      if(RS_Material::IsSemiconductor(material))
-      {
-
-        RS_Color p_region_color(255,210,0);
-        RS_Color n_region_color(42,207,51);
-
-        a.z = profile(a.x, a.y);
-        b.z = profile(b.x, b.y);
-        c.z = profile(c.x, c.y);
-
-        // Array to hold the points.
-        RS_Vector temp1, temp2;
-        RS_Vector tempa = a;
-        RS_Vector tempb = b;
-        RS_Vector tempc = c;
-
-        // Sort the three points tempa, tempb, tempc in increasing z components;
-        if (tempa.z > tempb.z) std::swap(tempa, tempb);
-        if (tempb.z > tempc.z)
-        {
-          if(tempc.z < tempa.z) std::swap(tempa, tempc);
-          std::swap(tempb, tempc);
-        }
-
-        if (tempa.z>=0)
-        {
-          pen.setColor(n_region_color);
-          RS_Hatch *triangle = create_triangle(tempa,tempb,tempc);
-          triangle->setPen(pen);
-          this->addEntity(triangle);
-        }
-
-        if (tempc.z<=0)
-        {
-          pen.setColor(p_region_color);
-          RS_Hatch *triangle = create_triangle(tempa,tempb,tempc);
-          triangle->setPen(pen);
-          this->addEntity(triangle);
-        }
-
-        if ((0 > tempa.z) && (0 < tempc.z))
-        {
-          if (0 == tempb.z)
-          {
-            //a<0=b<c
-            temp1 = linear_interpolation(tempa, tempc, 0);
-            temp2 = tempb;
-
-            pen.setColor(p_region_color);
-            RS_Hatch *triangle1 = create_triangle(tempa,tempb,temp1);
-            triangle1->setPen(pen);
-            this->addEntity(triangle1);
-
-            pen.setColor(n_region_color);
-            RS_Hatch *triangle2 = create_triangle(temp1,temp2,tempc);
-            triangle2->setPen(pen);
-            this->addEntity(triangle2);
-          }
-          else if (0 < tempb.z)
-          {
-            // a<0<b<c
-            temp1 = linear_interpolation(tempa, tempb, 0);
-            temp2 = linear_interpolation(tempa, tempc, 0);
-
-            pen.setColor(p_region_color);
-            RS_Hatch *triangle = create_triangle(tempa,temp1,temp2);
-            triangle->setPen(pen);
-            this->addEntity(triangle);
-
-            pen.setColor(n_region_color);
-            RS_Hatch *rectangle = create_rectangle(temp2,temp1,tempb,tempc);
-            rectangle->setPen(pen);
-            this->addEntity(rectangle);
-          }
-          else
-          {
-            // a<b<0<c
-            temp1 = linear_interpolation(tempa, tempc, 0);
-            temp2 = linear_interpolation(tempb, tempc, 0);
-
-            pen.setColor(p_region_color);
-            RS_Hatch *rectangle = create_rectangle(tempa,tempb,temp2,temp1);
-            rectangle->setPen(pen);
-            this->addEntity(rectangle);
-
-            pen.setColor(n_region_color);
-            RS_Hatch *triangle = create_triangle(temp1,temp2,tempc);
-            triangle->setPen(pen);
-            this->addEntity(triangle);
-          }
-        }
-      }
-
-    }
-
-    //draw contour
-    if((_draw_contour) && fabs(bbox.z)>1e-14)
-    {
       if(!RS_Material::IsSemiconductor(material)) continue;
 
       a.z = profile(a.x, a.y);
@@ -516,7 +378,6 @@ void RS_Mesh::update()
           this->addEntity(contour_line);
         }
       }
-
     }
   }
 
@@ -528,8 +389,24 @@ void RS_Mesh::update()
     double legend_text_x  = bbox_max.x + 0.11*(bbox_max.x - bbox_min.x);
     double legend_start_y = bbox_max.y - 0.05*(bbox_max.y - bbox_min.y);
     double legend_end_y   = bbox_min.y + 0.05*(bbox_max.y - bbox_min.y);
-    double legend_dist_y  = (legend_start_y - legend_end_y)/(_contour_number-1);
+    double legend_dist_y  = (legend_start_y - legend_end_y)/(_contour_number);
 
+    //draw Legend title
+    RS_TextData text( RS_Vector(legend_start_x, legend_start_y),
+                      legend_dist_y/2,
+                      12*legend_dist_y,
+                      RS2::VAlignMiddle,
+                      RS2::HAlignLeft,
+                      RS2::LeftToRight,
+                      RS2::Exact,
+                      1.0,
+                      "Contour Color Legend",
+                      "standard",
+                      0
+                    );
+    RS_Text *legend = new RS_Text(this, text);
+    this->addEntity(legend);
+    legend_start_y -= legend_dist_y;
 
     for (unsigned int n = 0; n < contour_level.size(); ++n)
     {
@@ -572,17 +449,174 @@ void RS_Mesh::update()
 
   }
 
+  //draw title
+  {
+  double height = (bbox_max.y - bbox_min.y)/20;
+  RS_TextData text( RS_Vector((bbox_min.x+bbox_max.x)/2-height*4, bbox_min.y-1.1*height),
+                      height,
+                      12*height,
+                      RS2::VAlignMiddle,
+                      RS2::HAlignLeft,
+                      RS2::LeftToRight,
+                      RS2::Exact,
+                      1.0,
+                      "Mesh Object",
+                      "standard",
+                      0
+                    );
+    RS_Text *meshtitle = new RS_Text(this, text);
+    this->addEntity(meshtitle);
+  }
 }
 
 
 void RS_Mesh::draw(RS_Painter* painter, RS_GraphicView* view,  double /*patternOffset*/)
 {
+  if (painter==NULL || view==NULL)  { return; }
 
-  if (painter==NULL || view==NULL)
+  //draw outline
+  if(_draw_outline)
   {
-    return;
+    for(int i=0; i<io.numberofsegments; ++i)
+    {
+      RS_Vector a(io.pointlist[2*io.segmentlist[2*i+0]], io.pointlist[2*io.segmentlist[2*i+0]+1]);
+      RS_Vector b(io.pointlist[2*io.segmentlist[2*i+1]], io.pointlist[2*io.segmentlist[2*i+1]+1]);
+      painter->drawLine(view->toGui(a), view->toGui(b));
+    }
   }
 
+  if(_draw_material)
+  {
+    for(int i=0; i<io.numberoftriangles; ++i)
+    {
+      int r = int(io.triangleattributelist[i]+0.5);
+      RS_String material = _pslg->get_region_material(r);
+
+      RS_Vector a(io.pointlist[2*io.trianglelist[3*i+0]], io.pointlist[2*io.trianglelist[3*i+0]+1]);
+      RS_Vector b(io.pointlist[2*io.trianglelist[3*i+1]], io.pointlist[2*io.trianglelist[3*i+1]+1]);
+      RS_Vector c(io.pointlist[2*io.trianglelist[3*i+2]], io.pointlist[2*io.trianglelist[3*i+2]+1]);
+
+      RS_Pen pen;
+
+      // insulator and conductor region
+      if(RS_Material::IsInsulator(material) || RS_Material::IsConductor(material))
+      {
+        if(RS_Material::IsConductor(material))
+          pen.setColor(RS_Color(0,0,255));
+
+        if(RS_Material::IsInsulator(material))
+        {
+          if(RS_Material::IsSiO2(material))
+            pen.setColor(RS_Color(2,255,252));
+          else if(RS_Material::IsNitride(material))
+            pen.setColor(RS_Color(255,0,255));
+          else
+            pen.setColor(RS_Color(2,255,252));
+        }
+        this->draw_triangle(painter, view, a,b,c,pen);
+      }
+
+      // draw semiconductor region, resolve pn junction here
+      if(RS_Material::IsSemiconductor(material))
+      {
+
+        RS_Color p_region_color(255,210,0);
+        RS_Color n_region_color(42,207,51);
+
+        a.z = profile(a.x, a.y);
+        b.z = profile(b.x, b.y);
+        c.z = profile(c.x, c.y);
+
+        // Array to hold the points.
+        RS_Vector temp1, temp2;
+        RS_Vector tempa = a;
+        RS_Vector tempb = b;
+        RS_Vector tempc = c;
+
+        // Sort the three points tempa, tempb, tempc in increasing z components;
+        if (tempa.z > tempb.z) std::swap(tempa, tempb);
+        if (tempb.z > tempc.z)
+        {
+          if(tempc.z < tempa.z) std::swap(tempa, tempc);
+          std::swap(tempb, tempc);
+        }
+
+        if (tempa.z>=0)
+        {
+          pen.setColor(n_region_color);
+          this->draw_triangle(painter, view, tempa,tempb,tempc,pen);
+        }
+
+        if (tempc.z<=0)
+        {
+          pen.setColor(p_region_color);
+          this->draw_triangle(painter, view, tempa,tempb,tempc,pen);
+        }
+
+        if ((0 > tempa.z) && (0 < tempc.z))
+        {
+          if (0 == tempb.z)
+          {
+            //a<0=b<c
+            temp1 = linear_interpolation(tempa, tempc, 0);
+            temp2 = tempb;
+
+            pen.setColor(p_region_color);
+            this->draw_triangle(painter, view, tempa,tempb,temp1,pen);
+
+            pen.setColor(n_region_color);
+            this->draw_triangle(painter, view, temp1,temp2,tempc,pen);
+          }
+          else if (0 < tempb.z)
+          {
+            // a<0<b<c
+            temp1 = linear_interpolation(tempa, tempb, 0);
+            temp2 = linear_interpolation(tempa, tempc, 0);
+
+            pen.setColor(p_region_color);
+            this->draw_triangle(painter, view, tempa,temp1,temp2,pen);
+
+            pen.setColor(n_region_color);
+            this->draw_rectangle(painter, view, temp2,temp1,tempb,tempc,pen);
+          }
+          else
+          {
+            // a<b<0<c
+            temp1 = linear_interpolation(tempa, tempc, 0);
+            temp2 = linear_interpolation(tempb, tempc, 0);
+
+            pen.setColor(p_region_color);
+            this->draw_rectangle(painter, view, tempa,tempb,temp2,temp1,pen);
+
+            pen.setColor(n_region_color);
+            this->draw_triangle(painter, view, temp1,temp2,tempc,pen);
+          }
+        }
+      }
+
+    }
+  }
+
+  //draw mesh as lines
+  if(_draw_mesh || _draw_material)
+  {
+    for(int i=0; i<io.numberoftriangles; ++i)
+    {
+      pen.setColor(RS_Color(255,255,255));
+      painter->setPen(pen);
+
+      RS_Vector a(io.pointlist[2*io.trianglelist[3*i+0]], io.pointlist[2*io.trianglelist[3*i+0]+1]);
+      RS_Vector b(io.pointlist[2*io.trianglelist[3*i+1]], io.pointlist[2*io.trianglelist[3*i+1]+1]);
+      RS_Vector c(io.pointlist[2*io.trianglelist[3*i+2]], io.pointlist[2*io.trianglelist[3*i+2]+1]);
+
+      painter->drawLine(view->toGui(a), view->toGui(b));
+      painter->drawLine(view->toGui(b), view->toGui(c));
+      painter->drawLine(view->toGui(c), view->toGui(a));
+
+    }
+  }
+
+  //draw other Entity
   for (RS_Entity* e=firstEntity(RS2::ResolveNone); e!=NULL; e = nextEntity(RS2::ResolveNone))
   {
     view->drawEntity(e);
@@ -607,6 +641,36 @@ RS_Vector RS_Mesh::linear_interpolation(RS_Vector a, RS_Vector b, double level)
   while ( sqrt((a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y)) > 1e-6);
 
   return a;
+}
+
+void RS_Mesh::draw_triangle (RS_Painter* painter, RS_GraphicView* view,
+                             const RS_Vector &a, const RS_Vector &b, const RS_Vector &c, const RS_Pen &pen)
+{
+  RS_PointArray pa;
+  pa.resize(3);
+  pa.setPoint(0, RS_Math::round(view->toGuiX(a.x)), RS_Math::round(view->toGuiY(a.y)));
+  pa.setPoint(1, RS_Math::round(view->toGuiX(b.x)), RS_Math::round(view->toGuiY(b.y)));
+  pa.setPoint(2, RS_Math::round(view->toGuiX(c.x)), RS_Math::round(view->toGuiY(c.y)));
+
+  painter->setBrush(pen.getColor());
+  painter->disablePen();
+  painter->drawPolygon(pa);
+
+}
+
+void RS_Mesh::draw_rectangle(RS_Painter* painter, RS_GraphicView* view,
+                             const RS_Vector &a, const RS_Vector &b, const RS_Vector &c, const RS_Vector &d, const RS_Pen &pen)
+{
+  RS_PointArray pa;
+  pa.resize(4);
+  pa.setPoint(0, RS_Math::round(view->toGuiX(a.x)), RS_Math::round(view->toGuiY(a.y)));
+  pa.setPoint(1, RS_Math::round(view->toGuiX(b.x)), RS_Math::round(view->toGuiY(b.y)));
+  pa.setPoint(2, RS_Math::round(view->toGuiX(c.x)), RS_Math::round(view->toGuiY(c.y)));
+  pa.setPoint(3, RS_Math::round(view->toGuiX(d.x)), RS_Math::round(view->toGuiY(d.y)));
+
+  painter->setBrush(pen.getColor());
+  painter->disablePen();
+  painter->drawPolygon(pa);
 }
 
 
@@ -675,7 +739,7 @@ void RS_Mesh::export_mesh(const RS_String & file)
   fout << "cd GEN          blnk               blnk          blnk        cart2D    1.00000E+00  0.00000E+00"  << '\n';
   fout << "cg   3.00000E+02" << '\n';
 
-  
+
   //write point
   for(int i=0; i<io.numberofpoints; ++i)
     fout<< 'c' << '\t'

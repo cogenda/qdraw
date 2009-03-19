@@ -148,8 +148,11 @@ private:
 
   double triangle_area(int a, int b, int c);
 
-  RS_Hatch * create_triangle(RS_Vector a, RS_Vector b, RS_Vector c);
+  RS_Hatch * create_triangle (RS_Vector a, RS_Vector b, RS_Vector c);
   RS_Hatch * create_rectangle(RS_Vector a, RS_Vector b, RS_Vector c, RS_Vector d);
+
+  void draw_triangle (RS_Painter* painter, RS_GraphicView* view, const RS_Vector &a, const RS_Vector &b, const RS_Vector &c, const RS_Pen &pen);
+  void draw_rectangle(RS_Painter* painter, RS_GraphicView* view, const RS_Vector &a, const RS_Vector &b, const RS_Vector &c, const RS_Vector &d, const RS_Pen &pen);
 
   /**
    * the PSLG of this mesh
